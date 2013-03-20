@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Database%20Manager/Database/Session%20Details/Interfaces
+END
+IQueryAdapter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Database%20Manager/Database/Session%20Details/Interfaces/IQueryAdapter.cs
+END
+IRegularQueryAdapter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Database%20Manager/Database/Session%20Details/Interfaces/IRegularQueryAdapter.cs
+END

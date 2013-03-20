@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers
+END
+CRC32.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/CRC32.cs
+END
+Helpers.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/Helpers.csproj
+END
+ArrayHelper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/ArrayHelper.cs
+END
+Encryptor.cs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/Encryptor.cs
+END
+IO.cs
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/IO.cs
+END
+Out.cs
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Helpers/Out.cs
+END

@@ -1,0 +1,8 @@
+Add fields to tabe users:
+currentquestid, int [UNSIGNED], default value: 0
+currentquestprogress, int, default value: 0
+
+Add fields to catalog_items:
+cost_oude_belcredits, int, default value: 0
+
+!!ADD UNIQUE INDEX ON users.username IMPORTANT! DO NOT DO THIS BEFORE RUNNING THE DUPLICATE UESR REMOVAL TOOL!!

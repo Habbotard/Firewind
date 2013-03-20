@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem
+END
+Connection.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/Connection.cs
+END
+SuperLicense.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/SuperLicense.cs
+END
+ConnectionRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/ConnectionRequest.cs
+END
+LicensingClient.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/LicensingClient.cs
+END

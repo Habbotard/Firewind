@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files
+END
+wired_upgrade.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/wired_upgrade.sql
+END
+locale.pets.ini
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/locale.pets.ini
+END
+commands.pets.ini
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/commands.pets.ini
+END
+r74 notice.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r74%20notice.txt
+END
+commands_register.pets.ini
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/commands_register.pets.ini
+END
+r74 floor and wall (Spaces).sql
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r74%20floor%20and%20wall%20(Spaces).sql
+END
+r70 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r70%20changes.sql
+END
+r71 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r71%20changes.sql
+END
+r72 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r72%20changes.sql
+END
+r73 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r73%20changes.sql
+END
+staff_log.sql
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/staff_log.sql
+END
+r74 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r74%20changes.sql
+END
+r92 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r92%20changes.sql
+END
+r75 changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r75%20changes.sql
+END
+r74c changes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r74c%20changes.sql
+END
+r74 navigator_publics.sql
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/r74%20navigator_publics.sql
+END
+update_wired.sql
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/update_wired.sql
+END
+catalog_items for Wired.sql
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/catalog_items%20for%20Wired.sql
+END
+room_swearword_filter.sql
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/room_swearword_filter.sql
+END
+item updates r81.sql
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SQL%20Files/item%20updates%20r81.sql
+END

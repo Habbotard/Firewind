@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/Colibri/!svn/ver/4/trunk/Emulator/ServerSide
+END
+GameSocketManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/GameSocketManager.cs
+END
+PacketMalformedException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/PacketMalformedException.cs
+END
+IDataParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/IDataParser.cs
+END
+Connection Enum.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/Connection%20Enum.cs
+END
+Connection Manager.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/Connection%20Manager.csproj
+END
+ConnectionInformation.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/ConnectionInformation.cs
+END
+GameSocketManagerStatics.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Colibri/!svn/ver/2/trunk/Emulator/ServerSide/GameSocketManagerStatics.cs
+END

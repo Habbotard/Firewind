@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest
+END
+BufferUnderflowException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest/BufferUnderflowException.cs
+END
+GamePacketParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest/GamePacketParser.cs
+END
+ConnectionHandeler.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest/ConnectionHandeler.cs
+END
+SocketTest.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest/SocketTest.csproj
+END
+Program.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/Colibri/!svn/ver/2/trunk/Emulator/SocketTest/Program.cs
+END

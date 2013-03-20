@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/PacketEncoding
+END
+MalformedPacketException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/PacketEncoding/MalformedPacketException.cs
+END
+Response.cs
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/PacketEncoding/Response.cs
+END
+CryptoService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/PacketEncoding/CryptoService.cs
+END
+Packet.cs
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/Colibri/!svn/ver/2/trunk/Emulator/Butterfly%20Emulator/LicensingSystem/PacketEncoding/Packet.cs
+END
