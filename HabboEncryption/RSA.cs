@@ -128,7 +128,7 @@ namespace HabboEncryption
         {
             if (text.Length > this.GetBlockSize() - 11)
             {
-                //Logging.WriteLine("RSA Encrypt: Message is to big!");
+                //Console.WriteLine("RSA Encrypt: Message is to big!");
             }
 
             BigInteger m = new BigInteger(this.pkcs1pad2(Encoding.GetEncoding("iso-8859-1").GetBytes(text), this.GetBlockSize()));

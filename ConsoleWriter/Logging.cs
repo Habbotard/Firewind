@@ -53,7 +53,7 @@ namespace ConsoleWriter
                 }
                 catch (Exception e)
                 {
-                    Logging.WriteLine("Error in console writer: " + e.ToString());
+                    Console.WriteLine("Error in console writer: " + e.ToString());
                 }
 
                 Thread.Sleep(3000);
@@ -89,7 +89,7 @@ namespace ConsoleWriter
         public static void WriteLine(string Line)
         {
             if (!mDisabled)
-                Logging.WriteLine(Line);
+                Console.WriteLine(Line);
         }
 
         public static void LogException(string logText)

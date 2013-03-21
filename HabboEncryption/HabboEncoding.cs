@@ -100,7 +100,7 @@ namespace HabboEncryption
             }
             catch (Exception e)
             {
-                Logging.WriteLine(e);
+                Console.WriteLine(e);
                 return false;
             }
         }

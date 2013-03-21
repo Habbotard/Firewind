@@ -9,7 +9,7 @@ using ConsoleWriter;
 namespace Helpers
 {
     /// <summary>
-    /// Provides interface output related functions, such as logging activities.
+    /// Provides interface output related functions, such as Console activities.
     /// </summary>
     public static class Out
     {
@@ -331,18 +331,18 @@ namespace Helpers
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("] » ");
             Console.ForegroundColor = item.colorTwo;
-            Logging.WriteLine(item.message);
+            Console.WriteLine(item.message);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private static void writePlain(PrintItem item)
         {
-            Logging.WriteLine(item.message);
+            Console.WriteLine(item.message);
         }
 
         private static void printEmpty(PrintItem item)
         {
-            Logging.WriteLine("");
+            Console.WriteLine("");
         }
 
         private static void writeDefaultHeader(PrintItem item)
@@ -358,7 +358,7 @@ namespace Helpers
         {
             writeDefaultHeader(item);
             Console.ForegroundColor = ConsoleColor.Red;
-            Logging.WriteLine(item.message);
+            Console.WriteLine(item.message);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
@@ -367,7 +367,7 @@ namespace Helpers
         {
             writeDefaultHeader(item);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Logging.WriteLine(item.message);
+            Console.WriteLine(item.message);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         private static void writeSpecialLineWithHeaderHead(PrintItem item)
@@ -376,7 +376,7 @@ namespace Helpers
             Console.ForegroundColor = item.colorOne;
             Console.Write(item.headerText);
             Console.ForegroundColor = item.colorTwo;
-            Logging.WriteLine(item.message);
+            Console.WriteLine(item.message);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 

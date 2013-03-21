@@ -430,7 +430,7 @@ namespace ConnectionManager
             }
             catch
             {
-                Logging.WriteLine("UNABLE TO WRITE TO LOGFILE");
+                Console.WriteLine("UNABLE TO WRITE TO LOGFILE");
             }
         }
         #endregion
