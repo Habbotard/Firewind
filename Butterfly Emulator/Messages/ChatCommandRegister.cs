@@ -493,33 +493,7 @@ namespace Butterfly.Messages
                         commandHandler.lay();
                         break;
                     }
-                //case 71:
-                //    {
-                //        commandHandler.nuevaVotacion();
-                //        break;
-                //    }
-                //case 72:
-                //    {
-                //        commandHandler.votar();
-                //        break;
-                //    }
-                //case 73:
-                //    {
-                //        commandHandler.FinVotacion();
-                //        break;
-                //    }
-
-                //case 74:
-                //    {
-                //        commandHandler.refreshitems();
-                //        break;
-                //    }
-
-                //case 75:
-                //    {
-                //        commandHandler.staffmessages();
-                //        break;
-                //    }
+           
                 case 76:
                     {
                         commandHandler.givescore();
@@ -566,6 +540,11 @@ namespace Butterfly.Messages
                 case 1008:
                     {
                         commandHandler.vipcommands();
+                        break;
+                    }
+                case 1009:
+                    {
+                        commandHandler.massclothes();
                         break;
                     }
 

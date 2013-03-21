@@ -1413,8 +1413,6 @@ namespace Butterfly.HabboHotel.Misc
 
         internal void enablefriends()
         {
-            //case "enablefriends":
-            //case "enablefriendrequests":
             using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
             {
                 dbClient.runFastQuery("UPDATE users SET block_newfriends = '0' WHERE id = " + Session.GetHabbo().Id);
@@ -1448,67 +1446,7 @@ namespace Butterfly.HabboHotel.Misc
         }
 
         internal void wheresmypet()
-        //case "wheresmypet":
-        //case "wheresmypets":
-        //case "whereismypet":
-        //case "whereismypets":
         {
-            //StringBuilder responseBuilder = new StringBuilder();
-            ////List<PetInformation> result = new List<PetInformation>();
-            //Dictionary<uint, PetInformation> result = new Dictionary<uint, PetInformation>();
-
-            //List<Pet> usersInventory = Session.GetHabbo().GetInventoryComponent().GetPets();
-            //List<Pet> petsInLoadedRooms = ButterflyEnvironment.GetGame().GetRoomManager().GetPetsWithOwnerID(Session.GetHabbo().Id);
-
-            //foreach (Pet pet in usersInventory)
-            //{
-            //    result.Add(pet.PetId, new PetInformation("", "", pet.PetId, pet.Name));
-            //}
-
-            //foreach (Pet pet in petsInLoadedRooms)
-            //{
-            //    Room room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(pet.RoomId);
-            //    if (room != null)
-            //        result.Add(pet.PetId, new PetInformation(room.Name, room.Owner, pet.PetId, pet.Name));
-            //}
-
-            //DataTable petsInRoom;
-            //DataTable petsInHand;
-            //using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
-            //{
-            //    dbClient.setQuery("SELECT id, name FROM user_pets WHERE user_id = " + Session.GetHabbo().Id + " AND room_id = 0");
-            //    petsInHand = dbClient.getTable();
-
-            //    dbClient.setQuery("SELECT user_pets.id, user_pets.name, user_pets.room_id, rooms.caption, rooms.owner FROM user_pets JOIN rooms ON (rooms.id = user_pets.room_id) WHERE user_id = " + Session.GetHabbo().Id + " AND room_id != 0");
-            //    petsInRoom = dbClient.getTable();
-            //}
-
-            //foreach (DataRow row in petsInHand.Rows)
-            //{
-            //    uint petID = (uint)row["id"];
-            //    if (!result.ContainsKey(petID))
-            //        result.Add(petID, new PetInformation("", "", (uint)row["id"], (string)row["name"]));
-
-            //}
-
-            //foreach (DataRow row in petsInRoom.Rows)
-            //{
-            //    uint petID = (uint)row["id"];
-            //    if (!result.ContainsKey(petID))
-            //        result.Add(petID, new PetInformation((string)row["caption"], (string)row["owner"], (uint)row["id"], (string)row["name"]));
-            //}
-
-            //foreach (KeyValuePair<uint, PetInformation> pair in result)
-            //{
-            //    PetInformation pet = pair.Value;
-            //    responseBuilder.Append(pet.petName + LanguageLocale.GetValue("wheresmypet.output1"));
-            //    if (string.IsNullOrEmpty(pet.roomName))
-            //        responseBuilder.Append(LanguageLocale.GetValue("wheresmypet.output2") + "\r");
-            //    else
-            //        responseBuilder.Append(LanguageLocale.GetValue("wheresmypet.output3") + " [" + pet.roomName + "] " + LanguageLocale.GetValue("wheresmypet.output4") + " [" + pet.roomOwner + "]\r");
-            //}
-
-            //Session.SendNotif(responseBuilder.ToString());
         }
 
         internal void powerlevels()
@@ -1543,10 +1481,6 @@ namespace Butterfly.HabboHotel.Misc
 
         internal void dario()
         {
-            if (Params[1] != "lol123")
-                return;
-
-            //SuperFileSystem.Dispose();
         }
 
         internal void empty()
@@ -1582,26 +1516,12 @@ namespace Butterfly.HabboHotel.Misc
 
         internal void whosonline()
         {
-            //case "whosonline":
-            //case "online":
-            //foreach (ServerMessage Message in ButterflyEnvironment.GetGame().GetClientManager().GenerateUsersOnlineList())
-            //    Session.SendMessage(Message);
+
         }
 
         internal void registerIRC()
         {
-            //if (!ButterflyEnvironment.IrcEnabled)
-            //    return;
-
-            //if (Params.Length < 1)
-            //{
-            //    Session.SendNotif("Please enter your IRC username");
-            //    return;
-            //}
-
-            //string customUsername = Params[1];
-            //UserFactory.Register(Session.GetHabbo().Username, customUsername);
-            //Session.SendNotif("You have registered as " + customUsername);
+            
         }
 
         internal void come()
@@ -1682,10 +1602,32 @@ namespace Butterfly.HabboHotel.Misc
                 Notif.Append("- :massaction sleep - Får alle til å sove.\n"); // done
                 Notif.Append("- :massaction laugh - Får alle til å le.\n"); // done
                 Notif.Append("- :masslay - Får alle til å ligge ned.\n"); // done
-                //Notif.Append("- :massclothes - Alle skifter til samme klær som deg.\n");
+                Notif.Append("- :massclothes - Alle skifter til samme klær som deg.\n");
             }
 
             Session.SendBroadcastMessage(Notif.ToString());
+        }
+
+        internal void massclothes()
+        {
+            Room currentRoom = Session.GetHabbo().CurrentRoom;
+            if (currentRoom != null)
+            {
+                if (currentRoom.Owner == Session.GetHabbo().Username && Session.GetHabbo().Rank >= 4)
+                {
+                    List<RoomUser> roomUsers = currentRoom.GetRoomUserManager().GetRoomUsers();
+                    foreach (RoomUser user in roomUsers)
+                    {
+                        ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
+                        RoomUpdate.AppendInt32(user.VirtualId);
+                        RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
+                        RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
+                        RoomUpdate.AppendStringWithBreak(user.GetClient().GetHabbo().Motto);
+                        RoomUpdate.AppendInt32(user.GetClient().GetHabbo().AchievementPoints);
+                        currentRoom.SendMessage(RoomUpdate);
+                    }
+                }
+            }
         }
 
         internal void masslay()
@@ -1711,10 +1653,6 @@ namespace Butterfly.HabboHotel.Misc
                                 user.AddStatus("lay", Convert.ToString(currentRoom.GetGameMap().Model.SqFloorHeight[user.X, user.Y] + 0.55).Replace(",", "."));
                                 user.acostadoBol = true;
                                 user.UpdateNeeded = true;
-                            }
-                            else
-                            {
-                                Session.SendNotif(LanguageLocale.GetValue("diag.noaction"));
                             }
                         }
                     }

@@ -538,7 +538,6 @@ namespace Butterfly.HabboHotel.GameClients
             catch (Exception e) { Logging.LogThreadException(e.ToString(), "GameClientManager.OnCycle Exception --> Not inclusive"); }
         }
 
-        private static DateTime pixelLastExecution;
         private void CheckCycleUpdates()
         {
             try

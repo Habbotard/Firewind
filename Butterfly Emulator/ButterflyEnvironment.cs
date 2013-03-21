@@ -37,7 +37,6 @@ namespace Butterfly
         internal const string PrettyVersion = "Firewind Build: 17032013";
         internal static bool diagPackets = false;
         internal static int timeout = 500;
-        internal static DatabaseType dbType;
         internal static MusSocket MusSystem;
         internal static CultureInfo cultureInfo;
         public static uint giftInt = 41260;
