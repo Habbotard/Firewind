@@ -10,7 +10,6 @@ using Butterfly.HabboHotel.Pathfinding;
 using Butterfly.HabboHotel.Pets;
 using Butterfly.HabboHotel.RoomBots;
 using Butterfly.HabboHotel.Rooms.Games;
-using Butterfly.IRC;
 using Butterfly.Messages;
 using Uber.HabboHotel.Rooms;
 using System.Drawing;

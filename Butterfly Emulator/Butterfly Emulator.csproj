@@ -307,15 +307,6 @@
     <Compile Include="HabboHotel\Users\UserData\UserData.cs" />
     <Compile Include="HabboHotel\Users\UserData\UserDataFactory.cs" />
     <Compile Include="HabboHotel\Users\UserData\UserDataNotFoundException.cs" />
-    <Compile Include="IRC\CommandHandler.cs" />
-    <Compile Include="IRC\IRCBot.cs" />
-    <Compile Include="IRC\IRCPing.cs" />
-    <Compile Include="IRC\Messages\IServerMessage.cs" />
-    <Compile Include="IRC\Messages\PrivateMessage.cs" />
-    <Compile Include="IRC\Messages\PublicMessage.cs" />
-    <Compile Include="IRC\ServerReply.cs" />
-    <Compile Include="IRC\User.cs" />
-    <Compile Include="IRC\UserFactory.cs" />
     <Compile Include="LicensingSystem\Connection.cs" />
     <Compile Include="LicensingSystem\LicensingClient.cs" />
     <Compile Include="LicensingSystem\ConnectionRequest.cs" />

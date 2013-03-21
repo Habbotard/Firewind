@@ -12,7 +12,6 @@ using Butterfly.HabboHotel.Rooms;
 using Butterfly.HabboHotel.Rooms.RoomIvokedItems;
 using Butterfly.HabboHotel.Users;
 using Butterfly.HabboHotel.Users.Competitions;
-using Butterfly.IRC;
 using Butterfly.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Drawing;
