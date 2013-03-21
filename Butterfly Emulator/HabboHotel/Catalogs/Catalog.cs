@@ -202,45 +202,28 @@ namespace Butterfly.HabboHotel.Catalogs
             return Pages[Page];
         }
 
-        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string ExtraData, int priceAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
+        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string ExtraData, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
         {
-            int finalAmount = priceAmount;
-            if (priceAmount >= 6)
-                finalAmount -= 1;
-            if (priceAmount >= 12)
-                finalAmount -= 2;
-            if (priceAmount >= 18)
-                finalAmount -= 2;
-            if (priceAmount >= 24)
-                finalAmount -= 2;
-            if (priceAmount >= 30)
-                finalAmount -= 2;
-            if (priceAmount >= 36)
-                finalAmount -= 2;
-            if (priceAmount >= 42)
-                finalAmount -= 2;
-            if (priceAmount >= 48)
-                finalAmount -= 2;
-            if (priceAmount >= 54)
-                finalAmount -= 2;
-            if (priceAmount >= 60)
-                finalAmount -= 2;
-            if (priceAmount >= 66)
-                finalAmount -= 2;
-            if (priceAmount >= 72)
-                finalAmount -= 2;
-            if (priceAmount >= 78)
-                finalAmount -= 2;
-            if (priceAmount >= 84)
-                finalAmount -= 2;
-            if (priceAmount >= 90)
-                finalAmount -= 2;
-            if (priceAmount >= 96)
-                finalAmount -= 2;
-            if (priceAmount >= 99)
-                finalAmount -= 2;
+            // Nearest number that increases the amount of free items
+            int nearestDiscount = ((int)Math.Floor(buyAmount / 6.0) * 6);
 
-            if (priceAmount + Session.GetHabbo().GetInventoryComponent().ItemCount >= 2000)
+            // How many free ones we get
+            int freeItemsCount = (nearestDiscount - 3) / 3;
+
+            // Add 1 free if more than 42
+            if (buyAmount >= 42)
+                freeItemsCount++;
+
+            // Doesn't follow rules as it isn't dividable by 6, but still increases free items
+            if (buyAmount >= 99)
+            {
+                freeItemsCount = 33;
+            }
+
+            // This is how many we pay for in the end
+            int finalAmount = buyAmount - freeItemsCount;
+
+            if (buyAmount + Session.GetHabbo().GetInventoryComponent().ItemCount >= 2000)
             {
                 Session.SendMOTD("Du har nådd grensen av møbler i inventaret ditt, du må kvitte deg med noen møbler for du kjøper!");
                 return;
@@ -329,7 +312,7 @@ namespace Butterfly.HabboHotel.Catalogs
             if (Item.IsLimited)
             {
                 finalAmount = 1;
-                priceAmount = 1;
+                buyAmount = 1;
                 if (Item.LimitedStack <= Item.LimitedSelled)
                     return;
                 Item.LimitedSelled++;
@@ -342,10 +325,10 @@ namespace Butterfly.HabboHotel.Catalogs
                 // send update
                 //Session.SendMessage(Page.GetMessage);
             }
-            else if (IsGift & priceAmount > 1)
+            else if (IsGift & buyAmount > 1)
             {
                 finalAmount = 1;
-                priceAmount = 1;
+                buyAmount = 1;
                 Session.SendNotif("Lo sentimos, pero tu regalo solo puede contener un item, por lo que solo has comprado uno");
             }
             uint GiftUserId = 0;
@@ -700,7 +683,7 @@ namespace Butterfly.HabboHotel.Catalogs
                             Type = 1;
                     }
                     Session.GetMessageHandler().GetResponse().AppendInt32(Type);
-                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (priceAmount * Item.Amount), ExtraData, Item.songID);
+                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), ExtraData, Item.songID);
                     Session.GetMessageHandler().GetResponse().AppendInt32(items.Count);
                     foreach (UserItem u in items)
                         Session.GetMessageHandler().GetResponse().AppendUInt(u.Id);
