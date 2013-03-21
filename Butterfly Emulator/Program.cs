@@ -48,7 +48,7 @@
                     Console.Write("bfly> ");
                 }
 
-                ConsoleCommandHandeling.InvokeCommand(Console.ReadLine());
+                ConsoleCommandHandling.InvokeCommand(Console.ReadLine());
             }
         }
 

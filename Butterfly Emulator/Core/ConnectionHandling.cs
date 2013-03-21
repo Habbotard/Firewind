@@ -9,12 +9,12 @@ using System.Collections;
 
 namespace Butterfly.Core
 {
-    public class ConnectionHandeling
+    public class ConnectionHandling
     {
         private SocketManager manager;
         private Hashtable liveConnections;
 
-        public ConnectionHandeling(int port, int maxConnections, int connectionsPerIP, bool enabeNagles)
+        public ConnectionHandling(int port, int maxConnections, int connectionsPerIP, bool enabeNagles)
         {
             liveConnections = new Hashtable();
             manager = new SocketManager();

@@ -14,7 +14,7 @@ using HabboEvents;
 
 namespace Butterfly.Core
 {
-    class ConsoleCommandHandeling
+    class ConsoleCommandHandling
     {
         internal static bool isWaiting = false;
 

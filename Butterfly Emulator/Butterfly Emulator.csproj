@@ -100,8 +100,8 @@
     <Compile Include="Collections\SafeList.cs" />
     <Compile Include="Collections\Sandbox.cs" />
     <Compile Include="Core\ConfigurationData.cs" />
-    <Compile Include="Core\ConnectionHandeling.cs" />
-    <Compile Include="Core\ConsoleCommandHandeling.cs" />
+    <Compile Include="Core\ConnectionHandling.cs" />
+    <Compile Include="Core\ConsoleCommandHandling.cs" />
     <Compile Include="Core\ExceptionType.cs" />
     <Compile Include="Core\FileSystem.cs" />
     <Compile Include="Core\IniReader.cs" />

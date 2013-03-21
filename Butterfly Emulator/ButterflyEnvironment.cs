@@ -25,7 +25,7 @@ namespace Butterfly
         public static int InventoryLimit = 2500;
         private static ConfigurationData Configuration;
         private static Encoding DefaultEncoding;
-        private static ConnectionHandeling ConnectionManager;
+        private static ConnectionHandling ConnectionManager;
         private static Game Game;
         internal static DateTime ServerStarted;
         private static DatabaseManager manager;
@@ -114,7 +114,7 @@ namespace Butterfly
                 Game = new Game(int.Parse(ButterflyEnvironment.GetConfig().data["game.tcp.conlimit"]));
                 Game.ContinueLoading();
 
-                ConnectionManager = new ConnectionHandeling(int.Parse(ButterflyEnvironment.GetConfig().data["game.tcp.port"]),
+                ConnectionManager = new ConnectionHandling(int.Parse(ButterflyEnvironment.GetConfig().data["game.tcp.port"]),
                     int.Parse(ButterflyEnvironment.GetConfig().data["game.tcp.conlimit"]),
                     int.Parse(ButterflyEnvironment.GetConfig().data["game.tcp.conperip"]),
                     ButterflyEnvironment.GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
@@ -376,7 +376,7 @@ namespace Butterfly
             return DefaultEncoding;
         }
 
-        internal static ConnectionHandeling GetConnectionManager()
+        internal static ConnectionHandling GetConnectionManager()
         {
             return ConnectionManager;
         }
