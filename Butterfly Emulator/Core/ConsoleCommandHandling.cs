@@ -432,12 +432,6 @@ namespace Butterfly.Core
                             break;
                         }
 
-                    case "queues":
-                        {
-                            Logging.WriteLine("============Queues Status============");
-                            Logging.WriteLine("RC4 Queue" + HabboEncryption.RC4.current.Count + " / " + HabboEncryption.RC4.concurrent);
-                            break;
-                        }
                     case "diagdump":
                         {
                             DateTime now = DateTime.Now;

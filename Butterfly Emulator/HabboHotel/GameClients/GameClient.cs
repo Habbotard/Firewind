@@ -11,7 +11,7 @@ using Butterfly.Net;
 using Butterfly.Util;
 using ConnectionManager;
 using System.Drawing;
-using HabboEncryption;
+
 using HabboEvents;
 using System.Threading;
 using System.Threading.Tasks;

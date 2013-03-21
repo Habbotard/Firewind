@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Butterfly.Core;
-using HabboEncryption;
 using HabboEvents;
 namespace Butterfly.Messages
 {
@@ -18,7 +17,7 @@ namespace Butterfly.Messages
         {
             Session.TimePingedReceived = DateTime.Now;
             Response.Init(Outgoing.SendBannerMessageComposer);
-            Response.AppendString(ButterflyEnvironment.publicToken);
+            Response.AppendString("nocryptonotoken");
             Response.AppendBoolean(false);
             SendResponse();
         }
@@ -36,7 +35,7 @@ namespace Butterfly.Messages
             **/
             Session.TimePingedReceived = DateTime.Now;
             Response.Init(Outgoing.SecretKeyComposer);
-            Response.AppendString(ButterflyEnvironment.globalCrypto.PublicKey.ToString());
+            Response.AppendString("nocryptonokey");
             SendResponse();
         }
 

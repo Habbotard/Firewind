@@ -139,13 +139,6 @@ namespace Butterfly.Net
             GameClient Client = null;
             switch (header.ToLower())
             {
-                case "settoken":
-                    {
-                        //String primeandgenerator = ButterflyEnvironment.globalCrypto.Prime + ":" + ButterflyEnvironment.globalCrypto.Generator;
-                        String primeandgenerator = ButterflyEnvironment.globalCrypto.Prime + ":" + ButterflyEnvironment.globalCrypto.Generator;
-                        this.socket.Send(ButterflyEnvironment.GetDefaultEncoding().GetBytes(primeandgenerator));
-                    }
-                    break;
                 case "updatecredits":
                     {
                         if (param == "ALL")
