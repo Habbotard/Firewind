@@ -62,44 +62,11 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Anagenesis Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Anagenesis Client.dll</HintPath>
-    </Reference>
-    <Reference Include="AStar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AStar.dll</HintPath>
+    <Reference Include="Anagenesis Client">
+      <HintPath>..\Licensing\Anagenesis Client.dll</HintPath>
     </Reference>
     <Reference Include="ClientApi">
       <HintPath>..\Licensing\ClientApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Connection Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Connection Manager.dll</HintPath>
-    </Reference>
-    <Reference Include="ConsoleWriter, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\ConsoleWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="Database Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Database Manager.dll</HintPath>
-    </Reference>
-    <Reference Include="enclosuretest, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\enclosuretest.dll</HintPath>
-    </Reference>
-    <Reference Include="HabboEncryption, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HabboEncryption.dll</HintPath>
-    </Reference>
-    <Reference Include="HabboEvents, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HabboEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Licensing\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -118,10 +85,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WiredSolver, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\WiredSolver.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ButterflyEnvironment.cs" />
@@ -461,6 +424,48 @@
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Astar\AStar.csproj">
+      <Project>{f1af3392-22d1-4b03-9c3b-c10da9b1bccd}</Project>
+      <Name>AStar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Collections\Collections.csproj">
+      <Project>{093af0d0-c2ba-433b-b369-2462273a26a0}</Project>
+      <Name>Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConsoleWriter\ConsoleWriter.csproj">
+      <Project>{9973c7ec-d3cf-4756-86d4-da44b71e3b57}</Project>
+      <Name>ConsoleWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Database Manager\Database Manager.csproj">
+      <Project>{bf1d4c61-c4da-454f-a96f-00567c29c27d}</Project>
+      <Name>Database Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Encllosure algorithm\Enclosure.csproj">
+      <Project>{e2773602-b765-4cd7-bbd8-f66d57e0ba75}</Project>
+      <Name>Enclosure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HabboEncryption\HabboEncryption.csproj">
+      <Project>{25d7462c-24ae-49b8-9b4a-31362a35a945}</Project>
+      <Name>HabboEncryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HabboEvents\HabboEvents.csproj">
+      <Project>{84fd7c2c-4308-4759-868b-4f9ce47acfe9}</Project>
+      <Name>HabboEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{34a5dc45-4387-4754-8fd1-e882c8683101}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerSide\Connection Manager.csproj">
+      <Project>{10e23856-b6e8-43a7-b1ae-63a55ac3ec83}</Project>
+      <Name>Connection Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WiredSolver\WiredSolver.csproj">
+      <Project>{6a8bd4e4-a96b-4638-b0a3-9266863d672c}</Project>
+      <Name>WiredSolver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
