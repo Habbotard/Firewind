@@ -36,7 +36,7 @@ namespace Butterfly.HabboHotel.Catalogs
                 string[] splitted = ItemIdString.Split(';');
                 foreach (string s in splitted)
                 {
-                    if (s != "")
+                    if (!string.IsNullOrWhiteSpace(s))
                         this.Items.Add((uint)int.Parse(s));
                 }
             }

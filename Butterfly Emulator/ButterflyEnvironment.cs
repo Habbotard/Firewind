@@ -29,7 +29,6 @@ namespace Butterfly
         private static Game Game;
         internal static DateTime ServerStarted;
         private static DatabaseManager manager;
-        internal static bool IrcEnabled;
         internal static bool groupsEnabled;
         internal static bool SystemMute;
         internal static bool useSSO;
@@ -39,7 +38,6 @@ namespace Butterfly
         internal static int timeout = 500;
         internal static MusSocket MusSystem;
         internal static CultureInfo cultureInfo;
-        public static uint giftInt = 41260;
         public static uint friendRequestLimit = 300;
 
         // Multi Tasking (configurations.ini)
@@ -56,7 +54,6 @@ namespace Butterfly
             DateTime Start = DateTime.Now;
             SystemMute = false;
 
-            IrcEnabled = false;
             ServerStarted = DateTime.Now;
 
             Console.Title = "Firewind: Loading environment.";
