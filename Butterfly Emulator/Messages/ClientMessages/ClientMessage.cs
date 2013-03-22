@@ -7,6 +7,7 @@ using Butterfly.Core;
 using Butterfly.Messages.ClientMessages;
 using HabboEncryption;
 
+
 namespace Butterfly.Messages
 {
     public class ClientMessage : IDisposable

@@ -5,7 +5,7 @@ using System.Text;
 using Butterfly.Util;
 using System.IO;
 using Butterfly.Core;
-using HabboEncryption;
+
 
 namespace Butterfly.Messages
 {

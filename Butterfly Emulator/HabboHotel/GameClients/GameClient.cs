@@ -11,7 +11,7 @@ using Butterfly.Net;
 using Butterfly.Util;
 using ConnectionManager;
 using System.Drawing;
-using HabboEncryption;
+
 using HabboEvents;
 using System.Threading;
 using System.Threading.Tasks;
@@ -466,48 +466,6 @@ namespace Butterfly.HabboHotel.GameClients
                 if (Connection != null)
                     Connection.Dispose();
                 Disconnected = true;
-            }
-        }
-
-        internal void HandleConnectionData(ref byte[] data)
-        {
-            if (data[0] == 64)
-            {
-                int pos = 0;
-
-                while (pos < data.Length)
-                {
-                    try
-                    {
-                        int MessageLength = Base64Encoding.DecodeInt32(new byte[] { data[pos++], data[pos++], data[pos++] });
-                        int MessageId = Base64Encoding.DecodeInt32(new byte[] { data[pos++], data[pos++] });
-
-                        byte[] Content = new byte[MessageLength - 2];
-
-                        for (int i = 0; i < Content.Length; i++)
-                        {
-                            Content[i] = data[pos++];
-                        }
-
-                        ClientMessage Message = new ClientMessage(MessageId, Content);
-
-                        if (MessageHandler == null)
-                        {
-                            InitHandler(); //Never ever register the packets BEFORE you receive any data.
-                        }
-
-                        //DateTime PacketMsgStart = DateTime.Now;
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.HandleException(e, "packet handling");
-                        Disconnect();
-                    }
-                }
-            }
-            else
-            {
-                Connection.SendData(ButterflyEnvironment.GetDefaultEncoding().GetBytes(CrossdomainPolicy.GetXmlPolicy()));
             }
         }
 

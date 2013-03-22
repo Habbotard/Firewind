@@ -367,14 +367,9 @@
     <Compile Include="ServerManager\Session.cs" />
     <Compile Include="ServerManager\Socket.cs" />
     <Compile Include="Util\CoordinationUtil.cs" />
-    <Compile Include="Util\HabboCrypto.cs" />
+    <Compile Include="Util\HabboEncoding.cs" />
     <Compile Include="Util\QueryChunk.cs" />
     <Compile Include="Util\TextHandling.cs" />
-    <Compile Include="Util\Base64Encoding.cs" />
-    <Compile Include="Util\ByteUtil.cs" />
-    <Compile Include="Util\HabboHexRC4.cs" />
-    <Compile Include="Util\OldWireEncoding.cs" />
-    <Compile Include="Util\WireEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -436,10 +431,6 @@
     <ProjectReference Include="..\Encllosure algorithm\Enclosure.csproj">
       <Project>{e2773602-b765-4cd7-bbd8-f66d57e0ba75}</Project>
       <Name>Enclosure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HabboEncryption\HabboEncryption.csproj">
-      <Project>{25d7462c-24ae-49b8-9b4a-31362a35a945}</Project>
-      <Name>HabboEncryption</Name>
     </ProjectReference>
     <ProjectReference Include="..\HabboEvents\HabboEvents.csproj">
       <Project>{84fd7c2c-4308-4759-868b-4f9ce47acfe9}</Project>
