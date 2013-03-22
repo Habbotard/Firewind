@@ -469,48 +469,6 @@ namespace Butterfly.HabboHotel.GameClients
             }
         }
 
-        internal void HandleConnectionData(ref byte[] data)
-        {
-            if (data[0] == 64)
-            {
-                int pos = 0;
-
-                while (pos < data.Length)
-                {
-                    try
-                    {
-                        int MessageLength = Base64Encoding.DecodeInt32(new byte[] { data[pos++], data[pos++], data[pos++] });
-                        int MessageId = Base64Encoding.DecodeInt32(new byte[] { data[pos++], data[pos++] });
-
-                        byte[] Content = new byte[MessageLength - 2];
-
-                        for (int i = 0; i < Content.Length; i++)
-                        {
-                            Content[i] = data[pos++];
-                        }
-
-                        ClientMessage Message = new ClientMessage(MessageId, Content);
-
-                        if (MessageHandler == null)
-                        {
-                            InitHandler(); //Never ever register the packets BEFORE you receive any data.
-                        }
-
-                        //DateTime PacketMsgStart = DateTime.Now;
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.HandleException(e, "packet handling");
-                        Disconnect();
-                    }
-                }
-            }
-            else
-            {
-                Connection.SendData(ButterflyEnvironment.GetDefaultEncoding().GetBytes(CrossdomainPolicy.GetXmlPolicy()));
-            }
-        }
-
         internal void SendMessage(ServerMessage Message)
         {
             //Logging.WriteLine("SENDED [" + Message.Id + "] => " + Message.ToString().Replace(Convert.ToChar(0).ToString(), "{char0}"));

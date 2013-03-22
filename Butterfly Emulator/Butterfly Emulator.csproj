@@ -370,10 +370,6 @@
     <Compile Include="Util\HabboEncoding.cs" />
     <Compile Include="Util\QueryChunk.cs" />
     <Compile Include="Util\TextHandling.cs" />
-    <Compile Include="Util\Base64Encoding.cs" />
-    <Compile Include="Util\ByteUtil.cs" />
-    <Compile Include="Util\OldWireEncoding.cs" />
-    <Compile Include="Util\WireEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
