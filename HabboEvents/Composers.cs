@@ -71,7 +71,7 @@ namespace HabboEvents
         public static int InstantChat = 1535;
         public static int InstantInvite = 2675;
         public static int InstantChatError = 1133;
-        public static int InitialRoomInformation = 2371;
+        public static int RoomReady = 2371; // InitialRoomInformation
         public static int FollowBuddy = 2022;
         public static int FollowBuddyError = 805;
         public static int SearchFriend = 2653;

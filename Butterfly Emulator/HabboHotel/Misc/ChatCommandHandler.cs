@@ -1825,8 +1825,7 @@ namespace Butterfly.HabboHotel.Misc
 
             using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.runFastQuery("UPDATE rooms SET caption = '" + LanguageLocale.GetValue("moderation.room.roomclosed") + "' AND description = '" + LanguageLocale.GetValue("moderation.room.roomclosed") + "' WHERE id = " + TargetRoom.RoomId);
-                dbClient.runFastQuery("UPDATE rooms SET state = 'locked' WHERE id = " + TargetRoom.RoomId);
+                dbClient.runFastQuery("UPDATE rooms SET state = 'locked', caption = '" + LanguageLocale.GetValue("moderation.room.roomclosed") + "', description = '" + LanguageLocale.GetValue("moderation.room.roomclosed") + "' WHERE id = " + TargetRoom.RoomId);
             }
 
             ButterflyEnvironment.GetGame().GetRoomManager().UnloadRoom(TargetRoom);

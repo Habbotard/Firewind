@@ -130,8 +130,8 @@ namespace Butterfly.Messages
         }
 
 
-
-        internal void OpenPub()
+        // OpenPub
+        internal void OpenConnection()
         {
             int Junk = Request.PopWiredInt32();
             uint Id = Request.PopWiredUInt();
@@ -168,19 +168,21 @@ namespace Butterfly.Messages
             response.sendResponse();
         }
 
-        internal void GetRoomData1()
+        // GetRoomData1
+        internal void GetFurnitureAliases()
         {
             if (Session.GetHabbo().LoadingRoom <= 0)
             {
                 return;
             }
 
-            Response.Init(297);
-            Response.AppendInt32(0);
+            Response.Init(297); // FurnitureAliases
+            Response.AppendInt32(0); // count
             SendResponse();
         }
 
-        internal void GetRoomData2()
+        // GetRoomData2
+        internal void GetRoomEntryData()
         {
             try
             {
@@ -731,9 +733,9 @@ namespace Butterfly.Messages
             Response.AppendInt32(122768); // group iD
             Response.AppendStringWithBreak("b1201Xs03097s55091s17094a7a396e8d44670744d87bf913858b1fc");*/
 
-            Response.Init(Outgoing.InitialRoomInformation);
-            Response.AppendStringWithBreak(Room.ModelName);
-            Response.AppendUInt(Room.RoomId);
+            Response.Init(Outgoing.RoomReady);
+            Response.AppendStringWithBreak(Room.ModelName); // if starts with "model_", roomCategory = 1
+            Response.AppendUInt(Room.RoomId); // flatId
             response.appendResponse(GetResponse());
 
             if (Session.GetHabbo().SpectatorMode)
@@ -3325,7 +3327,6 @@ namespace Butterfly.Messages
                 dbClient.runFastQuery("UPDATE user_pets SET have_saddle = 0 WHERE id = " + PetUser.PetData.PetId);
             }
         }
-
 
         internal void CancelMountOnPet()
         {

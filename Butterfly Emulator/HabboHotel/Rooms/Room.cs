@@ -252,6 +252,7 @@ namespace Butterfly.HabboHotel.Rooms
         {
             return (wiredHandler != null);
         }
+
         internal Boolean HasOngoingEvent
         {
             get
@@ -278,7 +279,6 @@ namespace Butterfly.HabboHotel.Rooms
             }
         }
 
-
         internal Int32 UserCount
         {
             get
@@ -294,7 +294,6 @@ namespace Butterfly.HabboHotel.Rooms
                 return Tags.Count;
             }
         }
-
 
         internal uint RoomId
         {

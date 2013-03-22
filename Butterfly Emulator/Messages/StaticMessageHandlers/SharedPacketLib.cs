@@ -445,7 +445,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
 
         internal static void OpenPub(GameClientMessageHandler handler)
         {
-            handler.OpenPub();
+            handler.OpenConnection();
         }
 
         internal static void GetGroupBadges(GameClientMessageHandler handler)
@@ -460,12 +460,12 @@ namespace Butterfly.Messages.StaticMessageHandlers
 
         internal static void GetRoomData1(GameClientMessageHandler handler)
         {
-            handler.GetRoomData1();
+            handler.GetFurnitureAliases();
         }
 
         internal static void GetRoomData2(GameClientMessageHandler handler)
         {
-            handler.GetRoomData2();
+            handler.GetRoomEntryData();
         }
 
         internal static void GetRoomData3(GameClientMessageHandler handler)

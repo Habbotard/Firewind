@@ -186,7 +186,6 @@
     <Compile Include="HabboHotel\RoomBots\PetBot.cs" />
     <Compile Include="HabboHotel\RoomBots\RandomSpeech.cs" />
     <Compile Include="HabboHotel\RoomBots\RoomBot.cs" />
-    <Compile Include="HabboHotel\Rooms\AffectedTile.cs" />
     <Compile Include="HabboHotel\Rooms\Delegates.cs" />
     <Compile Include="HabboHotel\Rooms\EventArgs.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Freeze.cs" />
@@ -199,9 +198,7 @@
     <Compile Include="HabboHotel\Rooms\Games\Game.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Soccer.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Teams.cs" />
-    <Compile Include="HabboHotel\Rooms\ItemSearch.cs" />
     <Compile Include="HabboHotel\Rooms\MatrixState.cs" />
-    <Compile Include="HabboHotel\Rooms\PublicRoomSquare.cs" />
     <Compile Include="HabboHotel\Rooms\Room.cs" />
     <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Events\RoomEvent.cs" />
@@ -212,7 +209,6 @@
     <Compile Include="HabboHotel\Rooms\RoomLinkInformation.cs" />
     <Compile Include="HabboHotel\Rooms\RoomManager.cs" />
     <Compile Include="HabboHotel\Rooms\RoomModel.cs" />
-    <Compile Include="HabboHotel\Rooms\RoomMusicController.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUser.cs" />
     <Compile Include="HabboHotel\Rooms\SondMachine\SoundMachine.cs" />
     <Compile Include="HabboHotel\Rooms\ThreadPooling\IProcessable.cs" />

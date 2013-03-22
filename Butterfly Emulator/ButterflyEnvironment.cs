@@ -71,10 +71,10 @@ namespace Butterfly
             Logging.WriteLine("");
 
             cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
-            LanguageLocale.Init();
 
             try
             {
+                LanguageLocale.Init();
                 ChatCommandRegister.Init();
                 PetCommandHandeler.Init();
                 PetLocale.Init();
