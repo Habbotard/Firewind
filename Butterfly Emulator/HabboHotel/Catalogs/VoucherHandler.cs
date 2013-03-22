@@ -56,6 +56,7 @@ namespace Butterfly.HabboHotel.Catalogs
 
         internal static void TryRedeemVoucher(GameClient Session, string Code)
         {
+            // TODO: Update headers?
             if (!IsValidCode(Code))
             {
                 ServerMessage Error = new ServerMessage(213);

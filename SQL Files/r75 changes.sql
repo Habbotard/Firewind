@@ -1,3 +1,0 @@
-INSERT INTO `catalog_items` VALUES ('2763', '187', '9001', 'a0 pet12', '30', '0', '1', '0', '0');
-INSERT INTO `catalog_pages` VALUES ('187', '14', 'Dragon', '1', '109', '1', '1', '1', '0', '', '0', 'pets', 'catalog_pet_headline1', '', 'Fun fun fun fun =D', '', '', '', '', '', '', '');
-INSERT INTO `furniture` VALUES ('9001', 'a0 pet12', 'a0 pet12', 's', '1', '1', '1', '1', '0', '0', '6491', '1', '1', '1', '1', '1', 'pet12', '1', '0', '');

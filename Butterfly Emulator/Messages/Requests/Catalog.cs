@@ -63,7 +63,6 @@ namespace Butterfly.Messages
 
         internal void RedeemVoucher()
         {
-            Session.SendNotif("hi");
             VoucherHandler.TryRedeemVoucher(Session, Request.PopFixedString());
         }
 

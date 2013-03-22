@@ -1592,6 +1592,7 @@ namespace Butterfly.HabboHotel.Misc
             if (Rank >= 3)
             {
                 //Notif.Append("- :makeme red,blue,green,yellow og orange\n");
+                Notif.Append("- :massclothes - Alle skifter til samme klær som deg.\n");
             }
             if (Rank >= 4)
             {
@@ -1602,7 +1603,6 @@ namespace Butterfly.HabboHotel.Misc
                 Notif.Append("- :massaction sleep - Får alle til å sove.\n"); // done
                 Notif.Append("- :massaction laugh - Får alle til å le.\n"); // done
                 Notif.Append("- :masslay - Får alle til å ligge ned.\n"); // done
-                Notif.Append("- :massclothes - Alle skifter til samme klær som deg.\n");
             }
 
             Session.SendBroadcastMessage(Notif.ToString());
@@ -1613,7 +1613,7 @@ namespace Butterfly.HabboHotel.Misc
             Room currentRoom = Session.GetHabbo().CurrentRoom;
             if (currentRoom != null)
             {
-                if (currentRoom.Owner == Session.GetHabbo().Username && Session.GetHabbo().Rank >= 4)
+                if (currentRoom.Owner == Session.GetHabbo().Username && Session.GetHabbo().Rank >= 3)
                 {
                     List<RoomUser> roomUsers = currentRoom.GetRoomUserManager().GetRoomUsers();
                     foreach (RoomUser user in roomUsers)

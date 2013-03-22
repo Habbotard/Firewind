@@ -24,6 +24,7 @@ namespace Butterfly.Messages
 
             if (Data == null || Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(Id) || Data.Type == "public")
             {
+                // TODO: Upgrade 
                 GetResponse().Init(33);
                 GetResponse().AppendInt32(-9001);
                 //SendResponse();

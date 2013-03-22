@@ -26,29 +26,6 @@ namespace Butterfly.HabboHotel.Items
         pool,
         roller,
         fbgate,
-        pet0,
-        pet1,
-        pet2,
-        pet3,
-        pet4,
-        pet5,
-        pet6,
-        pet7,
-        pet8,
-        pet9,
-        pet10,
-        pet11,
-        pet12,
-        pet13,
-        pet14,
-        pet15,
-        pet16,
-        pet17,
-        pet18,
-        pet19,
-        pet20,
-        pet21,
-        pet22,
         iceskates,
         normslaskates,
         lowpool,
@@ -189,52 +166,6 @@ namespace Butterfly.HabboHotel.Items
                     return InteractionType.roller;
                 case "fbgate":
                     return InteractionType.fbgate;
-                case "pet0":
-                    return InteractionType.pet0;
-                case "pet1":
-                    return InteractionType.pet1;
-                case "pet2":
-                    return InteractionType.pet2;
-                case "pet3":
-                    return InteractionType.pet3;
-                case "pet4":
-                    return InteractionType.pet4;
-                case "pet5":
-                    return InteractionType.pet5;
-                case "pet6":
-                    return InteractionType.pet6;
-                case "pet7":
-                    return InteractionType.pet7;
-                case "pet8":
-                    return InteractionType.pet8;
-                case "pet9":
-                    return InteractionType.pet9;
-                case "pet10":
-                    return InteractionType.pet10;
-                case "pet11":
-                    return InteractionType.pet11;
-                case "pet12":
-                    return InteractionType.pet12;
-                case "pet13": // Caballo
-                    return InteractionType.pet13;
-                case "pet14":
-                    return InteractionType.pet14;
-                case "pet15":
-                    return InteractionType.pet15;
-                case "pet16": // Mascota agregada
-                    return InteractionType.pet16;
-                case "pet17": // Mascota agregada
-                    return InteractionType.pet17;
-                case "pet18": // Mascota agregada
-                    return InteractionType.pet18;
-                case "pet19": // Mascota agregada
-                    return InteractionType.pet19;
-                case "pet20": // Mascota agregada
-                    return InteractionType.pet20;
-                case "pet21": // Mascota agregada
-                    return InteractionType.pet21;
-                case "pet22": // Mascota agregada
-                    return InteractionType.pet22;
                 case "iceskates":
                     return InteractionType.iceskates;
                 case "rollerskate":
@@ -713,50 +644,6 @@ namespace Butterfly.HabboHotel.Items
                     return "roller";
                 case InteractionType.fbgate:
                     return "fbgate";
-                case InteractionType.pet0:
-                    return "pet0";
-                case InteractionType.pet1:
-                    return "pet1";
-                case InteractionType.pet2:
-                    return "pet2";
-                case InteractionType.pet3:
-                    return "pet3";
-                case InteractionType.pet4:
-                    return "pet4";
-                case InteractionType.pet5:
-                    return "pet5";
-                case InteractionType.pet6:
-                    return "pet6";
-                case InteractionType.pet7:
-                    return "pet7";
-                case InteractionType.pet8:
-                    return "pet8";
-                case InteractionType.pet9:
-                    return "pet9";
-                case InteractionType.pet10:
-                    return "pet10";
-                case InteractionType.pet11:
-                    return "pet11";
-                case InteractionType.pet13:
-                    return "pet13";
-                case InteractionType.pet14:
-                    return "pet14";
-                case InteractionType.pet15:
-                    return "pet15";
-                case InteractionType.pet16:
-                    return "pet16";
-                case InteractionType.pet17:
-                    return "pet17";
-                case InteractionType.pet18:
-                    return "pet18";
-                case InteractionType.pet19:
-                    return "pet19";
-                case InteractionType.pet20:
-                    return "pet20";
-                case InteractionType.pet21:
-                    return "pet21";
-                case InteractionType.pet22:
-                    return "pet22";
                 case InteractionType.iceskates:
                     return "iceskates";
                 case InteractionType.normslaskates:

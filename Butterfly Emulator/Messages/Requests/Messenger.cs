@@ -16,6 +16,7 @@ namespace Butterfly.Messages
         {
             Session.GetHabbo().InitMessenger();
         }
+
         internal void EnterInquiredRoom()
         {
             // ???????????????????????????????
@@ -257,33 +258,5 @@ namespace Butterfly.Messages
                 Client.SendMessage(Message);
             }
         }
-
-        //internal void RegisterMessenger()
-        //{
-        //    RequestHandlers.Add(12, new RequestHandler(InitMessenger));
-        //    RequestHandlers.Add(15, new RequestHandler(FriendsListUpdate));
-        //    RequestHandlers.Add(40, new RequestHandler(RemoveBuddy));
-        //    RequestHandlers.Add(41, new RequestHandler(SearchHabbo));
-        //    RequestHandlers.Add(33, new RequestHandler(SendInstantMessenger));
-        //    RequestHandlers.Add(37, new RequestHandler(AcceptRequest));
-        //    RequestHandlers.Add(38, new RequestHandler(DeclineRequest));
-        //    RequestHandlers.Add(39, new RequestHandler(RequestBuddy));
-        //    RequestHandlers.Add(262, new RequestHandler(FollowBuddy));
-        //    RequestHandlers.Add(34, new RequestHandler(SendInstantInvite));
-        //}
-
-        //internal void UnregisterMessenger()
-        //{
-        //    RequestHandlers.Remove(12);
-        //    RequestHandlers.Remove(15);
-        //    RequestHandlers.Remove(40);
-        //    RequestHandlers.Remove(41);
-        //    RequestHandlers.Remove(33);
-        //    RequestHandlers.Remove(37);
-        //    RequestHandlers.Remove(38);
-        //    RequestHandlers.Remove(39);
-        //    RequestHandlers.Remove(262);
-        //    RequestHandlers.Remove(34);
-        //}
     }
 }

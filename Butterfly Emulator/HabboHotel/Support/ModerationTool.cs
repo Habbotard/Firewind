@@ -704,7 +704,7 @@ namespace Butterfly.HabboHotel.Support
                 //dbClient.setQuery("SELECT room_id,hour,minute FROM user_roomvisits WHERE user_id = " + UserId + " ORDER BY entry_timestamp DESC LIMIT 50");
                 //DataTable Data = dbClient.getTable();
 
-                ServerMessage Message = new ServerMessage(537);
+                ServerMessage Message = new ServerMessage(Outgoing.RoomVisits);
                 Message.AppendUInt(UserId);
                 Message.AppendString(ButterflyEnvironment.GetGame().GetClientManager().GetNameById(UserId));
 

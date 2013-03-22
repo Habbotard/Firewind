@@ -5,6 +5,7 @@ namespace Butterfly.HabboHotel.Misc
 {
     static class AntiMutant
     {
+        // TODO: Recode this
         internal static bool ValidateLook(string Look, string Gender)
         {
         //    bool HasHead = false;

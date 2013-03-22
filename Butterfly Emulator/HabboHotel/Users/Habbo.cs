@@ -417,6 +417,7 @@ namespace Butterfly.HabboHotel.Users
             Client.SendMessage(Messenger.SerializeFriends());
             Client.SendMessage(Messenger.SerializeRequests());
 
+            // TODO: Change spanishfuck into locale message
             if (Messenger.requests.Count > ButterflyEnvironment.friendRequestLimit)
                 Client.SendNotif("Tienes más de " + ButterflyEnvironment.friendRequestLimit + " peticiones de amigos, por lo que solo hemos cargado " + ButterflyEnvironment.friendRequestLimit + " y las próximas serán cargadas una vez aceptes estas y reinicies sesión!");
         }

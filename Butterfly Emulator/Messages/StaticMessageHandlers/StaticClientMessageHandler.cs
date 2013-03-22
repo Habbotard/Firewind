@@ -28,6 +28,10 @@ namespace Butterfly.Messages.StaticMessageHandlers
                 StaticRequestHandler currentHandler = (StaticRequestHandler)handlers[message.Id];
                 currentHandler.Invoke(handler);
             }
+            else
+            {
+                Logging.LogMessage("Unknown packet ID: " + message.Id);
+            }
         }
 
         #region Register

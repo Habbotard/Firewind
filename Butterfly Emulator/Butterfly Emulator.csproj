@@ -160,7 +160,6 @@
     <Compile Include="HabboHotel\Navigators\FlatCat.cs" />
     <Compile Include="HabboHotel\Navigators\Navigator.cs" />
     <Compile Include="HabboHotel\Navigators\PublicItem.cs" />
-    <Compile Include="HabboHotel\Navigators\VoucherHandler.cs" />
     <Compile Include="HabboHotel\NewAchievements\Achievement.cs" />
     <Compile Include="HabboHotel\NewAchievements\AchievementBase.cs" />
     <Compile Include="HabboHotel\NewAchievements\AchievementFactory.cs" />
@@ -169,7 +168,6 @@
     <Compile Include="HabboHotel\Pathfinding\Coord.cs" />
     <Compile Include="HabboHotel\Pathfinding\DreamPathfinder.cs" />
     <Compile Include="HabboHotel\Pathfinding\Rotation.cs" />
-    <Compile Include="HabboHotel\Pathfinding\XYZCoord.cs" />
     <Compile Include="HabboHotel\Pets\Pet.cs" />
     <Compile Include="HabboHotel\Pets\PetCommand.cs" />
     <Compile Include="HabboHotel\Pets\PetCommandHandeler.cs" />
