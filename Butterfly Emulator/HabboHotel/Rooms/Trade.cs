@@ -99,8 +99,11 @@ namespace Butterfly.HabboHotel.Rooms
             }
 
             ClearAccepted();
-            if(!User.OfferedItems.Contains(Item))
-                User.OfferedItems.Add(Item);
+            lock (User.OfferedItems)
+            {
+                if (!User.OfferedItems.Contains(Item))
+                    User.OfferedItems.Add(Item);
+            }
             UpdateTradeWindow();
         }
 
@@ -115,7 +118,10 @@ namespace Butterfly.HabboHotel.Rooms
 
             ClearAccepted();
 
-            User.OfferedItems.Remove(Item);
+            lock (User.OfferedItems)
+            {
+                User.OfferedItems.Remove(Item);
+            }
             UpdateTradeWindow();
         }
 
@@ -216,26 +222,29 @@ namespace Butterfly.HabboHotel.Rooms
                 if (User == null)
                     continue;
 
-                Message.AppendUInt(User.UserId);
-                Message.AppendInt32(User.OfferedItems.Count);
-
-                foreach (UserItem Item in User.OfferedItems)
+                lock (User.OfferedItems)
                 {
-                    Message.AppendUInt(Item.Id);
-                    Message.AppendString(Item.GetBaseItem().Type.ToString().ToLower());
-                    Message.AppendUInt(Item.Id);
-                    Message.AppendInt32(Item.GetBaseItem().SpriteId);
-                    Message.AppendInt32(0); // undef
-                    Message.AppendBoolean(true);
-                    Message.AppendInt32(0);
-                    Message.AppendString("");
-                    Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, with wired day (wat?)
-                    Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, wired month (wat?)
-                    Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, wired year (wat?)
-                    
-                    if (Item.GetBaseItem().Type == 's')
+                    Message.AppendUInt(User.UserId);
+                    Message.AppendInt32(User.OfferedItems.Count);
+
+                    foreach (UserItem Item in User.OfferedItems)
                     {
+                        Message.AppendUInt(Item.Id);
+                        Message.AppendString(Item.GetBaseItem().Type.ToString().ToLower());
+                        Message.AppendUInt(Item.Id);
+                        Message.AppendInt32(Item.GetBaseItem().SpriteId);
+                        Message.AppendInt32(0); // undef
+                        Message.AppendBoolean(true);
                         Message.AppendInt32(0);
+                        Message.AppendString("");
+                        Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, with wired day (wat?)
+                        Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, wired month (wat?)
+                        Message.AppendInt32(0); // xmas 09 furni had a special furni tag here, wired year (wat?)
+
+                        if (Item.GetBaseItem().Type == 's')
+                        {
+                            Message.AppendInt32(0);
+                        }
                     }
                 }
             }
@@ -248,40 +257,52 @@ namespace Butterfly.HabboHotel.Rooms
         {
             List<UserItem> offeredItems = this.GetTradeUser(this.oneId).OfferedItems;
             List<UserItem> list2 = this.GetTradeUser(this.twoId).OfferedItems;
-            foreach (UserItem item in offeredItems)
+            lock (offeredItems)
             {
-                if (this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().GetItem(item.Id) == null)
+                foreach (UserItem item in offeredItems)
                 {
-                    this.GetTradeUser(this.oneId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
-                    this.GetTradeUser(this.twoId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
-                    return;
+                    if (this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().GetItem(item.Id) == null)
+                    {
+                        this.GetTradeUser(this.oneId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
+                        this.GetTradeUser(this.twoId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
+                        return;
+                    }
                 }
             }
-            foreach (UserItem item in list2)
+            lock (list2)
             {
-                if (this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().GetItem(item.Id) == null)
+                foreach (UserItem item in list2)
                 {
-                    this.GetTradeUser(this.oneId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
-                    this.GetTradeUser(this.twoId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
-                    return;
+                    if (this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().GetItem(item.Id) == null)
+                    {
+                        this.GetTradeUser(this.oneId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
+                        this.GetTradeUser(this.twoId).GetClient().SendNotif(LanguageLocale.GetValue("trade.failed"));
+                        return;
+                    }
                 }
             }
-            foreach (UserItem item in offeredItems)
+            lock (offeredItems)
             {
-                this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
-                this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, false, false, 0);
-                using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                foreach (UserItem item in offeredItems)
                 {
-                    adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.twoId, " WHERE item_id = ", item.Id }));
+                    this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
+                    this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, false, false, 0);
+                    using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                    {
+                        adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.twoId, " WHERE item_id = ", item.Id }));
+                    }
                 }
             }
-            foreach (UserItem item in list2)
+            lock (list2)
             {
-                this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
-                this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, false, false, 0);
-                using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                foreach (UserItem item in list2)
                 {
-                    adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.oneId, " WHERE item_id = ", item.Id }));
+                    this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
+                    this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.ExtraData, false, false, 0);
+                    using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                    {
+                        adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.oneId, " WHERE item_id = ", item.Id }));
+                    }
                 }
             }
             ServerMessage message = new ServerMessage(Outgoing.SendPurchaseAlert);

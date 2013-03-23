@@ -78,17 +78,17 @@ namespace Butterfly.Core
 
         internal static void LogException(string logText)
         {
-            Writer.LogException("TokenID: " + tokenID + Environment.NewLine + logText + Environment.NewLine);
+            Writer.LogException(logText + Environment.NewLine);
         }
 
         internal static void LogCriticalException(string logText)
         {
-            Writer.LogCriticalException("TokenID: " + tokenID + logText);
+            Writer.LogCriticalException(logText);
         }
 
         internal static void LogCacheError(string logText)
         {
-            Writer.LogCacheError("TokenID: " + tokenID + logText);
+            Writer.LogCacheError(logText);
         }
 
         internal static void LogMessage(string logText)
@@ -99,18 +99,18 @@ namespace Butterfly.Core
 
         internal static void LogThreadException(string Exception, string Threadname)
         {
-            Writer.LogThreadException("TokenID: " + tokenID + Exception, Threadname);
+            Writer.LogThreadException(Exception, Threadname);
         }
 
         public static void LogQueryError(Exception Exception, string query)
         {
-            Writer.LogQueryError(Exception, "TokenID: " + tokenID + query);
+            Writer.LogQueryError(Exception, query);
         }
 
         internal static void LogPacketException(string Packet, string Exception)
         {
             //SessionManagement.BroadcastExceptionNotification(Butterfly.Core.ExceptionType.UserException, tokenID++);
-            Writer.LogPacketException(Packet, "TokenID: " + tokenID + Exception);
+            Writer.LogPacketException(Packet, Exception);
             //SessionManagement.IncreaseError();
         }
 

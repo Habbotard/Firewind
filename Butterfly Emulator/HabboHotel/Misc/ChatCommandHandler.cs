@@ -814,8 +814,15 @@ namespace Butterfly.HabboHotel.Misc
         {
             Room TargetRoom = Session.GetHabbo().CurrentRoom;
 
-            int EffectID = int.Parse(Params[1]);
-            Session.GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(EffectID);
+            int EffectID = 0;
+            if (int.TryParse(Params[1], out EffectID))
+            {
+                Session.GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(EffectID);
+            }
+            else
+            {
+                Session.SendNotif(LanguageLocale.GetValue("input.intonly"));
+            }
         }
 
         internal void roommute()
