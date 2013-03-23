@@ -13,7 +13,6 @@ using Butterfly.HabboHotel.RoomBots;
 using Butterfly.HabboHotel.Rooms;
 using Butterfly.HabboHotel.Support;
 using Butterfly.HabboHotel.Pets;
-using Butterfly.ServerManager;
 using Butterfly.HabboHotel.Users.Inventory;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Threading;
@@ -281,9 +280,6 @@ namespace Butterfly.HabboHotel
             StartGameLoop();
 
             Logging.WriteLine("Game manager -> READY!");
-
-            DataSocket.SetupListener(42);
-            DataSocket.Start();
         }
 
         #endregion

@@ -219,17 +219,8 @@
     <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\ConditionHandler.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\ConfigurationData.cs" />
-    <Compile Include="HabboHotel\Rooms\Wired\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HabboHotel\Rooms\Wired\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="HabboHotel\Rooms\Wired\MovementState.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\RotationState.cs" />
-    <Compile Include="HabboHotel\Rooms\Wired\TestWire.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="HabboHotel\Rooms\Wired\WiredHandlers\Conditions\FurniHasUser.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\WiredHandlers\Conditions\FurniStatePosMatch.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\WiredHandlers\Conditions\LessThanTimer.cs" />
@@ -343,9 +334,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ServerManager\Manager.cs" />
-    <Compile Include="ServerManager\Session.cs" />
-    <Compile Include="ServerManager\Socket.cs" />
     <Compile Include="Util\CoordinationUtil.cs" />
     <Compile Include="Util\HabboEncoding.cs" />
     <Compile Include="Util\QueryChunk.cs" />
@@ -386,19 +374,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="HabboHotel\Rooms\Wired\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Astar\AStar.csproj">
       <Project>{f1af3392-22d1-4b03-9c3b-c10da9b1bccd}</Project>
       <Name>AStar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Collections\Collections.csproj">
-      <Project>{093af0d0-c2ba-433b-b369-2462273a26a0}</Project>
-      <Name>Collections</Name>
     </ProjectReference>
     <ProjectReference Include="..\ConsoleWriter\ConsoleWriter.csproj">
       <Project>{9973c7ec-d3cf-4756-86d4-da44b71e3b57}</Project>

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection Manager", "Serve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{34A5DC45-4387-4754-8FD1-E882C8683101}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\Collections.csproj", "{093AF0D0-C2BA-433B-B369-2462273A26A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar", "Astar\AStar.csproj", "{F1AF3392-22D1-4B03-9C3B-C10DA9B1BCCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enclosure", "Encllosure algorithm\Enclosure.csproj", "{E2773602-B765-4CD7-BBD8-F66D57E0BA75}"
@@ -73,16 +71,6 @@ Global
 		{34A5DC45-4387-4754-8FD1-E882C8683101}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{34A5DC45-4387-4754-8FD1-E882C8683101}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{34A5DC45-4387-4754-8FD1-E882C8683101}.Release|x86.ActiveCfg = Release|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{093AF0D0-C2BA-433B-B369-2462273A26A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1AF3392-22D1-4B03-9C3B-C10DA9B1BCCD}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{F1AF3392-22D1-4B03-9C3B-C10DA9B1BCCD}.Debug|Any CPU.Build.0 = Debug|x86
 		{F1AF3392-22D1-4B03-9C3B-C10DA9B1BCCD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

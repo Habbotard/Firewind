@@ -11,7 +11,6 @@ using Butterfly.HabboHotel.Users.Inventory;
 using Butterfly.HabboHotel.Users.Messenger;
 using Butterfly.HabboHotel.Users.Subscriptions;
 using Butterfly.Messages;
-using Butterfly.ServerManager;
 using Database_Manager.Database.Session_Details.Interfaces;
 using Butterfly.HabboHotel.Users.UserDataManagement;
 using Butterfly.HabboHotel.Groups;
@@ -368,7 +367,6 @@ namespace Butterfly.HabboHotel.Users
             this.Disconnected = true;
 
             ButterflyEnvironment.GetGame().GetClientManager().UnregisterClient(Id, Username);
-            SessionManagement.IncreaseDisconnection();
             //Logging.WriteLine(Username + " has logged out.");
 
 
