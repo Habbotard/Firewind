@@ -110,9 +110,9 @@ namespace Butterfly.Messages
             // Remove specific = @f H I <reqid>
 
             int Mode = Request.PopWiredInt32();
-            int Amount = Request.PopWiredInt32();
+            //int Amount = Request.PopWiredInt32();
 
-            if (Mode == 0 && Amount == 1)
+            if (Mode == 0)
             {
                 uint RequestId = Request.PopWiredUInt();
 

@@ -502,7 +502,7 @@ namespace Butterfly.HabboHotel.Rooms
                                 {
                                     if (room.HasOngoingEvent)
                                     {
-                                        room.Event = new RoomEvent(0, null, null, 0, new List<string>());
+                                        room.Event = null;
 
                                         ServerMessage Message = new ServerMessage(Outgoing.RoomEvent);
                                         Message.AppendStringWithBreak("-1");
