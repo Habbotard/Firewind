@@ -42,6 +42,8 @@ namespace Butterfly.Messages
 
             int Requests = Request.PopWiredInt32();
 
+            Console.WriteLine(Requests);
+
             for (int i = 0; i < Requests; i++)
             {
                 Session.GetHabbo().GetMessenger().DestroyFriendship(Request.PopWiredUInt());
@@ -101,26 +103,19 @@ namespace Butterfly.Messages
 
         internal void DeclineRequest()
         {
-            if (Session.GetHabbo().GetMessenger() == null)
+            if (this.Session.GetHabbo().GetMessenger() != null)
             {
-                return;
-            }
-
-            // Remove all = @f I H
-            // Remove specific = @f H I <reqid>
-
-            int Mode = Request.PopWiredInt32();
-            //int Amount = Request.PopWiredInt32();
-
-            if (Mode == 0)
-            {
-                uint RequestId = Request.PopWiredUInt();
-
-                Session.GetHabbo().GetMessenger().HandleRequest(RequestId);
-            }
-            else
-            {
-                Session.GetHabbo().GetMessenger().HandleAllRequests();
+                int Mode = this.Request.PopWiredInt32();
+                int Amount = this.Request.PopWiredInt32();
+                if ((Mode == 0) && (Amount == 1))
+                {
+                    uint sender = this.Request.PopWiredUInt();
+                    this.Session.GetHabbo().GetMessenger().HandleRequest(sender);
+                }
+                else
+                {
+                    this.Session.GetHabbo().GetMessenger().HandleAllRequests();
+                }
             }
         }
 
