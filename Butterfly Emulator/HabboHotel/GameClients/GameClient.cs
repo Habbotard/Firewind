@@ -16,6 +16,7 @@ using HabboEvents;
 using System.Threading;
 using System.Threading.Tasks;
 using Butterfly.HabboHotel.Rooms;
+using Database_Manager.Database.Session_Details.Interfaces;
 namespace Butterfly.HabboHotel.GameClients
 {
     public class GameClient
@@ -176,7 +177,6 @@ namespace Butterfly.HabboHotel.GameClients
                 ServerMessage HomeRoom = new ServerMessage(Outgoing.HomeRoom);
                 HomeRoom.AppendUInt(this.GetHabbo().HomeRoom); // first home
                 HomeRoom.AppendUInt(this.GetHabbo().HomeRoom); // first home
-                //response.appendResponse(HomeRoom);
                 SendMessage(HomeRoom);
 
                 ServerMessage FavouriteRooms = new ServerMessage(Outgoing.FavouriteRooms);
@@ -197,10 +197,6 @@ namespace Butterfly.HabboHotel.GameClients
                     fuserights.AppendInt32(0);
                 fuserights.AppendUInt(this.GetHabbo().Rank);
                 response.appendResponse(fuserights);
-
-                ServerMessage minimails = new ServerMessage(Outgoing.CurrentMinimails);
-                minimails.AppendInt32(2); // current minimails
-                //response.appendResponse(undef);
 
                 ServerMessage bools1 = new ServerMessage(Outgoing.AvailabilityStatus);
                 bools1.AppendBoolean(true);
@@ -240,8 +236,6 @@ namespace Butterfly.HabboHotel.GameClients
                     userData.user.UpdateCreditsBalance();
                 }
 
-                //Logging.WriteLine("[" + Habbo.Username + "] logged in");
-
                 if (userData.user.HasFuse("fuse_mod"))
                 {
                     this.SendMessage(ButterflyEnvironment.GetGame().GetModerationTool().SerializeTool());
@@ -253,124 +247,16 @@ namespace Butterfly.HabboHotel.GameClients
                     this.SendMOTD(LanguageLocale.welcomeAlert);
                 }
 
+                using (IQueryAdapter db = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                {
+                    db.setQuery("UPDATE users SET online = '1' WHERE id = @id");
+                    db.addParameter("id", this.GetHabbo().Id);
+                    db.runQuery();
+                }
+
 
                 return true;
 
-                /*userData.user.SerializeQuests(ref response);
-
-                List<string> Rights = ButterflyEnvironment.GetGame().GetRoleManager().GetRightsForHabbo(userData.user);
-
-                ServerMessage appendingResponse = new ServerMessage(2);
-                appendingResponse.Init(2);
-                appendingResponse.AppendInt32(Rights.Count);
-
-                foreach (string Right in Rights)
-                {
-                    appendingResponse.AppendString(Right);
-                }
-
-                response.appendResponse(appendingResponse);
-
-                if (userData.user.HasFuse("fuse_mod"))
-                {
-                    response.appendResponse(ButterflyEnvironment.GetGame().GetModerationTool().SerializeTool());
-                    ButterflyEnvironment.GetGame().GetModerationTool().SerializeOpenTickets(ref response, userData.userID);
-                }
-
-                response.appendResponse(userData.user.GetAvatarEffectsInventoryComponent().Serialize());
-
-                appendingResponse.Init(290);
-                appendingResponse.AppendBoolean(true);
-                appendingResponse.AppendBoolean(false);
-                response.appendResponse(appendingResponse);
-
-                appendingResponse.Init(3);
-                response.appendResponse(appendingResponse);
-
-                appendingResponse.Init(517);
-                appendingResponse.AppendBoolean(true);
-                response.appendResponse(appendingResponse);
-
-                //if (PixelManager.NeedsUpdate(this))
-                //    PixelManager.GivePixels(this);
-
-                if (ButterflyEnvironment.GetGame().GetClientManager().pixelsOnLogin > 0)
-                {
-                    PixelManager.GivePixels(this, ButterflyEnvironment.GetGame().GetClientManager().pixelsOnLogin);
-                }
-
-                if (ButterflyEnvironment.GetGame().GetClientManager().creditsOnLogin > 0)
-                {
-                    userData.user.Credits += ButterflyEnvironment.GetGame().GetClientManager().creditsOnLogin;
-                    userData.user.UpdateCreditsBalance();
-                }
-
-                if (userData.user.HomeRoom > 0)
-                {
-                    appendingResponse.Init(455);
-                    appendingResponse.AppendUInt(userData.user.HomeRoom);
-                    response.appendResponse(appendingResponse);
-                }
-
-                appendingResponse.Init(458);
-                appendingResponse.AppendInt32(30);
-                appendingResponse.AppendInt32(userData.user.FavoriteRooms.Count);
-
-                foreach (uint Id in userData.user.FavoriteRooms.ToArray())
-                {
-                    appendingResponse.AppendUInt(Id);
-                }
-
-                response.appendResponse(appendingResponse);
-
-                if (userData.user.HasFuse("fuse_use_club_badge") && !userData.user.GetBadgeComponent().HasBadge("ACH_BasicClub1"))
-                {
-                    userData.user.GetBadgeComponent().GiveBadge("ACH_BasicClub1", true);
-                }
-                else if (!userData.user.HasFuse("fuse_use_club_badge") && userData.user.GetBadgeComponent().HasBadge("ACH_BasicClub1"))
-                {
-                    userData.user.GetBadgeComponent().RemoveBadge("ACH_BasicClub1");
-                }
-
-
-                if (!userData.user.GetBadgeComponent().HasBadge("Z63"))
-                    userData.user.GetBadgeComponent().GiveBadge("Z63", true);
-
-                appendingResponse.Init(2);
-                appendingResponse.AppendInt32(0);
-
-                if (userData.user.HasFuse("fuse_use_vip_outfits")) // VIP 
-                    appendingResponse.AppendInt32(2);
-                else if (userData.user.HasFuse("fuse_furni_chooser")) // HC
-                    appendingResponse.AppendInt32(1);
-                else
-                    appendingResponse.AppendInt32(0);
-
-                appendingResponse.AppendInt32(0);
-                response.appendResponse(appendingResponse);
-
-                appendingResponse.Init(2);
-                appendingResponse.AppendInt32(Rights.Count);
-
-                foreach (string Right in Rights)
-                {
-                    appendingResponse.AppendString(Right);
-                }
-
-                response.appendResponse(appendingResponse);
-
-                if (LanguageLocale.welcomeAlertEnabled)
-                {
-                    ServerMessage alert = new ServerMessage(810);
-                    alert.AppendUInt(1);
-                    alert.AppendString(LanguageLocale.welcomeAlert);
-                    response.appendResponse(alert);
-                }
-
-                response.sendResponse();
-                Logging.WriteLine("[" + Habbo.Username + "] logged in");
-
-                return true;*/
             }
             catch (UserDataNotFoundException e)
             {
@@ -460,7 +346,16 @@ namespace Butterfly.HabboHotel.GameClients
         internal void Disconnect()
         {
             if (GetHabbo() != null && GetHabbo().GetInventoryComponent() != null)
+            {
+                using (IQueryAdapter db = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+                {
+                    db.setQuery("UPDATE users SET online = '0' WHERE id = @id");
+                    db.addParameter("id", this.GetHabbo().Id);
+                    db.runQuery();
+                }
+
                 GetHabbo().GetInventoryComponent().RunDBUpdate();
+            }
             if (!Disconnected)
             {
                 if (Connection != null)
