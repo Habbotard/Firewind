@@ -1369,27 +1369,6 @@ namespace Butterfly.HabboHotel.Misc
             Session.SendMOTD(ChatCommandRegister.GenerateCommandList(Session));
         }
 
-        internal void faq()
-        {
-            Room TargetRoom = Session.GetHabbo().CurrentRoom;
-            DataTable data;
-            using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
-            {
-                dbClient.setQuery("SELECT question, answer FROM faq");
-                data = dbClient.getTable();
-            }
-
-            StringBuilder builder = new StringBuilder();
-            builder.Append(" - FAQ - \r\r");
-
-            foreach (DataRow row in data.Rows)
-            {
-                builder.Append("Q: " + (string)row["question"] + "\r");
-                builder.Append("A: " + (string)row["answer"] + "\r\r");
-            }
-            Session.SendNotif(builder.ToString());
-        }
-
         internal void info()
         {
             DateTime Now = DateTime.Now;
