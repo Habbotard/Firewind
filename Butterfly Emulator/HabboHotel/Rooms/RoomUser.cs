@@ -316,7 +316,7 @@ namespace Butterfly.HabboHotel.Rooms
 
         internal void Chat(GameClient Session, string Message, bool Shout)
         {
-            
+
             if (Session != null)
             {
                 if (Session.GetHabbo().Rank < 5)
@@ -325,110 +325,105 @@ namespace Butterfly.HabboHotel.Rooms
                         return;
                 }
             }
-            
+
             Unidle();
 
-            if (IsPet||IsBot) {
-                goto NoCheckings;
-            }
-
-            Users.Habbo clientUser = GetClient().GetHabbo();
-            if (clientUser.Muted)
+            if (!IsPet && !IsBot)
             {
-                GetClient().SendNotif("You are muted.");
-                return;
-            }
-
-            if (Message.StartsWith(":") && Session != null)
-            {
-                string[] parsedCommand = Message.Split(' ');
-                if (ChatCommandRegister.IsChatCommand(parsedCommand[0].ToLower().Substring(1)))
+                Users.Habbo clientUser = GetClient().GetHabbo();
+                if (clientUser.Muted)
                 {
-                    ChatCommandHandler handler = new ChatCommandHandler(Message.Split(' '), Session);
+                    GetClient().SendNotif("You are muted.");
+                    return;
+                }
 
-                    if (handler.WasExecuted())
+                if (Message.StartsWith(":") && Session != null)
+                {
+                    string[] parsedCommand = Message.Split(' ');
+                    if (ChatCommandRegister.IsChatCommand(parsedCommand[0].ToLower().Substring(1)))
                     {
-                        Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
-                        if (Session.GetHabbo().Rank > 5)
+                        ChatCommandHandler handler = new ChatCommandHandler(Message.Split(' '), Session);
+
+                        if (handler.WasExecuted())
                         {
-                            ButterflyEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));
+                            Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
+                            if (Session.GetHabbo().Rank > 5)
+                            {
+                                ButterflyEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));
+                            }
+                            return;
                         }
-                        return;
                     }
                 }
-            }
 
 
-            uint rank = 1;
-            Message = LanguageLocale.FilterSwearwords(Message);
-            if (Session != null && Session.GetHabbo() != null)
-                rank = Session.GetHabbo().Rank;
-            TimeSpan SinceLastMessage = DateTime.Now - clientUser.spamFloodTime;
-            if (SinceLastMessage.TotalSeconds > clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
-            {
-                FloodCount = 0;
-                clientUser.spamProtectionBol = false;
-                clientUser.spamProtectionAbuse = 0;
-            }
-            else
-            {
-                if (SinceLastMessage.TotalSeconds > 4)
+                uint rank = 1;
+                Message = LanguageLocale.FilterSwearwords(Message);
+                if (Session != null && Session.GetHabbo() != null)
+                    rank = Session.GetHabbo().Rank;
+                TimeSpan SinceLastMessage = DateTime.Now - clientUser.spamFloodTime;
+                if (SinceLastMessage.TotalSeconds > clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
+                {
                     FloodCount = 0;
-            }
-
-            if (SinceLastMessage.TotalSeconds < clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
-            {
-                ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
-                int timeToWait=clientUser.spamProtectionTime - SinceLastMessage.Seconds;
-                Packet.AppendInt32(timeToWait); //Blocked for X sec
-                GetClient().SendMessage(Packet);
-
-                if (ButterflyEnvironment.spamBans == true)
-                {
-                    clientUser.spamProtectionAbuse++;
-                    GameClient toBan;
-                    toBan = ButterflyEnvironment.GetGame().GetClientManager().GetClientByUsername(Session.GetHabbo().Username);
-                    if (clientUser.spamProtectionAbuse >= ButterflyEnvironment.spamBans_limit)
-                    {
-                        ButterflyEnvironment.GetGame().GetBanManager().BanUser(toBan, "SPAM*ABUSE", 800, LanguageLocale.GetValue("flood.banmessage"), false);
-                    }
-                    else
-                    {
-                        toBan.SendNotif(LanguageLocale.GetValue("flood.pleasewait").Replace("%secs%", Convert.ToString(timeToWait)));
-                    }
-                }
-                return;
-            }
-
-            if (SinceLastMessage.TotalSeconds < 4 && FloodCount > 5 && rank < 5)
-            {
-                ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
-                clientUser.spamProtectionCount += 1;
-                if (clientUser.spamProtectionCount % 2 == 0)
-                {
-                    clientUser.spamProtectionTime = (10 * clientUser.spamProtectionCount);
+                    clientUser.spamProtectionBol = false;
+                    clientUser.spamProtectionAbuse = 0;
                 }
                 else
                 {
-                    clientUser.spamProtectionTime = 10 * (clientUser.spamProtectionCount - 1);
+                    if (SinceLastMessage.TotalSeconds > 4)
+                        FloodCount = 0;
                 }
-                clientUser.spamProtectionBol = true;
-                Packet.AppendInt32(clientUser.spamProtectionTime - SinceLastMessage.Seconds); //Blocked for X sec
-                GetClient().SendMessage(Packet);
-                return;
-            }
 
-            clientUser.spamFloodTime = DateTime.Now;
-            FloodCount++;
+                if (SinceLastMessage.TotalSeconds < clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
+                {
+                    ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
+                    int timeToWait = clientUser.spamProtectionTime - SinceLastMessage.Seconds;
+                    Packet.AppendInt32(timeToWait); //Blocked for X sec
+                    GetClient().SendMessage(Packet);
 
-            if (!IsBot)
-            {
+                    if (ButterflyEnvironment.spamBans == true)
+                    {
+                        clientUser.spamProtectionAbuse++;
+                        GameClient toBan;
+                        toBan = ButterflyEnvironment.GetGame().GetClientManager().GetClientByUsername(Session.GetHabbo().Username);
+                        if (clientUser.spamProtectionAbuse >= ButterflyEnvironment.spamBans_limit)
+                        {
+                            ButterflyEnvironment.GetGame().GetBanManager().BanUser(toBan, "SPAM*ABUSE", 800, LanguageLocale.GetValue("flood.banmessage"), false);
+                        }
+                        else
+                        {
+                            toBan.SendNotif(LanguageLocale.GetValue("flood.pleasewait").Replace("%secs%", Convert.ToString(timeToWait)));
+                        }
+                    }
+                    return;
+                }
+
+                if (SinceLastMessage.TotalSeconds < 4 && FloodCount > 5 && rank < 5)
+                {
+                    ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
+                    clientUser.spamProtectionCount += 1;
+                    if (clientUser.spamProtectionCount % 2 == 0)
+                    {
+                        clientUser.spamProtectionTime = (10 * clientUser.spamProtectionCount);
+                    }
+                    else
+                    {
+                        clientUser.spamProtectionTime = 10 * (clientUser.spamProtectionCount - 1);
+                    }
+                    clientUser.spamProtectionBol = true;
+                    Packet.AppendInt32(clientUser.spamProtectionTime - SinceLastMessage.Seconds); //Blocked for X sec
+                    GetClient().SendMessage(Packet);
+                    return;
+                }
+
+                clientUser.spamFloodTime = DateTime.Now;
+                FloodCount++;
+
                 ButterflyEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.SOCIAL_CHAT);
+
+                ChatMessageFactory.CreateMessage(Message, this.GetClient(), this.GetRoom());
             }
 
-            ChatMessageFactory.CreateMessage(Message, this.GetClient(), this.GetRoom());
-
-            NoCheckings:
             InvokedChatMessage message = new InvokedChatMessage(this, Message, Shout);
             GetRoom().QueueChatMessage(message);
         }

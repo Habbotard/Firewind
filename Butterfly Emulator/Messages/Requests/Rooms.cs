@@ -1447,7 +1447,6 @@ namespace Butterfly.Messages
                 SendResponse();
 
                 //User.AddStatus("flatcrtl 0", "");
-                User.UpdateNeeded = true;
             }
 
             using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
