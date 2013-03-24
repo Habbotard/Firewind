@@ -276,7 +276,6 @@
     <Compile Include="HabboHotel\Users\Badges\BadgeComponent.cs" />
     <Compile Include="HabboHotel\Users\Competitions\Ranking.cs" />
     <Compile Include="HabboHotel\Users\Habbo.cs" />
-    <Compile Include="HabboHotel\Users\HabboData.cs" />
     <Compile Include="HabboHotel\Users\Inventory\AvatarEffect.cs" />
     <Compile Include="HabboHotel\Users\Inventory\AvatarEffectsInventoryComponent.cs" />
     <Compile Include="HabboHotel\Users\Inventory\InventoryComponent.cs" />

@@ -1190,10 +1190,13 @@ namespace Butterfly.HabboHotel.Rooms
                         User.Z = User.SetZ;
                         if (User.isFlying)
                             User.Z += 4 + 0.5 * Math.Sin(0.7 * User.flyk);
-                        
-                        foreach (RoomItem item in items)
+
+                        lock (items)
                         {
-                            item.UserWalksOffFurni(User);
+                            foreach (RoomItem item in items)
+                            {
+                                item.UserWalksOffFurni(User);
+                            }
                         }
 
                         if (User.X == room.GetGameMap().Model.DoorX && User.Y == room.GetGameMap().Model.DoorY && !ToRemove.Contains(User) && !User.IsBot)
@@ -1307,6 +1310,15 @@ namespace Butterfly.HabboHotel.Rooms
                         {
                             //Logging.WriteLine("Montaje");
                             RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.montandoID));
+
+                            // Temp fix for crash
+                            // TODO: Remove the saddle effect
+                            if (mascotaVinculada == null)
+                            {
+                                User.montandoID = 0;
+                                User.montandoBol = false;
+                                continue;
+                            }
                             mascotaVinculada.RotBody = newRot;
                             mascotaVinculada.RotHead = newRot;
 

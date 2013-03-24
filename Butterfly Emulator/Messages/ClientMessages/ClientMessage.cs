@@ -71,7 +71,11 @@ namespace Butterfly.Messages
 
         public override string ToString()
         {
-            string text = "[" + Header+"] BODY: " + (ButterflyEnvironment.GetDefaultEncoding().GetString(Body).Replace(Convert.ToChar(0).ToString(), "[0]"));
+            string text = "[" + Header+"] BODY: " + (ButterflyEnvironment.GetDefaultEncoding().GetString(Body));
+            for (int i = 0; i <= 32; i++)
+            {
+                text = text.Replace(Convert.ToChar(i).ToString(), string.Format("[{0}]", i));
+            }
             //CheckForExploits(text);
             return text;
         }

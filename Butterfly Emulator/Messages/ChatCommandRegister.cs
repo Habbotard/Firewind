@@ -332,12 +332,6 @@ namespace Butterfly.Messages
                         break;
                     }
 
-                case 42:
-                    {
-                        commandHandler.faq();
-                        break;
-                    }
-
                 case 43:
                     {
                         commandHandler.info();
