@@ -55,6 +55,12 @@ namespace Butterfly.HabboHotel.Rooms.Games
                     NewX = NewX + item.GetX;
                     NewY = NewY + item.GetY;
 
+                    if (item.GetX == User.X && item.GetY == User.Y)
+                    {
+                        NewX = NewX * 2;
+                        NewY = NewY * 2;
+                    }
+
                     if (item.interactingBallUser == User.userID && item.GetRoom().GetGameMap().ValidTile(NewX, NewY))
                     {
                         item.interactingBallUser = 0;
@@ -164,7 +170,9 @@ namespace Butterfly.HabboHotel.Rooms.Games
                 return;
 
             if (!room.GetGameMap().itemCanBePlacedHere(newX, newY))
+            {
                 return;
+            }
 
             Point oldRoomCoord = item.Coordinate;
             bool itemIsOnGameItem = GameItemOverlaps(item);
