@@ -99,20 +99,24 @@ namespace Butterfly.Messages
             }
         }
 
-        internal void DeclineRequest()
+        internal void DeclineFriend()
         {
             if (this.Session.GetHabbo().GetMessenger() != null)
             {
-                int Mode = this.Request.PopWiredInt32();
-                int Amount = this.Request.PopWiredInt32();
-                if ((Mode == 0) && (Amount == 1))
+                bool declineAll = Request.PopWiredBoolean();
+                int count = Request.PopWiredInt32();
+
+                if (declineAll)
                 {
-                    uint sender = this.Request.PopWiredUInt();
-                    this.Session.GetHabbo().GetMessenger().HandleRequest(sender);
+                    this.Session.GetHabbo().GetMessenger().HandleAllRequests();
                 }
                 else
                 {
-                    this.Session.GetHabbo().GetMessenger().HandleAllRequests();
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint sender = Request.PopWiredUInt();
+                        this.Session.GetHabbo().GetMessenger().HandleRequest(sender);
+                    }
                 }
             }
         }

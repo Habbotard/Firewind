@@ -83,7 +83,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handlers.Add(Incoming.SearchFriend, new StaticRequestHandler(SharedPacketLib.SearchHabbo));
             handlers.Add(Incoming.SendInstantMessenger, new StaticRequestHandler(SharedPacketLib.SendInstantMessenger));
             handlers.Add(Incoming.AcceptRequest, new StaticRequestHandler(SharedPacketLib.AcceptRequest));
-            handlers.Add(Incoming.DeclineRequest, new StaticRequestHandler(SharedPacketLib.DeclineRequest));
+            handlers.Add(Incoming.DeclineFriend, new StaticRequestHandler(SharedPacketLib.DeclineFriend));
             handlers.Add(Incoming.FriendRequest, new StaticRequestHandler(SharedPacketLib.RequestBuddy));
             handlers.Add(Incoming.FollowFriend, new StaticRequestHandler(SharedPacketLib.FollowBuddy));
             handlers.Add(Incoming.InviteFriendsToMyRoom, new StaticRequestHandler(SharedPacketLib.SendInstantInvite));

@@ -308,9 +308,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handler.AcceptRequest();
         }
 
-        internal static void DeclineRequest(GameClientMessageHandler handler)
+        internal static void DeclineFriend(GameClientMessageHandler handler)
         {
-            handler.DeclineRequest();
+            handler.DeclineFriend();
         }
 
         internal static void RequestBuddy(GameClientMessageHandler handler)

@@ -2413,11 +2413,16 @@ namespace Butterfly.Messages
                 return;
             }
 
-            uint itemID = Request.PopWiredUInt();
+            int itemID = Request.PopWiredInt32();
 
-            
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(itemID);
+            if (itemID < 0)
+            {
+                Logging.LogDebug(string.Format("Item triggered with negative ({0}) item ID!"));
+                return;
+            }
+
+            RoomItem Item = Room.GetRoomItemHandler().GetItem((uint)itemID);
 
 
             /*if (Session.GetHabbo().Username == "Itachi")

@@ -75,7 +75,7 @@ namespace HabboEvents
 		public static int GetFriends = 1615;
 		public static int FriendRequest = 1361;
 		public static int AcceptRequest = 3730;
-		public static int DeclineRequest = 1906;
+        public static int DeclineFriend = 1906;
 		public static int SendInstantMessenger = 1573;
 		public static int FollowFriend = 505;
 		public static int UpdateFriendsState = 2557;
