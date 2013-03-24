@@ -204,24 +204,28 @@ namespace Butterfly.HabboHotel.Catalogs
 
         internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string ExtraData, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
         {
-            // Nearest number that increases the amount of free items
-            int nearestDiscount = ((int)Math.Floor(buyAmount / 6.0) * 6);
-
-            // How many free ones we get
-            int freeItemsCount = (nearestDiscount - 3) / 3;
-
-            // Add 1 free if more than 42
-            if (buyAmount >= 42)
-                freeItemsCount++;
-
-            // Doesn't follow rules as it isn't dividable by 6, but still increases free items
-            if (buyAmount >= 99)
+            int finalAmount = buyAmount;
+            if (buyAmount > 5) // Possible discount!
             {
-                freeItemsCount = 33;
-            }
+                // Nearest number that increases the amount of free items
+                int nearestDiscount = ((int)Math.Floor(buyAmount / 6.0) * 6);
 
-            // This is how many we pay for in the end
-            int finalAmount = buyAmount - freeItemsCount;
+                // How many free ones we get
+                int freeItemsCount = (nearestDiscount - 3) / 3;
+
+                // Add 1 free if more than 42
+                if (buyAmount >= 42)
+                    freeItemsCount++;
+
+                // Doesn't follow rules as it isn't dividable by 6, but still increases free items
+                if (buyAmount >= 99)
+                {
+                    freeItemsCount = 33;
+                }
+
+                // This is how many we pay for in the end
+                finalAmount = buyAmount - freeItemsCount;
+            }
 
             if (buyAmount + Session.GetHabbo().GetInventoryComponent().ItemCount >= 2000)
             {
