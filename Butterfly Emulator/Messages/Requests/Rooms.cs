@@ -1358,8 +1358,8 @@ namespace Butterfly.Messages
             Response.AppendStringWithBreak(RoomUser.GetClient().GetHabbo().Username);
             SendResponse();
 
-            RoomUser.AddStatus("flatcrtl 1", "");
-            RoomUser.UpdateNeeded = true;
+            //RoomUser.AddStatus("flatcrtl 1", "");
+            //RoomUser.UpdateNeeded = true;
 
             if (RoomUser != null && !RoomUser.IsBot)
             {
@@ -1409,7 +1409,7 @@ namespace Butterfly.Messages
                 SendResponse();
 
                 //User.AddStatus("flatcrtl", "");
-                User.UpdateNeeded = true;
+               // User.UpdateNeeded = true;
             }
 
             using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())

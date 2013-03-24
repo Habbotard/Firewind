@@ -342,17 +342,21 @@ namespace Butterfly.HabboHotel.Rooms
                     string[] parsedCommand = Message.Split(' ');
                     if (ChatCommandRegister.IsChatCommand(parsedCommand[0].ToLower().Substring(1)))
                     {
-                        ChatCommandHandler handler = new ChatCommandHandler(Message.Split(' '), Session);
-
-                        if (handler.WasExecuted())
+                        try
                         {
-                            Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
-                            if (Session.GetHabbo().Rank > 5)
+                            ChatCommandHandler handler = new ChatCommandHandler(Message.Split(' '), Session);
+
+                            if (handler.WasExecuted())
                             {
-                                ButterflyEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));
+                                Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
+                                if (Session.GetHabbo().Rank > 5)
+                                {
+                                    ButterflyEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));
+                                }
+                                return;
                             }
-                            return;
                         }
+                        catch (Exception x) { Logging.LogException("In-game command error: " + x.ToString()); }
                     }
                 }
 

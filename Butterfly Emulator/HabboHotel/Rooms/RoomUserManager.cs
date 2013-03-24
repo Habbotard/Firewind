@@ -329,14 +329,14 @@ namespace Butterfly.HabboHotel.Rooms
                         user.SetRot(Model.DoorOrientation, false);
                     }
 
-                    if (room.CheckRights(session, true))
-                    {
-                        user.AddStatus("flatcrtl 4", "useradmin");
-                    }
-                    else if (room.CheckRights(session))
-                    {
-                        user.AddStatus("flatcrtl 1", "");
-                    }
+                    //if (room.CheckRights(session, true))
+                    //{
+                    //    user.AddStatus("flatcrtl 4", "useradmin");
+                    //}
+                    //else if (room.CheckRights(session))
+                    //{
+                    //    user.AddStatus("flatcrtl 1", "");
+                    //}
                     user.CurrentItemEffect = ItemEffectType.None;
 
                     //UpdateUserEffect(User, User.X, User.Y);

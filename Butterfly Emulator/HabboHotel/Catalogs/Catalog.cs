@@ -607,6 +607,10 @@ namespace Butterfly.HabboHotel.Catalogs
                     uint itemID;
                     //uint GenId = GenerateItemId();
                     Item Present = ButterflyEnvironment.GetGame().GetItemManager().GetItemBySpriteID(GiftSpriteId);
+                    if (Present == null)
+                    {
+                        Logging.LogDebug(string.Format("Somebody tried to purchase a present with invalid sprite ID: {0}", GiftSpriteId));
+                    }
                     //Logging.WriteLine((uint)GiftSpriteId +"   -    "  +ButterflyEnvironment.giftInt);
                     //Logging.WriteLine("Resultado regalo: " + ButterflyEnvironment.GetGame().GetItemManager().GetItem((uint)GiftSpriteId - ButterflyEnvironment.giftInt));
                     using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())

@@ -98,7 +98,7 @@ namespace Butterfly.Core
 
         internal static void LogDebug(string logText)
         {
-            Writer.LogMessage(logText);
+            Writer.LogDebug(logText);
         }
 
 
