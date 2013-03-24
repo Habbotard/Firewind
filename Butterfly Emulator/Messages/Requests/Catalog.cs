@@ -85,20 +85,21 @@ namespace Butterfly.Messages
             //}
         }
 
-        internal void PurchaseGift()
+        internal void PurchaseGift() // (k:int, k:int, k:String, k:String, k:String, k:int, k:int, k:int, k:Boolean)
         {
-            int PageId = Request.PopWiredInt32();
-            uint ItemId = Request.PopWiredUInt();
-            string ExtraData = Request.PopFixedString();
+            int PageId = Request.PopWiredInt32(); // pageId
+            uint ItemId = Request.PopWiredUInt(); // offerId
+            string ExtraData = Request.PopFixedString(); // extraParameter
             string GiftUser = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
             string GiftMessage = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
             int SpriteId = Request.PopWiredInt32();
             int Lazo = Request.PopWiredInt32();
             int Color = Request.PopWiredInt32();
-            bool dnow = Request.PopWiredBoolean();
+            bool showIdentity = Request.PopWiredBoolean();
             //bool dnow = Request.PopWiredBoolean();
+            Logging.LogDebug(string.Format("Present info:\r\n   ID: {0}\r\n  Data: {1}", SpriteId, ExtraData));
             //Logging.WriteLine("PageId: " + PageId + "; ItemId: " + ItemId + "; ExtraData: " + ExtraData + "; User: " + GiftUser + "; Message: " + GiftMessage + "; SpriteId: " + SpriteId + "; Color: " + Color + "; Lazo: " + Lazo);
-            ButterflyEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, ExtraData, 1, true, GiftUser, GiftMessage, SpriteId, Lazo, Color, dnow);
+            ButterflyEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, ExtraData, 1, true, GiftUser, GiftMessage, SpriteId, Lazo, Color, showIdentity);
         }
 
         internal void GetRecyclerRewards()

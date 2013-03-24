@@ -116,6 +116,12 @@ namespace ConsoleWriter
             WriteLine(logText);
         }
 
+        public static void LogDebug(string logText)
+        {
+            WriteToFile(@"Logs\debug.txt", logText + "\r\n\r\n");
+            WriteLine(logText);
+        }
+
         public static void LogDDOS(string logText)
         {
             WriteToFile(@"Logs\ddos.txt", logText + "\r\n\r\n");

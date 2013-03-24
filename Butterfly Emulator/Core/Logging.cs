@@ -96,6 +96,11 @@ namespace Butterfly.Core
             Writer.LogMessage(logText);
         }
 
+        internal static void LogDebug(string logText)
+        {
+            Writer.LogMessage(logText);
+        }
+
 
         internal static void LogThreadException(string Exception, string Threadname)
         {

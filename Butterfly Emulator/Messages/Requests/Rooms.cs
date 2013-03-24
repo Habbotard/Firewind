@@ -867,7 +867,7 @@ namespace Butterfly.Messages
                 return;
 
             Room Room = Session.GetHabbo().CurrentRoom;
-            
+
             if (Room == null)
             {
                 return;
@@ -882,12 +882,26 @@ namespace Butterfly.Messages
             if (Room.RoomMuted)
                 return;
 
-            string Params = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
+            TimeSpan SinceLastMessage = DateTime.Now - FloodTime;
+            if (SinceLastMessage.Seconds > 4)
+                FloodCount = 0;
+
+            if (SinceLastMessage.Seconds < 4 && FloodCount > 5 && Session.GetHabbo().Rank < 5)
+            {
+                ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
+                Packet.AppendInt32(30); //Blocked for 30sec
+                Session.SendMessage(Packet);
+                return;
+            }
+            FloodTime = DateTime.Now;
+            FloodCount++;
+
+            string Params = Request.PopFixedString();
             string ToUser = Params.Split(' ')[0];
             string Message = Params.Substring(ToUser.Length + 1);
+
             Message = LanguageLocale.FilterSwearwords(Message);
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
-            RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByHabbo(ToUser);
 
             ServerMessage TellMsg = new ServerMessage();
             TellMsg.Init(Outgoing.Whisp);
@@ -897,33 +911,19 @@ namespace Butterfly.Messages
             TellMsg.AppendInt32(0);
             TellMsg.AppendInt32(-1);
 
-            if (User != null && !User.IsBot)
-            {
-                User.GetClient().SendMessage(TellMsg);
-            }
-
+            Session.SendMessage(TellMsg);
             User.Unidle();
 
-            if (User2 != null && !User2.IsBot && User2.userID != User.userID)
+            RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByHabbo(ToUser);
+            if (ToUser == User.GetUsername() || User2 == null)
+                return;
+
+            if (!User2.IsBot)
             {
                 if (!User2.GetClient().GetHabbo().MutedUsers.Contains(Session.GetHabbo().Id))
                     User2.GetClient().SendMessage(TellMsg);
             }
-            TimeSpan SinceLastMessage = DateTime.Now - FloodTime;
-            if (SinceLastMessage.Seconds > 4)
-                FloodCount = 0;
 
-            if (SinceLastMessage.Seconds < 4 && FloodCount > 5 && Session.GetHabbo().Rank < 5)
-            {
-                ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
-                Packet.AppendInt32(30); //Blocked for 30sec
-                User.GetClient().SendMessage(Packet);
-                return;
-            }
-            FloodTime = DateTime.Now;
-            FloodCount++;
-
-            
             List<RoomUser> ToNotify = Room.GetRoomUserManager().GetRoomUserByRank(6);
             if (ToNotify.Count > 0)
             {
@@ -937,11 +937,9 @@ namespace Butterfly.Messages
 
 
                 foreach (RoomUser user in ToNotify)
-                    if (user != null)
-                        if (user.HabboId != User2.HabboId && user.HabboId != User.HabboId)
-                            if (user.GetClient() != null)
-                                user.GetClient().SendMessage(TellMsg);
-                 
+                    if (user.HabboId != User2.HabboId && user.HabboId != User.HabboId)
+                        user.GetClient().SendMessage(TellMsg);
+
             }
         }
 

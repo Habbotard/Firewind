@@ -145,11 +145,11 @@ namespace Butterfly.Messages
 
             if (Message.Count > 131072) // this will crash the client!
             {
-                Logging.LogCriticalException(string.Format("Message was too long, ID: {0} and length is {1}", MessageId, Message.Count));
+                Logging.LogDebug(string.Format("Message was too long, ID: {0} and length is {1}", MessageId, Message.Count));
             }
             if (Message.Count < 2) // this will crash the client!
             {
-                Logging.LogCriticalException(string.Format("Message was too short, ID: {0} and length is {1}", MessageId, Message.Count));
+                Logging.LogDebug(string.Format("Message was too short, ID: {0} and length is {1}", MessageId, Message.Count));
             }
             return Final.ToArray();
         }

@@ -12,6 +12,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
     {
         private delegate void StaticRequestHandler(GameClientMessageHandler handler);
         private static Hashtable handlers;
+        private static List<int> unknownPackets = new List<int>();
 
         internal static void Initialize()
         {
@@ -30,7 +31,10 @@ namespace Butterfly.Messages.StaticMessageHandlers
             }
             else
             {
-                Logging.LogMessage("Unknown packet ID: " + message.Id);
+                if (unknownPackets.Contains(message.Id))
+                    return;
+                unknownPackets.Add(message.Id);
+                Logging.LogDebug("Unknown packet ID: " + message.Id);
             }
         }
 
