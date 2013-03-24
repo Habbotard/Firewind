@@ -35,12 +35,6 @@ namespace Butterfly.HabboHotel.GameClients
         internal Point newDoorPos;
         internal  GamePacketParser packetParser;
 
-        internal int DesignedHandler = 1;
-        internal TaskFactory listaTareas=new TaskFactory();
-        // Campos para la RC4
-        internal int[] table = new int[256];
-        internal int i = 0, j = 0;
-        internal bool CryptoInitialized = false;
 
         internal uint ConnectionID
         {
@@ -265,7 +259,6 @@ namespace Butterfly.HabboHotel.GameClients
             catch (Exception e)
             {
                 Logging.LogCriticalException("Invalid Dario bug duing user login: " + e.ToString());
-                //SendNotif("Login error: " + e.ToString());
                 SendNotifWithScroll("Login error: " + e.ToString());
             }
             return false;
@@ -276,12 +269,6 @@ namespace Butterfly.HabboHotel.GameClients
             notif.AppendString(message);
             notif.AppendString(""); // link
             SendMessage(notif);
-            /*
-            ServerMessage notification = new ServerMessage(810);
-            notification.AppendUInt(1);
-            notification.AppendString(message);
-
-            SendMessage(notification);*/
         }
 
         internal void SendBanMessage(string Message)
@@ -366,17 +353,11 @@ namespace Butterfly.HabboHotel.GameClients
 
         internal void SendMessage(ServerMessage Message)
         {
-            //Logging.WriteLine("SENDED [" + Message.Id + "] => " + Message.ToString().Replace(Convert.ToChar(0).ToString(), "{char0}"));
-            //if (Message == null)
-            //    return;
-            //if (GetConnection() == null)
-            //    return;
             GetConnection().SendData(Message.GetBytes());
         }
 
         internal void UnsafeSendMessage(ServerMessage Message)
         {
-            //Logging.WriteLine("SENDED [" + Message.Id + "] => " + Message.ToString().Replace(Convert.ToChar(0).ToString(), "{char0}"));
             if (Message == null)
                 return;
             if (GetConnection() == null)

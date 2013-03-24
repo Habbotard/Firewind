@@ -42,7 +42,6 @@ namespace Butterfly.Messages
 
             int Requests = Request.PopWiredInt32();
 
-            Console.WriteLine(Requests);
 
             for (int i = 0; i < Requests; i++)
             {
@@ -88,7 +87,6 @@ namespace Butterfly.Messages
 
                 if (massRequest.To != Session.GetHabbo().Id)
                 {
-                    // not this user's request. filthy haxxor!
                     return;
                 }
 
