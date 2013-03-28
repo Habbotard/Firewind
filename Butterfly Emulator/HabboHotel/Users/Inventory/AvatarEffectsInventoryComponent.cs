@@ -189,21 +189,24 @@ namespace Butterfly.HabboHotel.Users.Inventory
                 return true;
             }
 
-            foreach (AvatarEffect Effect in Effects)
+            lock (Effects.SyncRoot)
             {
-                if (IfEnabledOnly && !Effect.Activated)
+                foreach (AvatarEffect Effect in Effects)
                 {
-                    continue;
-                }
+                    if (IfEnabledOnly && !Effect.Activated)
+                    {
+                        continue;
+                    }
 
-                if (Effect.HasExpired)
-                {
-                    continue;
-                }
+                    if (Effect.HasExpired)
+                    {
+                        continue;
+                    }
 
-                if (Effect.EffectId == EffectId)
-                {
-                    return true;
+                    if (Effect.EffectId == EffectId)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -212,16 +215,19 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
         internal AvatarEffect GetEffect(int EffectId, bool IfEnabledOnly)
         {
-            foreach (AvatarEffect Effect in Effects)
+            lock (Effects.SyncRoot)
             {
-                if (IfEnabledOnly && !Effect.Activated)
+                foreach (AvatarEffect Effect in Effects)
                 {
-                    continue;
-                }
+                    if (IfEnabledOnly && !Effect.Activated)
+                    {
+                        continue;
+                    }
 
-                if (Effect.EffectId == EffectId)
-                {
-                    return Effect;
+                    if (Effect.EffectId == EffectId)
+                    {
+                        return Effect;
+                    }
                 }
             }
 
@@ -233,12 +239,15 @@ namespace Butterfly.HabboHotel.Users.Inventory
             ServerMessage Message = new ServerMessage(Outgoing.EffectsInventary);
             Message.AppendInt32(Count);
 
-            foreach (AvatarEffect Effect in Effects)
+            lock (Effects.SyncRoot)
             {
-                Message.AppendInt32(Effect.EffectId);
-                Message.AppendInt32(Effect.TotalDuration);
-                Message.AppendInt32(!Effect.Activated ? 1 : 0);
-                Message.AppendInt32(Effect.TimeLeft);
+                foreach (AvatarEffect Effect in Effects)
+                {
+                    Message.AppendInt32(Effect.EffectId);
+                    Message.AppendInt32(Effect.TotalDuration);
+                    Message.AppendInt32(!Effect.Activated ? 1 : 0);
+                    Message.AppendInt32(Effect.TimeLeft);
+                }
             }
 
             return Message;
@@ -249,10 +258,13 @@ namespace Butterfly.HabboHotel.Users.Inventory
             if (Effects.Count <= 0)
                 return;
 
-            foreach (AvatarEffect Effect in Effects)
+            lock (Effects.SyncRoot)
             {
-                if (Effect.HasExpired)
-                    StopEffect(Effect.EffectId);
+                foreach (AvatarEffect Effect in Effects)
+                {
+                    if (Effect.HasExpired)
+                        StopEffect(Effect.EffectId);
+                }
             }
         }
 

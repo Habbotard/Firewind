@@ -2420,7 +2420,8 @@ namespace Butterfly.Messages
             {
                 int data = Request.PopWiredInt32();
                 Logging.LogDebug(string.Format("Item triggered with negative ({0}) item ID, data was {1}!", itemID, data));
-                return;
+
+                itemID = Math.Abs(itemID);
             }
 
             RoomItem Item = Room.GetRoomItemHandler().GetItem((uint)itemID);

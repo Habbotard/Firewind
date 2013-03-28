@@ -71,13 +71,12 @@ namespace Butterfly.Messages
 
         public override string ToString()
         {
-            string text = "[" + Header+"] BODY: " + (ButterflyEnvironment.GetDefaultEncoding().GetString(Body));
+            string text = (ButterflyEnvironment.GetDefaultEncoding().GetString(Body));
             for (int i = 0; i <= 32; i++)
             {
                 text = text.Replace(Convert.ToChar(i).ToString(), string.Format("[{0}]", i));
             }
-            //CheckForExploits(text);
-            return text;
+            return string.Format("[{0}] BODY: \"{1}\"", Header, text);
         }
 
         internal void AdvancePointer(int i)

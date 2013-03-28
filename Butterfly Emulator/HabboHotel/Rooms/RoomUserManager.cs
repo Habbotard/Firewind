@@ -502,13 +502,12 @@ namespace Butterfly.HabboHotel.Rooms
                                 {
                                     if (room.HasOngoingEvent)
                                     {
-                                        room.Event = null;
-
                                         ServerMessage Message = new ServerMessage(Outgoing.RoomEvent);
                                         Message.AppendStringWithBreak("-1");
                                         room.SendMessage(Message);
 
                                         ButterflyEnvironment.GetGame().GetRoomManager().GetEventManager().QueueRemoveEvent(room.RoomData, room.Event.Category);
+                                        room.Event = null;
                                     }
                                 }
                                 Session.GetHabbo().CurrentRoomId = 0;
