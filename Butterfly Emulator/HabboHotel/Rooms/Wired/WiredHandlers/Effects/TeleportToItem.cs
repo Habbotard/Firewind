@@ -81,7 +81,7 @@ namespace Butterfly.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 
         private bool TeleportUser(RoomUser user)
         {
-            if (user == null || disposed)
+            if (user == null || user.IsBot || user.IsPet || user.GetClient().GetHabbo().Disconnected || disposed)
                 return false;
 
             if (items.Count > 1)

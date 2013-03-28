@@ -466,7 +466,7 @@ namespace Butterfly
             Console.Write("Game loop stopped");
 
             DateTime ConnectionClose = DateTime.Now;
-            Logging.WriteLine("Server shutting down...");
+            Console.WriteLine("Server shutting down...");
             Console.Title = "<<- SERVER SHUTDOWN ->>";
 
             GetConnectionManager().Destroy();
@@ -477,7 +477,7 @@ namespace Butterfly
             AppendTimeStampWithComment(ref builder, sConnectionClose, "Furni pre-save and connection close");
 
             DateTime RoomRemove = DateTime.Now;
-            Logging.WriteLine("<<- SERVER SHUTDOWN ->> ROOM SAVE");
+            Console.WriteLine("<<- SERVER SHUTDOWN ->> ROOM SAVE");
             Game.GetRoomManager().RemoveAllRooms();
             AppendTimeStampWithComment(ref builder, RoomRemove, "Room destructor");
 
@@ -504,7 +504,7 @@ namespace Butterfly
             DateTime databaseDeconstructor = DateTime.Now;
             try
             {
-                Logging.WriteLine("Destroying database manager.");
+                Console.WriteLine("Destroying database manager.");
 
                 manager.destroy();
             }
@@ -520,7 +520,7 @@ namespace Butterfly
 
             Logging.LogShutdown(builder);
 
-            Logging.WriteLine("System disposed, goodbye!");
+            Console.WriteLine("System disposed, goodbye!");
             if (ExitWhenDone)
                 Environment.Exit(Environment.ExitCode);
         }

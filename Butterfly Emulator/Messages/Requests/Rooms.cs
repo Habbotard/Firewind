@@ -2418,7 +2418,8 @@ namespace Butterfly.Messages
 
             if (itemID < 0)
             {
-                Logging.LogDebug(string.Format("Item triggered with negative ({0}) item ID!"));
+                int data = Request.PopWiredInt32();
+                Logging.LogDebug(string.Format("Item triggered with negative ({0}) item ID, data was {1}!", itemID, data));
                 return;
             }
 
