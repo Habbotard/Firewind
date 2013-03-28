@@ -318,7 +318,7 @@ namespace Butterfly.HabboHotel.RoomBots
                 {
                     RemovePetStatus();
                     ActionTimer = ButterflyEnvironment.GetRandomNumber(15, 40 + GetRoomUser().PetData.VirtualId);
-                    if (GetRoomUser().montandoBol == true)
+                    if (GetRoomUser().isMounted == true)
                     {
                         
                     } else {

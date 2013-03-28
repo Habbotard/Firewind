@@ -3221,12 +3221,12 @@ namespace Butterfly.Messages
             if (PetUser == null)
                 return;
 
-            if (PetUser.montandoBol == true)
+            if (PetUser.isMounted == true)
             {
-                RoomUser usuarioVinculado = Room.GetRoomUserManager().GetRoomUserByVirtualId(Convert.ToInt32(PetUser.montandoID));
+                RoomUser usuarioVinculado = Room.GetRoomUserManager().GetRoomUserByVirtualId(Convert.ToInt32(PetUser.mountID));
                 if (usuarioVinculado != null)
                 {
-                    usuarioVinculado.montandoBol = false;
+                    usuarioVinculado.isMounted = false;
                     usuarioVinculado.ApplyEffect(-1);
                     usuarioVinculado.MoveTo(new Point(usuarioVinculado.X + 1, usuarioVinculado.Y + 1));
                 }
@@ -3331,37 +3331,6 @@ namespace Butterfly.Messages
             }
         }
 
-        internal void CancelMountOnPet()
-        {
-            Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
-
-            //if (Room == null || Room.IsPublic || (!Room.AllowPets && !Room.CheckRights(Session, true)))
-            if (Room == null)
-            {
-                return;
-            }
-
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
-            if (User == null)
-                return;
-
-            uint PetId = Request.PopWiredUInt();
-            RoomUser Pet = Room.GetRoomUserManager().GetPet(PetId);
-
-            //if (Pet == null || Pet.PetData == null || Pet.PetData.OwnerId != Session.GetHabbo().Id)
-            if (Pet == null || Pet.PetData == null)
-            {
-                return;
-            }
-
-            User.montandoBol = false;
-            User.montandoID = 0;
-            Pet.montandoBol = false;
-            Pet.montandoID = 0;
-            User.MoveTo(User.X + 1, User.Y + 1);
-            User.ApplyEffect(-1);
-        }
-
         internal void GiveHanditem()
         {
             Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
@@ -3401,8 +3370,11 @@ namespace Butterfly.Messages
                 User.CarryItem(0);
         }
 
-        internal void MountOnPet()
+        internal void MountPet()
         {
+            // RWUAM_MOUNT_PET
+            // RWUAM_DISMOUNT_PET
+
             Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
             //if (Room == null || Room.IsPublic || (!Room.AllowPets && !Room.CheckRights(Session, true)))
@@ -3417,18 +3389,20 @@ namespace Butterfly.Messages
                 return;
 
             uint PetId = Request.PopWiredUInt();
-            bool Type = Request.PopWiredBoolean();
+            // true = RWUAM_MOUNT_PET, false = RWUAM_DISMOUNT_PET
+            bool mountOn = Request.PopWiredBoolean();
             RoomUser Pet = Room.GetRoomUserManager().GetPet(PetId);
 
             //if (Pet == null || Pet.PetData == null || Pet.PetData.OwnerId != Session.GetHabbo().Id)
-            if (Pet == null || Pet.PetData == null)
+            if (Pet == null || Pet.PetData == null || !Pet.PetData.HaveSaddle)
             {
                 return;
             }
 
-            if (Type)
+            // GET TO DA CHO-- ..HORSE!
+            if (mountOn)
             {
-                if (User.montandoBol == true || Pet.montandoBol == true)
+                if (User.isMounted == true || Pet.isMounted)
                 {
                     string[] Speech2 = PetLocale.GetValue("pet.alreadymounted");
                     Random RandomSpeech2 = new Random();
@@ -3450,10 +3424,10 @@ namespace Butterfly.Messages
                     Room.SendMessage(Room.GetRoomItemHandler().UpdateUserOnRoller(User, new Point(NewX2, NewY2), 0, Room.GetGameMap().SqAbsoluteHeight(NewX2, NewY2) + 1));
                     Room.GetRoomUserManager().UpdateUserStatus(User, false);
                     Pet.ClearMovement(true);
-                    User.montandoBol = true;
-                    Pet.montandoBol = true;
-                    Pet.montandoID = (uint)User.VirtualId;
-                    User.montandoID = Convert.ToUInt32(Pet.VirtualId);
+                    User.isMounted = true;
+                    Pet.isMounted = true;
+                    Pet.mountID = (uint)User.VirtualId;
+                    User.mountID = Convert.ToUInt32(Pet.VirtualId);
                     User.ApplyEffect(77);
                     User.MoveTo(NewX2 + 1, NewY2 + 1);
                 }
@@ -3466,10 +3440,10 @@ namespace Butterfly.Messages
                 Pet.Statusses.Remove("eat");
                 Pet.Statusses.Remove("ded");
                 Pet.Statusses.Remove("jmp");
-                User.montandoBol = false;
-                User.montandoID = 0;
-                Pet.montandoBol = false;
-                Pet.montandoID = 0;
+                User.isMounted = false;
+                User.mountID = 0;
+                Pet.isMounted = false;
+                Pet.mountID = 0;
                 User.MoveTo(User.X + 1, User.Y + 1);
                 User.ApplyEffect(-1);
             }

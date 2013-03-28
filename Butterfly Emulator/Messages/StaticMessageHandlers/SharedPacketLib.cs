@@ -840,12 +840,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
 
         internal static void Ride(GameClientMessageHandler handler)
         {
-            handler.MountOnPet();
-        }
-
-        internal static void Unride(GameClientMessageHandler handler)
-        {
-            handler.CancelMountOnPet();
+            handler.MountPet();
         }
 
         internal static void SetLookTransfer(GameClientMessageHandler handler)

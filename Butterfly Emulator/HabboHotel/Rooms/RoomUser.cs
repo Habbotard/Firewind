@@ -68,10 +68,10 @@ namespace Butterfly.HabboHotel.Rooms
         internal bool moonwalkEnabled = false;
         internal bool isFlying = false;
         internal int flyk = 0;
-        internal bool montandoBol = false;
+        internal bool isMounted = false;
         internal bool sentadoBol = false;
         internal bool acostadoBol = false;
-        internal uint montandoID = 0;
+        internal uint mountID = 0;
 
         internal Point Coordinate
         {
@@ -732,7 +732,7 @@ namespace Butterfly.HabboHotel.Rooms
                     Message.AppendBoolean(PetData.HaveSaddle);
                     
                     
-                    Message.AppendBoolean(montandoBol);
+                    Message.AppendBoolean(isMounted);
                     Message.AppendInt32(0);
                     Message.AppendInt32(0);
                     Message.AppendString("");

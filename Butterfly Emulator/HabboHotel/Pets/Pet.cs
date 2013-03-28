@@ -349,7 +349,7 @@ namespace Butterfly.HabboHotel.Pets
 
             Nfo.AppendBoolean(HaveSaddle);
 
-            Nfo.AppendBoolean(ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUserByVirtualId(VirtualId).montandoBol);
+            Nfo.AppendBoolean(ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUserByVirtualId(VirtualId).isMounted);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);

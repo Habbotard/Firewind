@@ -462,14 +462,14 @@ namespace Butterfly.HabboHotel.Rooms
                         room.GetTeamManagerForBanzai().OnUserLeave(User);
                         room.GetTeamManagerForFreeze().OnUserLeave(User);
                     }
-                    if (User.montandoBol == true)
+                    if (User.isMounted == true)
                     {
-                        User.montandoBol = false;
-                        RoomUser usuarioVinculado = GetRoomUserByVirtualId((int)User.montandoID);
+                        User.isMounted = false;
+                        RoomUser usuarioVinculado = GetRoomUserByVirtualId((int)User.mountID);
                         if (usuarioVinculado != null)
                         {
-                            usuarioVinculado.montandoBol = false;
-                            usuarioVinculado.montandoID = 0;
+                            usuarioVinculado.isMounted = false;
+                            usuarioVinculado.mountID = 0;
 
                         }
                     }
@@ -853,7 +853,7 @@ namespace Butterfly.HabboHotel.Rooms
                 CoordItemSearch ItemSearch = new CoordItemSearch(room.GetGameMap().CoordinatedItems);
                 List<RoomItem> ItemsOnSquare = ItemSearch.GetAllRoomItemForSquare(User.X, User.Y);
                 double newZ;
-                if (User.montandoBol == true && User.IsPet == false)
+                if (User.isMounted == true && User.IsPet == false)
                 {
                     newZ = room.GetGameMap().SqAbsoluteHeight(User.X, User.Y, ItemsOnSquare) + 1;
                 }
@@ -1180,7 +1180,7 @@ namespace Butterfly.HabboHotel.Rooms
                 {
 
 
-                    if (room.GetGameMap().CanWalk(User.SetX, User.SetY, User.AllowOverride)||User.montandoBol==true)
+                    if (room.GetGameMap().CanWalk(User.SetX, User.SetY, User.AllowOverride)||User.isMounted==true)
                     {
                         room.GetGameMap().UpdateUserMovement(new Point(User.Coordinate.X, User.Coordinate.Y), new Point(User.SetX, User.SetY), User);
                         List<RoomItem> items = room.GetGameMap().GetCoordinatedItems(new Point(User.X, User.Y));
@@ -1229,9 +1229,9 @@ namespace Butterfly.HabboHotel.Rooms
 
                         UpdateUserStatus(User, false);
 
-                        if (User.montandoBol == true && User.IsPet == false)
+                        if (User.isMounted == true && User.IsPet == false)
                         {
-                            RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.montandoID));
+                            RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.mountID));
                             mascotaVinculada.IsWalking = false;
                             mascotaVinculada.RemoveStatus("mv");
 
@@ -1257,9 +1257,9 @@ namespace Butterfly.HabboHotel.Rooms
                         string mascote = "";
                         if (!User.isFlying)
                         {
-                            if (User.montandoBol == true&&User.IsPet==false)
+                            if (User.isMounted == true&&User.IsPet==false)
                             {
-                                RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.montandoID));
+                                RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.mountID));
                                 user = ("mv " + nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
                                 User.AddStatus("mv", + nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
                                 mascote = ("mv "+ nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
@@ -1306,17 +1306,17 @@ namespace Butterfly.HabboHotel.Rooms
                         if (User.acostadoBol == true)
                             User.acostadoBol = false;
 
-                        if (User.montandoBol == true&&User.IsPet==false)
+                        if (User.isMounted == true&&User.IsPet==false)
                         {
                             //Logging.WriteLine("Montaje");
-                            RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.montandoID));
+                            RoomUser mascotaVinculada = GetRoomUserByVirtualId(Convert.ToInt32(User.mountID));
 
                             // Temp fix for crash
                             // TODO: Remove the saddle effect
                             if (mascotaVinculada == null)
                             {
-                                User.montandoID = 0;
-                                User.montandoBol = false;
+                                User.mountID = 0;
+                                User.isMounted = false;
                                 continue;
                             }
                             mascotaVinculada.RotBody = newRot;
@@ -1342,7 +1342,7 @@ namespace Butterfly.HabboHotel.Rooms
                         if (!room.AllowWalkthrough)
                             room.GetGameMap().GameMap[nextX, nextY] = 0;
                     }
-                    if (!User.montandoBol)
+                    if (!User.isMounted)
                         User.UpdateNeeded = true;
                 }
                 else
