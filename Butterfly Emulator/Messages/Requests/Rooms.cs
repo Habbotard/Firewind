@@ -1142,7 +1142,6 @@ namespace Butterfly.Messages
         internal void SaveRoomData()
         {
             Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
-            RoomData oldRoomData = Room.RoomData;
 
             if (Room == null || !Room.CheckRights(Session, true))
             {
@@ -1174,7 +1173,8 @@ namespace Butterfly.Messages
                 formattedTags.Append(tag);
             }
 
-            int undef = Request.PopWiredInt32();
+            // not used
+            bool AllowTrade = (Request.PopWiredInt32() == 1);
             bool AllowPets = Request.PopWiredBoolean();
             bool AllowPetsEat = Request.PopWiredBoolean();
             bool AllowWalkthrough = Request.PopWiredBoolean();
