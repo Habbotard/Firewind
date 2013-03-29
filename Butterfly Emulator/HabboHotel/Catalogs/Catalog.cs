@@ -686,6 +686,14 @@ namespace Butterfly.HabboHotel.Catalogs
             }
         }
 
+        internal void PurchaseGift(GameClient session, int pageID, int offerID, string extraParameter, string recipient, string message, int wrapSpriteID, int strappingID, int color, bool showIdentity)
+        {
+            // check if it's a special gift, or just the classic free one
+            bool isBasicGift = (wrapSpriteID == 0 && strappingID == 0 && color == 0);
+
+
+        }
+
         internal static bool CheckPetName(string PetName)
         {
             if (PetName.Length < 1 || PetName.Length > 16)

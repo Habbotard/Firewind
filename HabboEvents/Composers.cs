@@ -53,7 +53,7 @@ namespace HabboEvents
         public static int OpenHelpTool = 2962;
         public static int CanCreateRoom = 3587;
         public static int OnCreateRoomInfo = 2471;
-        public static int RoomDataEdit = 214;
+        public static int RoomSettingsData = 214;
         public static int UpdateRoomOne = 554;
         public static int RoomAds = 2822;
         public static int PrepareRoomForUsers = 2466;
@@ -126,7 +126,7 @@ namespace HabboEvents
         public static int GetUserTags = 2272;
         public static int GivePowers = 212;
         public static int RemovePowers = 701;
-        public static int GetPowerList = 658;
+        public static int FlatControllerAdded = 658;
         public static int TypingStatus = 467;
         public static int RemoveObjectFromInventory = 1259;
         public static int AddFloorItemToRoom = 2302;

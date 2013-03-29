@@ -431,7 +431,7 @@ namespace Butterfly.Messages
 
             if (CurrentLoadingRoom.Type != "public" && CurrentLoadingRoom.UsersWithRights.Count > 0 && CurrentLoadingRoom.CheckRights(Session, true))
             {
-                GetResponse().Init(Outgoing.GetPowerList);
+                GetResponse().Init(Outgoing.FlatControllerAdded);
                 GetResponse().AppendUInt(CurrentLoadingRoom.RoomData.Id);
                 GetResponse().AppendInt32(CurrentLoadingRoom.UsersWithRights.Count);
                 foreach (uint i in CurrentLoadingRoom.UsersWithRights)
@@ -997,7 +997,7 @@ namespace Butterfly.Messages
             }
         }
 
-        internal void GetRoomEditData()//ill debug it, second,
+        internal void GetRoomSettings()
         {
             Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
@@ -1008,41 +1008,54 @@ namespace Butterfly.Messages
 
             Session.SendMessage(ButterflyEnvironment.GetGame().GetNavigator().SerializeFlatCategories(Session));
 
-            GetResponse().Init(Outgoing.RoomDataEdit);
-            GetResponse().AppendUInt(Room.RoomId);
-            GetResponse().AppendStringWithBreak(Room.Name);
-            GetResponse().AppendStringWithBreak(Room.Description);
-            GetResponse().AppendInt32(Room.State);
-            GetResponse().AppendInt32(Room.Category);
-            GetResponse().AppendInt32(Room.UsersMax);
-            GetResponse().AppendInt32(((Room.RoomData.Model.MapSizeX * Room.RoomData.Model.MapSizeY) > 100) ? 50 : 25); // Max can be elected
-            GetResponse().AppendInt32(Room.TagCount);
+            GetResponse().Init(Outgoing.RoomSettingsData);
+            GetResponse().AppendUInt(Room.RoomId); // roomId
+            GetResponse().AppendStringWithBreak(Room.Name); // name
+            GetResponse().AppendStringWithBreak(Room.Description); // description
+            GetResponse().AppendInt32(Room.State); // doorMode
+            GetResponse().AppendInt32(Room.Category); // categoryId
+            GetResponse().AppendInt32(Room.UsersMax); // maximumVisitors
+            GetResponse().AppendInt32(((Room.RoomData.Model.MapSizeX * Room.RoomData.Model.MapSizeY) > 100) ? 50 : 25); // maximumVisitorsLimit
 
+            GetResponse().AppendInt32(Room.TagCount); // tags count
             foreach (string Tag in Room.Tags.ToArray())
             {
                 GetResponse().AppendStringWithBreak(Tag);
             }
 
-            GetResponse().AppendInt32(Room.UsersWithRights.Count); // users /w rights coun
-            GetResponse().AppendInt32(Room.AllowPets ? 1 : 0); // allows pets in room - pet system lacking, so always off
-            GetResponse().AppendInt32(Room.AllowPetsEating ? 1 : 0); // allows pets to eat your food - pet system lacking, so always off
-            GetResponse().AppendInt32(Room.AllowWalkthrough ? 1 : 0);
-            GetResponse().AppendInt32(Room.Hidewall ? 1 : 0);
-            GetResponse().AppendInt32(Room.WallThickness);
-            GetResponse().AppendInt32(Room.FloorThickness);
+            //GetResponse().AppendInt32(Room.UsersWithRights.Count); // controllers count
+
+            //foreach (uint userID in Room.UsersWithRights) // FlatControllerData
+            //{
+            //    Habbo xUser = ButterflyEnvironment.getHabboForId(userID);
+            //    GetResponse().AppendUInt(xUser.Id); // userId
+            //    GetResponse().AppendStringWithBreak(xUser.Username); // userName
+            //}
+
+            GetResponse().AppendInt32(Room.CanTradeInRoom ? 1 : 0); // tradingAllowed
+
+            GetResponse().AppendInt32(Room.AllowPets ? 1 : 0); // allowPets
+            GetResponse().AppendInt32(Room.AllowPetsEating ? 1 : 0); // allowFoodConsume
+            GetResponse().AppendInt32(Room.AllowWalkthrough ? 1 : 0); // allowWalkThrough
+            GetResponse().AppendInt32(Room.Hidewall ? 1 : 0); // hideWalls
+
+            GetResponse().AppendInt32(Room.WallThickness); // wallThickness
+            GetResponse().AppendInt32(Room.FloorThickness); // floorThickness
+
             SendResponse();
 
             if (Room.UsersWithRights.Count > 0)
             {
-                GetResponse().Init(Outgoing.GetPowerList);
-                GetResponse().AppendUInt(Room.RoomData.Id);
-                GetResponse().AppendInt32(Room.UsersWithRights.Count);
+                GetResponse().Init(Outgoing.FlatControllerAdded);
 
-                foreach (uint i in Room.UsersWithRights)
+                GetResponse().AppendUInt(Room.RoomData.Id); // flatId
+                GetResponse().AppendInt32(Room.UsersWithRights.Count); // controllers count
+
+                foreach (uint userID in Room.UsersWithRights) // FlatControllerData
                 {
-                    Habbo xUser = ButterflyEnvironment.getHabboForId(i);
-                    GetResponse().AppendUInt(xUser.Id);
-                    GetResponse().AppendStringWithBreak(xUser.Username);
+                    Habbo user = ButterflyEnvironment.getHabboForId(userID);
+                    GetResponse().AppendUInt(user.Id); // userId
+                    GetResponse().AppendStringWithBreak(user.Username); // userName
                 }
                 SendResponse();
             }
@@ -1139,7 +1152,7 @@ namespace Butterfly.Messages
             SendResponse();
         }
 
-        internal void SaveRoomData()
+        internal void SaveRoomSettings()
         {
             Room Room = ButterflyEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
@@ -1148,15 +1161,15 @@ namespace Butterfly.Messages
                 return;
             }
 
-            int Id = Request.PopWiredInt32();
-            string Name = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
-            string Description = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
-            int State = Request.PopWiredInt32();
-            string Password = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString());
-            int MaxUsers = Request.PopWiredInt32();
-            int CategoryId = Request.PopWiredInt32();
-            int TagCount = Request.PopWiredInt32();
+            int Id = Request.PopWiredInt32(); // roomId
+            string Name = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString()); // name
+            string Description = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString()); // description
+            int State = Request.PopWiredInt32(); // doorMode
+            string Password = ButterflyEnvironment.FilterInjectionChars(Request.PopFixedString()); // password
+            int MaxUsers = Request.PopWiredInt32(); // maximumVisitors
+            int CategoryId = Request.PopWiredInt32(); // categoryId
 
+            int TagCount = Request.PopWiredInt32(); // tags count
             List<string> Tags = new List<string>();
             StringBuilder formattedTags = new StringBuilder();
 
@@ -1175,12 +1188,13 @@ namespace Butterfly.Messages
 
             // not used
             bool AllowTrade = (Request.PopWiredInt32() == 1);
-            bool AllowPets = Request.PopWiredBoolean();
-            bool AllowPetsEat = Request.PopWiredBoolean();
-            bool AllowWalkthrough = Request.PopWiredBoolean();
-            bool Hidewall = Request.PopWiredBoolean();
-            int WallThickness = Request.PopWiredInt32();
-            int FloorThickness = Request.PopWiredInt32();
+
+            bool AllowPets = Request.PopWiredBoolean(); // allowPets
+            bool AllowPetsEat = Request.PopWiredBoolean(); // allowFoodConsume
+            bool AllowWalkthrough = Request.PopWiredBoolean(); // allowWalkThrough
+            bool Hidewall = Request.PopWiredBoolean(); // hideWalls
+            int WallThickness = Request.PopWiredInt32(); // wallThickness
+            int FloorThickness = Request.PopWiredInt32(); // floorThickness
 
          
 

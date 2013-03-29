@@ -24,15 +24,6 @@ namespace Butterfly.Messages
 
         internal void InitSecretKey()
         {
-            /**
-            string CipherPublickey = Request.PopFixedString();
-
-            if (!ButterflyEnvironment.globalCrypto.InitializeRC4ToSession(Session, CipherPublickey))
-            {
-                Logging.WriteLine("Error");
-                return;
-            }
-            **/
             Session.TimePingedReceived = DateTime.Now;
             Response.Init(Outgoing.SecretKeyComposer);
             Response.AppendString("nocryptonokey");

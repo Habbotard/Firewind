@@ -85,7 +85,7 @@ namespace Butterfly.Messages
             //}
         }
 
-        internal void PurchaseGift() // (k:int, k:int, k:String, k:String, k:String, k:int, k:int, k:int, k:Boolean)
+        internal void PurchaseFromCatalogAsGift() // (k:int, k:int, k:String, k:String, k:String, k:int, k:int, k:int, k:Boolean)
         {
             int PageId = Request.PopWiredInt32(); // pageId
             uint ItemId = Request.PopWiredUInt(); // offerId
@@ -96,6 +96,7 @@ namespace Butterfly.Messages
             int Lazo = Request.PopWiredInt32();
             int Color = Request.PopWiredInt32();
             bool showIdentity = Request.PopWiredBoolean();
+
             //bool dnow = Request.PopWiredBoolean();
             Logging.LogDebug(string.Format("Present info:\r\n   ID: {0}\r\n  Data: {1}", SpriteId, ExtraData));
             //Logging.WriteLine("PageId: " + PageId + "; ItemId: " + ItemId + "; ExtraData: " + ExtraData + "; User: " + GiftUser + "; Message: " + GiftMessage + "; SpriteId: " + SpriteId + "; Color: " + Color + "; Lazo: " + Lazo);

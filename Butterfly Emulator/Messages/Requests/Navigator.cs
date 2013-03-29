@@ -129,7 +129,7 @@ namespace Butterfly.Messages
 
         }
 
-        internal void GetPopularRooms()
+        internal void PopularRoomsSearch()
         {
             Butterfly.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();
             if (targetHabbo == null)

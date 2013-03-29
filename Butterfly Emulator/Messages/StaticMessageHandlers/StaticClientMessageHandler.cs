@@ -52,7 +52,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handlers.Add(Incoming.OpenCatalogPage, new StaticRequestHandler(SharedPacketLib.GetCatalogPage));
             handlers.Add(Incoming.RedeemVoucher, new StaticRequestHandler(SharedPacketLib.RedeemVoucher));
             handlers.Add(Incoming.PurchaseCatalogItem, new StaticRequestHandler(SharedPacketLib.HandlePurchase));
-            handlers.Add(Incoming.PurchaseGift, new StaticRequestHandler(SharedPacketLib.PurchaseGift));
+            handlers.Add(Incoming.PurchaseFromCatalogAsGift, new StaticRequestHandler(SharedPacketLib.PurchaseFromCatalogAsGift));
             handlers.Add(Incoming.GetRecyclerPrizes, new StaticRequestHandler(SharedPacketLib.GetRecyclerRewards));
             handlers.Add(Incoming.CatalogData1, new StaticRequestHandler(SharedPacketLib.GetCataData1));
             handlers.Add(Incoming.CatalogData2, new StaticRequestHandler(SharedPacketLib.GetCataData2));
@@ -92,7 +92,7 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GoToHotelView, new StaticRequestHandler(SharedPacketLib.GoToHotelView));
             handlers.Add(Incoming.LoadCategorys, new StaticRequestHandler(SharedPacketLib.GetFlatCats));
             handlers.Add(Incoming.LoadFeaturedRooms, new StaticRequestHandler(SharedPacketLib.GetPubs));
-            handlers.Add(Incoming.LoadAllRooms, new StaticRequestHandler(SharedPacketLib.GetPopularRooms));
+            handlers.Add(Incoming.PopularRoomsSearch, new StaticRequestHandler(SharedPacketLib.PopularRoomsSearch));
             handlers.Add(Incoming.HighRatedRooms, new StaticRequestHandler(SharedPacketLib.GetHighRatedRooms));
             handlers.Add(Incoming.RoomsOfMyFriends, new StaticRequestHandler(SharedPacketLib.GetFriendsRooms));
             handlers.Add(Incoming.RoomsWhereMyFriends, new StaticRequestHandler(SharedPacketLib.GetRoomsWithFriends));
@@ -110,8 +110,8 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handlers.Add(Incoming.CanCreateRoom, new StaticRequestHandler(SharedPacketLib.CanCreateRoom));
             handlers.Add(Incoming.CreateRoom, new StaticRequestHandler(SharedPacketLib.CreateRoom));
             handlers.Add(Incoming.LoadFirstRoomData, new StaticRequestHandler(SharedPacketLib.enterOnRoom));
-            handlers.Add(Incoming.GetRoomData, new StaticRequestHandler(SharedPacketLib.GetRoomEditData));
-            handlers.Add(Incoming.SaveRoomData, new StaticRequestHandler(SharedPacketLib.SaveRoomData));
+            handlers.Add(Incoming.GetRoomSettings, new StaticRequestHandler(SharedPacketLib.GetRoomSettings));
+            handlers.Add(Incoming.SaveRoomSettings, new StaticRequestHandler(SharedPacketLib.SaveRoomSettings));
             handlers.Add(Incoming.GiveRights, new StaticRequestHandler(SharedPacketLib.GiveRights));
             handlers.Add(Incoming.RemoveRightsFrom, new StaticRequestHandler(SharedPacketLib.TakeRights));
             handlers.Add(Incoming.RemoveAllRights, new StaticRequestHandler(SharedPacketLib.TakeAllRights));

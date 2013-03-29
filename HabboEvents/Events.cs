@@ -31,13 +31,13 @@ namespace HabboEvents
 		public static int CatalogGetRace = 2738;
 		public static int CheckPetName = 926;
 		public static int PurchaseCatalogItem = 1581;
-		public static int PurchaseGift = 1574;
+        public static int PurchaseFromCatalogAsGift = 1574;
 		public static int OpenGift = 3897;
 		public static int StartEffect = 2996;
 		public static int EnableEffect = 2989;
 		public static int RedeemVoucher = 1771;
 		public static int LoadFeaturedRooms = 3598;
-		public static int LoadAllRooms = 2704;
+        public static int PopularRoomsSearch = 2704;
 		public static int LoadMyRooms = 1459;
 		public static int LoadPopularTags = 3569;
 		public static int RoomsWhereMyFriends = 3740;
@@ -48,8 +48,8 @@ namespace HabboEvents
 		public static int SearchRoomByName = 542;
 		public static int CanCreateRoom = 2933;
 		public static int CreateRoom = 1665;
-		public static int GetRoomData = 65;
-		public static int SaveRoomData = 384;
+        public static int GetRoomSettings = 65;
+        public static int SaveRoomSettings = 384;
 		public static int LoadFirstRoomData = 1730;
 		public static int LoadHeightMap = 2709;
 		public static int AddUserToRoom = 3873;

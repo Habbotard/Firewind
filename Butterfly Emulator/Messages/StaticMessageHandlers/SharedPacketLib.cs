@@ -78,9 +78,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handler.InitStream();
         }
 
-        internal static void PurchaseGift(GameClientMessageHandler handler)
+        internal static void PurchaseFromCatalogAsGift(GameClientMessageHandler handler)
         {
-            handler.PurchaseGift();
+            handler.PurchaseFromCatalogAsGift();
         }
 
         internal static void GetRecyclerRewards(GameClientMessageHandler handler)
@@ -368,9 +368,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handler.GetRoomInfo();
         }
 
-        internal static void GetPopularRooms(GameClientMessageHandler handler)
+        internal static void PopularRoomsSearch(GameClientMessageHandler handler)
         {
-            handler.GetPopularRooms();
+            handler.PopularRoomsSearch();
         }
 
         internal static void GetHighRatedRooms(GameClientMessageHandler handler)
@@ -533,9 +533,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handler.CreateRoom();
         }
 
-        internal static void GetRoomEditData(GameClientMessageHandler handler)
+        internal static void GetRoomSettings(GameClientMessageHandler handler)
         {
-            handler.GetRoomEditData();
+            handler.GetRoomSettings();
         }
 
         internal static void SaveRoomIcon(GameClientMessageHandler handler)
@@ -543,9 +543,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handler.SaveRoomIcon();
         }
 
-        internal static void SaveRoomData(GameClientMessageHandler handler)
+        internal static void SaveRoomSettings(GameClientMessageHandler handler)
         {
-            handler.SaveRoomData();
+            handler.SaveRoomSettings();
         }
 
         internal static void GiveRights(GameClientMessageHandler handler)
