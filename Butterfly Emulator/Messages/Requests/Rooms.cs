@@ -260,7 +260,7 @@ namespace Butterfly.Messages
                 RoomItem[] floorItems = CurrentLoadingRoom.GetRoomItemHandler().mFloorItems.Values.ToArray();
                 RoomItem[] wallItems = CurrentLoadingRoom.GetRoomItemHandler().mWallItems.Values.ToArray();
 
-                Response.Init(Outgoing.SerializeFloorItems);
+                Response.Init(Outgoing.Objects);
                 Response.AppendInt32(1); // count of owners
 
                 // serialize all owners

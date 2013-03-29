@@ -1059,6 +1059,8 @@ namespace Butterfly.HabboHotel.Items
                         Habbo Purchaser = ButterflyEnvironment.getHabboForId(PurchaserId);
                         if (Purchaser != null)
                         {
+                            // "MESSAGE", "PRODUCT_CODE", "EXTRA_PARAM", "PURCHASER_NAME", "PURCHASER_FIGURE";
+
                             Message.AppendInt32(1);
                             Message.AppendInt32(6);
                             Message.AppendString("EXTRA_PARAM");

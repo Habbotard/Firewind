@@ -91,7 +91,7 @@ namespace HabboEvents
         public static int HeightMap = 2644;
         public static int RelativeMap = 3482;
         public static int OpenGift = 1252;
-        public static int SerializeFloorItems = 362;
+        public static int Objects = 362;
         public static int SerializeWallItems = 801;
         public static int FloodFilter = 3153;
         public static int SetRoomUser = 780;
