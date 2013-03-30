@@ -280,7 +280,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 Item.InteractingUser = 0;
             }
         }
-        
+
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null)
@@ -366,7 +366,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 }
             }
         }
-       
+
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
             Item.data = new StringData("0");
@@ -603,7 +603,8 @@ namespace Butterfly.HabboHotel.Items.Interactors
                     oldValue = 0;
                     Item.pendingReset = false;
                 }
-                else {
+                else
+                {
                     oldValue = oldValue + 60;
                     Item.UpdateNeeded = false;
                 }
@@ -682,7 +683,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             if (Item.team == Team.none)
                 return;
 
-           ((StringData)Item.data).Data = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
+            ((StringData)Item.data).Data = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
             Item.UpdateState(false, true);
         }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
@@ -802,7 +803,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 }
                 else
                 {
-                    if (oldValue == 0 || oldValue == 30 || oldValue == 60  || oldValue == 120 || oldValue == 180 || oldValue == 300 || oldValue == 600)
+                    if (oldValue == 0 || oldValue == 30 || oldValue == 60 || oldValue == 120 || oldValue == 180 || oldValue == 300 || oldValue == 600)
                     {
                         if (oldValue == 0)
                             oldValue = 30;
@@ -1725,5 +1726,70 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 }
             }
         }
-    }  
+    }
+
+    class InteractorMannequin : FurniInteractor
+    {
+        internal override void OnPlace(GameClient Session, RoomItem Item)
+        {
+
+        }
+
+        internal override void OnRemove(GameClient Session, RoomItem Item)
+        {
+
+        }
+
+        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        {
+            Room Room = Session.GetHabbo().CurrentRoom;
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            MapStuffData data = (MapStuffData)Item.data;
+
+            string figure = data.Data["FIGURE"];
+            string gender = data.Data["GENDER"];
+
+            // We gotta keep our skin and headgear!
+            string filteredLook = "";
+            string[] sp = Session.GetHabbo().Look.Split('.');
+            foreach (string s in sp)
+            {
+                if ((s.StartsWith("hd") || s.StartsWith("ha") || s.StartsWith("he") || s.StartsWith("fa") || s.StartsWith("ea") || s.StartsWith("hr")))
+                {
+                    filteredLook += s + ".";
+                }
+            }
+            filteredLook += figure;
+
+            using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
+            {
+
+                dbClient.setQuery("UPDATE users SET gender = @gender, look = @look WHERE id = @id");
+                dbClient.addParameter("id", Session.GetHabbo().Id);
+                dbClient.addParameter("gender", gender);
+                dbClient.addParameter("look", filteredLook);
+                dbClient.runQuery();
+            }
+
+            Session.GetHabbo().Look = filteredLook;
+            Session.GetHabbo().Gender = gender;
+
+            Session.GetMessageHandler().GetResponse().Init(Outgoing.UpdateUserInformation);
+            Session.GetMessageHandler().GetResponse().AppendInt32(-1);
+            Session.GetMessageHandler().GetResponse().AppendStringWithBreak(Session.GetHabbo().Look);
+            Session.GetMessageHandler().GetResponse().AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
+            Session.GetMessageHandler().GetResponse().AppendStringWithBreak(Session.GetHabbo().Motto);
+            Session.GetMessageHandler().GetResponse().AppendInt32(Session.GetHabbo().AchievementPoints);
+            Session.GetMessageHandler().SendResponse();
+
+            ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
+            RoomUpdate.AppendInt32(User.VirtualId);
+            RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
+            RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
+            RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Motto);
+            RoomUpdate.AppendInt32(Session.GetHabbo().AchievementPoints);
+            Room.SendMessage(RoomUpdate);
+        }
+
+    }
 }

@@ -31,8 +31,8 @@ namespace Butterfly.Messages.StaticMessageHandlers
             }
             else
             {
-                if (unknownPackets.Contains(message.Id))
-                    return;
+                //if (unknownPackets.Contains(message.Id))
+                    //return;
                 unknownPackets.Add(message.Id);
                 Logging.LogDebug("Unknown packet ID: " + message.Id);
             }
@@ -190,6 +190,9 @@ namespace Butterfly.Messages.StaticMessageHandlers
             handlers.Add(2340, new StaticRequestHandler(SharedPacketLib.Stream));
             handlers.Add(2011, new StaticRequestHandler(SharedPacketLib.SendStream));
             handlers.Add(1591, new StaticRequestHandler(SharedPacketLib.StreamLike));
+
+            handlers.Add(Incoming.MannequeNameChange, new StaticRequestHandler(SharedPacketLib.MannequeNameChange));
+            handlers.Add(Incoming.MannequeFigureChange, new StaticRequestHandler(SharedPacketLib.MannequeFigureChange));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

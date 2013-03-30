@@ -629,7 +629,7 @@ namespace Butterfly.HabboHotel.Rooms
 
                     foreach (RoomItem Item in mMovedItems.Values)
                     {
-                        if (!string.IsNullOrEmpty((string)Item.data.GetData()))
+                        //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
                         {
                             extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
                             extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
@@ -837,10 +837,10 @@ namespace Butterfly.HabboHotel.Rooms
             }
 
             // Verify the rotation is correct
-            if (newRot != 0 && newRot != 2 && newRot != 4 && newRot != 6 && newRot != 8)
-            {
-                newRot = 0;
-            }
+            //if (newRot != 0 && newRot != 2 && newRot != 4 && newRot != 6 && newRot != 8)
+            //{
+            //    newRot = 0;
+            //}
 
             //Item.GetX = newX;
             //Item.GetY = newY;

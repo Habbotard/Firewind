@@ -2468,7 +2468,6 @@ namespace Butterfly.Messages
                 hasRights = true;
             }
 
-            string oldData = ((StringData)Item.data).Data;
             int request = Request.PopWiredInt32();
             Item.Interactor.OnTrigger(Session, Item, request, hasRights);
             Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
@@ -3576,6 +3575,72 @@ namespace Butterfly.Messages
         {
             uint itemID = Request.PopWiredUInt();
             WiredSaver.HandleConditionSave(itemID, Session.GetHabbo().CurrentRoom, Request);
+        }
+
+        internal void MannequeNameChange()
+        {
+            if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
+                return;
+
+            int itemID = Request.PopWiredInt32();
+            string newName = Request.PopFixedString();
+
+            RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
+            if (item == null || item.data.GetType() != 1)
+                return;
+
+            MapStuffData data = ((MapStuffData)item.data);
+            if (!data.Data.ContainsKey("OUTFIT_NAME")) // this isn't any mannequin!
+                return;
+
+            data.Data["OUTFIT_NAME"] = newName;
+
+            // Send update to room
+            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
+            Session.GetHabbo().CurrentRoom.SendMessage(Message);
+
+            // Add to MySQL save queue
+            Session.GetHabbo().CurrentRoom.GetRoomItemHandler().UpdateItem(item);
+        }
+
+        internal void MannequeFigureChange()
+        {
+            if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
+                return;
+
+            int itemID = Request.PopWiredInt32();
+
+            RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
+            if (item == null || item.data.GetType() != 1)
+                return;
+
+            MapStuffData data = ((MapStuffData)item.data);
+            if (!data.Data.ContainsKey("OUTFIT_NAME")) // this isn't any mannequin!
+                return;
+
+            // We gotta remove all headgear!
+            string filteredLook = "";
+            string[] sp = Session.GetHabbo().Look.Split('.');
+            foreach (string s in sp)
+            {
+                if(!(s.StartsWith("hd") || s.StartsWith("ha") || s.StartsWith("he") || s.StartsWith("fa") || s.StartsWith("ea") || s.StartsWith("hr")))
+                {
+                    filteredLook += "." + s;
+                }
+            }
+            filteredLook = filteredLook.Substring(1);
+
+            data.Data["FIGURE"] = filteredLook;
+            data.Data["GENDER"] = Session.GetHabbo().Gender;
+
+            // Send update to room
+            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
+            Session.GetHabbo().CurrentRoom.SendMessage(Message);
+
+            // Add to MySQL save queue
+            Session.GetHabbo().CurrentRoom.GetRoomItemHandler().UpdateItem(item);
         }
 
         //internal void SaveWiredWithFurniture()

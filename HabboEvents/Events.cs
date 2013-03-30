@@ -161,5 +161,8 @@ namespace HabboEvents
 
         public static int ThrowDice = 2372;
         public static int DiceOff = 301;
+
+        public static int MannequeNameChange = 2036;
+        public static int MannequeFigureChange = 2868;
     }
 }

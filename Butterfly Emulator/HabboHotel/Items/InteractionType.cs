@@ -114,7 +114,8 @@ namespace Butterfly.HabboHotel.Items
         wireSplitter,
         wireStandard,
 
-        gift
+        gift,
+        mannequin
     }
 
     class InterractionTypes
@@ -333,6 +334,8 @@ namespace Butterfly.HabboHotel.Items
                     return InteractionType.puzzlebox;
                 case "gift":
                     return InteractionType.gift;
+                case "mannequin":
+                    return InteractionType.mannequin;
                 //case "":
                 //case "default":
                 //    return InteractionType.none;
@@ -810,6 +813,8 @@ namespace Butterfly.HabboHotel.Items
                     return "puzzlebox";
                 case InteractionType.gift:
                     return "gift";
+                case InteractionType.mannequin:
+                    return "mannequin";
                 default:
                     {
                         Logging.LogException("Unknown interaction type in to string code: " + pType);

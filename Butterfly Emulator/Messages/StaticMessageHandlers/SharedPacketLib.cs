@@ -972,5 +972,15 @@ namespace Butterfly.Messages.StaticMessageHandlers
         {
             handler.GetCurrentQuest();
         }
+
+        internal static void MannequeNameChange(GameClientMessageHandler handler)
+        {
+            handler.MannequeNameChange();
+        }
+
+        internal static void MannequeFigureChange(GameClientMessageHandler handler)
+        {
+            handler.MannequeFigureChange();
+        }
     }
 }

@@ -568,6 +568,14 @@ namespace Butterfly.HabboHotel.Catalogs
                         itemData = new StringData(Session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + ButterflyEnvironment.FilterInjectionChars(extraParameter, true));
                         break;
 
+                    //case InteractionType.mannequin:
+                    //    MapStuffData data = new MapStuffData();
+                    //    data.Data.Add("OUTFIT_NAME", "");
+                    //    data.Data.Add("FIGURE", "");
+                    //    data.Data.Add("GENDER", "");
+                    //    itemData = data;
+                    //    break;
+
                     default:
                         itemData = new StringData("");
                         break;
@@ -785,6 +793,14 @@ namespace Butterfly.HabboHotel.Catalogs
                                     result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(songID.ToString()), 0, true, false, songID));
                                     break;
                                 }
+                            case InteractionType.mannequin:
+                                MapStuffData data = new MapStuffData();
+                                data.Data.Add("OUTFIT_NAME", "");
+                                data.Data.Add("FIGURE", "hr-515-33.hd-600-1.ch-635-70.lg-716-66-62.sh-735-68");
+                                data.Data.Add("GENDER", "M");
+
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, data, 0, true, false, songID));
+                                break;
 
                             default:
 

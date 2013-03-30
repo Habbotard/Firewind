@@ -319,6 +319,8 @@ namespace Butterfly.HabboHotel.Items
                         return new InteractorIgnore();
                     case InteractionType.jukebox:
                         return new InteractorJukebox();
+                    case InteractionType.mannequin:
+                        return new InteractorMannequin();
 
                     case InteractionType.none:
                     default:
