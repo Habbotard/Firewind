@@ -30,7 +30,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser != 0)
             {
@@ -65,7 +65,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser != 0)
             {
@@ -129,20 +129,20 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
             Item.UpdateState(true, false);
         }
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
         }
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
-            if (Item.ExtraData != "-1")
+            if (Item.data.GetData() != "-1")
             {
-                Item.ExtraData = "-1";
+                Item.data = new StringData("-1");
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(3, true);
             }
@@ -164,16 +164,16 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             if (Gamemap.TilesTouching(Item.GetX, Item.GetY, User.X, User.Y))
             {
-                if (Item.ExtraData != "-1")
+                if (Item.data.GetData() != "-1")
                 {
                     if (Request == -1)
                     {
-                        Item.ExtraData = "0";
+                        Item.data = new StringData("0");
                         Item.UpdateState();
                     }
                     else
                     {
-                        Item.ExtraData = "-1";
+                        Item.data = new StringData("-1");
                         Item.UpdateState(false, true);
                         Item.ReqUpdate(4, true);
                     }
@@ -190,13 +190,13 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "-1";
+            ((StringData)Item.data).Data = "-1";
             Item.ReqUpdate(10, true);
         }
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "-1";
+            ((StringData)Item.data).Data = "-1";
         }
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
@@ -206,9 +206,9 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 return;
             }
 
-            if (Item.ExtraData != "-1")
+            if (Item.data.GetData() != "-1")
             {
-                Item.ExtraData = "-1";
+                ((StringData)Item.data).Data = "-1";
                 Item.UpdateState();
                 Item.ReqUpdate(10, true);
             }
@@ -219,12 +219,12 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "-1";
+            ((StringData)Item.data).Data = "-1";
         }
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "-1";
+            ((StringData)Item.data).Data = "-1";
         }
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
@@ -234,9 +234,9 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 return;
             }
 
-            if (Item.ExtraData != "0")
+            if (Item.data.GetData() != "0")
             {
-                Item.ExtraData = "0";
+                Item.data = new StringData("0");
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(10, true);
             }
@@ -247,7 +247,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser != 0)
             {
@@ -265,7 +265,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser != 0)
             {
@@ -326,12 +326,12 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
         }
 
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
         }
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
@@ -341,9 +341,9 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 return;
             }
 
-            if (Item.ExtraData == "0")
+            if (Item.data.GetData() == "0")
             {
-                Item.ExtraData = "1";
+                ((StringData)Item.data).Data = "1";
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(4, true);
             }
@@ -354,7 +354,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
     {
         internal override void OnPlace(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser > 0)
             {
@@ -369,7 +369,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
        
         internal override void OnRemove(GameClient Session, RoomItem Item)
         {
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
 
             if (Item.InteractingUser > 0)
             {
@@ -384,7 +384,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
-            if (Item.ExtraData != "1" && Item.GetBaseItem().VendingIds.Count >= 1 && Item.InteractingUser == 0 && Session != null)
+            if (((StringData)Item.data).Data != "1" && Item.GetBaseItem().VendingIds.Count >= 1 && Item.InteractingUser == 0 && Session != null)
             {
                 RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
@@ -407,7 +407,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
                 Item.ReqUpdate(2, true);
 
-                Item.ExtraData = "1";
+                ((StringData)Item.data).Data = "1";
                 Item.UpdateState(false, true);
             }
         }
@@ -449,7 +449,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             try
             {
-                currentMode = int.Parse(Item.ExtraData);
+                currentMode = int.Parse(Item.data.GetData().ToString());
             }
             catch // (Exception e)
             {
@@ -469,7 +469,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 newMode = currentMode + 1;
             }
 
-            Item.ExtraData = newMode.ToString();
+            Item.data = new StringData(newMode.ToString());
             Item.UpdateState();
         }
     }
@@ -523,7 +523,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             try
             {
-                currentMode = int.Parse(Item.ExtraData);
+                currentMode = int.Parse(Item.data.GetData().ToString());
             }
             catch //(Exception e)
             {
@@ -565,7 +565,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 //}
             }
 
-            Item.ExtraData = newMode.ToString();
+            Item.data = new StringData(newMode.ToString());
             Item.UpdateState();
             Item.GetRoom().GetGameMap().updateMapForItem(Item);
             //Item.GetRoom().GenerateMaps();
@@ -586,11 +586,11 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             int oldValue = 0;
 
-            if (!string.IsNullOrEmpty(Item.ExtraData))
+            if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             {
                 try
                 {
-                    oldValue = int.Parse(Item.ExtraData);
+                    oldValue = int.Parse((string)Item.data.GetData());
                 }
                 catch { }
             }
@@ -615,7 +615,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             }
 
 
-            Item.ExtraData = oldValue.ToString();
+            Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
         }
     }
@@ -682,7 +682,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             if (Item.team == Team.none)
                 return;
 
-            Item.ExtraData = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
+           ((StringData)Item.data).Data = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
             Item.UpdateState(false, true);
         }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
@@ -696,11 +696,11 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             int oldValue = 0;
 
-            if (!string.IsNullOrEmpty(Item.ExtraData))
+            if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             {
                 try
                 {
-                    oldValue = int.Parse(Item.ExtraData);
+                    oldValue = int.Parse((string)Item.data.GetData());
                 }
                 catch { }
             }
@@ -719,7 +719,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
                 oldValue = 0;
             }
 
-            Item.ExtraData = oldValue.ToString();
+            Item.data = new StringData(oldValue.ToString());
             Item.UpdateState(false, true);
         }
 
@@ -739,7 +739,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             if (Item.team == Team.none)
                 return;
 
-            Item.ExtraData = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
+            ((StringData)Item.data).Data = Item.GetRoom().GetGameManager().Points[(int)Item.team].ToString();
             Item.UpdateState(false, true);
         }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
@@ -754,7 +754,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             Item.GetRoom().GetGameManager().Points[(int)Item.team] = 0;
 
-            Item.ExtraData = "0";
+            Item.data = new StringData("0");
             Item.UpdateState();
         }
 
@@ -784,11 +784,11 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             int oldValue = 0;
 
-            if (!string.IsNullOrEmpty(Item.ExtraData))
+            if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             {
                 try
                 {
-                    oldValue = int.Parse(Item.ExtraData);
+                    oldValue = int.Parse((string)Item.data.GetData());
                 }
                 catch { }
             }
@@ -841,7 +841,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             }
 
 
-            Item.ExtraData = oldValue.ToString();
+            Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
         }
     }
@@ -915,11 +915,11 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             int oldValue = 0;
 
-            if (!string.IsNullOrEmpty(Item.ExtraData))
+            if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             {
                 try
                 {
-                    oldValue = int.Parse(Item.ExtraData);
+                    oldValue = int.Parse((string)Item.data.GetData());
                 }
                 catch { }
             }
@@ -972,7 +972,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             }
 
 
-            Item.ExtraData = oldValue.ToString();
+            Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
         }
     }
@@ -1000,11 +1000,11 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             //int oldValue = 0;
 
-            //if (!string.IsNullOrEmpty(Item.ExtraData))
+            //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             //{
             //    try
             //    {
-            //        oldValue = int.Parse(Item.ExtraData);
+            //        oldValue = int.Parse((string)Item.data.GetData());
             //    }
             //    catch { }
             //}
@@ -1014,7 +1014,7 @@ namespace Butterfly.HabboHotel.Items.Interactors
             //else
             //    oldValue = 0;
 
-            //Item.ExtraData = oldValue.ToString();
+            //Item.data = new StringData(oldValue.ToString());
             //Item.UpdateState();
         }
     }
@@ -1029,18 +1029,18 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
             int oldValue = 0;
 
-            if (!string.IsNullOrEmpty(Item.ExtraData))
+            if (!string.IsNullOrEmpty((string)Item.data.GetData()))
             {
                 try
                 {
-                    oldValue = int.Parse(Item.ExtraData);
+                    oldValue = int.Parse((string)Item.data.GetData());
                 }
                 catch { }
             }
             oldValue += 1;
             //Logging.WriteLine(oldValue.ToString());
 
-            Item.ExtraData = oldValue.ToString();
+            Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
         }
     }
@@ -1635,15 +1635,15 @@ namespace Butterfly.HabboHotel.Items.Interactors
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
-            /*if (Item.ExtraData == "1")
+            /*if (((StringData)Item.data).Data == "1")
             {
                 Item.GetRoom().GetRoomMusicController().Stop();
-                Item.ExtraData = "0";
+                Item.data = new StringData("0");
             }
             else
             {
                 Item.GetRoom().GetRoomMusicController().Start();
-                Item.ExtraData = "1";
+                ((StringData)Item.data).Data = "1";
             }
 
             Item.UpdateState();*/

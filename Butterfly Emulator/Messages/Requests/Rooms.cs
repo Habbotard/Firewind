@@ -2468,7 +2468,7 @@ namespace Butterfly.Messages
                 hasRights = true;
             }
 
-            string oldData = Item.ExtraData;
+            string oldData = ((StringData)Item.data).Data;
             int request = Request.PopWiredInt32();
             Item.Interactor.OnTrigger(Session, Item, request, hasRights);
             Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
@@ -2561,7 +2561,7 @@ namespace Butterfly.Messages
             // @p181855059CFF9C stickynotemsg
             Response.Init(Outgoing.OpenPostIt);
             Response.AppendStringWithBreak(Item.Id.ToString());
-            Response.AppendStringWithBreak(Item.ExtraData);
+            Response.AppendStringWithBreak(((StringData)Item.data).Data);
             SendResponse();
         }
 
@@ -2585,7 +2585,7 @@ namespace Butterfly.Messages
 
             if (!Room.CheckRights(Session))
             {
-                if (!Text.StartsWith(Item.ExtraData))
+                if (!Text.StartsWith(((StringData)Item.data).Data))
                 {
                     return; // we can only ADD stuff! older stuff changed, this is not allowed
                 }
@@ -2605,7 +2605,7 @@ namespace Butterfly.Messages
                     return; // invalid color
             }
 
-            Item.ExtraData = Color + " " + Text;
+            ((StringData)Item.data).Data = Color + " " + Text;
             Item.UpdateState(true, true);
         }
 
@@ -2682,10 +2682,10 @@ namespace Butterfly.Messages
                 }
 
                 string type = Present.GetBaseItem().Type.ToString().ToLower();
-                string ExtraData = Present.ExtraData;
+                string ExtraData = Present.data.GetData().ToString();
                 Present.BaseItem = Convert.ToUInt32(Data["base_id"]);
                 Present.refreshItem();
-                Present.ExtraData = "";
+                Present.data = new StringData("");
                 //Logging.WriteLine("Hallo, new BaseItem: " + Present.GetBaseItem().Name);
                 if (!Room.GetRoomItemHandler().SetFloorItem(Session, Present, Present.GetX, Present.GetY, Present.Rot, true, false, true))
                 {
@@ -2810,7 +2810,7 @@ namespace Butterfly.Messages
             Room.MoodlightData.CurrentPreset = Preset;
             Room.MoodlightData.UpdatePreset(Preset, ColorCode, Intensity, BackgroundOnly);
 
-            Item.ExtraData = Room.MoodlightData.GenerateExtraData();
+            ((StringData)Item.data).Data = Room.MoodlightData.GenerateExtraData();
             Item.UpdateState();
         }
 
@@ -2837,7 +2837,7 @@ namespace Butterfly.Messages
                 Room.MoodlightData.Enable();
             }
 
-            Item.ExtraData = Room.MoodlightData.GenerateExtraData();
+            ((StringData)Item.data).Data = Room.MoodlightData.GenerateExtraData();
             Item.UpdateState();
         }
 
@@ -3487,7 +3487,7 @@ namespace Butterfly.Messages
             RoomItemToSet.Figure = ButterflyEnvironment.FilterFigure(Look);
             RoomItemToSet.Gender = Gender;
 
-            RoomItemToSet.ExtraData = Gender + ":" + Look;
+            ((StringData)RoomItemToSet.data).Data = Gender + ":" + Look;
         }
 
         internal void CommandsPet()

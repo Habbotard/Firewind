@@ -200,7 +200,7 @@ namespace Butterfly.HabboHotel.SoundMachine
                 {
                     Stop();
 
-                    mRoomOutputItem.ExtraData = "0";
+                    mRoomOutputItem.data = new StringData("0");
                     mRoomOutputItem.UpdateState();
                 }
                 else

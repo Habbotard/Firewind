@@ -38,21 +38,21 @@ namespace Butterfly.HabboHotel.Rooms
 
             foreach (RoomItem item in banzaiPyramids.Inner.Values)
             {
-                if (item.interactionCountHelper == 0 && item.ExtraData == "1")
+                if (item.interactionCountHelper == 0 && ((StringData)item.data).Data == "1")
                 {
                     room.GetGameMap().RemoveFromMap(item, false);
                     item.interactionCountHelper = 1;
                 }
 
-                if (string.IsNullOrEmpty(item.ExtraData))
-                    item.ExtraData = "0";
+                if (string.IsNullOrEmpty(((StringData)item.data).Data))
+                    item.data = new StringData("0");
 
                 int randomNumber = rnd.Next(0, 30);
                 if (randomNumber == 15)
                 {
-                    if (item.ExtraData == "0")
+                    if (((StringData)item.data).Data == "0")
                     {
-                        item.ExtraData = "1";
+                        ((StringData)item.data).Data = "1";
                         item.UpdateState();
                         room.GetGameMap().RemoveFromMap(item, false);
                     }
@@ -60,7 +60,7 @@ namespace Butterfly.HabboHotel.Rooms
                     {
                         if (room.GetGameMap().itemCanBePlacedHere(item.GetX, item.GetY))
                         {
-                            item.ExtraData = "0";
+                            item.data = new StringData("0");
                             item.UpdateState();
                             room.GetGameMap().AddItemToMap(item, false);
                         }
@@ -131,9 +131,9 @@ namespace Butterfly.HabboHotel.Rooms
 
                     room.GetGameMap().TeleportToItem(User, item);
 
-                    item.ExtraData = "1";
+                    ((StringData)item.data).Data = "1";
                     item.UpdateNeeded = true;
-                    Item.ExtraData = "1";
+                    ((StringData)Item.data).Data = "1";
                     Item.UpdateNeeded = true;
                     item.UpdateState();
                     Item.UpdateState();

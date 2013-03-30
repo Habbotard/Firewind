@@ -57,7 +57,7 @@ namespace Butterfly.Messages
             if (item == null || item.GetBaseItem().InteractionType != InteractionType.musicdisc)
                 return;
 
-            //RoomItem roomItem = new RoomItem(item.Id, currentRoom.RoomId, item.BaseItem, item.ExtraData, 0, 0, 0, 0, currentRoom);
+            //RoomItem roomItem = new RoomItem(item.Id, currentRoom.RoomId, item.BaseItem, ((StringData)item.data).Data, 0, 0, 0, 0, currentRoom);
             SongItem sitem = new SongItem(item);
 
             int NewOrder = musicController.AddDisk(sitem);

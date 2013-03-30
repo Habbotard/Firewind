@@ -26,7 +26,7 @@ namespace Butterfly.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
         {
             foreach (RoomItem item in items)
             {
-                if (item.ExtraData != item.originalExtraData || item.Coordinate != item.GetPlacementPosition())
+                if (item.data != item.originalExtraData || item.Coordinate != item.GetPlacementPosition())
                     return false;
             }
 

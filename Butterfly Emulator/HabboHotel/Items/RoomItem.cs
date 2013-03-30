@@ -21,7 +21,6 @@ namespace Butterfly.HabboHotel.Items
         internal UInt32 Id;
         internal UInt32 RoomId;
         internal UInt32 BaseItem;
-        internal string ExtraData;
         internal string Figure;
         internal string Gender;
         internal uint interactingBallUser;
@@ -31,7 +30,7 @@ namespace Butterfly.HabboHotel.Items
         internal int value;
         internal FreezePowerUp freezePowerUp;
         internal IWiredCondition wiredCondition;
-        internal string originalExtraData;
+        internal IRoomItemData originalExtraData;
 
         internal IWiredTrigger wiredHandler;
         internal event OnItemTrigger itemTriggerEventHandler;
@@ -340,7 +339,7 @@ namespace Butterfly.HabboHotel.Items
             this.RoomId = RoomId;
             this.BaseItem = BaseItem;
             //this.ExtraData = data;
-            //this.originalExtraData = data;
+            this.originalExtraData = data;
             this.data = data;
             this.mX = X;
             this.mY = Y;
@@ -410,7 +409,7 @@ namespace Butterfly.HabboHotel.Items
 
                 case InteractionType.banzaitele:
                     {
-                        this.ExtraData = "";
+                        this.data = new StringData("");
                         break;
                     }
             }
@@ -499,7 +498,7 @@ namespace Butterfly.HabboHotel.Items
 
                         if (User != null && User.X == mX && User.Y == mY)
                         {
-                            ExtraData = "1";
+                            data =  new StringData("1");
 
                             User.MoveTo(SquareBehind);
 
@@ -510,14 +509,14 @@ namespace Butterfly.HabboHotel.Items
                         {
                             User.UnlockWalking();
 
-                            ExtraData = "0";
+                            data =  new StringData("0");
                             InteractingUser = 0;
 
                             UpdateState(false, true);
                         }
-                        else if (ExtraData == "1")
+                        else if (data.ToString() == "1")
                         {
-                            ExtraData = "0";
+                            data =  new StringData("0");
                             UpdateState(false, true);
                         }
 
@@ -577,7 +576,7 @@ namespace Butterfly.HabboHotel.Items
                                                     User.SetRot(Item.Rot, false);
 
                                                     // Force tele effect update (dirty)
-                                                    Item.ExtraData = "2";
+                                                    Item.data = new StringData("2");
                                                     Item.UpdateState(false, true);
 
                                                     // Set secondary interacting user
@@ -669,25 +668,25 @@ namespace Butterfly.HabboHotel.Items
                         // Set the new item state, by priority
                         if (keepDoorOpen)
                         {
-                            if (ExtraData != "1")
+                            if (data.ToString() != "1")
                             {
-                                ExtraData = "1";
+                                data =  new StringData("1");
                                 UpdateState(false, true);
                             }
                         }
                         else if (showTeleEffect)
                         {
-                            if (ExtraData != "2")
+                            if (data.ToString() != "2")
                             {
-                                ExtraData = "2";
+                                data =  new StringData("2");
                                 UpdateState(false, true);
                             }
                         }
                         else
                         {
-                            if (ExtraData != "0")
+                            if (data.ToString() != "0")
                             {
-                                ExtraData = "0";
+                                data =  new StringData("0");
                                 UpdateState(false, true);
                             }
                         }
@@ -699,32 +698,32 @@ namespace Butterfly.HabboHotel.Items
 
                     case InteractionType.bottle:
 
-                        ExtraData = ButterflyEnvironment.GetRandomNumber(0, 7).ToString();
+                        data =  new StringData(ButterflyEnvironment.GetRandomNumber(0, 7).ToString());
                         UpdateState();
                         break;
 
                     case InteractionType.dice:
 
-                        ExtraData = ButterflyEnvironment.GetRandomNumber(1, 6).ToString();
+                        data =  new StringData(ButterflyEnvironment.GetRandomNumber(1, 6).ToString());
                         UpdateState();
                         break;
 
                     case InteractionType.habbowheel:
 
-                        ExtraData = ButterflyEnvironment.GetRandomNumber(1, 10).ToString();
+                        data =  new StringData(ButterflyEnvironment.GetRandomNumber(1, 10).ToString());
                         UpdateState();
                         break;
 
                     case InteractionType.loveshuffler:
 
-                        if (ExtraData == "0")
+                        if (data.GetData() == "0")
                         {
-                            ExtraData = ButterflyEnvironment.GetRandomNumber(1, 4).ToString();
+                            data =  new StringData(ButterflyEnvironment.GetRandomNumber(1, 4).ToString());
                             ReqUpdate(20, false);
                         }
-                        else if (ExtraData != "-1")
+                        else if (data.GetData() != "-1")
                         {
-                            ExtraData = "-1";
+                            data =  new StringData("-1");
                         }
 
                         UpdateState(false, true);
@@ -732,17 +731,17 @@ namespace Butterfly.HabboHotel.Items
 
                     case InteractionType.alert:
 
-                        if (this.ExtraData == "1")
+                        if (data.GetData() == "1")
                         {
-                            this.ExtraData = "0";
-                            this.UpdateState(false, true);
+                            data =  new StringData("0");
+                            UpdateState(false, true);
                         }
 
                         break;
 
                     case InteractionType.vendingmachine:
 
-                        if (this.ExtraData == "1")
+                        if (data.GetData() == "1")
                         {
                             User = GetRoom().GetRoomUserManager().GetRoomUserByHabbo(InteractingUser);
 
@@ -755,7 +754,7 @@ namespace Butterfly.HabboHotel.Items
                             }
 
                             this.InteractingUser = 0;
-                            this.ExtraData = "0";
+                            data =  new StringData("0");
 
                             UpdateState(false, true);
                         }
@@ -765,7 +764,7 @@ namespace Butterfly.HabboHotel.Items
 
                     case InteractionType.scoreboard:
                         {
-                            if (string.IsNullOrEmpty(ExtraData))
+                            if (string.IsNullOrEmpty((string)data.GetData()))
                                 break;
 
                             
@@ -773,7 +772,7 @@ namespace Butterfly.HabboHotel.Items
 
                             try
                             {
-                                seconds = int.Parse(ExtraData);
+                                seconds = int.Parse((string)data.GetData());
                             }
                             catch { }
 
@@ -784,7 +783,7 @@ namespace Butterfly.HabboHotel.Items
                                     seconds--;
                                     interactionCountHelper = 0;
 
-                                    ExtraData = seconds.ToString();
+                                    data = new StringData(seconds.ToString());
                                     UpdateState();
                                 }
                                 else
@@ -800,14 +799,14 @@ namespace Butterfly.HabboHotel.Items
 
                     case InteractionType.banzaicounter:
                         {
-                            if (string.IsNullOrEmpty(ExtraData))
+                            if (string.IsNullOrEmpty((string)data.GetData()))
                                 break;
 
                             int seconds = 0;
 
                             try
                             {
-                                seconds = int.Parse(ExtraData);
+                                seconds = int.Parse((string)data.GetData());
                             }
                             catch { }
 
@@ -820,7 +819,7 @@ namespace Butterfly.HabboHotel.Items
 
                                     if (GetRoom().GetBanzai().isBanzaiActive)
                                     {
-                                        ExtraData = seconds.ToString();
+                                        ((StringData)data).Data = seconds.ToString();
                                         UpdateState();
                                     }
                                     else
@@ -843,7 +842,7 @@ namespace Butterfly.HabboHotel.Items
                     case InteractionType.banzaitele:
                         {
 
-                            ExtraData = string.Empty;
+                            ((StringData)data).Data = string.Empty;
                             UpdateState();
                             break;
                         }
@@ -876,32 +875,32 @@ namespace Butterfly.HabboHotel.Items
                                     {
                                         case Team.blue:
                                             {
-                                                ExtraData = "11";
+                                                ((StringData)data).Data = "11";
                                                 break;
                                             }
 
                                         case Team.green:
                                             {
-                                                ExtraData = "8";
+                                                ((StringData)data).Data = "8";
                                                 break;
                                             }
 
                                         case Team.red:
                                             {
-                                                ExtraData = "5";
+                                                ((StringData)data).Data = "5";
                                                 break;
                                             }
 
                                         case Team.yellow:
                                             {
-                                                ExtraData = "14";
+                                                ((StringData)data).Data = "14";
                                                 break;
                                             }
                                     }
                                 }
                                 else
                                 {
-                                    ExtraData = "";
+                                    ((StringData)data).Data = "";
                                     interactionCountHelper++;
                                 }
 
@@ -940,7 +939,7 @@ namespace Butterfly.HabboHotel.Items
                         {
                             if (InteractingUser > 0)
                             {
-                                ExtraData = "11000";
+                                ((StringData)data).Data = "11000";
                                 UpdateState(false, true);
 
                                 GetRoom().GetFreeze().onFreezeTiles(this, freezePowerUp, InteractingUser);
@@ -952,14 +951,14 @@ namespace Butterfly.HabboHotel.Items
 
                     case InteractionType.freezetimer:
                         {
-                            if (string.IsNullOrEmpty(ExtraData))
+                            if (string.IsNullOrEmpty((string)data.GetData()))
                                 break;
 
                             int seconds = 0;
 
                             try
                             {
-                                seconds = int.Parse(ExtraData);
+                                seconds = int.Parse(data.GetData().ToString());
                             }
                             catch { }
 
@@ -971,7 +970,7 @@ namespace Butterfly.HabboHotel.Items
                                     interactionCountHelper = 0;
                                     if (GetRoom().GetFreeze().GameIsStarted)
                                     {
-                                        ExtraData = seconds.ToString();
+                                        ((StringData)data).Data = seconds.ToString();
                                         UpdateState();
                                     }
                                     else
@@ -1025,7 +1024,7 @@ namespace Butterfly.HabboHotel.Items
                     Message.Init(Outgoing.UpdateFloorItemExtraData);
                     Message.AppendString(Id.ToString());
                     Message.AppendInt32(0);
-                    Message.AppendString(ExtraData);
+                    Message.AppendString(data.GetData().ToString());
                 }
                 else
                 {
@@ -1138,11 +1137,11 @@ namespace Butterfly.HabboHotel.Items
                 switch (GetBaseItem().InteractionType)
                 {
                     case InteractionType.postit:
-                        Message.AppendString(ExtraData.Split(' ')[0]);
+                        Message.AppendString(data.GetData().ToString().Split(' ')[0]);
                         break;
 
                     default:
-                        Message.AppendString(ExtraData);
+                        Message.AppendString((string)data.GetData());
                         break;
                 }
                 Message.AppendInt32(1); // Type New R63 ('use bottom')

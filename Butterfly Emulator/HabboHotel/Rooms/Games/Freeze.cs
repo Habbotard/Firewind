@@ -124,9 +124,9 @@ namespace Butterfly.HabboHotel.Rooms.Games
         {
             foreach (RoomItem item in freezeBlocks.Values)
             {
-                if (!string.IsNullOrEmpty(item.ExtraData) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezebluegate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezeredgate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezegreengate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezeyellowgate))
+                if (!string.IsNullOrEmpty(((StringData)item.data).Data) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezebluegate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezeredgate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezegreengate) && !item.GetBaseItem().InteractionType.Equals(InteractionType.freezeyellowgate))
                 {
-                    item.ExtraData = "";
+                    ((StringData)item.data).Data = "";
                     
                     item.UpdateState(false, true);
                     room.GetGameMap().AddItemToMap(item, false);
@@ -148,7 +148,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                         if (item.GetX == user.X && item.GetY == user.Y)
                         {
                             item.interactionCountHelper = 1;
-                            item.ExtraData = "1000";
+                            ((StringData)item.data).Data = "1000";
                             item.UpdateState();
                             item.InteractingUser = user.userID;
                             item.freezePowerUp = user.banzaiPowerUp;
@@ -275,7 +275,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                     case InteractionType.freezetile:
                         {
                             Logging.WriteLine("Freeze tile founded!");
-                            item.ExtraData = "11000";
+                            ((StringData)item.data).Data = "11000";
                             item.UpdateState(false, true);
                             continue;
                         }
@@ -299,7 +299,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
 
         private void SetRandomPowerUp(RoomItem item)
         {
-            if (!string.IsNullOrEmpty(item.ExtraData))
+            if (!string.IsNullOrEmpty((string)item.data.GetData()))
                 return;
 
             int next = rnd.Next(1, 14);
@@ -308,43 +308,43 @@ namespace Butterfly.HabboHotel.Rooms.Games
             {
                 case 2:
                     {
-                        item.ExtraData = "2000";
+                        ((StringData)item.data).Data = "2000";
                         item.freezePowerUp = FreezePowerUp.BlueArrow;
                         break;
                     }
                 case 3:
                     {
-                        item.ExtraData = "3000";
+                        ((StringData)item.data).Data = "3000";
                         item.freezePowerUp = FreezePowerUp.Snowballs;
                         break;
                     }
                 case 4:
                     {
-                        item.ExtraData = "4000";
+                        ((StringData)item.data).Data = "4000";
                         item.freezePowerUp = FreezePowerUp.GreenArrow;
                         break;
                     }
                 case 5:
                     {
-                        item.ExtraData = "5000";
+                        ((StringData)item.data).Data = "5000";
                         item.freezePowerUp = FreezePowerUp.OrangeSnowball;
                         break;
                     }
                 case 6:
                     {
-                        item.ExtraData = "6000";
+                        ((StringData)item.data).Data = "6000";
                         item.freezePowerUp = FreezePowerUp.Heart;
                         break;
                     }
                 case 7:
                     {
-                        item.ExtraData = "7000";
+                        ((StringData)item.data).Data = "7000";
                         item.freezePowerUp = FreezePowerUp.Shield;
                         break;
                     }
                 default:
                     {
-                        item.ExtraData = "1000";
+                        ((StringData)item.data).Data = "1000";
                         item.freezePowerUp = FreezePowerUp.None;
                         break;
                     }
@@ -389,7 +389,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
             }
 
             item.freezePowerUp = FreezePowerUp.None;
-            item.ExtraData = "1" + item.ExtraData;
+            ((StringData)item.data).Data = "1" + ((StringData)item.data).Data;
             item.UpdateState(false, true);
         }
 

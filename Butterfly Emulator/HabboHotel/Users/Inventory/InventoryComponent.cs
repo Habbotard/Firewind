@@ -557,7 +557,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
                         foreach (UserItem Item in mAddedItems.Values)
                         {
                             queries.AddQuery("UPDATE items_users SET user_id = " + UserId + " WHERE item_id = " + Item.Id);
-                            //parameters.Add("extra_data" + Item.Id, Item.ExtraData);
+                            //parameters.Add("extra_data" + Item.Id, ((StringData)Item.data).Data);
                             //QueryBuilder.Append("UPDATE user_items SET user_id = " + UserId + " , base_item =" + Item.BaseItem + ", extra_data = @extra_data" + Item.Id + " WHERE id = " + Item.Id + "; ");
                         }
 

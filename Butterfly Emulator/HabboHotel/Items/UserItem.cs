@@ -108,9 +108,9 @@ namespace Butterfly.HabboHotel.Items
             Message.AppendString(mBaseItem.Type.ToString().ToUpper());
             Message.AppendUInt(Id);
             Message.AppendInt32(GetBaseItem().SpriteId);
-            Message.AppendInt32(1);
+            Message.AppendInt32(1); // extra
 
-            Message.AppendInt32(Data.GetType()); // ?
+            Message.AppendInt32(Data.GetType());
             Data.AppendToMessage(Message);
 
             Message.AppendBoolean(GetBaseItem().AllowRecycle);

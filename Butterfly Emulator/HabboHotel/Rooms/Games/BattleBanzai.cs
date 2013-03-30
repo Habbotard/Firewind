@@ -105,7 +105,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
 
             foreach (RoomItem tile in banzaiTiles.Values)
             {
-                tile.ExtraData = "1";
+                ((StringData)tile.data).Data = "1";
                 tile.value = 0;
                 tile.team = Team.none;
                 tile.UpdateState();
@@ -128,7 +128,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                     case InteractionType.banzaiscorered:
                     case InteractionType.banzaiscoreyellow:
                         {
-                            item.ExtraData = "0";
+                            item.data = new StringData("0");
                             item.UpdateState();
                             break;
                         }
@@ -153,7 +153,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                 }
                 else if (tile.team == Team.none)
                 {
-                    tile.ExtraData = "0";
+                    ((StringData)tile.data).Data = "0";
                     tile.UpdateState();
                 }
             }
@@ -243,7 +243,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
             if (oldRoomCoord.X == newX && oldRoomCoord.Y == newY)
                 return;
 
-            item.ExtraData = ((int)team).ToString();
+            ((StringData)item.data).Data = ((int)team).ToString();
             item.UpdateNeeded = true;
             item.UpdateState();
 
@@ -369,7 +369,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
 
 
             int newColor = item.value + ((int)item.team * 3) - 1;
-            item.ExtraData = newColor.ToString();
+            ((StringData)item.data).Data = newColor.ToString();
         }
 
         private void HandleBanzaiTiles(Point coord, Team team, RoomUser user)
@@ -384,7 +384,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                 if (_item.GetBaseItem().InteractionType != InteractionType.banzaifloor)
                     continue;
 
-                if (_item.ExtraData.Equals("5") || _item.ExtraData.Equals("8") || _item.ExtraData.Equals("11") || _item.ExtraData.Equals("14"))
+                if (((StringData)_item.data).Data.Equals("5") || ((StringData)_item.data).Data.Equals("8") || ((StringData)_item.data).Data.Equals("11") || ((StringData)_item.data).Data.Equals("14"))
                 {
                     i++;
                     continue;
@@ -394,7 +394,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
                     continue;
 
                 SetTile(_item, team, user);
-                if (_item.ExtraData.Equals("5") || _item.ExtraData.Equals("8") || _item.ExtraData.Equals("11") || _item.ExtraData.Equals("14"))
+                if (((StringData)_item.data).Data.Equals("5") || ((StringData)_item.data).Data.Equals("8") || ((StringData)_item.data).Data.Equals("11") || ((StringData)_item.data).Data.Equals("14"))
                     i++;
                 _item.UpdateState(false, true);
             }
@@ -433,7 +433,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
             }
 
             int newColor = item.value + ((int)item.team * 3) - 1;
-            item.ExtraData = newColor.ToString();
+            ((StringData)item.data).Data = newColor.ToString();
         }
 
         internal bool isBanzaiActive { get { return banzaiStarted; } }

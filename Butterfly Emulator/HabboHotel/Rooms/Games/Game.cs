@@ -100,7 +100,7 @@ namespace Butterfly.HabboHotel.Rooms.Games
             {
                 if (!isSoccerGoal(item.GetBaseItem().InteractionType))
                 {
-                    item.ExtraData = TeamPoints[(int)team].ToString();
+                    ((StringData)item.data).Data = TeamPoints[(int)team].ToString();
                     item.UpdateState();
                 }
             }

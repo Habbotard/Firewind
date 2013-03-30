@@ -351,7 +351,7 @@ namespace Butterfly.HabboHotel.Rooms
                             user.SetRot(Item.Rot, false);
 
                             Item.InteractingUser2 = session.GetHabbo().Id;
-                            Item.ExtraData = "2";
+                            ((StringData)Item.data).Data = "2";
                             Item.UpdateState(false, true);
                         }
                     }
@@ -1035,7 +1035,7 @@ namespace Butterfly.HabboHotel.Rooms
                                             efectmanager.ApplyCustomEffect(0);
                                         User.team = Team.none;
                                     }
-                                    //Item.ExtraData = usersOnTeam.ToString();
+                                    //((StringData)Item.data).Data = usersOnTeam.ToString();
                                     //Item.UpdateState(false, true);                                
                                 }
                                 break;
@@ -1051,8 +1051,8 @@ namespace Butterfly.HabboHotel.Rooms
                                     int effectID = (int)Item.team + 39;
                                     TeamManager t = User.GetClient().GetHabbo().CurrentRoom.GetTeamManagerForFreeze();
                                     //int usersOnTeam = 0;
-                                    //if (Item.ExtraData != "")
-                                    //usersOnTeam = int.Parse(Item.ExtraData);
+                                    //if (((StringData)Item.data).Data != "")
+                                    //usersOnTeam = int.Parse(((StringData)Item.data).Data);
                                     AvatarEffectsInventoryComponent efectmanager = User.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent();
 
                                     if (User.team != Item.team)
@@ -1076,7 +1076,7 @@ namespace Butterfly.HabboHotel.Rooms
                                             efectmanager.ApplyCustomEffect(0);
                                         User.team = Team.none;
                                     }
-                                    //Item.ExtraData = usersOnTeam.ToString();
+                                    //((StringData)Item.data).Data = usersOnTeam.ToString();
                                     //Item.UpdateState(false, true);
 
                                     ServerMessage message = new ServerMessage(700);

@@ -567,7 +567,7 @@ namespace Butterfly.HabboHotel.Rooms
                         if (mGameMap[Coord.X, Coord.Y] != 3)
                             mGameMap[Coord.X, Coord.Y] = 1;
                     }
-                    else if (Item.GetZ <= (Model.SqFloorHeight[Item.GetX, Item.GetY] + 0.1) && Item.GetBaseItem().InteractionType == Butterfly.HabboHotel.Items.InteractionType.gate && Item.ExtraData == "1") // If this item is a gate, open, and on the floor, allow users to walk here.
+                    else if (Item.GetZ <= (Model.SqFloorHeight[Item.GetX, Item.GetY] + 0.1) && Item.GetBaseItem().InteractionType == Butterfly.HabboHotel.Items.InteractionType.gate && ((StringData)Item.data).Data == "1") // If this item is a gate, open, and on the floor, allow users to walk here.
                     {
                         if (mGameMap[Coord.X, Coord.Y] != 3)
                             mGameMap[Coord.X, Coord.Y] = 1;
@@ -652,9 +652,9 @@ namespace Butterfly.HabboHotel.Rooms
                     room.GetSoccer().RegisterGate(item);
 
 
-                    string[] splittedExtraData = item.ExtraData.Split(':');
+                    string[] splittedExtraData = ((StringData)item.data).Data.Split(':');
 
-                    if (string.IsNullOrEmpty(item.ExtraData) || splittedExtraData.Length <= 1)
+                    if (string.IsNullOrEmpty(((StringData)item.data).Data) || splittedExtraData.Length <= 1)
                     {
                         item.Gender = "M";
                         switch (item.team)
@@ -695,7 +695,7 @@ namespace Butterfly.HabboHotel.Rooms
                 case InteractionType.banzaitele:
                     {
                         room.GetGameItemHandler().AddTeleport(item, item.Id);
-                        item.ExtraData = "";
+                        ((StringData)item.data).Data = "";
                         break;
                     }
                 case InteractionType.banzaipuck:
