@@ -1071,61 +1071,61 @@ namespace Butterfly.HabboHotel.Items
                 Message.AppendInt32(Rot); // dir
                 Message.AppendString(String.Format("{0:0.00}", TextHandling.GetString(mZ))); // z
                 Message.AppendInt32(0); // extra
-                Message.AppendInt32(0); // data type
+                Message.AppendInt32(data.GetType()); // data type
 
                 data.AppendToMessage(Message);
 
-                if (this.GetBaseItem().InteractionType == InteractionType.gift)
-                {
-                    int result = 0;
-                    if (ExtraData.Contains(Convert.ToChar(5).ToString()))
-                    {
-                        int color = int.Parse(ExtraData.Split((char)5)[1]);
-                        int lazo = int.Parse(ExtraData.Split((char)5)[2]);
-                        result = color * 1000 + lazo;
-                    }
-                    Message.AppendInt32(result);
-                    if (this.ExtraData.Contains(Convert.ToChar(5).ToString()))
-                    {
-                        uint PurchaserId = (uint)int.Parse(ExtraData.Split(';')[0]);
-                        Habbo Purchaser = ButterflyEnvironment.getHabboForId(PurchaserId);
-                        if (Purchaser != null)
-                        {
-                            // "MESSAGE", "PRODUCT_CODE", "EXTRA_PARAM", "PURCHASER_NAME", "PURCHASER_FIGURE";
+                //if (this.GetBaseItem().InteractionType == InteractionType.gift)
+                //{
+                //    int result = 0;
+                //    if (ExtraData.Contains(Convert.ToChar(5).ToString()))
+                //    {
+                //        int color = int.Parse(ExtraData.Split((char)5)[1]);
+                //        int lazo = int.Parse(ExtraData.Split((char)5)[2]);
+                //        result = color * 1000 + lazo;
+                //    }
+                //    Message.AppendInt32(result);
+                //    if (this.ExtraData.Contains(Convert.ToChar(5).ToString()))
+                //    {
+                //        uint PurchaserId = (uint)int.Parse(ExtraData.Split(';')[0]);
+                //        Habbo Purchaser = ButterflyEnvironment.getHabboForId(PurchaserId);
+                //        if (Purchaser != null)
+                //        {
+                //            // "MESSAGE", "PRODUCT_CODE", "EXTRA_PARAM", "PURCHASER_NAME", "PURCHASER_FIGURE";
 
-                            Message.AppendInt32(1);
-                            Message.AppendInt32(6);
-                            Message.AppendString("EXTRA_PARAM");
-                            Message.AppendString("");
-                            Message.AppendString("MESSAGE");
-                            Message.AppendString(ExtraData.Split(';')[1].Split((char)5)[0]);
-                            Message.AppendString("PURCHASER_NAME");
-                            Message.AppendString(Purchaser.Username);
-                            Message.AppendString("PURCHASER_FIGURE");
-                            Message.AppendString(Purchaser.Look);
-                            Message.AppendString("PRODUCT_CODE");
-                            Message.AppendString("");
-                            Message.AppendString("state");
-                            Message.AppendString(MagicRemove ? "1" : "0");
-                        }
-                        else
-                        {
-                            Message.AppendInt32(0);
-                        }
-                    }
-                    // this.ExtraData.Contains(Convert.ToChar(5).ToString()) ? ExtraData.Split((char)5)[1] : "0"
-                    else
-                        Message.AppendInt32(0);
-                }
-                else
-                {
-                    Message.AppendInt32(0);
-                    Message.AppendInt32(0);
-                    if (GetBaseItem().InteractionType != InteractionType.fbgate)
-                        Message.AppendString(ExtraData);
-                    else
-                        Message.AppendString(string.Empty);
-                }
+                //            Message.AppendInt32(1);
+                //            Message.AppendInt32(6);
+                //            Message.AppendString("EXTRA_PARAM");
+                //            Message.AppendString("");
+                //            Message.AppendString("MESSAGE");
+                //            Message.AppendString(ExtraData.Split(';')[1].Split((char)5)[0]);
+                //            Message.AppendString("PURCHASER_NAME");
+                //            Message.AppendString(Purchaser.Username);
+                //            Message.AppendString("PURCHASER_FIGURE");
+                //            Message.AppendString(Purchaser.Look);
+                //            Message.AppendString("PRODUCT_CODE");
+                //            Message.AppendString("");
+                //            Message.AppendString("state");
+                //            Message.AppendString(MagicRemove ? "1" : "0");
+                //        }
+                //        else
+                //        {
+                //            Message.AppendInt32(0);
+                //        }
+                //    }
+                //    // this.ExtraData.Contains(Convert.ToChar(5).ToString()) ? ExtraData.Split((char)5)[1] : "0"
+                //    else
+                //        Message.AppendInt32(0);
+                //}
+                //else
+                //{
+                //    Message.AppendInt32(0);
+                //    Message.AppendInt32(0);
+                //    if (GetBaseItem().InteractionType != InteractionType.fbgate)
+                //        Message.AppendString(ExtraData);
+                //    else
+                //        Message.AppendString(string.Empty);
+                //}
                 Message.AppendInt32(-1);
                 Message.AppendInt32(1); // Type New R63 ('use bottom')
                 Message.AppendInt32(UserId);

@@ -182,32 +182,35 @@ namespace Butterfly.HabboHotel.Rooms
                     y = Convert.ToDecimal(dRow[2]);
                     n = Convert.ToSByte(dRow[3]);
                     baseID = Convert.ToUInt32(dRow[4]);
-                    dataType = Convert.ToInt32(dRow[5]);
-                    if (DBNull.Value.Equals(dRow[6]))
-                        extradata = string.Empty;
-                    else
-                        extradata = (string)dRow[6];
-
                     IRoomItemData data;
-                    switch (dataType)
+                    if (DBNull.Value.Equals(dRow[5]))
                     {
-                        case 0:
-                            data = new StringData(extradata);
-                            break;
-                        case 1:
-                            data = new MapStuffData();
-                            break;
-                        case 2:
-                            data = new StringArrayStuffData();
-                            break;
-                        case 3:
-                            data = new StringIntData();
-                            break;
-                        default:
-                            data = new StringData(extradata);
-                            break;
+                        data = new StringData("");
                     }
-                    data.Parse(extradata);
+                    else
+                    {
+                        dataType = Convert.ToInt32(dRow[5]);
+                        extradata = (string)dRow[6];
+                        switch (dataType)
+                        {
+                            case 0:
+                                data = new StringData(extradata);
+                                break;
+                            case 1:
+                                data = new MapStuffData();
+                                break;
+                            case 2:
+                                data = new StringArrayStuffData();
+                                break;
+                            case 3:
+                                data = new StringIntData();
+                                break;
+                            default:
+                                data = new StringData(extradata);
+                                break;
+                        }
+                        data.Parse(extradata);
+                    }
 
                     if (n > 6) // Is wallitem
                     {
@@ -510,11 +513,12 @@ namespace Butterfly.HabboHotel.Rooms
                     {
                         foreach (RoomItem Item in mAddedItems.Values)
                         {
-                            if (!string.IsNullOrEmpty(Item.ExtraData))
+                           // if (!string.IsNullOrEmpty(Item.data))
                             {
                                 extradataInserts.AddQuery("DELETE FROM items_extradata WHERE item_id = " + Item.Id);
-                                extradataInserts.AddQuery("INSERT INTO items_extradata (item_id,data) VALUES (" + Item.Id + ",@data_id" + Item.Id + ")");
-                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.ExtraData);
+                                extradataInserts.AddQuery("INSERT INTO items_extradata (item_id,data_type,data) VALUES (" + Item.Id + ",@datatype_id" + Item.Id + ",@data_id" + Item.Id + ")");
+                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
                             }
 
                             itemInserts.AddQuery("DELETE FROM items_rooms WHERE item_id = " + Item.Id);
@@ -534,10 +538,10 @@ namespace Butterfly.HabboHotel.Rooms
 
                     foreach (RoomItem Item in mMovedItems.Values)
                     {
-                        if (!string.IsNullOrEmpty(Item.ExtraData))
+                        //if (!string.IsNullOrEmpty(Item.ExtraData))
                         {
                             standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);
-                            standardQueries.AddParameter("data" + Item.Id, Item.ExtraData);
+                            standardQueries.AddParameter("data" + Item.Id, Item.data);
                         }
 
                         if (Item.IsWallItem)
@@ -590,7 +594,7 @@ namespace Butterfly.HabboHotel.Rooms
                 {
                     QueryChunk standardQueries = new QueryChunk();
                     QueryChunk itemInserts = new QueryChunk("REPLACE INTO items_rooms (item_id,room_id,x,y,n) VALUES ");
-                    QueryChunk extradataInserts = new QueryChunk("REPLACE INTO items_extradata (item_id,data) VALUES ");
+                    QueryChunk extradataInserts = new QueryChunk("REPLACE INTO items_extradata (item_id,data_type,data) VALUES ");
 
                     foreach (RoomItem Item in mRemovedItems.Values)
                     {
@@ -601,10 +605,11 @@ namespace Butterfly.HabboHotel.Rooms
                     {
                         foreach (RoomItem Item in mAddedItems.Values)
                         {
-                            if (!string.IsNullOrEmpty(Item.ExtraData))
+                            //if (!string.IsNullOrEmpty(Item.ExtraData))
                             {
-                                extradataInserts.AddQuery("(" + Item.Id + ",@data_id" + Item.Id + ")");
-                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.ExtraData);
+                                extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
+                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
                             }
 
                             if (Item.IsFloorItem)

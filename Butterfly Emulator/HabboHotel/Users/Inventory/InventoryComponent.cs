@@ -213,32 +213,35 @@ namespace Butterfly.HabboHotel.Users.Inventory
                 id = Convert.ToUInt32(Row[0]);
                 baseitem = Convert.ToUInt32(Row[1]);
 
-                dataType = Convert.ToInt32(Row[2]);
-                if (!DBNull.Value.Equals(Row[3]))
-                    extradata = (string)Row[3];
-                else
-                    extradata = string.Empty;
-
-                IRoomItemData data;
-                switch(dataType)
-                {
-                    case 0:
-                        data = new StringData(extradata);
-                        break;
-                    case 1:
-                        data = new MapStuffData();
-                        break;
-                    case 2:
-                        data = new StringArrayStuffData();
-                        break;
-                    case 3:
-                        data = new StringIntData();
-                        break;
-                    default:
-                        data = new StringData(extradata);
-                        break;
-                }
-                data.Parse(extradata);
+                    IRoomItemData data;
+                    if (DBNull.Value.Equals(Row[2]))
+                    {
+                        data = new StringData("");
+                    }
+                    else
+                    {
+                        dataType = Convert.ToInt32(Row[2]);
+                        extradata = (string)Row[3];
+                        switch (dataType)
+                        {
+                            case 0:
+                                data = new StringData(extradata);
+                                break;
+                            case 1:
+                                data = new MapStuffData();
+                                break;
+                            case 2:
+                                data = new StringArrayStuffData();
+                                break;
+                            case 3:
+                                data = new StringIntData();
+                                break;
+                            default:
+                                data = new StringData(extradata);
+                                break;
+                        }
+                        data.Parse(extradata);
+                    }
 
                 UserItem item = new UserItem(id, baseitem, data);
 
@@ -349,7 +352,8 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
                         //if (!string.IsNullOrEmpty(ExtraData))
                         {
-                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@extradata)");
+                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@extradata)");
+                            dbClient.addParameter("datatype", ExtraData.GetType());
                             dbClient.addParameter("extradata", ExtraData);
                             dbClient.runQuery();
                         }
