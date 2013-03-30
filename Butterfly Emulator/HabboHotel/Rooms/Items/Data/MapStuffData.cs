@@ -41,7 +41,7 @@ namespace Butterfly.HabboHotel.Rooms
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             foreach (KeyValuePair<string, string> pair in Data)

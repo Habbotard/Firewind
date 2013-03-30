@@ -250,10 +250,12 @@ namespace Butterfly.HabboHotel.Users.UserDataManagement
             uint baseItem;
             int dataType;
             string extradata;
+            int extra;
             foreach (DataRow Row in dInventory.Rows)
             {
                 itemID = Convert.ToUInt32(Row[0]);
                 baseItem = Convert.ToUInt32(Row[1]);
+                extra = Convert.ToInt32(Row[4]);
 
                     IRoomItemData data;
                     if (DBNull.Value.Equals(Row[2]))
@@ -285,7 +287,7 @@ namespace Butterfly.HabboHotel.Users.UserDataManagement
                         data.Parse(extradata);
                     }
 
-                inventory.Add(new UserItem(itemID, baseItem, data));
+                inventory.Add(new UserItem(itemID, baseItem, data, extra));
             }
 
 

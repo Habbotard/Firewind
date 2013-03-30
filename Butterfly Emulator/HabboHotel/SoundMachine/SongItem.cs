@@ -26,7 +26,7 @@ namespace Butterfly.HabboHotel.SoundMachine
 
         internal UserItem ToUserItem()
         {
-            return new UserItem(itemID, baseItem.ItemId, new StringData(songID.ToString()));
+            return new UserItem(itemID, baseItem.ItemId, new StringData(songID.ToString()), 0);
         }
 
         internal void SaveToDatabase(uint roomID)

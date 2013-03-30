@@ -41,7 +41,7 @@ namespace Butterfly.HabboHotel.Items
         private Point placedPosition;
 
         internal IRoomItemData data;
-        internal int extra;
+        internal int Extra;
 
         internal Point GetPlacementPosition()
         {
@@ -333,7 +333,7 @@ namespace Butterfly.HabboHotel.Items
                 itemTriggerEventHandler(null, new ItemTriggeredArgs(user, this));
         }
 
-        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int X, int Y, Double Z, int Rot, Room pRoom)
+        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int extra, int X, int Y, Double Z, int Rot, Room pRoom)
         {
             this.Id = Id;
             this.RoomId = RoomId;
@@ -341,6 +341,7 @@ namespace Butterfly.HabboHotel.Items
             //this.ExtraData = data;
             this.originalExtraData = data;
             this.data = data;
+            this.Extra = extra;
             this.mX = X;
             this.mY = Y;
             if(!double.IsInfinity(Z))
@@ -419,13 +420,14 @@ namespace Butterfly.HabboHotel.Items
             mAffectedPoints = Gamemap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
         }
 
-        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData ExtraData, WallCoordinate wallCoord, Room pRoom)
+        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int extra, WallCoordinate wallCoord, Room pRoom)
         {
             this.Id = Id;
             this.RoomId = RoomId;
             this.BaseItem = BaseItem;
-            this.data = ExtraData;
-            //this.originalExtraData = ExtraData;
+            this.data = data;
+            this.Extra = extra;
+            this.originalExtraData = data;
             this.mX = 0;
             this.mY = 0;
             this.mZ = 0.0;
@@ -1069,7 +1071,7 @@ namespace Butterfly.HabboHotel.Items
                 Message.AppendInt32(mY); // y
                 Message.AppendInt32(Rot); // dir
                 Message.AppendString(String.Format("{0:0.00}", TextHandling.GetString(mZ))); // z
-                Message.AppendInt32(0); // extra
+                Message.AppendInt32(Extra); // extra
                 Message.AppendInt32(data.GetType()); // data type
 
                 data.AppendToMessage(Message);

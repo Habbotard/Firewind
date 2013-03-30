@@ -138,7 +138,7 @@ namespace Butterfly.HabboHotel.SoundMachine
                 return;
             }
 
-            Session.GetHabbo().GetInventoryComponent().AddNewItem(TakenItem.itemID, TakenItem.baseItem.ItemId, new StringData(TakenItem.songID.ToString()), true, true);
+            Session.GetHabbo().GetInventoryComponent().AddNewItem(TakenItem.itemID, TakenItem.baseItem.ItemId, new StringData(TakenItem.songID.ToString()), 0, true, true);
 
 
             Session.SendMessage(JukeboxComposer.Compose(Session));

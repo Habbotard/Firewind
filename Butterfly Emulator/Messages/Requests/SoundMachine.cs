@@ -87,7 +87,7 @@ namespace Butterfly.Messages
                 return;
 
             item.RemoveFromDatabase();
-            Session.GetHabbo().GetInventoryComponent().AddNewItem(item.itemID, item.baseItem.ItemId, new StringData(item.songID.ToString()), true, true);
+            Session.GetHabbo().GetInventoryComponent().AddNewItem(item.itemID, item.baseItem.ItemId, new StringData(item.songID.ToString()), 0, true, true);
             Session.GetHabbo().GetInventoryComponent().UpdateItems(false);
 
             Session.SendMessage(JukeboxComposer.SerializeSongInventory(Session.GetHabbo().GetInventoryComponent().songDisks));

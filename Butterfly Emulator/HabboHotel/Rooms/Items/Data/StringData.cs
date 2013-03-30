@@ -32,7 +32,7 @@ namespace Butterfly.HabboHotel.Rooms
             message.AppendString(Data);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return Data;
         }

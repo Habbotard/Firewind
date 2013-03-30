@@ -175,6 +175,7 @@ namespace Butterfly.HabboHotel.Rooms
                 int dataType;
                 string extradata;
                 WallCoordinate wallCoord;
+                int extra;
                 foreach (DataRow dRow in Data.Rows)
                 {
                     itemID = Convert.ToUInt32(dRow[0]);
@@ -182,6 +183,7 @@ namespace Butterfly.HabboHotel.Rooms
                     y = Convert.ToDecimal(dRow[2]);
                     n = Convert.ToSByte(dRow[3]);
                     baseID = Convert.ToUInt32(dRow[4]);
+                    extra = Convert.ToInt32(dRow[7]);
                     IRoomItemData data;
                     if (DBNull.Value.Equals(dRow[5]))
                     {
@@ -215,7 +217,7 @@ namespace Butterfly.HabboHotel.Rooms
                     if (n > 6) // Is wallitem
                     {
                         wallCoord = new WallCoordinate((double)x, (double)y, n);
-                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, wallCoord, room);
+                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, extra, wallCoord, room);
 
                         if (!mWallItems.ContainsKey(itemID))
                             mWallItems.Inner.Add(itemID, item);
@@ -225,7 +227,7 @@ namespace Butterfly.HabboHotel.Rooms
                         int coordX, coordY;
                         TextHandling.Split((double)x, out coordX, out coordY);
 
-                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, coordX, coordY, (double)y, n, room);
+                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, extra, coordX, coordY, (double)y, n, room);
                         if (!mFloorItems.ContainsKey(itemID))
                             mFloorItems.Inner.Add(itemID, item);
                     }
@@ -629,8 +631,9 @@ namespace Butterfly.HabboHotel.Rooms
                     {
                         if (!string.IsNullOrEmpty((string)Item.data.GetData()))
                         {
-                            extradataInserts.AddQuery("(" + Item.Id + ",@data_id" + Item.Id + ")");
-                            extradataInserts.AddParameter("@data_id" + Item.Id, ((StringData)Item.data).Data);
+                            extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
+                            extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                            extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
 
                             //standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);
                             //standardQueries.AddParameter("data" + Item.Id, ((StringData)Item.data).Data);

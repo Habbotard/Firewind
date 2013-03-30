@@ -29,7 +29,7 @@ namespace Butterfly.HabboHotel.Rooms
                 message.AppendString(value);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             foreach (string value in Data)

@@ -2158,7 +2158,7 @@ namespace Butterfly.Messages
             {
                 WallCoordinate coordinate = new WallCoordinate(":" + locationData.Split(':')[1]);
 
-                RoomItem RoomItem = new RoomItem(item.Id, Room.RoomId, item.BaseItem, item.Data, coordinate, Room);
+                RoomItem RoomItem = new RoomItem(item.Id, Room.RoomId, item.BaseItem, item.Data, item.Extra, coordinate, Room);
 
                 if (Room.GetRoomItemHandler().SetWallItem(Session, RoomItem))
                 {
@@ -2216,7 +2216,7 @@ namespace Butterfly.Messages
                 try
                 {
                     WallCoordinate coordinate = new WallCoordinate(":" + PlacementData.Split(':')[1]);
-                    RoomItem RoomItem = new RoomItem(Item.Id, Room.RoomId, Item.BaseItem, Item.Data, coordinate, Room);
+                    RoomItem RoomItem = new RoomItem(Item.Id, Room.RoomId, Item.BaseItem, Item.Data, Item.Extra, coordinate, Room);
 
                     if (Room.GetRoomItemHandler().SetWallItem(Session, RoomItem))
                     {
@@ -2243,7 +2243,7 @@ namespace Butterfly.Messages
                 if (Session.GetHabbo().forceRot > -1)
                     Rot = Session.GetHabbo().forceRot;
 
-                RoomItem RoomItem = new RoomItem(Item.Id, Room.RoomId, Item.BaseItem, Item.Data, X, Y, 0, Rot, Room);
+                RoomItem RoomItem = new RoomItem(Item.Id, Room.RoomId, Item.BaseItem, Item.Data, Item.Extra, X, Y, 0, Rot, Room);
 
                 if (Room.GetRoomItemHandler().SetFloorItem(Session, RoomItem, X, Y, Rot, true, false, true))
                 {
@@ -2292,7 +2292,7 @@ namespace Butterfly.Messages
                 return;
 
             Room.GetRoomItemHandler().RemoveFurniture(Session, Item.Id);
-            Session.GetHabbo().GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.data, true, true, 0);
+            Session.GetHabbo().GetInventoryComponent().AddNewItem(Item.Id, Item.BaseItem, Item.data, Item.Extra, true, true, 0);
             Session.GetHabbo().GetInventoryComponent().UpdateItems(false);
 
             ButterflyEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.FURNI_PICK);

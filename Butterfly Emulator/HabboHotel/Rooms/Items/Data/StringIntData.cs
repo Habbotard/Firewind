@@ -28,7 +28,7 @@ namespace Butterfly.HabboHotel.Rooms
             message.AppendInt32(Data.Value);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(Data.Key);

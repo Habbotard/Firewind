@@ -286,7 +286,7 @@ namespace Butterfly.HabboHotel.Rooms
                 foreach (UserItem item in offeredItems)
                 {
                     this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
-                    this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.Data, false, false, 0);
+                    this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.Data, item.Extra, false, false, 0);
                     using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
                     {
                         adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.twoId, " WHERE item_id = ", item.Id }));
@@ -298,7 +298,7 @@ namespace Butterfly.HabboHotel.Rooms
                 foreach (UserItem item in list2)
                 {
                     this.GetTradeUser(this.twoId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(item.Id, false);
-                    this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.Data, false, false, 0);
+                    this.GetTradeUser(this.oneId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(item.Id, item.BaseItem, item.Data, item.Extra, false, false, 0);
                     using (IQueryAdapter adapter = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
                     {
                         adapter.runFastQuery(string.Concat(new object[] { "UPDATE items_users SET user_id = ", this.oneId, " WHERE item_id = ", item.Id }));

@@ -203,7 +203,7 @@ namespace Butterfly.HabboHotel.Catalogs
             return Pages[Page];
         }
 
-        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string extraParameter, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
+        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string extraParameter, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool giftShowIdentity)
         {
             int finalAmount = buyAmount;
             if (buyAmount > 5) // Possible discount!
@@ -614,12 +614,16 @@ namespace Butterfly.HabboHotel.Catalogs
                     }
 
                     MapStuffData giftData = new MapStuffData();
-                    giftData.Data.Add("PURCHASER_NAME", Session.GetHabbo().Username);
-                    giftData.Data.Add("PURCHASER_FIGURE", Session.GetHabbo().Look);
+
+                    if (giftShowIdentity)
+                    {
+                        giftData.Data.Add("PURCHASER_NAME", Session.GetHabbo().Username);
+                        giftData.Data.Add("PURCHASER_FIGURE", Session.GetHabbo().Look);
+                    }
                     giftData.Data.Add("MESSAGE", GiftMessage);
-                    giftData.Data.Add("PRODUCT_CODE", "");
-                    giftData.Data.Add("EXTRA_PARAM", "");
-                    giftData.Data.Add("state", "0");
+                    giftData.Data.Add("PRODUCT_CODE", "10");
+                    giftData.Data.Add("EXTRA_PARAM", "test");
+                    giftData.Data.Add("state", "1");
 
                     //Logging.WriteLine((uint)GiftSpriteId +"   -    "  +ButterflyEnvironment.giftInt);
                     //Logging.WriteLine("Resultado regalo: " + ButterflyEnvironment.GetGame().GetItemManager().GetItem((uint)GiftSpriteId - ButterflyEnvironment.giftInt));
@@ -635,9 +639,10 @@ namespace Butterfly.HabboHotel.Catalogs
 
                         if (!string.IsNullOrEmpty(GiftMessage))
                         {
-                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + itemID + ",@datatype,@data)");
+                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + itemID + ",@datatype,@data,@extra)");
                             dbClient.addParameter("datatype", giftData.GetType());
                             dbClient.addParameter("data", giftData);
+                            dbClient.addParameter("extra", GiftColor * 1000 + GiftLazo);
                             dbClient.runQuery();
                         }
 
@@ -652,7 +657,7 @@ namespace Butterfly.HabboHotel.Catalogs
                     if (Receiver != null)
                     {
                         Receiver.SendNotif(LanguageLocale.GetValue("catalog.gift.received") + Session.GetHabbo().Username);
-                        UserItem u = Receiver.GetHabbo().GetInventoryComponent().AddNewItem(itemID, Present.ItemId, giftData, false, false, 0);
+                        UserItem u = Receiver.GetHabbo().GetInventoryComponent().AddNewItem(itemID, Present.ItemId, giftData, GiftColor * 1000 + GiftLazo, false, false, 0);
                         Receiver.GetHabbo().GetInventoryComponent().SendFloorInventoryUpdate();
                         Receiver.GetMessageHandler().GetResponse().Init(Outgoing.SendPurchaseAlert);
                         Receiver.GetMessageHandler().GetResponse().AppendInt32(1); // items
@@ -741,15 +746,15 @@ namespace Butterfly.HabboHotel.Catalogs
                                 Pet GeneratedPet = CreatePet(Session.GetHabbo().Id, PetData[0], petType, PetData[1], PetData[2]);
 
                                 Session.GetHabbo().GetInventoryComponent().AddPet(GeneratedPet);
-                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, new StringData("0"), true, false, 0));
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, new StringData("0"), 0, true, false, 0));
 
                                 break;
 
                             case InteractionType.teleport:
 
-                                UserItem one = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), true, false, 0);
+                                UserItem one = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), 0, true, false, 0);
                                 uint idOne = one.Id;
-                                UserItem two = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), true, false, 0);
+                                UserItem two = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), 0, true, false, 0);
                                 uint idTwo = two.Id;
                                 result.Add(one);
                                 result.Add(two);
@@ -764,7 +769,7 @@ namespace Butterfly.HabboHotel.Catalogs
 
                             case InteractionType.dimmer:
 
-                                UserItem it = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), true, false, 0);
+                                UserItem it = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), 0, true, false, 0);
                                 uint id = it.Id;
                                 result.Add(it);
                                 using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
@@ -777,13 +782,13 @@ namespace Butterfly.HabboHotel.Catalogs
 
                             case InteractionType.musicdisc:
                                 {
-                                    result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(songID.ToString()), true, false, songID));
+                                    result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(songID.ToString()), 0, true, false, songID));
                                     break;
                                 }
 
                             default:
 
-                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), true, false, songID));
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), 0, true, false, songID));
                                 break;
                         }
                     }

@@ -208,10 +208,12 @@ namespace Butterfly.HabboHotel.Users.Inventory
             uint baseitem;
             int dataType;
             string extradata;
+            int extra;
             foreach (DataRow Row in Data.Rows)
             {
                 id = Convert.ToUInt32(Row[0]);
                 baseitem = Convert.ToUInt32(Row[1]);
+                extra = Convert.ToInt32(Row[4]);
 
                     IRoomItemData data;
                     if (DBNull.Value.Equals(Row[2]))
@@ -243,7 +245,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
                         data.Parse(extradata);
                     }
 
-                UserItem item = new UserItem(id, baseitem, data);
+                UserItem item = new UserItem(id, baseitem, data, extra);
 
                 if (item.GetBaseItem().InteractionType == InteractionType.musicdisc)
                     discs.Add(id, item);
@@ -316,7 +318,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
             return null;
         }
 
-        internal UserItem AddNewItem(UInt32 Id, UInt32 BaseItem, IRoomItemData ExtraData, bool insert, bool fromRoom, UInt32 songID = 0)
+        internal UserItem AddNewItem(UInt32 Id, UInt32 BaseItem, IRoomItemData data, int extra, bool insert, bool fromRoom, UInt32 songID = 0)
         {
             isUpdated = false;
             if (insert)
@@ -352,9 +354,10 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
                         //if (!string.IsNullOrEmpty(ExtraData))
                         {
-                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@extradata)");
-                            dbClient.addParameter("datatype", ExtraData.GetType());
-                            dbClient.addParameter("extradata", ExtraData);
+                            dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@data,@extra)");
+                            dbClient.addParameter("datatype", data.GetType());
+                            dbClient.addParameter("data", data);
+                            dbClient.addParameter("extra", extra);
                             dbClient.runQuery();
                         }
 
@@ -365,7 +368,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
                     }
                 }
             }
-            UserItem ItemToAdd = new UserItem(Id, BaseItem, ExtraData);
+            UserItem ItemToAdd = new UserItem(Id, BaseItem, data, extra);
 
             if (UserHoldsItem(Id))
             {
@@ -531,7 +534,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
         internal void AddItem(RoomItem item)
         {
-            AddNewItem(item.Id, item.BaseItem, item.data, true, true, 0);
+            AddNewItem(item.Id, item.BaseItem, item.data, item.Extra, true, true, 0);
         }
 
 

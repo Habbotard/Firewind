@@ -11,14 +11,16 @@ namespace Butterfly.HabboHotel.Items
         internal UInt32 Id;
         internal UInt32 BaseItem;
         internal IRoomItemData Data;
+        internal int Extra;
         private Item mBaseItem;
         internal bool isWallItem;
 
-        internal UserItem(UInt32 Id, UInt32 BaseItem, IRoomItemData data)
+        internal UserItem(UInt32 Id, UInt32 BaseItem, IRoomItemData data, int extra)
         {
             this.Id = Id;
             this.BaseItem = BaseItem;
             this.Data = data;
+            this.Extra = extra;
             this.mBaseItem = GetBaseItem();
             if (mBaseItem == null)
             {
@@ -108,7 +110,7 @@ namespace Butterfly.HabboHotel.Items
             Message.AppendString(mBaseItem.Type.ToString().ToUpper());
             Message.AppendUInt(Id);
             Message.AppendInt32(GetBaseItem().SpriteId);
-            Message.AppendInt32(1); // extra
+            Message.AppendInt32(Extra); // extra
 
             Message.AppendInt32(Data.GetType());
             Data.AppendToMessage(Message);
