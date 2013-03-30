@@ -41,6 +41,9 @@ namespace Butterfly.HabboHotel.Items
         private Dictionary<int, ThreeDCoord> mAffectedPoints;
         private Point placedPosition;
 
+        internal IRoomItemData data;
+        internal int extra;
+
         internal Point GetPlacementPosition()
         {
             return placedPosition;
@@ -331,13 +334,14 @@ namespace Butterfly.HabboHotel.Items
                 itemTriggerEventHandler(null, new ItemTriggeredArgs(user, this));
         }
 
-        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, string ExtraData, int X, int Y, Double Z, int Rot, Room pRoom)
+        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int X, int Y, Double Z, int Rot, Room pRoom)
         {
             this.Id = Id;
             this.RoomId = RoomId;
             this.BaseItem = BaseItem;
-            this.ExtraData = ExtraData;
-            this.originalExtraData = ExtraData;
+            //this.ExtraData = data;
+            //this.originalExtraData = data;
+            this.data = data;
             this.mX = X;
             this.mY = Y;
             if(!double.IsInfinity(Z))
@@ -416,13 +420,13 @@ namespace Butterfly.HabboHotel.Items
             mAffectedPoints = Gamemap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
         }
 
-        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, string ExtraData, WallCoordinate wallCoord, Room pRoom)
+        internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData ExtraData, WallCoordinate wallCoord, Room pRoom)
         {
             this.Id = Id;
             this.RoomId = RoomId;
             this.BaseItem = BaseItem;
-            this.ExtraData = ExtraData;
-            this.originalExtraData = ExtraData;
+            this.data = ExtraData;
+            //this.originalExtraData = ExtraData;
             this.mX = 0;
             this.mY = 0;
             this.mZ = 0.0;
@@ -1035,14 +1039,42 @@ namespace Butterfly.HabboHotel.Items
 
         internal void Serialize(ServerMessage Message, int UserId)
         {
+            // int
+            // int
+            // int
+            // int
+            // int
+            // string
+            // int (extra)
+            // int data type (0,1,2,3,4) (
+            // 0 = (StringData?)          - string
+            // 1 = (MapStuffData)         - int i, foreach i { string, string }
+            // 2 = (StringArrayStuffData) - int i, foreach i { string }
+            // 3 = (?)                    - string, int
+            // 4 = not implemented?
+
+            // ---data
+            //    int
+
+
+            // int
+            // int
+            // int
+            // if type < 0, string
+
             if (IsFloorItem)
             {
                 Message.AppendUInt(Id);
-                Message.AppendInt32(GetBaseItem().SpriteId);
-                Message.AppendInt32(mX);
-                Message.AppendInt32(mY);
-                Message.AppendInt32(Rot);
-                Message.AppendString(String.Format("{0:0.00}", TextHandling.GetString(mZ)));
+                Message.AppendInt32(GetBaseItem().SpriteId); // type
+                Message.AppendInt32(mX); // x
+                Message.AppendInt32(mY); // y
+                Message.AppendInt32(Rot); // dir
+                Message.AppendString(String.Format("{0:0.00}", TextHandling.GetString(mZ))); // z
+                Message.AppendInt32(0); // extra
+                Message.AppendInt32(0); // data type
+
+                data.AppendToMessage(Message);
+
                 if (this.GetBaseItem().InteractionType == InteractionType.gift)
                 {
                     int result = 0;

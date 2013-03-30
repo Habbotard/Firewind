@@ -1,4 +1,5 @@
 ﻿using Butterfly.HabboHotel.Items;
+using Butterfly.HabboHotel.Rooms;
 using Database_Manager.Database.Session_Details.Interfaces;
 
 namespace Butterfly.HabboHotel.SoundMachine
@@ -19,13 +20,13 @@ namespace Butterfly.HabboHotel.SoundMachine
         public SongItem(UserItem item)
         {
             this.itemID = item.Id;
-            this.songID = TextHandling.Parse(item.ExtraData);
+            this.songID = TextHandling.Parse(item.Data.ToString());
             this.baseItem = item.GetBaseItem();
         }
 
         internal UserItem ToUserItem()
         {
-            return new UserItem(itemID, baseItem.ItemId, songID.ToString());
+            return new UserItem(itemID, baseItem.ItemId, new StringData(songID.ToString()));
         }
 
         internal void SaveToDatabase(uint roomID)

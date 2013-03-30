@@ -172,6 +172,7 @@ namespace Butterfly.HabboHotel.Rooms
                 decimal y;
                 sbyte n;
                 uint baseID;
+                int dataType;
                 string extradata;
                 WallCoordinate wallCoord;
                 foreach (DataRow dRow in Data.Rows)
@@ -181,15 +182,37 @@ namespace Butterfly.HabboHotel.Rooms
                     y = Convert.ToDecimal(dRow[2]);
                     n = Convert.ToSByte(dRow[3]);
                     baseID = Convert.ToUInt32(dRow[4]);
-                    if (DBNull.Value.Equals(dRow[5]))
+                    dataType = Convert.ToInt32(dRow[5]);
+                    if (DBNull.Value.Equals(dRow[6]))
                         extradata = string.Empty;
                     else
-                        extradata = (string)dRow[5];
+                        extradata = (string)dRow[6];
+
+                    IRoomItemData data;
+                    switch (dataType)
+                    {
+                        case 0:
+                            data = new StringData(extradata);
+                            break;
+                        case 1:
+                            data = new MapStuffData();
+                            break;
+                        case 2:
+                            data = new StringArrayStuffData();
+                            break;
+                        case 3:
+                            data = new StringIntData();
+                            break;
+                        default:
+                            data = new StringData(extradata);
+                            break;
+                    }
+                    data.Parse(extradata);
 
                     if (n > 6) // Is wallitem
                     {
                         wallCoord = new WallCoordinate((double)x, (double)y, n);
-                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, extradata, wallCoord, room);
+                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, wallCoord, room);
 
                         if (!mWallItems.ContainsKey(itemID))
                             mWallItems.Inner.Add(itemID, item);
@@ -199,7 +222,7 @@ namespace Butterfly.HabboHotel.Rooms
                         int coordX, coordY;
                         TextHandling.Split((double)x, out coordX, out coordY);
 
-                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, extradata, coordX, coordY, (double)y, n, room);
+                        RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, coordX, coordY, (double)y, n, room);
                         if (!mFloorItems.ContainsKey(itemID))
                             mFloorItems.Inner.Add(itemID, item);
                     }

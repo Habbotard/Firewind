@@ -70,7 +70,7 @@ namespace Butterfly.Messages
         {
             int PageId = Request.PopWiredInt32();
             uint ItemId = Request.PopWiredUInt();
-            string ExtraData = Request.PopFixedString();
+            string extraParameter = Request.PopFixedString();
             int Amount = Request.PopWiredInt32();
             /*for (int i = 0; i < Session.GetHabbo().buyItemLoop; i++)
             {*/
@@ -81,7 +81,7 @@ namespace Butterfly.Messages
                 return;
             }
 
-            ButterflyEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, ExtraData, Amount, false, "", "", 0, 0, 0, false);
+            ButterflyEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, extraParameter, Amount, false, "", "", 0, 0, 0, false);
             //}
         }
 

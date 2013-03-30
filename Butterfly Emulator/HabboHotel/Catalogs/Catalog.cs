@@ -10,6 +10,7 @@ using Butterfly.HabboHotel.Users.Inventory;
 using Butterfly.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using HabboEvents;
+using Butterfly.HabboHotel.Rooms;
 
 namespace Butterfly.HabboHotel.Catalogs
 {
@@ -202,7 +203,7 @@ namespace Butterfly.HabboHotel.Catalogs
             return Pages[Page];
         }
 
-        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string ExtraData, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
+        internal void HandlePurchase(GameClient Session, int PageId, uint ItemId, string extraParameter, int buyAmount, Boolean IsGift, string GiftUser, string GiftMessage, int GiftSpriteId, int GiftLazo, int GiftColor, bool undef)
         {
             int finalAmount = buyAmount;
             if (buyAmount > 5) // Possible discount!
@@ -483,15 +484,15 @@ namespace Butterfly.HabboHotel.Catalogs
                     Session.SendNotif(LanguageLocale.GetValue("catalog.gift.send.error"));
                     return;
                 }
-
+                IRoomItemData itemData;
                 switch (Item.GetBaseItem(i).InteractionType)
                 {
                     case InteractionType.none:
-                        ExtraData = "";
+                        itemData = new StringData("");
                         break;
 
                     case InteractionType.musicdisc:
-                        ExtraData = Item.songID.ToString();
+                        itemData = new StringData(Item.songID.ToString());
                         break;
 
                     #region Pet handling
@@ -512,7 +513,7 @@ namespace Butterfly.HabboHotel.Catalogs
                             //    return;
                             //}
 
-                            string[] Bits = ExtraData.Split('\n');
+                            string[] Bits = extraParameter.Split('\n');
                             string PetName = Bits[0];
                             string Race = Bits[1];
                             string Color = Bits[2];
@@ -545,30 +546,30 @@ namespace Butterfly.HabboHotel.Catalogs
 
                         try
                         {
-                            if (string.IsNullOrEmpty(ExtraData))
+                            if (string.IsNullOrEmpty(extraParameter))
                                 Number = 0;
                             else
-                                Number = Double.Parse(ExtraData, ButterflyEnvironment.cultureInfo);
+                                Number = Double.Parse(extraParameter, ButterflyEnvironment.cultureInfo);
                         }
-                        catch (Exception e) { Logging.HandleException(e, "Catalog.HandlePurchase: " + ExtraData); }
+                        catch (Exception e) { Logging.HandleException(e, "Catalog.HandlePurchase: " + extraParameter); }
 
-                        ExtraData = Number.ToString().Replace(',', '.');
+                        itemData = new StringData(Number.ToString().Replace(',', '.'));
                         break; // maintain extra data // todo: validate
 
                     case InteractionType.postit:
-                        ExtraData = "FFFF33";
+                        itemData = new StringData("FFFF33");
                         break;
 
                     case InteractionType.dimmer:
-                        ExtraData = "1,1,1,#000000,255";
+                        itemData = new StringData("1,1,1,#000000,255");
                         break;
 
                     case InteractionType.trophy:
-                        ExtraData = Session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + ButterflyEnvironment.FilterInjectionChars(ExtraData, true);
+                        itemData = new StringData(Session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + ButterflyEnvironment.FilterInjectionChars(extraParameter, true));
                         break;
 
                     default:
-                        ExtraData = "";
+                        itemData = new StringData("");
                         break;
                 }
 
@@ -611,6 +612,15 @@ namespace Butterfly.HabboHotel.Catalogs
                     {
                         Logging.LogDebug(string.Format("Somebody tried to purchase a present with invalid sprite ID: {0}", GiftSpriteId));
                     }
+
+                    MapStuffData giftData = new MapStuffData();
+                    giftData.Data.Add("PURCHASER_NAME", Session.GetHabbo().Username);
+                    giftData.Data.Add("PURCHASER_FIGURE", Session.GetHabbo().Look);
+                    giftData.Data.Add("MESSAGE", GiftMessage);
+                    giftData.Data.Add("PRODUCT_CODE", "");
+                    giftData.Data.Add("EXTRA_PARAM", "");
+                    giftData.Data.Add("state", "0");
+
                     //Logging.WriteLine((uint)GiftSpriteId +"   -    "  +ButterflyEnvironment.giftInt);
                     //Logging.WriteLine("Resultado regalo: " + ButterflyEnvironment.GetGame().GetItemManager().GetItem((uint)GiftSpriteId - ButterflyEnvironment.giftInt));
                     using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
@@ -626,13 +636,13 @@ namespace Butterfly.HabboHotel.Catalogs
                         if (!string.IsNullOrEmpty(GiftMessage))
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + itemID + ",@data)");
-                            dbClient.addParameter("data", Session.GetHabbo().Id + ";" + GiftMessage + (char)5 + GiftLazo + (char)5 + GiftColor);
+                            dbClient.addParameter("data", giftData);
                             dbClient.runQuery();
                         }
 
                         dbClient.setQuery("INSERT INTO user_presents (item_id,base_id,amount,extra_data) VALUES (" + itemID + "," + Item.GetBaseItem(i).ItemId + "," + Item.Amount + ",@extra_data)");
                         dbClient.addParameter("gift_message", "!" + GiftMessage);
-                        dbClient.addParameter("extra_data", ExtraData);
+                        dbClient.addParameter("extra_data", extraParameter);
                         dbClient.runQuery();
                     }
 
@@ -641,7 +651,7 @@ namespace Butterfly.HabboHotel.Catalogs
                     if (Receiver != null)
                     {
                         Receiver.SendNotif(LanguageLocale.GetValue("catalog.gift.received") + Session.GetHabbo().Username);
-                        UserItem u = Receiver.GetHabbo().GetInventoryComponent().AddNewItem(itemID, Present.ItemId, Session.GetHabbo().Id + ";" + GiftMessage + (char)5 + GiftLazo + (char)5 + GiftColor, false, false, 0);
+                        UserItem u = Receiver.GetHabbo().GetInventoryComponent().AddNewItem(itemID, Present.ItemId, giftData, false, false, 0);
                         Receiver.GetHabbo().GetInventoryComponent().SendFloorInventoryUpdate();
                         Receiver.GetMessageHandler().GetResponse().Init(Outgoing.SendPurchaseAlert);
                         Receiver.GetMessageHandler().GetResponse().AppendInt32(1); // items
@@ -669,7 +679,7 @@ namespace Butterfly.HabboHotel.Catalogs
                             Type = 1;
                     }
                     Session.GetMessageHandler().GetResponse().AppendInt32(Type);
-                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), ExtraData, Item.songID);
+                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), extraParameter, Item.songID);
                     Session.GetMessageHandler().GetResponse().AppendInt32(items.Count);
                     foreach (UserItem u in items)
                         Session.GetMessageHandler().GetResponse().AppendUInt(u.Id);
@@ -730,15 +740,15 @@ namespace Butterfly.HabboHotel.Catalogs
                                 Pet GeneratedPet = CreatePet(Session.GetHabbo().Id, PetData[0], petType, PetData[1], PetData[2]);
 
                                 Session.GetHabbo().GetInventoryComponent().AddPet(GeneratedPet);
-                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, "0", true, false, 0));
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, new StringData("0"), true, false, 0));
 
                                 break;
 
                             case InteractionType.teleport:
 
-                                UserItem one = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, "0", true, false, 0);
+                                UserItem one = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), true, false, 0);
                                 uint idOne = one.Id;
-                                UserItem two = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, "0", true, false, 0);
+                                UserItem two = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData("0"), true, false, 0);
                                 uint idTwo = two.Id;
                                 result.Add(one);
                                 result.Add(two);
@@ -753,7 +763,7 @@ namespace Butterfly.HabboHotel.Catalogs
 
                             case InteractionType.dimmer:
 
-                                UserItem it = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, ExtraData, true, false, 0);
+                                UserItem it = Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), true, false, 0);
                                 uint id = it.Id;
                                 result.Add(it);
                                 using (IQueryAdapter dbClient = ButterflyEnvironment.GetDatabaseManager().getQueryreactor())
@@ -766,13 +776,13 @@ namespace Butterfly.HabboHotel.Catalogs
 
                             case InteractionType.musicdisc:
                                 {
-                                    result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, songID.ToString(), true, false, songID));
+                                    result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(songID.ToString()), true, false, songID));
                                     break;
                                 }
 
                             default:
 
-                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, ExtraData, true, false, songID));
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, new StringData(ExtraData), true, false, songID));
                                 break;
                         }
                     }

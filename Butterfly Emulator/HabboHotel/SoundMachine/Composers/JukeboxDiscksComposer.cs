@@ -100,7 +100,7 @@ namespace Butterfly.HabboHotel.SoundMachine.Composers
 
             foreach (UserItem userItem in songs.Values)
             {
-                uint songID = (uint)TextHandling.Parse(userItem.ExtraData);
+                uint songID = (uint)TextHandling.Parse(userItem.Data.ToString());
 
                 message.AppendUInt(userItem.Id);
                 message.AppendUInt(songID);

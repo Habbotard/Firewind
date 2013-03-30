@@ -15,6 +15,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using Butterfly.HabboHotel.Users.UserDataManagement;
 using Butterfly.Util;
 using HabboEvents;
+using Butterfly.HabboHotel.Rooms;
 
 namespace Butterfly.HabboHotel.Users.Inventory
 {
@@ -205,18 +206,41 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
             uint id;
             uint baseitem;
+            int dataType;
             string extradata;
             foreach (DataRow Row in Data.Rows)
             {
                 id = Convert.ToUInt32(Row[0]);
                 baseitem = Convert.ToUInt32(Row[1]);
 
-                if (!DBNull.Value.Equals(Row[2]))
-                    extradata = (string)Row[2];
+                dataType = Convert.ToInt32(Row[2]);
+                if (!DBNull.Value.Equals(Row[3]))
+                    extradata = (string)Row[3];
                 else
                     extradata = string.Empty;
 
-                UserItem item = new UserItem(id, baseitem, extradata);
+                IRoomItemData data;
+                switch(dataType)
+                {
+                    case 0:
+                        data = new StringData(extradata);
+                        break;
+                    case 1:
+                        data = new MapStuffData();
+                        break;
+                    case 2:
+                        data = new StringArrayStuffData();
+                        break;
+                    case 3:
+                        data = new StringIntData();
+                        break;
+                    default:
+                        data = new StringData(extradata);
+                        break;
+                }
+                data.Parse(extradata);
+
+                UserItem item = new UserItem(id, baseitem, data);
 
                 if (item.GetBaseItem().InteractionType == InteractionType.musicdisc)
                     discs.Add(id, item);
@@ -289,7 +313,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
             return null;
         }
 
-        internal UserItem AddNewItem(UInt32 Id, UInt32 BaseItem, string ExtraData, bool insert, bool fromRoom, UInt32 songID = 0)
+        internal UserItem AddNewItem(UInt32 Id, UInt32 BaseItem, IRoomItemData ExtraData, bool insert, bool fromRoom, UInt32 songID = 0)
         {
             isUpdated = false;
             if (insert)
@@ -323,7 +347,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
                         dbClient.setQuery("INSERT INTO items (base_id) VALUES (" + BaseItem + ")");
                         Id = (uint)dbClient.insertQuery();
 
-                        if (!string.IsNullOrEmpty(ExtraData))
+                        //if (!string.IsNullOrEmpty(ExtraData))
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@extradata)");
                             dbClient.addParameter("extradata", ExtraData);
@@ -503,7 +527,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
 
         internal void AddItem(RoomItem item)
         {
-            AddNewItem(item.Id, item.BaseItem, item.ExtraData, true, true, 0);
+            AddNewItem(item.Id, item.BaseItem, item.data, true, true, 0);
         }
 
 
@@ -589,7 +613,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
             foreach (UserItem SongDisk in discs.Values)
             {
                 uint SongId = 0;
-                uint.TryParse(SongDisk.ExtraData, out SongId);
+                uint.TryParse(SongDisk.Data.ToString(), out SongId);
 
                 Message.AppendUInt(SongDisk.Id);
                 Message.AppendUInt(SongId);

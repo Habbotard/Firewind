@@ -2,6 +2,7 @@
 using Butterfly.Core;
 using Butterfly.HabboHotel.Catalogs;
 using Butterfly.Messages;
+using Butterfly.HabboHotel.Rooms;
 
 namespace Butterfly.HabboHotel.Items
 {
@@ -9,15 +10,15 @@ namespace Butterfly.HabboHotel.Items
     {
         internal UInt32 Id;
         internal UInt32 BaseItem;
-        internal string ExtraData;
+        internal IRoomItemData Data;
         private Item mBaseItem;
         internal bool isWallItem;
 
-        internal UserItem(UInt32 Id, UInt32 BaseItem, string ExtraData)
+        internal UserItem(UInt32 Id, UInt32 BaseItem, IRoomItemData data)
         {
             this.Id = Id;
             this.BaseItem = BaseItem;
-            this.ExtraData = ExtraData;
+            this.Data = data;
             this.mBaseItem = GetBaseItem();
             if (mBaseItem == null)
             {
@@ -86,14 +87,14 @@ namespace Butterfly.HabboHotel.Items
                 Message.AppendInt32(1);
             }
             int result = 0;
-            if (this.GetBaseItem().InteractionType == InteractionType.gift && ExtraData.Contains(Convert.ToChar(5).ToString()))
-            {
-                int color = int.Parse(ExtraData.Split((char)5)[1]);
-                int lazo = int.Parse(ExtraData.Split((char)5)[2]);
-                result = color * 1000 + lazo;
-            }
+            //if (this.GetBaseItem().InteractionType == InteractionType.gift && ExtraData.Contains(Convert.ToChar(5).ToString()))
+            //{
+            //    int color = int.Parse(ExtraData.Split((char)5)[1]);
+            //    int lazo = int.Parse(ExtraData.Split((char)5)[2]);
+            //    result = color * 1000 + lazo;
+            //}
             Message.AppendInt32(result);
-            Message.AppendString(ExtraData);
+            Message.AppendString(Data.ToString());
             Message.AppendBoolean(GetBaseItem().AllowRecycle);
             Message.AppendBoolean(GetBaseItem().AllowTrade);
             Message.AppendBoolean(GetBaseItem().AllowInventoryStack);
@@ -108,8 +109,10 @@ namespace Butterfly.HabboHotel.Items
             Message.AppendUInt(Id);
             Message.AppendInt32(GetBaseItem().SpriteId);
             Message.AppendInt32(1);
-            Message.AppendInt32(0); // ?
-            Message.AppendString(ExtraData);
+
+            Message.AppendInt32(Data.GetType()); // ?
+            Data.AppendToMessage(Message);
+
             Message.AppendBoolean(GetBaseItem().AllowRecycle);
             Message.AppendBoolean(GetBaseItem().AllowTrade);
             Message.AppendBoolean(GetBaseItem().AllowInventoryStack);
