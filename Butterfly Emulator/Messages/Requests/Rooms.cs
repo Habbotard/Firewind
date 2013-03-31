@@ -3643,6 +3643,40 @@ namespace Butterfly.Messages
             Session.GetHabbo().CurrentRoom.GetRoomItemHandler().UpdateItem(item);
         }
 
+        internal void SetAdParameters()
+        {
+            if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
+                return;
+
+            int itemID = Request.PopWiredInt32();
+
+            RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
+            if (item == null)
+                return;
+
+            MapStuffData data = new MapStuffData();
+            int mapLength = Request.PopWiredInt32();
+            for (int i = 0; i < mapLength/2; i++)
+            {
+                data.Data.Add(Request.PopFixedString(), Request.PopFixedString());
+            }
+
+            data.Data.Add("state", "0");
+            data.Data.Add("imageUrl", "");
+            data.Data.Add("clickUrl", "");
+            data.Data.Add("offsetX", "");
+            data.Data.Add("offsetY", "");
+            data.Data.Add("offsetZ", "");
+
+            // Send update to room
+            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
+            Session.GetHabbo().CurrentRoom.SendMessage(Message);
+
+            // Add to MySQL save queue
+            Session.GetHabbo().CurrentRoom.GetRoomItemHandler().UpdateItem(item);
+        }
+
         //internal void SaveWiredWithFurniture()
         //{
         //    uint itemID = Request.PopWiredUInt();

@@ -982,5 +982,10 @@ namespace Butterfly.Messages.StaticMessageHandlers
         {
             handler.MannequeFigureChange();
         }
+
+        internal static void SetAdParameters(GameClientMessageHandler handler)
+        {
+            handler.SetAdParameters();
+        }
     }
 }

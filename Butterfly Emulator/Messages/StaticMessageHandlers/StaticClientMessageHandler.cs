@@ -193,6 +193,8 @@ namespace Butterfly.Messages.StaticMessageHandlers
 
             handlers.Add(Incoming.MannequeNameChange, new StaticRequestHandler(SharedPacketLib.MannequeNameChange));
             handlers.Add(Incoming.MannequeFigureChange, new StaticRequestHandler(SharedPacketLib.MannequeFigureChange));
+
+            handlers.Add(Incoming.SetAdParameters, new StaticRequestHandler(SharedPacketLib.SetAdParameters));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

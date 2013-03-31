@@ -164,5 +164,7 @@ namespace HabboEvents
 
         public static int MannequeNameChange = 2036;
         public static int MannequeFigureChange = 2868;
+
+        public static int SetAdParameters = 358;
     }
 }
