@@ -989,6 +989,7 @@ namespace Butterfly.HabboHotel.Rooms
                                                 RoomUpdate.AppendStringWithBreak(User.GetClient().GetHabbo().Look);
                                                 RoomUpdate.AppendStringWithBreak(User.GetClient().GetHabbo().Gender.ToLower());
                                                 RoomUpdate.AppendStringWithBreak(User.GetClient().GetHabbo().Motto);
+                                                RoomUpdate.AppendInt32(User.GetClient().GetHabbo().AchievementPoints);
                                                 room.SendMessage(RoomUpdate);
                                             }
                                         }
