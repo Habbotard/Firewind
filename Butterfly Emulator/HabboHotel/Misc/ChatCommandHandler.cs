@@ -1373,7 +1373,7 @@ namespace Butterfly.HabboHotel.Misc
         {
             DateTime Now = DateTime.Now;
             TimeSpan Uptime = Now - ButterflyEnvironment.ServerStarted;
-            Session.SendBroadcastMessage("Habin.me Emulator\n===============================================\n" + ButterflyEnvironment.PrettyVersion + "\n\nTeam:\n      - Leon (Dev)\n\nThanks to:\n      - pLEDGE\n      - AWA\n\n Server Status\n===============================================\nUptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)");
+            Session.SendBroadcastMessage("Habin.me Emulator\n===============================================\n" + ButterflyEnvironment.PrettyVersion + "\n\nTeam:\n      - Leon (lazydev)\n      - AWA (Dev)\n\nThanks to:\n      - pLEDGE\n\n Server Status\n===============================================\nUptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)");
         }
 
         internal void enablestatus()

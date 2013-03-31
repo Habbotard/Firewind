@@ -17,6 +17,7 @@ using Butterfly.HabboHotel.Users.UserDataManagement;
 using System.Data;
 
 using HabboEvents;
+using System.Reflection;
 namespace Butterfly
 {
     static class ButterflyEnvironment
@@ -33,7 +34,7 @@ namespace Butterfly
         internal static bool SystemMute;
         internal static bool useSSO;
         internal static bool isLive;
-        internal const string PrettyVersion = "Firewind Build: 17032013";
+        internal static string PrettyVersion;
         internal static bool diagPackets = false;
         internal static int timeout = 500;
         internal static MusSocket MusSystem;
@@ -50,6 +51,7 @@ namespace Butterfly
 
         internal static void Initialize()
         {
+            PrettyVersion = string.Format("Firewind {0}", Assembly.GetExecutingAssembly().GetName().Version);
             Console.Clear();
             DateTime Start = DateTime.Now;
             SystemMute = false;
