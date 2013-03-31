@@ -255,17 +255,18 @@ namespace Butterfly.HabboHotel.Users.UserDataManagement
             {
                 itemID = Convert.ToUInt32(Row[0]);
                 baseItem = Convert.ToUInt32(Row[1]);
-                extra = Convert.ToInt32(Row[4]);
 
                     IRoomItemData data;
                     if (DBNull.Value.Equals(Row[2]))
                     {
                         data = new StringData("");
+                        extra = 0;
                     }
                     else
                     {
                         dataType = Convert.ToInt32(Row[2]);
                         extradata = (string)Row[3];
+                        extra = Convert.ToInt32(Row[4]);
                         switch (dataType)
                         {
                             case 0:

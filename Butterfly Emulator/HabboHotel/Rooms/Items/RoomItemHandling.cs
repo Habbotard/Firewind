@@ -183,16 +183,17 @@ namespace Butterfly.HabboHotel.Rooms
                     y = Convert.ToDecimal(dRow[2]);
                     n = Convert.ToSByte(dRow[3]);
                     baseID = Convert.ToUInt32(dRow[4]);
-                    extra = Convert.ToInt32(dRow[7]);
                     IRoomItemData data;
                     if (DBNull.Value.Equals(dRow[5]))
                     {
                         data = new StringData("");
+                        extra = 0;
                     }
                     else
                     {
                         dataType = Convert.ToInt32(dRow[5]);
                         extradata = (string)dRow[6];
+                        extra = Convert.ToInt32(dRow[7]);
                         switch (dataType)
                         {
                             case 0:
