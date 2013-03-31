@@ -3583,7 +3583,7 @@ namespace Butterfly.Messages
                 return;
 
             int itemID = Request.PopWiredInt32();
-            string newName = Request.PopFixedString();
+            string newName = Request.PopFixedString(Encoding.UTF8);
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
             if (item == null || item.data.GetType() != 1)

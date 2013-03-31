@@ -212,7 +212,14 @@ namespace Butterfly.HabboHotel.Rooms
                                 data = new StringData(extradata);
                                 break;
                         }
-                        data.Parse(extradata);
+                        try
+                        {
+                            data.Parse(extradata);
+                        }
+                        catch
+                        {
+                            Logging.LogException(string.Format("Error in furni data! Item ID: \"{0}\" and data: \"{1}\"", itemID, extradata.Replace(Convert.ToChar(1).ToString(), "[1]")));
+                        }
                     }
 
                     if (n > 6) // Is wallitem
@@ -521,7 +528,7 @@ namespace Butterfly.HabboHotel.Rooms
                                 extradataInserts.AddQuery("DELETE FROM items_extradata WHERE item_id = " + Item.Id);
                                 extradataInserts.AddQuery("INSERT INTO items_extradata (item_id,data_type,data) VALUES (" + Item.Id + ",@datatype_id" + Item.Id + ",@data_id" + Item.Id + ")");
                                 extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
-                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
+                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
                             }
 
                             itemInserts.AddQuery("DELETE FROM items_rooms WHERE item_id = " + Item.Id);
@@ -544,7 +551,7 @@ namespace Butterfly.HabboHotel.Rooms
                         //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
                         {
                             standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);
-                            standardQueries.AddParameter("data" + Item.Id, Item.data);
+                            standardQueries.AddParameter("data" + Item.Id, Item.data.ToString());
                         }
 
                         if (Item.IsWallItem)
@@ -612,7 +619,7 @@ namespace Butterfly.HabboHotel.Rooms
                             {
                                 extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
                                 extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
-                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
+                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
                             }
 
                             if (Item.IsFloorItem)
@@ -634,7 +641,7 @@ namespace Butterfly.HabboHotel.Rooms
                         {
                             extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
                             extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
-                            extradataInserts.AddParameter("@data_id" + Item.Id, Item.data);
+                            extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
 
                             //standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);
                             //standardQueries.AddParameter("data" + Item.Id, ((StringData)Item.data).Data);
