@@ -3654,19 +3654,22 @@ namespace Butterfly.Messages
             if (item == null)
                 return;
 
+            List<string> allowedParameters = new List<string>(new string[] { "imageUrl", "clickUrl", "offsetX", "offsetY", "offsetZ" });
             MapStuffData data = new MapStuffData();
             int mapLength = Request.PopWiredInt32();
             for (int i = 0; i < mapLength/2; i++)
             {
-                data.Data.Add(Request.PopFixedString(), Request.PopFixedString());
-            }
+                string key = Request.PopFixedString();
+                string value = Request.PopFixedString();
 
-            data.Data.Add("state", "0");
-            data.Data.Add("imageUrl", "");
-            data.Data.Add("clickUrl", "");
-            data.Data.Add("offsetX", "");
-            data.Data.Add("offsetY", "");
-            data.Data.Add("offsetZ", "");
+                if (!allowedParameters.Contains(key))
+                {
+                    Session.SendMOTD("Invalid parameter(s)!");
+                    return;
+                }
+                data.Data.Add(key, value);
+            }
+            item.data = data;
 
             // Send update to room
             ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
