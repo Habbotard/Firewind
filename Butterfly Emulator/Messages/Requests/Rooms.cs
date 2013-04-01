@@ -429,7 +429,7 @@ namespace Butterfly.Messages
             Response.AppendString("");
             response.appendResponse(GetResponse());
 
-            if (CurrentLoadingRoom.Type != "public" && CurrentLoadingRoom.UsersWithRights.Count > 0 && CurrentLoadingRoom.CheckRights(Session, true))
+            if (CurrentLoadingRoom.Type != "public" && CurrentLoadingRoom.UsersWithRights.Count > 0/* && CurrentLoadingRoom.CheckRights(Session, true)*/)
             {
                 GetResponse().Init(Outgoing.FlatControllerAdded);
                 GetResponse().AppendUInt(CurrentLoadingRoom.RoomData.Id);
