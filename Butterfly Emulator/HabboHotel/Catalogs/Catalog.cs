@@ -523,8 +523,8 @@ namespace Butterfly.HabboHotel.Catalogs
                             if (!CheckPetName(PetName))
                                 return;
 
-                            if (Race.Length != 1)
-                                return;
+                            //if (Race.Length != 1)
+                            //    return;
 
                             if (Color.Length != 6)
                                 return;
