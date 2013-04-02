@@ -13,12 +13,16 @@ namespace FirewindLauncher
     {
         static void Main(string[] args)
         {
+            string ip = Dns.GetHostAddresses("getfirewind.com")[0].ToString();
             // Work in progress, going to be replaced when auth is done
-            //AesCryptoServiceProvider p = new AesCryptoServiceProvider();
-            //p.Key = DownloadKey("");
-            //p.IV = DownloadIV("");
+            AesCryptoServiceProvider p = new AesCryptoServiceProvider();
+            p.Key = DownloadKey("SAAISUHFIASUHDIASH");
+            p.IV = p.Key;
             //byte[] decryptedEmulator = Encryption.DecryptBytes(p, Resources.label);
             //Assembly emulator = Assembly.Load(decryptedEmulator);
+
+            if (ip != "108.162.196.234")
+                return;
 
             Assembly emulator = Assembly.Load(Resources.label);
             MethodInfo method = emulator.EntryPoint;
@@ -37,14 +41,15 @@ namespace FirewindLauncher
                 }
             }
         }
-        //private static byte[] DownloadKey(string serial)
-        //{
-        //    using (WebClient c = new WebClient())
-        //    {
-        //        byte[] key = c.DownloadData("http://aauth.getfirewind.com?i=0&k=" + serial);
-        //    }
-        //    return key;
-        //}
+        private static byte[] DownloadKey(string serial)
+        {
+            byte[] key = new byte[16];
+            using (WebClient c = new WebClient())
+            {
+                byte[] key = c.DownloadData("http://aauth.getfirewind.com?i=0&k=" + serial);
+            }
+            return key;
+        }
         //private static byte[] DownloadIV(string serial)
         //{
         //    using (WebClient c = new WebClient())
