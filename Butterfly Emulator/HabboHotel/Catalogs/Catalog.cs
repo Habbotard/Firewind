@@ -648,8 +648,8 @@ namespace Butterfly.HabboHotel.Catalogs
                         if (!string.IsNullOrEmpty(GiftMessage))
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + itemID + ",@datatype,@data,@extra)");
-                            dbClient.addParameter("datatype", giftData.GetType());
-                            dbClient.addParameter("data", giftData);
+                            dbClient.addParameter("datatype", giftData.GetTypeID());
+                            dbClient.addParameter("data", giftData.ToString());
                             dbClient.addParameter("extra", GiftColor * 1000 + GiftLazo);
                             dbClient.runQuery();
                         }

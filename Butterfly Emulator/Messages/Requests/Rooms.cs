@@ -3586,7 +3586,7 @@ namespace Butterfly.Messages
             string newName = Request.PopFixedString(Encoding.UTF8);
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
-            if (item == null || item.data.GetType() != 1)
+            if (item == null || item.data.GetTypeID() != 1)
                 return;
 
             MapStuffData data = ((MapStuffData)item.data);
@@ -3612,7 +3612,7 @@ namespace Butterfly.Messages
             int itemID = Request.PopWiredInt32();
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
-            if (item == null || item.data.GetType() != 1)
+            if (item == null || item.data.GetTypeID() != 1)
                 return;
 
             MapStuffData data = ((MapStuffData)item.data);

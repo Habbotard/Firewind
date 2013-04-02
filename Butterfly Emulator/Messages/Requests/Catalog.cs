@@ -98,7 +98,6 @@ namespace Butterfly.Messages
             bool showIdentity = Request.PopWiredBoolean();
 
             //bool dnow = Request.PopWiredBoolean();
-            Logging.LogDebug(string.Format("Present info:\r\n   ID: {0}\r\n  Data: {1}", SpriteId, ExtraData));
             //Logging.WriteLine("PageId: " + PageId + "; ItemId: " + ItemId + "; ExtraData: " + ExtraData + "; User: " + GiftUser + "; Message: " + GiftMessage + "; SpriteId: " + SpriteId + "; Color: " + Color + "; Lazo: " + Lazo);
             ButterflyEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, ExtraData, 1, true, GiftUser, GiftMessage, SpriteId, Lazo, Color, showIdentity);
         }

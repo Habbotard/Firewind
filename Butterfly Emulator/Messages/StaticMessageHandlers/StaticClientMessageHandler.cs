@@ -31,8 +31,8 @@ namespace Butterfly.Messages.StaticMessageHandlers
             }
             else
             {
-                //if (unknownPackets.Contains(message.Id))
-                    //return;
+                if (unknownPackets.Contains(message.Id) && !System.Diagnostics.Debugger.IsAttached)
+                    return;
                 unknownPackets.Add(message.Id);
                 Logging.LogDebug("Unknown packet ID: " + message.Id);
             }

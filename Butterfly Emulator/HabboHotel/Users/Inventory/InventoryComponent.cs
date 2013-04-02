@@ -243,7 +243,14 @@ namespace Butterfly.HabboHotel.Users.Inventory
                                 data = new StringData(extradata);
                                 break;
                         }
-                        data.Parse(extradata);
+                        try
+                        {
+                            data.Parse(extradata);
+                        }
+                        catch
+                        {
+                            Logging.LogException(string.Format("Error in furni data! Item ID: \"{0}\" and data: \"{1}\"", id, extradata.Replace(Convert.ToChar(1).ToString(), "[1]")));
+                        }
                     }
 
                 UserItem item = new UserItem(id, baseitem, data, extra);
@@ -356,7 +363,7 @@ namespace Butterfly.HabboHotel.Users.Inventory
                         //if (!string.IsNullOrEmpty(ExtraData))
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@data,@extra)");
-                            dbClient.addParameter("datatype", data.GetType());
+                            dbClient.addParameter("datatype", data.GetTypeID());
                             dbClient.addParameter("data", data);
                             dbClient.addParameter("extra", extra);
                             dbClient.runQuery();

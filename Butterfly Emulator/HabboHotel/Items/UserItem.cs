@@ -112,7 +112,7 @@ namespace Butterfly.HabboHotel.Items
             Message.AppendInt32(GetBaseItem().SpriteId);
             Message.AppendInt32(Extra); // extra
 
-            Message.AppendInt32(Data.GetType());
+            Message.AppendInt32(Data.GetTypeID());
             Data.AppendToMessage(Message);
 
             Message.AppendBoolean(GetBaseItem().AllowRecycle);

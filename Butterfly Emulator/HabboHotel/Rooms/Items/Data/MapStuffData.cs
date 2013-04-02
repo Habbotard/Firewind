@@ -16,7 +16,7 @@ namespace Butterfly.HabboHotel.Rooms
         {
             Data = new Dictionary<string, string>();
         }
-        public int GetType()
+        public int GetTypeID()
         {
             return 1;
         }

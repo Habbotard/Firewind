@@ -1074,7 +1074,7 @@ namespace Butterfly.HabboHotel.Items
                 Message.AppendInt32(Rot); // dir
                 Message.AppendString(String.Format("{0:0.00}", TextHandling.GetString(mZ))); // z
                 Message.AppendInt32(Extra); // extra
-                Message.AppendInt32(data.GetType()); // data type
+                Message.AppendInt32(data.GetTypeID()); // data type
 
                 data.AppendToMessage(Message);
 
@@ -1145,12 +1145,14 @@ namespace Butterfly.HabboHotel.Items
                         break;
 
                     default:
-                        Message.AppendString((string)data.GetData());
+                        Message.AppendString(data.ToString());
                         break;
                 }
                 Message.AppendInt32(1); // Type New R63 ('use bottom')
                 Message.AppendInt32(UserId);
-                
+
+                if (data.GetType() != typeof(StringData))
+                    Logging.LogException(string.Format("Strange wallitem, {2}, {3}, {0}, \"{1}\"", Id, data.ToString(), GetBaseItem().Name, GetBaseItem().Type));
             }
         }
 

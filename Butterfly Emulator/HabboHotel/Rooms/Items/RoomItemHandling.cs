@@ -527,7 +527,7 @@ namespace Butterfly.HabboHotel.Rooms
                             {
                                 extradataInserts.AddQuery("DELETE FROM items_extradata WHERE item_id = " + Item.Id);
                                 extradataInserts.AddQuery("INSERT INTO items_extradata (item_id,data_type,data) VALUES (" + Item.Id + ",@datatype_id" + Item.Id + ",@data_id" + Item.Id + ")");
-                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetTypeID());
                                 extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
                             }
 
@@ -618,7 +618,7 @@ namespace Butterfly.HabboHotel.Rooms
                             //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
                             {
                                 extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
-                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetTypeID());
                                 extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
                             }
 
@@ -640,7 +640,7 @@ namespace Butterfly.HabboHotel.Rooms
                         //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
                         {
                             extradataInserts.AddQuery("(" + Item.Id + ",@data_type_id" + Item.Id + ",@data_id" + Item.Id + ")");
-                            extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetType());
+                            extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetTypeID());
                             extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
 
                             //standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);

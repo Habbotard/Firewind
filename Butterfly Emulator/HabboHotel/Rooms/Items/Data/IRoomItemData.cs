@@ -8,7 +8,7 @@ namespace Butterfly.HabboHotel.Rooms
 {
     internal interface IRoomItemData
     {
-        int GetType();
+        int GetTypeID();
         void Parse(string rawData);
         void AppendToMessage(ServerMessage message);
         string ToString();

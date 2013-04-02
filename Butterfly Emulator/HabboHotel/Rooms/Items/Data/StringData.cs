@@ -17,7 +17,7 @@ namespace Butterfly.HabboHotel.Rooms
             this.Data = data;
         }
 
-        public int GetType()
+        public int GetTypeID()
         {
             return 0;
         }

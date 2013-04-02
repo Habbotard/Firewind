@@ -11,7 +11,7 @@ namespace Butterfly.HabboHotel.Rooms
         // 3 = (?)                    - string, int
         internal KeyValuePair<string, int> Data;
 
-        public int GetType()
+        public int GetTypeID()
         {
             return 3;
         }

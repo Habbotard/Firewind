@@ -12,7 +12,7 @@ namespace Butterfly.HabboHotel.Rooms
         // 2 = (StringArrayStuffData) - int i, foreach i { string }
         internal string[] Data;
 
-        public int GetType()
+        public int GetTypeID()
         {
             return 2;
         }

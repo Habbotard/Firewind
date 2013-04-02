@@ -285,7 +285,14 @@ namespace Butterfly.HabboHotel.Users.UserDataManagement
                                 data = new StringData(extradata);
                                 break;
                         }
-                        data.Parse(extradata);
+                        try
+                        {
+                            data.Parse(extradata);
+                        }
+                        catch
+                        {
+                            Logging.LogException(string.Format("Error in furni data! Item ID: \"{0}\" and data: \"{1}\"", itemID, extradata.Replace(Convert.ToChar(1).ToString(), "[1]")));
+                        }
                     }
 
                 inventory.Add(new UserItem(itemID, baseItem, data, extra));
