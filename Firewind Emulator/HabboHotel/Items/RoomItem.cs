@@ -11,6 +11,7 @@ using Firewind.HabboHotel.Rooms.Wired;
 using Firewind.Messages;
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using HabboEvents;
+using Database_Manager.Database.Session_Details.Interfaces;
 
 namespace Firewind.HabboHotel.Items
 {
@@ -1152,7 +1153,12 @@ namespace Firewind.HabboHotel.Items
                 Message.AppendInt32(UserId);
 
                 if (data.GetType() != typeof(StringData))
+                {
                     Logging.LogException(string.Format("Strange wallitem, {2}, {3}, {0}, \"{1}\"", Id, data.ToString(), GetBaseItem().Name, GetBaseItem().Type));
+
+                    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                        dbClient.runFastQuery(string.Format("DELETE FROM items_extradata WHERE item_id = {0}", Id));
+                }
             }
         }
 

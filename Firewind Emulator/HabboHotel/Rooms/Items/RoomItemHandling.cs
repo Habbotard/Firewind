@@ -219,6 +219,7 @@ namespace Firewind.HabboHotel.Rooms
                         catch
                         {
                             Logging.LogException(string.Format("Error in furni data! Item ID: \"{0}\" and data: \"{1}\"", itemID, extradata.Replace(Convert.ToChar(1).ToString(), "[1]")));
+                            dbClient.runFastQuery(string.Format("DELETE FROM items_extradata WHERE item_id = {0}", itemID));
                         }
                     }
 

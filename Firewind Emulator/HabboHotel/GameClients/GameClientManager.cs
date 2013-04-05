@@ -531,6 +531,7 @@ namespace Firewind.HabboHotel.GameClients
                 {
                     Logging.WriteLine("GameClientManager.RemoveClients spent: " + spentTime.TotalSeconds + " seconds in working.");
                 }
+                Logging.LogDebug("Remove client task ran!");
             }
             catch (Exception e) { Logging.LogThreadException(e.ToString(), "GameClientManager.RemoveClients Exception --> Not inclusive"); }
         }
