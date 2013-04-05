@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -13,18 +14,29 @@ namespace FirewindLauncher
     {
         static void Main(string[] args)
         {
-            string ip = Dns.GetHostAddresses("getfirewind.com")[0].ToString();
+            if (!CheckHost())
+                return;
             // Work in progress, going to be replaced when auth is done
             AesCryptoServiceProvider p = new AesCryptoServiceProvider();
-            p.Key = DownloadKey("SAAISUHFIASUHDIASH");
-            p.IV = p.Key;
-            //byte[] decryptedEmulator = Encryption.DecryptBytes(p, Resources.label);
-            //Assembly emulator = Assembly.Load(decryptedEmulator);
+            byte[] key = DownloadKey("SAAISUHFIASUHDIASH");
 
-            if (ip != "108.162.196.234")
+            if (key == null)
+            {
+                Console.WriteLine("Wrong authentication key!");
+                Console.ReadKey(false);
+                return;
+            }
+
+            p.Key = key;
+            p.IV = p.Key;
+
+            if (!CheckHost())
                 return;
 
-            Assembly emulator = Assembly.Load(Resources.label);
+            byte[] decryptedEmulator = Encryption.DecryptBytes(p, Resources.label);
+            Assembly emulator = Assembly.Load(decryptedEmulator);
+
+           // Assembly emulator = Assembly.Load(Resources.label);
             MethodInfo method = emulator.EntryPoint;
             if (method != null)
             {
@@ -41,14 +53,36 @@ namespace FirewindLauncher
                 }
             }
         }
+        private static bool CheckHost()
+        {
+            string ip = Dns.GetHostAddresses("getfirewind.com")[0].ToString();
+
+            return (ip == "108.162.197.234");
+        }
         private static byte[] DownloadKey(string serial)
         {
-            byte[] key = new byte[16];
-            using (WebClient c = new WebClient())
-            {
-                byte[] key = c.DownloadData("http://aauth.getfirewind.com?i=0&k=" + serial);
-            }
-            return key;
+            WebRequest req = WebRequest.Create("http://getfirewind.com/auth");
+
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.Method = "POST";
+
+            byte[] bytes = Encoding.UTF8.GetBytes(string.Format("key={0}", serial));
+            req.ContentLength = bytes.Length;
+
+            Stream os = req.GetRequestStream();
+            os.Write(bytes, 0, bytes.Length); //Push it out there
+            os.Close();
+
+            System.Net.WebResponse resp = req.GetResponse();
+            if (resp == null)
+                return null;
+
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            string result = sr.ReadToEnd().Trim();
+            if (result == "not_authed")
+                return null;
+
+            return Convert.FromBase64String(result);
         }
         //private static byte[] DownloadIV(string serial)
         //{

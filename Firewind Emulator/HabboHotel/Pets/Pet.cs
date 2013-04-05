@@ -108,6 +108,7 @@ namespace Firewind.HabboHotel.Pets
             }
         }
 
+        // typeId + paletteId + color + unkcount + all unk
         internal string Look
         {
             get

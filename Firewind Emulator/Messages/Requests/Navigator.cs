@@ -107,7 +107,7 @@ namespace Firewind.Messages
             }*/
         }
 
-        internal void GetRoomInfo()
+        internal void GetGuestRoom()
         {
             Firewind.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();
      

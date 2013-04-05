@@ -363,9 +363,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetPubs();
         }
 
-        internal static void GetRoomInfo(GameClientMessageHandler handler)
+        internal static void GetGuestRoom(GameClientMessageHandler handler)
         {
-            handler.GetRoomInfo();
+            handler.GetGuestRoom();
         }
 
         internal static void PopularRoomsSearch(GameClientMessageHandler handler)

@@ -707,12 +707,19 @@ namespace Firewind.HabboHotel.Rooms
 
             if (IsBot)
             {
+                // monster plant:         2   1 3 8    0 -1 9
+                // no saddle:             2   2 -1 1   3 -1 1
+                // with saddle (cool):    3   2 -1 1   3 -1 1   4 10 0
+                // with saddle (normal):  3   2 -1 1   3 -1 1   4  9 0
+                // // typeId + paletteId + color + unkcount + 3 int
+                // hair -1 hairid
+                // tail -1 tailid
+                string horseData = "";
+                //string[,] data = new string[,] { [2, };
+
                 Message.AppendInt32(BotAI.BaseId);
                 Message.AppendString(BotData.Name);
                 Message.AppendString(BotData.Motto);
-                // no saddle:2 2 -1 1 3 -1 1
-                // with saddle (cool): 3 2 -1 1 4 10 0 3 -1 1
-                // with saddle (normal):  3 2 -1 1 3 -1 1 4 9 0
                 Message.AppendString(BotData.Look.ToLower() + ((PetData.HaveSaddle) ? "3 2 -1 1 3 -1 1 4 9 0" : "2 2 -1 1 3 -1 1"));
                 Message.AppendInt32(VirtualId);
                 Message.AppendInt32(X);
