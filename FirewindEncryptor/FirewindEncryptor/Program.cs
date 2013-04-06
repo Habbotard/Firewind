@@ -10,7 +10,7 @@ namespace FirewindEncryptor
 {
     class Program
     {
-        private static byte[] ENCRYPTION_KEY = new byte[16];
+        private static byte[] ENCRYPTION_KEY = {161, 221, 123, 139,  28, 54, 120, 60, 240, 209, 139, 68, 73, 120, 222, 43};
         static void Main(string[] args)
         {
             if(args.Length != 1)
