@@ -380,12 +380,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Util\ArrayHelper.cs" />
     <Compile Include="Util\CoordinationUtil.cs" />
-    <Compile Include="Util\CRC32.cs" />
-    <Compile Include="Util\Encryptor.cs" />
     <Compile Include="Util\HabboEncoding.cs" />
-    <Compile Include="Util\IO.cs" />
     <Compile Include="Util\Out.cs" />
     <Compile Include="Util\QueryChunk.cs" />
     <Compile Include="Util\TextHandling.cs" />

@@ -1125,6 +1125,17 @@ namespace Firewind.HabboHotel.Catalogs
                     PageData.AppendInt32(0);
                     break;
 
+                case "guild_frontpage":
+                    PageData.AppendString(Page.Layout);
+                    PageData.AppendInt32(2);
+                    PageData.AppendString("catalog_groups_en");
+                    PageData.AppendString("");
+                    PageData.AppendInt32(3);
+                    PageData.AppendString(Page.LayoutTeaser);
+                    PageData.AppendString(Page.LayoutSpecial);
+                    PageData.AppendString(Page.Text1);
+                    break;
+
                 default:
 
                     PageData.AppendString(Page.Layout);
