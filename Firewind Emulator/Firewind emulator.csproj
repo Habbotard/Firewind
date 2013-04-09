@@ -47,13 +47,15 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>none</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Firewind.Program</StartupObject>
@@ -103,7 +105,6 @@
     <Compile Include="Database\Database_Manager\Database\Session_Details\MsSqlQueryReactor.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\NormalQueryReactor.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\QueryAdapter.cs" />
-    <Compile Include="Database\Database_Manager\Database\Session_Details\TransactionQueryReactor.cs" />
     <Compile Include="Database\Database_Manager\Managers\Database\DatabaseServer.cs" />
     <Compile Include="Database\Database_Manager\Session_Details\Interfaces\IRegularQueryAdapter.cs" />
     <Compile Include="FirewindEnvironment.cs" />
@@ -225,7 +226,6 @@
     <Compile Include="HabboHotel\Rooms\Games\Soccer.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Teams.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\MapStuffData.cs" />
-    <Compile Include="HabboHotel\Rooms\MatrixState.cs" />
     <Compile Include="HabboHotel\Rooms\Room.cs" />
     <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Events\RoomEvent.cs" />
@@ -242,10 +242,6 @@
     <Compile Include="HabboHotel\Rooms\Items\Data\StringArrayStuffData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\StringData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\StringIntData.cs" />
-    <Compile Include="HabboHotel\Rooms\ThreadPooling\IProcessable.cs" />
-    <Compile Include="HabboHotel\Rooms\ThreadPooling\TaskHandeler.cs" />
-    <Compile Include="HabboHotel\Rooms\ThreadPooling\TaskManager.cs" />
-    <Compile Include="HabboHotel\Rooms\ThreadPooling\TaskProcessLogic.cs" />
     <Compile Include="HabboHotel\Rooms\Trade.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\ConditionHandler.cs" />
@@ -325,13 +321,6 @@
     <Compile Include="HabboHotel\Users\UserData\UserData.cs" />
     <Compile Include="HabboHotel\Users\UserData\UserDataFactory.cs" />
     <Compile Include="HabboHotel\Users\UserData\UserDataNotFoundException.cs" />
-    <Compile Include="MainServerConnectionHandeling\AbstractNoDataPacket.cs" />
-    <Compile Include="MainServerConnectionHandeling\MainServerConnectionHolder.cs" />
-    <Compile Include="MainServerConnectionHandeling\OutgoingSerialPacket.cs" />
-    <Compile Include="MainServerConnectionHandeling\PingRepsonse.cs" />
-    <Compile Include="MainServerConnectionHandeling\QueryResult.cs" />
-    <Compile Include="MainServerConnectionHandeling\ServerFullMessage.cs" />
-    <Compile Include="MainServerConnectionHandeling\ServerVersionResponse.cs" />
     <Compile Include="Messages\ChatCommand.cs" />
     <Compile Include="Messages\ChatCommandRegister.cs" />
     <Compile Include="Messages\ClientMessages\ClientMessage.cs" />
@@ -339,9 +328,6 @@
     <Compile Include="Messages\GameClientMessageHander.cs" />
     <Compile Include="Messages\Headers\Composers.cs" />
     <Compile Include="Messages\Headers\Events.cs" />
-    <Compile Include="Messages\LoggingSystem\LogState.cs" />
-    <Compile Include="Messages\LoggingSystem\Message.cs" />
-    <Compile Include="Messages\LoggingSystem\MessageLoggerManager.cs" />
     <Compile Include="Messages\PacketRank.cs" />
     <Compile Include="Messages\QueuedServerMessage.cs" />
     <Compile Include="Messages\Requests\Catalog.cs" />

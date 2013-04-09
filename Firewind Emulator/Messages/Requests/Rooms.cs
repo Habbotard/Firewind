@@ -28,6 +28,10 @@ namespace Firewind.Messages
 {
     partial class GameClientMessageHandler
     {
+        internal Room CurrentLoadingRoom;
+        private int FloodCount;
+        private DateTime FloodTime;
+
         internal void GetAdvertisement()
         {
             RoomAdvertisement Ad = FirewindEnvironment.GetGame().GetAdvertisementManager().GetRandomRoomAdvertisement();
@@ -49,23 +53,6 @@ namespace Firewind.Messages
 
             SendResponse();
         }
-
-        //internal void GetTrainerPanel()
-        //{
-        //    uint PetID = Request.PopWiredUInt();
-        //    Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
-        //    RoomUser PetUser = Room.GetPet(PetID);
-        //    GetResponse().Init(605);
-        //    GetResponse().AppendUInt(PetID);
-        //    int level = PetUser.PetData.Level;
-        //    GetResponse().AppendInt32(level);
-        //    for (int i = 0; level > i; )
-        //    {
-        //        i++;
-        //        GetResponse().AppendInt32(i - 1);
-        //    }
-        //    SendResponse();
-        //}
 
         internal void GetTrainerPanel()
         {
@@ -110,26 +97,6 @@ namespace Firewind.Messages
             }
         }
 
-        internal void GetPub()
-        {
-            uint Id = Request.PopWiredUInt();
-
-            RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
-
-            if (Data == null)
-            {
-                return;
-            }
-
-
-            GetResponse().Init(453);
-            GetResponse().AppendUInt(Data.Id);
-            GetResponse().AppendStringWithBreak(Data.CCTs);
-            GetResponse().AppendUInt(Data.Id);
-            SendResponse();
-        }
-
-
         // OpenPub
         internal void OpenConnection()
         {
@@ -145,27 +112,6 @@ namespace Firewind.Messages
             }
 
             PrepareRoomForUser(Data.Id, "");
-        }
-
-        internal void GetGroupBadges()
-        {
-            if (Session == null || Session.GetHabbo() == null || CurrentLoadingRoom == null)
-                return;
-        }
-
-        internal void OnGroupSerialize()
-        {
-            if (Session == null || Session.GetHabbo() == null || CurrentLoadingRoom == null)
-                return;
-
-        }
-
-        internal void GetInventory()
-        {
-            QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
-            response.appendResponse(Session.GetHabbo().GetInventoryComponent().SerializeFloorItemInventory());
-            response.appendResponse(Session.GetHabbo().GetInventoryComponent().SerializeWallItemInventory());
-            response.sendResponse();
         }
 
         // GetRoomData1
@@ -222,10 +168,7 @@ namespace Firewind.Messages
 
         }
 
-        internal Room CurrentLoadingRoom;
-        private int FloodCount;
-        private DateTime FloodTime;
-        internal void GetRoomData3()
+        internal void GetRoomAd()
         {
             if (Session.GetHabbo().LoadingRoom <= 0 || !Session.GetHabbo().LoadingChecksPassed || CurrentLoadingRoom == null)
             {
@@ -331,14 +274,12 @@ namespace Firewind.Messages
             response.sendResponse();
         }
 
-        internal void RequestFloorItems()
+        internal void GetInventory()
         {
-
-        }
-
-        internal void RequestWallItems()
-        {
-
+            QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
+            response.appendResponse(Session.GetHabbo().GetInventoryComponent().SerializeFloorItemInventory());
+            response.appendResponse(Session.GetHabbo().GetInventoryComponent().SerializeWallItemInventory());
+            response.sendResponse();
         }
 
         internal void OnRoomUserAdd()
@@ -1383,7 +1324,7 @@ namespace Firewind.Messages
             }
         }
 
-        internal void TakeRights()
+        internal void RemoveRights()
         {
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 

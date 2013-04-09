@@ -1872,20 +1872,4 @@ namespace Firewind.HabboHotel.Misc
         }
 
     }
-
-    struct PetInformation
-    {
-        internal string roomName;
-        internal string roomOwner;
-        internal uint petID;
-        internal string petName;
-
-        public PetInformation(string pRoomName, string pRoomOwner, uint pPetID, string pPetName)
-        {
-            roomName = pRoomName;
-            roomOwner = pRoomOwner;
-            petID = pPetID;
-            petName = pPetName;
-        }
-    }
 }

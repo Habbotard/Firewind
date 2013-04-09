@@ -5,56 +5,33 @@ namespace Firewind.Messages
 {
     internal partial class GameClientMessageHandler
     {
-        //Dw`d_GFansites{{2}}Keep tabs on our Fansites.{{2}}M{{2}}{{1}}
-        internal void GetGroupdetails()
+        // ID: 2282
+        public void CreateGuild()
         {
-            if (!FirewindEnvironment.groupsEnabled)
-                return;
+            // string, string, int, int, int, int[]
+            string name = Request.PopFixedString();
+            string desc = Request.PopFixedString();
+            int roomID = Request.PopWiredInt32();
+            int color1 = Request.PopWiredInt32();
+            int color2 = Request.PopWiredInt32();
 
-            int groupID = Request.PopWiredInt32();
-
-            DataRow dRow;
-            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            int[] badgeData = new int[Request.PopWiredInt32()];
+            for (int i = 0; i < badgeData.Length; i++)
             {
-                dbClient.setQuery("SELECT name,description,roomid FROM groups_details WHERE id = " + groupID + "");
-                dRow = dbClient.getRow();
-            }
-
-            if (dRow != null)
-            {
-                Response.Init(311); // Dw
-
-                Response.AppendInt32(groupID);
-                Response.AppendString((string)dRow["name"]);
-                Response.AppendString((string)dRow["description"]);
-
-                int roomID = (int)dRow["roomid"];
-
-                if (roomID > 0)
-                {
-                    Response.AppendInt32(roomID);
-                }
-                else
-                {
-                    Response.AppendInt32(-1);
-                }
-
-                Response.AppendString("Test");
-
-                SendResponse();
+                badgeData[i] = Request.PopWiredInt32();
             }
         }
 
-        //internal void RegisterGroups()
-        //{
-        //    RequestHandlers.Add(231, GetGroupdetails);
-        //}
-
-        //internal void UnRegisterGroups()
-        //{
-        //    RequestHandlers.Remove(231);
-        //}
-
-        //RequestHandlers.Add(94, new RequestHandler(Wave));
+        // ID: 2616
+        public void UpdateGuildBadge()
+        {
+            // int, int[]
+            int guildID = Request.PopWiredInt32();
+            int[] newBadgeData = new int[Request.PopWiredInt32()];
+            for (int i = 0; i < newBadgeData.Length; i++)
+            {
+                newBadgeData[i] = Request.PopWiredInt32();
+            }
+        }
     }
 }

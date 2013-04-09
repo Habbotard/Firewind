@@ -103,40 +103,40 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetCataData2();
         }
 
-        internal static void MarketplaceCanSell(GameClientMessageHandler handler)
-        {
-            handler.MarketplaceCanSell();
-        }
+        //internal static void MarketplaceCanSell(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplaceCanSell();
+        //}
 
-        internal static void MarketplacePostItem(GameClientMessageHandler handler)
-        {
-            handler.MarketplacePostItem();
-        }
+        //internal static void MarketplacePostItem(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplacePostItem();
+        //}
 
-        internal static void MarketplaceGetOwnOffers(GameClientMessageHandler handler)
-        {
-            handler.MarketplaceGetOwnOffers();
-        }
+        //internal static void MarketplaceGetOwnOffers(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplaceGetOwnOffers();
+        //}
 
-        internal static void MarketplaceTakeBack(GameClientMessageHandler handler)
-        {
-            handler.MarketplaceTakeBack();
-        }
+        //internal static void MarketplaceTakeBack(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplaceTakeBack();
+        //}
 
-        internal static void MarketplaceClaimCredits(GameClientMessageHandler handler)
-        {
-            handler.MarketplaceClaimCredits();
-        }
+        //internal static void MarketplaceClaimCredits(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplaceClaimCredits();
+        //}
 
-        internal static void MarketplaceGetOffers(GameClientMessageHandler handler)
-        {
-            handler.MarketplaceGetOffers();
-        }
+        //internal static void MarketplaceGetOffers(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplaceGetOffers();
+        //}
 
-        internal static void MarketplacePurchase(GameClientMessageHandler handler)
-        {
-            handler.MarketplacePurchase();
-        }
+        //internal static void MarketplacePurchase(GameClientMessageHandler handler)
+        //{
+        //    handler.MarketplacePurchase();
+        //}
 
         internal static void CheckPetName(GameClientMessageHandler handler)
         {
@@ -158,10 +158,10 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GiveHanditem();
         }
 
-        internal static void GetGroupdetails(GameClientMessageHandler handler)
-        {
-            handler.GetGroupdetails();
-        }
+        //internal static void GetGroupdetails(GameClientMessageHandler handler)
+        //{
+        //    handler.GetGroupdetails();
+        //}
 
         internal static void SSOLogin(GameClientMessageHandler handler)
         {
@@ -173,25 +173,25 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.InitHelpTool();
         }
 
-        internal static void GetHelpCategories(GameClientMessageHandler handler)
-        {
-            handler.GetHelpCategories();
-        }
+        //internal static void GetHelpCategories(GameClientMessageHandler handler)
+        //{
+        //    handler.GetHelpCategories();
+        //}
 
-        internal static void ViewHelpTopic(GameClientMessageHandler handler)
-        {
-            handler.ViewHelpTopic();
-        }
+        //internal static void ViewHelpTopic(GameClientMessageHandler handler)
+        //{
+        //    handler.ViewHelpTopic();
+        //}
 
-        internal static void SearchHelpTopics(GameClientMessageHandler handler)
-        {
-            handler.SearchHelpTopics();
-        }
+        //internal static void SearchHelpTopics(GameClientMessageHandler handler)
+        //{
+        //    handler.SearchHelpTopics();
+        //}
 
-        internal static void GetTopicsInCategory(GameClientMessageHandler handler)
-        {
-            handler.GetTopicsInCategory();
-        }
+        //internal static void GetTopicsInCategory(GameClientMessageHandler handler)
+        //{
+        //    handler.GetTopicsInCategory();
+        //}
 
         internal static void SubmitHelpTicket(GameClientMessageHandler handler)
         {
@@ -233,9 +233,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.ModReleaseTicket();
         }
 
-        internal static void ModCloseTicket(GameClientMessageHandler handler)
+        internal static void CloseIssues(GameClientMessageHandler handler)
         {
-            handler.ModCloseTicket();
+            handler.CloseIssues();
         }
 
         internal static void ModGetTicketChatlog(GameClientMessageHandler handler)
@@ -363,10 +363,10 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetPubs();
         }
 
-        internal static void GetGuestRoom(GameClientMessageHandler handler)
-        {
-            handler.GetGuestRoom();
-        }
+        //internal static void GetGuestRoom(GameClientMessageHandler handler)
+        //{
+        //    handler.GetGuestRoom();
+        //}
 
         internal static void PopularRoomsSearch(GameClientMessageHandler handler)
         {
@@ -438,19 +438,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetTrainerPanel();
         }
 
-        internal static void GetPub(GameClientMessageHandler handler)
-        {
-            handler.GetPub();
-        }
-
         internal static void OpenPub(GameClientMessageHandler handler)
         {
             handler.OpenConnection();
-        }
-
-        internal static void GetGroupBadges(GameClientMessageHandler handler)
-        {
-            handler.GetGroupBadges();
         }
 
         internal static void GetInventory(GameClientMessageHandler handler)
@@ -458,29 +448,19 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetInventory();
         }
 
-        internal static void GetRoomData1(GameClientMessageHandler handler)
+        internal static void GetFurnitureAliases(GameClientMessageHandler handler)
         {
             handler.GetFurnitureAliases();
         }
 
-        internal static void GetRoomData2(GameClientMessageHandler handler)
+        internal static void GetRoomEntryData(GameClientMessageHandler handler)
         {
             handler.GetRoomEntryData();
         }
 
-        internal static void GetRoomData3(GameClientMessageHandler handler)
+        internal static void GetRoomAd(GameClientMessageHandler handler)
         {
-            handler.GetRoomData3();
-        }
-
-        internal static void RequestFloorItems(GameClientMessageHandler handler)
-        {
-            handler.RequestFloorItems();
-        }
-
-        internal static void RequestWallItems(GameClientMessageHandler handler)
-        {
-            handler.RequestWallItems();
+            handler.GetRoomAd();
         }
 
         internal static void OnRoomUserAdd(GameClientMessageHandler handler)
@@ -553,9 +533,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GiveRights();
         }
 
-        internal static void TakeRights(GameClientMessageHandler handler)
+        internal static void RemoveRights(GameClientMessageHandler handler)
         {
-            handler.TakeRights();
+            handler.RemoveRights();
         }
 
         internal static void TakeAllRights(GameClientMessageHandler handler)

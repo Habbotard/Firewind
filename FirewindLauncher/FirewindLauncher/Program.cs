@@ -18,7 +18,7 @@ namespace FirewindLauncher
                 return;
             // Work in progress, going to be replaced when auth is done
             AesCryptoServiceProvider p = new AesCryptoServiceProvider();
-            byte[] key = DownloadKey("SAAISUHFIASUHDIASH");
+            byte[] key = DownloadKey(ReadKeyFromConfig());
 
             if (key == null)
             {
@@ -34,7 +34,18 @@ namespace FirewindLauncher
                 return;
 
             byte[] decryptedEmulator = Encryption.DecryptBytes(p, Resources.label);
-            Assembly emulator = Assembly.Load(decryptedEmulator);
+            Assembly emulator;
+
+            try
+            {
+                emulator = Assembly.Load(decryptedEmulator);
+            }
+            catch 
+            {
+                Console.WriteLine("Wrong authentication key!");
+                Console.ReadKey(false);
+                return;
+            }
 
            // Assembly emulator = Assembly.Load(Resources.label);
             MethodInfo method = emulator.EntryPoint;
@@ -57,7 +68,7 @@ namespace FirewindLauncher
         {
             string ip = Dns.GetHostAddresses("getfirewind.com")[0].ToString();
 
-            return (ip == "108.162.197.234");
+            return true;
         }
         private static byte[] DownloadKey(string serial)
         {
@@ -83,6 +94,17 @@ namespace FirewindLauncher
                 return null;
 
             return Convert.FromBase64String(result);
+        }
+        private static string ReadKeyFromConfig()
+        {
+            string[] lines = File.ReadAllLines("Settings\\Configuration.ini");
+
+            foreach (string line in lines)
+            {
+                if (line.StartsWith("auth.key"))
+                    return line.Split('=')[1];
+            }
+            return "";
         }
         //private static byte[] DownloadIV(string serial)
         //{

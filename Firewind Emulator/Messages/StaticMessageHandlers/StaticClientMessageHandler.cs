@@ -65,7 +65,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.SendRoomAlert, new StaticRequestHandler(SharedPacketLib.ModSendRoomAlert));
             handlers.Add(Incoming.PickIssue, new StaticRequestHandler(SharedPacketLib.ModPickTicket));
             handlers.Add(Incoming.ReleaseIssue, new StaticRequestHandler(SharedPacketLib.ModReleaseTicket));
-            handlers.Add(Incoming.CloseIssue, new StaticRequestHandler(SharedPacketLib.ModCloseTicket));
+            handlers.Add(Incoming.CloseIssues, new StaticRequestHandler(SharedPacketLib.CloseIssues));
             handlers.Add(Incoming.ToolForUser, new StaticRequestHandler(SharedPacketLib.ModGetUserInfo));
             handlers.Add(Incoming.UserChatlog, new StaticRequestHandler(SharedPacketLib.ModGetUserChatlog));
             handlers.Add(Incoming.OpenRoomChatlog, new StaticRequestHandler(SharedPacketLib.ModGetRoomChatlog));
@@ -101,8 +101,8 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.RecentRooms, new StaticRequestHandler(SharedPacketLib.GetRecentRooms));
             handlers.Add(Incoming.LoadPopularTags, new StaticRequestHandler(SharedPacketLib.GetPopularTags));
             handlers.Add(Incoming.SearchRoomByName, new StaticRequestHandler(SharedPacketLib.PerformSearch));
-            handlers.Add(Incoming.LoadHeightMap, new StaticRequestHandler(SharedPacketLib.GetRoomData2));
-            handlers.Add(Incoming.AddUserToRoom, new StaticRequestHandler(SharedPacketLib.GetRoomData3));
+            handlers.Add(Incoming.GetRoomEntryData, new StaticRequestHandler(SharedPacketLib.GetRoomEntryData));
+            handlers.Add(Incoming.GetRoomAd, new StaticRequestHandler(SharedPacketLib.GetRoomAd));
             handlers.Add(Incoming.Talk, new StaticRequestHandler(SharedPacketLib.Talk));
             handlers.Add(Incoming.Shout, new StaticRequestHandler(SharedPacketLib.Shout));
             handlers.Add(Incoming.Whisp, new StaticRequestHandler(SharedPacketLib.Whisper));
@@ -113,7 +113,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GetRoomSettings, new StaticRequestHandler(SharedPacketLib.GetRoomSettings));
             handlers.Add(Incoming.SaveRoomSettings, new StaticRequestHandler(SharedPacketLib.SaveRoomSettings));
             handlers.Add(Incoming.GiveRights, new StaticRequestHandler(SharedPacketLib.GiveRights));
-            handlers.Add(Incoming.RemoveRightsFrom, new StaticRequestHandler(SharedPacketLib.TakeRights));
+            handlers.Add(Incoming.RemoveRights, new StaticRequestHandler(SharedPacketLib.RemoveRights));
             handlers.Add(Incoming.RemoveAllRights, new StaticRequestHandler(SharedPacketLib.TakeAllRights));
             handlers.Add(Incoming.KickUserOfRoom, new StaticRequestHandler(SharedPacketLib.KickUser));
             handlers.Add(Incoming.BanUserOfRoom, new StaticRequestHandler(SharedPacketLib.BanUser));

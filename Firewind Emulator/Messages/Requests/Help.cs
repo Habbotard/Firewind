@@ -185,7 +185,7 @@ namespace Firewind.Messages
             }
         }
 
-        internal void ModCloseTicket()
+        internal void CloseIssues()
         {
             if (!Session.GetHabbo().HasFuse("fuse_mod"))
             {
@@ -193,10 +193,8 @@ namespace Firewind.Messages
             }
 
             int Result = Request.PopWiredInt32(); // result, 1 = useless, 2 = abusive, 3 = resolved
-            int Junk = Request.PopWiredInt32(); // ? 
-            uint TicketId = Request.PopWiredUInt(); // id
-
-            FirewindEnvironment.GetGame().GetModerationTool().CloseTicket(Session, TicketId, Result);
+            for(int i = 0; i < Request.PopWiredInt32(); i++)
+                FirewindEnvironment.GetGame().GetModerationTool().CloseTicket(Session, Request.PopWiredUInt(), Result);
         }
 
         internal void ModGetTicketChatlog()

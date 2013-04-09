@@ -54,16 +54,6 @@ namespace Firewind.HabboHotel
         // Tasks Main GameLoop
         private Task LowPriorityWorker_task, RoomManagerCycle_task, ClientManagerCycle_task;
         internal bool LowPriorityWorker_ended, RoomManagerCycle_ended, ClientManagerCycle_ended;
-
-
-        // RC4 Ordenado
-        private Thread RC4Thread_1;
-        private Thread RC4Thread_2;
-        private Thread RC4Thread_3;
-        private Thread RC4Thread_4;
-        private Thread RC4Thread_5;
-        private Thread DataThread_1;
-
         #endregion
 
         #region Return values

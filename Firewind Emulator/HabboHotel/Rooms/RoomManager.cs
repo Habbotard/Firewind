@@ -783,34 +783,4 @@ namespace Firewind.HabboHotel.Rooms
 
         #endregion
     }
-
-    class TeleUserData
-    {
-        private UInt32 RoomId;
-        private UInt32 TeleId;
-
-        private GameClientMessageHandler mHandler;
-        private Habbo mUserRefference;
-
-        internal TeleUserData(GameClientMessageHandler pHandler, Habbo pUserRefference, UInt32 RoomId, UInt32 TeleId)
-        {
-            //this.User = User;
-            this.mHandler = pHandler;
-            this.mUserRefference = pUserRefference;
-            this.RoomId = RoomId;
-            this.TeleId = TeleId;
-        }
-
-        internal void Execute()
-        {
-            if (mHandler == null || mUserRefference == null)
-            {
-                return;
-            }
-
-            mUserRefference.IsTeleporting = true;
-            mUserRefference.TeleporterId = TeleId;
-            mHandler.PrepareRoomForUser(RoomId, "");
-        }
-    }
 }

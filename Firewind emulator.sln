@@ -27,4 +27,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\Firewind emulator.ndproj"
+	EndGlobalSection
 EndGlobal

@@ -51,8 +51,8 @@ namespace HabboEvents
         public static int GetRoomSettings = 65;
         public static int SaveRoomSettings = 384;
 		public static int LoadFirstRoomData = 1730;
-		public static int LoadHeightMap = 2709;
-		public static int AddUserToRoom = 3873;
+        public static int GetRoomEntryData = 2709;
+		public static int GetRoomAd = 3873;
 		public static int LookTo = 3671;
 		public static int StartTrade = 1644;
 		public static int SendOffer = 882;
@@ -116,7 +116,7 @@ namespace HabboEvents
 		public static int StopTyping = 1096;
 		public static int GiveRights = 3768;
 		public static int RemoveAllRights = 1479;
-		public static int RemoveRightsFrom = 2990;
+        public static int RemoveRights = 2990;
 		public static int PickupItem = 1128;
 		public static int SaveWiredTrigger = 981;
 		public static int SaveWiredEffect = 682;
@@ -134,7 +134,7 @@ namespace HabboEvents
 		public static int CreateTicket = 3468;
 		public static int PickIssue = 1641;
 		public static int IssueChatlog = 2156;
-		public static int CloseIssue = 3087;
+        public static int CloseIssues = 3087;
 		public static int ReleaseIssue = 2294;
 		public static int OpenRoomChatlog = 96;
 		public static int GiveRoomScore = 1173;
