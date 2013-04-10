@@ -30,8 +30,13 @@
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
         [STAThread]
 
-        internal static void Main()
+        internal static void Main(string[] args)
         {
+            if (args.Length == 0 && !System.Diagnostics.Debugger.IsAttached)
+                return;
+
+            FirewindEnvironment.MaxUsers = int.Parse(args[1]);
+            FirewindEnvironment.LicenseHolder = args[2];
             Writer.Init();
 
             _handler += Handler;

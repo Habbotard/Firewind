@@ -160,29 +160,21 @@ namespace Firewind.HabboHotel.Pathfinding
         #endregion
 
         #region Return values
-        //internal int X
-        //{
-        //    get
-        //    {
-        //        return mX;
-        //    }
-        //    set
-        //    {
-        //        mX = value;
-        //    }
-        //}
+        internal int X
+        {
+            get
+            {
+                return mX;
+            }
+        }
 
-        //internal int Y
-        //{
-        //    get
-        //    {
-        //        return mY;
-        //    }
-        //    set
-        //    {
-        //        mY = value;
-        //    }
-        //}
+        internal int Y
+        {
+            get
+            {
+                return mY;
+            }
+        }
 
         internal SquarePoint Pos(int val)
         {

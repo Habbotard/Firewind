@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace FirewindLauncher
 {
@@ -16,9 +19,12 @@ namespace FirewindLauncher
         {
             if (!CheckHost())
                 return;
+            //XmlDictionaryReader json = JsonReaderWriterFactory.CreateJsonReader(DownloadInfo(ReadKeyFromConfig()), new XmlDictionaryReaderQuotas());
             // Work in progress, going to be replaced when auth is done
             AesCryptoServiceProvider p = new AesCryptoServiceProvider();
-            byte[] key = DownloadKey(ReadKeyFromConfig());
+            //XElement root = XElement.Load(json);
+            //byte[] key = Convert.FromBase64String((string)root.NextNode.Document);
+            byte[] key = Convert.FromBase64String(DownloadInfo(ReadKeyFromConfig())[0]);
 
             if (key == null)
             {
@@ -70,7 +76,7 @@ namespace FirewindLauncher
 
             return true;
         }
-        private static byte[] DownloadKey(string serial)
+        private static string[] DownloadInfo(string serial)
         {
             WebRequest req = WebRequest.Create("http://getfirewind.com/auth");
 
@@ -93,7 +99,7 @@ namespace FirewindLauncher
             if (result == "not_authed")
                 return null;
 
-            return Convert.FromBase64String(result);
+            return result.Split((char)1);
         }
         private static string ReadKeyFromConfig()
         {

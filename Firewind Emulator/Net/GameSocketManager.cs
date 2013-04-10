@@ -195,7 +195,7 @@ namespace ConnectionManager
                         replyFromComputer.NoDelay = this.disableNagleAlgorithm;
                         Out.writeLine("New connection from [" + replyFromComputer.RemoteEndPoint.ToString().Split(':')[0] + "].", Out.logFlags.StandardLogLevel);
 
-                        //if (activeConnections.Count < maximumConnections)
+                        if (activeConnections.Count < maximumConnections)
                         {
 
                             string Ip = replyFromComputer.RemoteEndPoint.ToString().Split(':')[0];
@@ -216,8 +216,12 @@ namespace ConnectionManager
                             //else
                             //    Out.writeLine("Connection denied from [" + replyFromComputer.RemoteEndPoint.ToString().Split(':')[0] + "]. The user has too many connections", Out.logFlags.StandardLogLevel);
                         }
-                        //else
-                        //    Out.writeLine("Maximum amount of connections reached " + maximumConnections, Out.logFlags.ImportantLogLevel);
+                        else
+                        {
+                            Out.writeLine("Maximum amount of connections reached " + maximumConnections, Out.logFlags.ImportantLogLevel);
+                            replyFromComputer.Shutdown(SocketShutdown.Both);
+                            replyFromComputer.Close();
+                        }
                     }
                     catch
                     {

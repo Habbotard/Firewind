@@ -69,10 +69,13 @@ namespace Firewind
 
             DefaultEncoding = Encoding.Default;
             Logging.WriteLine("     " + PrettyVersion);
+            Logging.WriteLine(string.Format("     Licenced to {0}", LicenseHolder));
+            Logging.WriteLine(string.Format("     Maximum players: {0}", MaxUsers));
 
             Logging.WriteLine("");
 
             cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
+            IsDebugging = System.Diagnostics.Debugger.IsAttached;
 
             try
             {
@@ -109,7 +112,7 @@ namespace Firewind
                 Game.ContinueLoading();
 
                 ConnectionManager = new ConnectionHandling(int.Parse(FirewindEnvironment.GetConfig().data["game.tcp.port"]),
-                    int.Parse(FirewindEnvironment.GetConfig().data["game.tcp.conlimit"]),
+                    MaxUsers,
                     int.Parse(FirewindEnvironment.GetConfig().data["game.tcp.conperip"]),
                     FirewindEnvironment.GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
                 ConnectionManager.init();
@@ -423,6 +426,9 @@ namespace Firewind
         }
 
         private static bool ShutdownInitiated = false;
+        public static string LicenseHolder;
+        public static int MaxUsers;
+        private static bool IsDebugging;
 
         internal static bool ShutdownStarted
         {

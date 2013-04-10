@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Database_Manager.Database.Session_Details.Interfaces;
+using System;
 
 namespace Firewind.Messages
 {
@@ -32,6 +33,12 @@ namespace Firewind.Messages
             {
                 newBadgeData[i] = Request.PopWiredInt32();
             }
+        }
+        // ID: 1137
+        public void StartGuildPurchase()
+        {
+            // REPLY ID: 3529
+            // Array(int,string,bool), bool, int, string, string, int, int, int, int, int, bool, string, array(???), string, int
         }
     }
 }
