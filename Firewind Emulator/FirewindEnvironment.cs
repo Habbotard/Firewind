@@ -80,6 +80,10 @@ namespace Firewind
                 ChatCommandRegister.Init();
                 PetCommandHandeler.Init();
                 PetLocale.Init();
+
+                if (System.Diagnostics.Debugger.IsAttached)
+                    Configuration = new ConfigurationData(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, @"Settings_test/configuration.ini"));
+                else
                 Configuration = new ConfigurationData(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, @"Settings/configuration.ini"));
 
                 DateTime Starts = DateTime.Now;
