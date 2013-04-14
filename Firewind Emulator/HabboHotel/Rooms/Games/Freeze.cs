@@ -10,6 +10,7 @@ using Firewind.Messages;
 using HabboEvents;
 using Firewind.Core;
 
+
 namespace Firewind.HabboHotel.Rooms.Games
 {
     class Freeze
@@ -289,7 +290,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         }
                     default:
                         {
-                            Logging.WriteLine("Other shit founded! " + item.GetBaseItem().InteractionType);
+                            Logging.WriteLine("Other StringData founded! " + item.GetBaseItem().InteractionType);
                             continue;
                         }
 

@@ -17,6 +17,7 @@ using Firewind.HabboHotel.Rooms.Wired;
 using Firewind.Util;
 using HabboEvents;
 
+
 namespace Firewind.HabboHotel.Rooms
 {
     class RoomItemHandling

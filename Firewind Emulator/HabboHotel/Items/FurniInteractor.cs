@@ -10,6 +10,7 @@ using System.Drawing;
 using Firewind.Messages;
 using HabboEvents;
 
+
 namespace Firewind.HabboHotel.Items.Interactors
 {
     abstract class FurniInteractor

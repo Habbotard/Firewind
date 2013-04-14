@@ -6,6 +6,7 @@ using ConnectionManager.Socket_Exceptions;
 using Helpers;
 using SharedPacketLib;
 using System.Collections;
+using Firewind.Core;
 
 namespace ConnectionManager
 {
@@ -143,7 +144,7 @@ namespace ConnectionManager
             }
             catch { destroy(); }
             //Out.writeLine("Started listening for connection requests on port [" + portInformation + "]", Out.logFlags.ImportantLogLevel);
-            Out.writeLine("Socket -> READY!", Out.logFlags.ImportantLogLevel);
+            Logging.WriteLine("Socket -> READY!");
         }
         #endregion
 
@@ -195,7 +196,7 @@ namespace ConnectionManager
                         replyFromComputer.NoDelay = this.disableNagleAlgorithm;
                         Out.writeLine("New connection from [" + replyFromComputer.RemoteEndPoint.ToString().Split(':')[0] + "].", Out.logFlags.StandardLogLevel);
 
-                        if (activeConnections.Count < maximumConnections)
+                        if (maximumConnections == 0 || activeConnections.Count < maximumConnections) // 0 = unlimited
                         {
 
                             string Ip = replyFromComputer.RemoteEndPoint.ToString().Split(':')[0];
@@ -226,7 +227,7 @@ namespace ConnectionManager
                     catch
                     {
                         //Out.writeError(ex.Message); }
-                        
+
                     }
                     finally
                     {

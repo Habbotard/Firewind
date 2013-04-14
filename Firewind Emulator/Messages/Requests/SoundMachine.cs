@@ -7,6 +7,7 @@ using Firewind.HabboHotel.SoundMachine.Composers;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Items;
 
+
 namespace Firewind.Messages
 {
     partial class GameClientMessageHandler

@@ -60,7 +60,7 @@ namespace FirewindLauncher
                 object o = emulator.CreateInstance(method.Name);
                 try
                 {
-                    method.Invoke(o, null);
+                    method.Invoke(o, new object[] { new string[] { ReadKeyFromConfig(), DownloadInfo(ReadKeyFromConfig())[1] == "null" ? "0" : DownloadInfo(ReadKeyFromConfig())[1], DownloadInfo(ReadKeyFromConfig())[2] }});
                 }
                 catch (TargetInvocationException e)
                 {
@@ -99,7 +99,7 @@ namespace FirewindLauncher
             if (result == "not_authed")
                 return null;
 
-            return result.Split((char)1);
+            return result.Split((char)0);
         }
         private static string ReadKeyFromConfig()
         {

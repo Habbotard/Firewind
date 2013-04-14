@@ -11,6 +11,7 @@ using Firewind.HabboHotel.Pathfinding;
 using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Rooms.Wired;
 
+
 namespace Firewind.HabboHotel.Rooms
 {
     class Gamemap

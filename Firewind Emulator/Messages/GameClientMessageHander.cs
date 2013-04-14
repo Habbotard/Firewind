@@ -17,6 +17,8 @@ namespace Firewind.Messages
         private ClientMessage Request;
         private ServerMessage Response;
 
+        private bool isDestroyed;
+
         //private delegate void RequestHandler();
         //private Dictionary<uint, RequestHandler> RequestHandlers;
 
@@ -36,14 +38,17 @@ namespace Firewind.Messages
         {
             // RequestHandlers.Clear();
             Session = null;
+            isDestroyed = true;
         }
 
         internal void HandleRequest(ClientMessage request)
         {
-            if (Session.GetHabbo() != null && Session.GetHabbo().Username == "Leon")
-            {
-                Logging.WriteLine("Received request " + request.Id + " [LEON]");
-            }
+            if (isDestroyed)
+                return;
+            //if (Session.GetHabbo() != null && Session.GetHabbo().Username == "Leon")
+            //{
+            //    Logging.WriteLine("Received request " + request.Id + " [LEON]");
+            //}
 
             if (FirewindEnvironment.diagPackets)
             {
@@ -100,7 +105,7 @@ namespace Firewind.Messages
 
         internal void SendResponse()
         {
-            if (Response != null && Response.Id > 0 && Session.GetConnection() != null)
+            if (!isDestroyed && Response != null && Response.Id > 0 && Session.GetConnection() != null)
             {
                 //Logging.WriteLine("SENDED [" + Response.Id + "] => " + Response.ToString().Replace(Convert.ToChar(0).ToString(), "{char0}"));
                 Session.GetConnection().SendData(Response.GetBytes());
@@ -109,7 +114,7 @@ namespace Firewind.Messages
 
         internal void SendResponseWithOwnerParam()
         {
-            if (Response != null && Response.Id > 0 && Session.GetConnection() != null)
+            if (!isDestroyed && Response != null && Response.Id > 0 && Session.GetConnection() != null)
             {
                 //Logging.WriteLine("SENDED [" + Response.Id + "] => " + Response.ToString().Replace(Convert.ToChar(0).ToString(), "{char0}"));
                 Response.AppendBoolean(Session.GetHabbo().CurrentRoom.CheckRights(Session, true));

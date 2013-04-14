@@ -17,6 +17,7 @@ using Firewind.HabboHotel.Users.Authenticator;
 using Firewind.Core;
 using Firewind.HabboHotel.Achievements;
 
+
 namespace Firewind.HabboHotel.Users.UserDataManagement
 {
     class UserDataFactory

@@ -75,7 +75,7 @@ namespace Firewind
             Logging.WriteLine("");
 
             cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
-            IsDebugging = System.Diagnostics.Debugger.IsAttached;
+            IsDebugging = IsDebugging ? System.Diagnostics.Debugger.IsAttached : false;
 
             try
             {
@@ -84,7 +84,7 @@ namespace Firewind
                 PetCommandHandeler.Init();
                 PetLocale.Init();
 
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (IsDebugging)
                     Configuration = new ConfigurationData(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, @"Settings_test/configuration.ini"));
                 else
                 Configuration = new ConfigurationData(System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, @"Settings/configuration.ini"));
@@ -198,7 +198,7 @@ namespace Firewind
             }
             catch (InvalidOperationException e)
             {
-                Logging.WriteLine("Failed to initialize FirewindEmulator: " + e.Message);
+                Logging.WriteLine("Failed to initialize Firewind Emulator: " + e.Message);
                 Logging.WriteLine("Press any key to shut down ...");
 
                 Console.ReadKey(true);
@@ -428,7 +428,7 @@ namespace Firewind
         private static bool ShutdownInitiated = false;
         public static string LicenseHolder;
         public static int MaxUsers;
-        private static bool IsDebugging;
+        public static bool IsDebugging;
 
         internal static bool ShutdownStarted
         {

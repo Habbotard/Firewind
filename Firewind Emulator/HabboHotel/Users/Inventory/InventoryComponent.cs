@@ -17,6 +17,7 @@ using Firewind.Util;
 using HabboEvents;
 using Firewind.HabboHotel.Rooms;
 
+
 namespace Firewind.HabboHotel.Users.Inventory
 {
     class InventoryComponent

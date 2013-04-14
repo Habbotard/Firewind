@@ -162,7 +162,7 @@ namespace Firewind.HabboHotel.Support
             Response.AppendBoolean(true); // kick fuse
             Response.AppendBoolean(true); // band fuse
             Response.AppendBoolean(true); // broadcastshit fuse
-            Response.AppendBoolean(true); // other shit fuse
+            Response.AppendBoolean(true); // other StringData fuse
 
             Response.AppendInt32(RoomMessagePresets.Count);
                 foreach (String Preset in RoomMessagePresets)

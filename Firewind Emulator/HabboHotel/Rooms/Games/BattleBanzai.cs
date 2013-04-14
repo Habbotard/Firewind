@@ -10,6 +10,7 @@ using enclosuretest;
 using System.Drawing;
 using HabboEvents;
 
+
 namespace Firewind.HabboHotel.Rooms.Games
 {
     class BattleBanzai

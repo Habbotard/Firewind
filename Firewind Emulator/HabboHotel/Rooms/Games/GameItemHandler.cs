@@ -7,6 +7,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms;
 using System.Drawing;
 
+
 namespace Firewind.HabboHotel.Rooms
 {
     class GameItemHandler

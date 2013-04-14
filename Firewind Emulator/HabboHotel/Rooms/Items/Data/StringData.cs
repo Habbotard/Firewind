@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Firewind.HabboHotel.Rooms
 {
-    // Used for most furniture
+    // Used for most furniture, renamed from StringData to work with Confuser
     internal class StringData : IRoomItemData
     {
         // 0 = (StringData?)          - string

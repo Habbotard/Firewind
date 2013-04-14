@@ -12,6 +12,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using HabboEvents;
 using Firewind.HabboHotel.Rooms;
 
+
 namespace Firewind.HabboHotel.Catalogs
 {
     class Catalog

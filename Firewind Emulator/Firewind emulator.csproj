@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>
@@ -56,6 +56,7 @@
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Firewind.Program</StartupObject>
@@ -226,6 +227,9 @@
     <Compile Include="HabboHotel\Rooms\Games\Soccer.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Teams.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\MapStuffData.cs" />
+    <Compile Include="HabboHotel\Rooms\Items\Data\StringData.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="HabboHotel\Rooms\Room.cs" />
     <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Events\RoomEvent.cs" />
@@ -240,7 +244,6 @@
     <Compile Include="HabboHotel\Rooms\RoomUser.cs" />
     <Compile Include="HabboHotel\Rooms\SondMachine\SoundMachine.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\StringArrayStuffData.cs" />
-    <Compile Include="HabboHotel\Rooms\Items\Data\StringData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\StringIntData.cs" />
     <Compile Include="HabboHotel\Rooms\Trade.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />

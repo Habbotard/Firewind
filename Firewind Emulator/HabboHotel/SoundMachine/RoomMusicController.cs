@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.SoundMachine.Composers;
 
+
 namespace Firewind.HabboHotel.SoundMachine
 {
     class RoomMusicController

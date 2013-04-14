@@ -20,6 +20,7 @@ using System.Diagnostics;
 using Firewind.HabboHotel.Groups;
 using HabboEvents;
 
+
 namespace Firewind.HabboHotel.Rooms
 {
     class RoomUserManager

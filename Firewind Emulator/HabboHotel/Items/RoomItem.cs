@@ -13,6 +13,7 @@ using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using HabboEvents;
 using Database_Manager.Database.Session_Details.Interfaces;
 
+
 namespace Firewind.HabboHotel.Items
 {
     public delegate void OnItemTrigger(object sender, ItemTriggeredArgs e);
