@@ -298,61 +298,15 @@ namespace Firewind.HabboHotel
         }
 
         internal byte GameLoopStatus = 0;
-
         internal static bool gameLoopEnabled = true;
-
-        private void MainGameLoop_RoomDedicatedThread()
-        {
-            while (gameLoopActive)
-            {
-                if (gameLoopEnabled)
-                {
-                    try
-                    {
-                        LowPriorityWorker_ended = false;
-                        ClientManagerCycle_ended = false;
-                        if (FirewindEnvironment.SeparatedTasksInMainLoops != true)
-                        {
-                            GameLoopStatus = 1;
-                            LowPriorityWorker.Process(); //1 query
-                            GameLoopStatus = 6;
-                            ClientManager.OnCycle();
-                            GameLoopStatus = 7;
-                        }
-                        else
-                        {
-                            if (LowPriorityWorker_task == null || LowPriorityWorker_task.IsCompleted == true)
-                            {
-                                LowPriorityWorker_task = new Task(LowPriorityWorker.Process);
-                                LowPriorityWorker_task.Start();
-                            }
-
-                            if (ClientManagerCycle_task == null || ClientManagerCycle_task.IsCompleted == true)
-                            {
-                                ClientManagerCycle_task = new Task(ClientManager.OnCycle);
-                                ClientManagerCycle_task.Start();
-                            }
-
-                        }
-
-
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.LogCriticalException("INVALID MARIO BUG IN GAME LOOP: " + e.ToString());
-                    }
-                    GameLoopStatus = 8;
-                }
-                Thread.Sleep(gameLoopSleepTime);
-            }
-
-        }
-
 
         private void MainGameLoop()
         {
             while (gameLoopActive)
             {
+                DateTime startTaskTime;
+                TimeSpan spentTime;
+                startTaskTime = DateTime.Now;
                 if (gameLoopEnabled)
                 {
                     try
@@ -400,6 +354,12 @@ namespace Firewind.HabboHotel
                     }
                     GameLoopStatus = 8;
                 }
+                spentTime = DateTime.Now - startTaskTime;
+                if (spentTime.TotalSeconds > 3)
+                {
+                    Logging.LogDebug("Game.MainGameLoop spent: " + spentTime.TotalSeconds + " seconds in working.");
+                }
+
                 Thread.Sleep(gameLoopSleepTime);
             }
 

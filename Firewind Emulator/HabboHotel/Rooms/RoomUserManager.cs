@@ -513,8 +513,12 @@ namespace Firewind.HabboHotel.Rooms
                                 }
                                 Session.GetHabbo().CurrentRoomId = 0;
 
-                                if (Session.GetHabbo().GetMessenger() != null)
-                                    Session.GetHabbo().GetMessenger().OnStatusChanged(true);
+                                try
+                                {
+                                    if (Session.GetHabbo().GetMessenger() != null)
+                                        Session.GetHabbo().GetMessenger().OnStatusChanged(true);
+                                }
+                                catch { }
                             }
 
                             //DateTime Start = DateTime.Now;

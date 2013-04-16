@@ -66,6 +66,8 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 
         public bool Handle(RoomUser user, Team team, RoomItem item)
         {
+            if (user == null)
+                return false;
             user.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(4);
             cycles = 0;
             if (delay == 0 && user != null)

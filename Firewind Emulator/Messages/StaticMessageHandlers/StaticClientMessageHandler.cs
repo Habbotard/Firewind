@@ -16,7 +16,7 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void Initialize()
         {
-            handlers = new Hashtable(177);
+            handlers = new Hashtable();
             RegisterPacketLibary();
         }
 

@@ -398,6 +398,7 @@ namespace Firewind.HabboHotel.GameClients
                             }
                             catch
                             {
+                                Logging.LogCriticalException("Failed to send ping packet, possible fack up!");
                                 //ToDisconnect.Add(Client);
                                 lock (timedOutConnections.SyncRoot)
                                 {

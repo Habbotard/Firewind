@@ -194,13 +194,29 @@ namespace Firewind.HabboHotel.Rooms.Wired
             List<RoomItem> items = null;
             if (actionStacks.ContainsKey(coordinate) && conditionHandler.AllowsHandling(coordinate, user))
             {
+                bool hasRandomEffectAddon = false;
                 items = (List<RoomItem>)actionStacks[coordinate];
 
+                List<IWiredEffect> availableEffects = new List<IWiredEffect>();
                 foreach (RoomItem stackItem in items)
                 {
                     if (stackItem.wiredHandler is IWiredEffect)
                     {
-                        ((IWiredEffect)stackItem.wiredHandler).Handle(user, team, item);
+                        availableEffects.Add((IWiredEffect)stackItem.wiredHandler);
+                    }
+                    else if (stackItem.GetBaseItem().Name == "wf_xtra_random")
+                        hasRandomEffectAddon = true;
+                }
+
+                if (hasRandomEffectAddon)
+                {
+                    availableEffects[FirewindEnvironment.GetRandomNumber(0, availableEffects.Count - 1)].Handle(user, team, item);
+                }
+                else
+                {
+                    foreach (IWiredEffect effect in availableEffects)
+                    {
+                        effect.Handle(user, team, item);
                     }
                 }
 

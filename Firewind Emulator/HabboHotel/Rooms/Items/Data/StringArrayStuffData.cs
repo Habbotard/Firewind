@@ -38,7 +38,7 @@ namespace Firewind.HabboHotel.Rooms
                 builder.Append(value);
             }
 
-            return builder.ToString().Substring(1);
+            return builder.Length > 0 ? builder.ToString().Substring(1) : "";
         }
 
         public object GetData()

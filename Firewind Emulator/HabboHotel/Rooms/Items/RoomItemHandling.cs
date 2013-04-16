@@ -224,7 +224,7 @@ namespace Firewind.HabboHotel.Rooms
                         }
                     }
 
-                    if (n > 6) // Is wallitem
+                    if (FirewindEnvironment.GetGame().GetItemManager().GetItem(baseID).Type == 'i') // Is wallitem
                     {
                         wallCoord = new WallCoordinate((double)x, (double)y, n);
                         RoomItem item = new RoomItem(itemID, room.RoomId, baseID, data, extra, wallCoord, room);
