@@ -23,7 +23,7 @@ namespace Firewind.HabboHotel.Users.Competitions
             foreach (DataRow row in table.Rows)
             {
                 Ranking r = new Ranking();
-                r.UserId = (uint)row["userid"];
+                r.UserId = Convert.ToUInt32(row["userid"]);
                 string type = (string)row["type"];
                 if (type == "competitions")
                     r.Type = RankingType.COMPETITIONS;

@@ -32,13 +32,13 @@
 
         internal static void Main(string[] args)
         {
-            //if (System.Diagnostics.Debugger.IsAttached)
-            //{
-            //    FirewindEnvironment.MaxUsers = 0;
-            //    FirewindEnvironment.LicenseHolder = "Testing rabbit";
-            //    FirewindEnvironment.IsDebugging = true;
-            //}
-            //else
+            if (System.Diagnostics.Debugger.IsAttached || true)
+            {
+                FirewindEnvironment.MaxUsers = 0;
+                FirewindEnvironment.LicenseHolder = "Testing rabbit";
+                FirewindEnvironment.IsDebugging = true;
+            }
+            else
             {
                 if (args.Length == 0)
                     return;
