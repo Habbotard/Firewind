@@ -206,7 +206,7 @@ namespace Firewind.HabboHotel.Rooms
 
         internal ServerMessage ReloadRoomData()
         {
-            ServerMessage Message = new ServerMessage(Outgoing.RoomData);
+            ServerMessage Message = new ServerMessage(Outgoing.GetGuestRoomResult);
             Message.AppendBoolean(true);
             Message.AppendUInt(RoomId);
             Message.AppendBoolean(false);

@@ -9,6 +9,8 @@ using WiredSolver;
 using System.Windows.Forms;
 using System.Threading;
 using System;
+using HabboEvents;
+using System.Threading.Tasks;
 
 namespace Firewind.HabboHotel.Rooms.Wired
 {
@@ -180,11 +182,32 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
         internal void OnEvent(uint itemID)
         {
-            ServerMessage message = new ServerMessage(88);
+            RoomItem item = room.GetRoomItemHandler().GetItem(itemID);
+
+            ServerMessage message = new ServerMessage(Outgoing.ObjectDataUpdate);
             message.AppendString(itemID.ToString());
-            message.AppendString("0");
+            message.AppendInt32(0); // datatype
+            message.AppendString("1");
+            //message.AppendInt32(item.data.GetTypeID()); // datatype
+            //item.data.AppendToMessage(message);
+            //Console.WriteLine("OnEvent {0}, 1", itemID);
 
             room.SendMessage(message);
+
+            Task.Run(
+                async delegate
+                {
+                    await Task.Delay(0);
+                    message = new ServerMessage(Outgoing.ObjectDataUpdate);
+                    message.AppendString(itemID.ToString());
+                    message.AppendInt32(0); // datatype
+                    message.AppendString("0");
+                    //message.AppendInt32(item.data.GetTypeID()); // datatype
+                    //item.data.AppendToMessage(message);
+                    //Console.WriteLine("OnEvent {0}, 0", itemID);
+                    room.SendMessage(message);
+                }
+            );
         }
         #endregion
 
@@ -205,7 +228,11 @@ namespace Firewind.HabboHotel.Rooms.Wired
                         availableEffects.Add((IWiredEffect)stackItem.wiredHandler);
                     }
                     else if (stackItem.GetBaseItem().Name == "wf_xtra_random")
+                    {
                         hasRandomEffectAddon = true;
+                        ((StringData)stackItem.data).Data = "1";
+                        OnEvent(stackItem.Id);
+                    }
                 }
 
                 if (hasRandomEffectAddon)

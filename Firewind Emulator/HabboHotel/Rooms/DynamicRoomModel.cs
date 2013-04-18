@@ -143,7 +143,7 @@ namespace Firewind.HabboHotel.Rooms
 
         private ServerMessage GetRelativeHeightmap()
         {
-            ServerMessage Message = new ServerMessage(Outgoing.RelativeMap);
+            ServerMessage Message = new ServerMessage(Outgoing.FloorHeightMap);
             StringBuilder thatMessage = new StringBuilder();
             //Needs cache!
             for (int y = 0; y < MapSizeY; y++)

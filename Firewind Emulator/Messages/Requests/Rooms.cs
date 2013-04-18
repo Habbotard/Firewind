@@ -33,6 +33,429 @@ namespace Firewind.Messages
         private int FloodCount;
         private DateTime FloodTime;
 
+        // First packet to be sent in room load
+        // -> OpenFlatConnection
+        // <- RoomReady
+        // -> GetHabboGroupBadges
+        // -> GetFurnitureAliases
+        internal void OpenFlatConnection()
+        {
+            if (FirewindEnvironment.ShutdownStarted)
+            {
+                Session.SendNotif(LanguageLocale.GetValue("shutdown.alert"));
+                return;
+            }
+
+            int flatID = Request.PopWiredInt32();
+            string password = Request.PopFixedString();
+            int notUsed = Request.PopWiredInt32();
+
+            if (Session.GetHabbo().IsTeleporting && Session.GetHabbo().TeleportingRoomID != flatID)
+                return;
+
+            Room room = FirewindEnvironment.GetGame().GetRoomManager().LoadRoom((uint)flatID);
+            if (room == null)
+            {
+                // Don't actually think this message is used anymore
+                Response.Init(Outgoing.NoSuchFlat);
+                Response.AppendInt32(flatID); // flatId
+                SendResponse();
+                return;
+            }
+
+            ClearRoomLoading();
+            if (Session.GetHabbo().InRoom)
+            {
+                Room oldRoom = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+
+                if (oldRoom != null)
+                {
+                    oldRoom.GetRoomUserManager().RemoveUserFromRoom(Session, false, false);
+                    Session.CurrentRoomUserID = -1;
+                }
+            }
+            //QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
+
+            if (room.UsersNow >= room.UsersMax && !Session.GetHabbo().HasFuse("fuse_enter_full_rooms"))
+            {
+                if (!FirewindEnvironment.GetGame().GetRoleManager().RankHasRight(Session.GetHabbo().Rank, "fuse_enter_full_rooms"))
+                {
+                    // This room is full!!!!
+                    Response.Init(Outgoing.RoomErrorToEnter);
+                    Response.AppendInt32(1);
+                    SendResponse();
+                    //response.appendResponse(GetResponse());
+
+                    Response.Init(Outgoing.OutOfRoom);
+                    SendResponse();
+                    //response.appendResponse(GetResponse());
+
+                    //response.sendResponse();
+                    return;
+                }
+            }
+
+            if (!Session.GetHabbo().HasFuse("fuse_enter_any_room") && room.UserIsBanned(Session.GetHabbo().Id))
+            {
+                if (room.HasBanExpired(Session.GetHabbo().Id))
+                {
+                    room.RemoveBan(Session.GetHabbo().Id);
+                }
+                else
+                {
+                    // You are banned of this room!
+                    Response.Init(Outgoing.RoomErrorToEnter);
+                    Response.AppendInt32(4);
+                    SendResponse();
+                    //response.appendResponse(GetResponse());
+
+                    Response.Init(Outgoing.OutOfRoom);
+                    SendResponse();
+                    //response.appendResponse(GetResponse());
+
+                    //response.sendResponse();
+                    return;
+                }
+            }
+
+            Response.Init(Outgoing.PrepareRoomForUsers);
+            SendResponse();
+            //response.appendResponse(GetResponse());
+
+            if (!Session.GetHabbo().HasFuse("fuse_enter_any_room") && !room.CheckRights(Session, true) && !Session.GetHabbo().IsTeleporting)
+            {
+                if (room.State == 1)
+                {
+                    if (room.UserCount == 0)
+                    {
+                        // Aww nobody in da room!
+                        Response.Init(Outgoing.DoorBellNoPerson);
+                        SendResponse();
+                        //response.appendResponse(GetResponse());
+                    }
+                    else
+                    {
+                        // Waiting for answer!
+                        Response.Init(Outgoing.Doorbell);
+                        Response.AppendStringWithBreak("");
+                        SendResponse();
+                        //response.appendResponse(GetResponse());
+
+                        ServerMessage RingMessage = new ServerMessage(Outgoing.Doorbell);
+                        RingMessage.AppendStringWithBreak(Session.GetHabbo().Username);
+                        room.SendMessageToUsersWithRights(RingMessage);
+                    }
+
+                    //response.sendResponse();
+
+                    return;
+                }
+                else if (room.State == 2)
+                {
+                    if (password.ToLower() != room.Password.ToLower())
+                    {
+                        // your password fail :( !
+
+                        Response.Init(Outgoing.RoomError);
+                        Response.AppendInt32(-100002); // can be 4009 if you want something like 'need.to.be.vip'
+                        SendResponse();
+                        //response.appendResponse(GetResponse());
+
+                        Response.Init(Outgoing.OutOfRoom);
+                        SendResponse();
+                        //response.appendResponse(GetResponse());
+
+                        //response.sendResponse();
+                        return;
+                    }
+                }
+            }
+
+            Session.GetHabbo().LoadingRoom = (uint)flatID;
+            CurrentLoadingRoom = room;
+            Session.GetHabbo().LoadingChecksPassed = true;
+
+            if (room.RoomData.Badge != null && room.RoomData.Badge != "")
+            {
+                Session.GetHabbo().GetBadgeComponent().GiveBadge(room.RoomData.Badge, true);
+                Session.SendNotif(LanguageLocale.GetValue("user.badgereceived"));
+            }
+
+            //response.addBytes(LoadRoomForUser().getPacket);
+            //LoadRoomForUser();
+            //response.sendResponse();
+
+            // Every check done, tell client to procceed
+            Response.Init(Outgoing.RoomReady);
+            Response.AppendStringWithBreak(room.ModelName); // if starts with "model_", roomCategory = 1
+            Response.AppendUInt(room.RoomId); // flatId
+            SendResponse();
+
+            if (room.Wallpaper != "0.0")
+            {
+                Response.Init(Outgoing.RoomDecoration);
+                Response.AppendStringWithBreak("wallpaper");
+                Response.AppendStringWithBreak(room.Wallpaper);
+                SendResponse();
+            }
+
+            if (room.Floor != "0.0")
+            {
+                Response.Init(Outgoing.RoomDecoration);
+                Response.AppendStringWithBreak("floor");
+                Response.AppendStringWithBreak(room.Floor);
+                SendResponse();
+            }
+
+            Response.Init(Outgoing.RoomDecoration);
+            Response.AppendStringWithBreak("landscape");
+            Response.AppendStringWithBreak(room.Landscape);
+            SendResponse();
+
+            if (room.CheckRights(Session, true))
+            {
+                Response.Init(Outgoing.RoomRightsLevel);
+                Response.AppendInt32(4);
+                SendResponse();
+
+                Response.Init(Outgoing.HasOwnerRights);
+                SendResponse();
+            }
+            else if (room.CheckRights(Session))
+            {
+                Response.Init(Outgoing.RoomRightsLevel);
+                Response.AppendInt32(1);
+                SendResponse();
+            }
+            else
+            {
+                Response.Init(Outgoing.RoomRightsLevel);
+                Response.AppendInt32(0);
+                SendResponse();
+            }
+
+            Response.Init(Outgoing.ScoreMeter);
+            Response.AppendInt32(room.Score);
+            Response.AppendBoolean(!(Session.GetHabbo().RatedRooms.Contains(room.RoomId) || room.CheckRights(Session, true)));
+            SendResponse();
+
+            if (room.HasOngoingEvent)
+            {
+                //Session.SendMessage(Room.Event.Serialize(Session));
+            }
+            else
+            {
+                Response.Init(Outgoing.RoomEvent);
+                Response.AppendStringWithBreak("-1");
+                SendResponse();
+            }
+        }
+        internal void GetHabboGroupBadges()
+        {
+            //
+        }
+
+        // GetRoomData1
+        internal void GetFurnitureAliases()
+        {
+            if (Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed)
+                return;
+
+            Response.Init(Outgoing.FurnitureAliases);
+            Response.AppendInt32(0); // count, idk what furnialiases is
+            SendResponse();
+        }
+
+        // GetRoomData2
+        internal void GetRoomEntryData()
+        {
+            if (Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed)
+                return;
+
+            Response.Init(Outgoing.RoomEntryInfo);
+            Response.AppendBoolean(true); // privateRoom
+            Response.AppendUInt(CurrentLoadingRoom.RoomId); // guestRoomId
+            Response.AppendBoolean(CurrentLoadingRoom.CheckRights(Session, true)); // owner
+            SendResponse();
+        }
+
+        internal void GetGuestRoom()
+        {
+            Habbo targetHabbo = Session.GetHabbo();
+
+            int roomID = Request.PopWiredInt32();
+            bool unk1 = Request.PopWiredBoolean(); // these 2 bools could have with forwarding to do
+            bool unk2 = Request.PopWiredBoolean();
+
+            RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData((uint)roomID);
+
+            if (Data == null)
+            {
+                return;
+            }
+
+            Response.Init(Outgoing.GetGuestRoomResult);
+            Response.AppendBoolean(true); // enterRoom
+            Data.Serialize(Response, false);
+            Response.AppendBoolean(true); // roomForward
+            Response.AppendString("");
+
+            SendResponse();
+
+            Session.SendMessage(CurrentLoadingRoom.GetGameMap().Model.GetHeightmap());
+            Session.SendMessage(CurrentLoadingRoom.GetGameMap().Model.SerializeRelativeHeightmap());
+
+            QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
+            RoomItem[] floorItems = CurrentLoadingRoom.GetRoomItemHandler().mFloorItems.Values.ToArray();
+            RoomItem[] wallItems = CurrentLoadingRoom.GetRoomItemHandler().mWallItems.Values.ToArray();
+
+            Response.Init(Outgoing.Objects);
+            Response.AppendInt32(1); // count of owners
+
+            // serialize all owners
+            Response.AppendInt32(CurrentLoadingRoom.OwnerId);
+            Response.AppendString(CurrentLoadingRoom.Owner);
+
+            // serialize items
+            Response.AppendInt32(floorItems.Length);
+
+            foreach (RoomItem Item in floorItems)
+                Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
+
+            response.appendResponse(GetResponse());
+
+            Response.Init(Outgoing.SerializeWallItems);
+            Response.AppendInt32(1); // count of owners
+
+            // serialize all owners
+            Response.AppendInt32(CurrentLoadingRoom.OwnerId);
+            Response.AppendString(CurrentLoadingRoom.Owner);
+
+            // serialize items
+            Response.AppendInt32(wallItems.Length);
+
+            foreach (RoomItem Item in wallItems)
+                Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
+
+            response.appendResponse(GetResponse());
+
+            Array.Clear(floorItems, 0, floorItems.Length);
+            Array.Clear(wallItems, 0, wallItems.Length);
+            floorItems = null;
+            wallItems = null;
+
+            CurrentLoadingRoom.GetRoomUserManager().AddUserToRoom(Session, false);
+
+            response.sendResponse();
+            ClearRoomLoading();
+        }
+
+        internal void GetRoomAd()
+        {
+            if (Session.GetHabbo().LoadingRoom <= 0 || !Session.GetHabbo().LoadingChecksPassed || CurrentLoadingRoom == null)
+            {
+                return;
+            }
+
+            if (CurrentLoadingRoom.UsersNow + 1 > CurrentLoadingRoom.UsersMax && !Session.GetHabbo().HasFuse("fuse_enter_full_rooms"))
+            {
+                Session.SendNotif(LanguageLocale.GetValue("room.fullerror"));
+                return;
+            }
+            
+            ClearRoomLoading();
+
+            QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
+            /*Response.Init(30);
+
+            if (!string.IsNullOrEmpty(CurrentLoadingRoom.GetGameMap().StaticModel.StaticFurniMap))
+            {
+                Response.AppendStringWithBreak(CurrentLoadingRoom.GetGameMap().StaticModel.StaticFurniMap);
+            }
+            else
+            {
+                Response.AppendInt32(0);
+            }*/
+
+            //response.appendResponse(GetResponse());
+            //SendResponse();
+
+            //if (CurrentLoadingRoom.Type == "private" || CurrentLoadingRoom.Type == "public")
+            //{
+            //    RoomItem[] floorItems = CurrentLoadingRoom.GetRoomItemHandler().mFloorItems.Values.ToArray();
+            //    RoomItem[] wallItems = CurrentLoadingRoom.GetRoomItemHandler().mWallItems.Values.ToArray();
+
+            //    Response.Init(Outgoing.Objects);
+            //    Response.AppendInt32(1); // count of owners
+
+            //    // serialize all owners
+            //    Response.AppendInt32(CurrentLoadingRoom.OwnerId);
+            //    Response.AppendString(CurrentLoadingRoom.Owner);
+
+            //    // serialize items
+            //    /*if (CurrentLoadingRoom.Type == "public")
+            //        Response.AppendInt32(floorItems.Length + 1);
+            //    else*/
+            //        Response.AppendInt32(floorItems.Length);
+
+            //    foreach (RoomItem Item in floorItems)
+            //        Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
+            //    /*if (CurrentLoadingRoom.Type == "public")
+            //    {
+            //        Response.AppendInt32(floorItems.Length+5);
+            //        Response.AppendInt32(4276); // room_ads
+            //        Response.AppendInt32(11);
+            //        Response.AppendInt32(25);
+            //        Response.AppendInt32(4);
+            //        Response.AppendStringWithBreak("0.0");
+            //        Response.AppendInt32(0);
+            //        Response.AppendInt32(1);
+            //        Response.AppendInt32(6);
+            //        Response.AppendString("offsetZ");
+            //        Response.AppendString("0");
+            //        Response.AppendString("imageUrl");
+            //        Response.AppendString("http://91.121.241.155/oldswfs/c_images/album1134/torchmpu.gif");
+            //        Response.AppendString("offsetY");
+            //        Response.AppendString("0");
+            //        Response.AppendString("offsetX");
+            //        Response.AppendString("0");
+            //        Response.AppendString("state");
+            //        Response.AppendString("0");
+            //        Response.AppendString("clickurl");
+            //        Response.AppendString("");
+            //        Response.AppendInt32(-1);
+            //        Response.AppendInt32(1); // Type New R63 ('use bottom')
+            //        Response.AppendInt32(CurrentLoadingRoom.OwnerId);
+            //    }*/
+            //    response.appendResponse(GetResponse());
+
+            //    Response.Init(Outgoing.SerializeWallItems);
+            //    Response.AppendInt32(1); // count of owners
+
+            //    // serialize all owners
+            //    Response.AppendInt32(CurrentLoadingRoom.OwnerId);
+            //    Response.AppendString(CurrentLoadingRoom.Owner);
+
+            //    // serialize items
+            //    Response.AppendInt32(wallItems.Length);
+
+            //    foreach (RoomItem Item in wallItems)
+            //        Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
+
+            //    response.appendResponse(GetResponse());
+
+            //    Array.Clear(floorItems, 0, floorItems.Length);
+            //    Array.Clear(wallItems, 0, wallItems.Length);
+            //    floorItems = null;
+            //    wallItems = null;
+                 
+            //}
+            //CurrentLoadingRoom.GetRoomUserManager().AddUserToRoom(Session, false);
+
+
+            //response.sendResponse();
+        }
+
         internal void GetAdvertisement()
         {
             RoomAdvertisement Ad = FirewindEnvironment.GetGame().GetAdvertisementManager().GetRandomRoomAdvertisement();
@@ -115,165 +538,7 @@ namespace Firewind.Messages
             PrepareRoomForUser(Data.Id, "");
         }
 
-        // GetRoomData1
-        internal void GetFurnitureAliases()
-        {
-            if (Session.GetHabbo().LoadingRoom <= 0)
-            {
-                return;
-            }
 
-            Response.Init(297); // FurnitureAliases
-            Response.AppendInt32(0); // count
-            SendResponse();
-        }
-
-        // GetRoomData2
-        internal void GetRoomEntryData()
-        {
-            try
-            {
-                QueuedServerMessage message = new QueuedServerMessage(Session.GetConnection());
-                if (Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null)
-                    return;
-
-                RoomData Data = CurrentLoadingRoom.RoomData;//FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Session.GetHabbo().LoadingRoom);
-
-                if (Data == null)
-                {
-                    return;
-                }
-
-                if (Data.Model == null)
-                {
-                    Session.SendNotif(LanguageLocale.GetValue("room.missingmodeldata"));
-                    Session.SendMessage(new ServerMessage(Outgoing.OutOfRoom));
-                    ClearRoomLoading();
-                    return;
-                }
-
-                //CurrentLoadingRoom = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().LoadingRoom);
-
-                message.appendResponse(CurrentLoadingRoom.GetGameMap().Model.GetHeightmap());
-                message.appendResponse(CurrentLoadingRoom.GetGameMap().Model.SerializeRelativeHeightmap());
-                message.sendResponse();
-                //Session.SendMessage(CurrentLoadingRoom.Model.GetHeightmap());
-                //Session.SendMessage(CurrentLoadingRoom.Model.SerializeRelativeHeightmap());
-
-            }
-            catch (Exception e)
-            {
-                Logging.LogException("Unable to load room ID [" + Session.GetHabbo().LoadingRoom + "] " + e.ToString());
-                Session.SendNotif(LanguageLocale.GetValue("room.roomdataloaderror"));
-            }
-
-        }
-
-        internal void GetRoomAd()
-        {
-            if (Session.GetHabbo().LoadingRoom <= 0 || !Session.GetHabbo().LoadingChecksPassed || CurrentLoadingRoom == null)
-            {
-                return;
-            }
-
-            if (CurrentLoadingRoom.UsersNow + 1 > CurrentLoadingRoom.UsersMax && !Session.GetHabbo().HasFuse("fuse_enter_full_rooms"))
-            {
-                Session.SendNotif(LanguageLocale.GetValue("room.fullerror"));
-                return;
-            }
-            
-            ClearRoomLoading();
-
-            QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
-            /*Response.Init(30);
-
-            if (!string.IsNullOrEmpty(CurrentLoadingRoom.GetGameMap().StaticModel.StaticFurniMap))
-            {
-                Response.AppendStringWithBreak(CurrentLoadingRoom.GetGameMap().StaticModel.StaticFurniMap);
-            }
-            else
-            {
-                Response.AppendInt32(0);
-            }*/
-
-            //response.appendResponse(GetResponse());
-            //SendResponse();
-
-            if (CurrentLoadingRoom.Type == "private" || CurrentLoadingRoom.Type == "public")
-            {
-                RoomItem[] floorItems = CurrentLoadingRoom.GetRoomItemHandler().mFloorItems.Values.ToArray();
-                RoomItem[] wallItems = CurrentLoadingRoom.GetRoomItemHandler().mWallItems.Values.ToArray();
-
-                Response.Init(Outgoing.Objects);
-                Response.AppendInt32(1); // count of owners
-
-                // serialize all owners
-                Response.AppendInt32(CurrentLoadingRoom.OwnerId);
-                Response.AppendString(CurrentLoadingRoom.Owner);
-
-                // serialize items
-                /*if (CurrentLoadingRoom.Type == "public")
-                    Response.AppendInt32(floorItems.Length + 1);
-                else*/
-                    Response.AppendInt32(floorItems.Length);
-
-                foreach (RoomItem Item in floorItems)
-                    Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
-                /*if (CurrentLoadingRoom.Type == "public")
-                {
-                    Response.AppendInt32(floorItems.Length+5);
-                    Response.AppendInt32(4276); // room_ads
-                    Response.AppendInt32(11);
-                    Response.AppendInt32(25);
-                    Response.AppendInt32(4);
-                    Response.AppendStringWithBreak("0.0");
-                    Response.AppendInt32(0);
-                    Response.AppendInt32(1);
-                    Response.AppendInt32(6);
-                    Response.AppendString("offsetZ");
-                    Response.AppendString("0");
-                    Response.AppendString("imageUrl");
-                    Response.AppendString("http://91.121.241.155/oldswfs/c_images/album1134/torchmpu.gif");
-                    Response.AppendString("offsetY");
-                    Response.AppendString("0");
-                    Response.AppendString("offsetX");
-                    Response.AppendString("0");
-                    Response.AppendString("state");
-                    Response.AppendString("0");
-                    Response.AppendString("clickurl");
-                    Response.AppendString("");
-                    Response.AppendInt32(-1);
-                    Response.AppendInt32(1); // Type New R63 ('use bottom')
-                    Response.AppendInt32(CurrentLoadingRoom.OwnerId);
-                }*/
-                response.appendResponse(GetResponse());
-
-                Response.Init(Outgoing.SerializeWallItems);
-                Response.AppendInt32(1); // count of owners
-
-                // serialize all owners
-                Response.AppendInt32(CurrentLoadingRoom.OwnerId);
-                Response.AppendString(CurrentLoadingRoom.Owner);
-
-                // serialize items
-                Response.AppendInt32(wallItems.Length);
-
-                foreach (RoomItem Item in wallItems)
-                    Item.Serialize(Response, CurrentLoadingRoom.OwnerId);
-
-                response.appendResponse(GetResponse());
-
-                Array.Clear(floorItems, 0, floorItems.Length);
-                Array.Clear(wallItems, 0, wallItems.Length);
-                floorItems = null;
-                wallItems = null;
-                 
-            }
-            CurrentLoadingRoom.GetRoomUserManager().AddUserToRoom(Session, false);
-
-
-            response.sendResponse();
-        }
 
         internal void GetInventory()
         {
@@ -315,63 +580,7 @@ namespace Firewind.Messages
             GetResponse().AppendInt32(CurrentLoadingRoom.FloorThickness);
             response.appendResponse(GetResponse());
 
-            response.appendResponse(GetResponse());
-
-            if (CurrentLoadingRoom.Type == "public")
-            {
-                Response.Init(Outgoing.ValidRoom);
-                Response.AppendBoolean(true);
-                Response.AppendUInt(CurrentLoadingRoom.RoomId);
-                Response.AppendBoolean(false);
-                response.appendResponse(GetResponse());
-            }
-            else if (CurrentLoadingRoom.Type == "private")
-            {
-
-                // GQhntX]uberEmu PacketloggingDescriptionHQMSCQFJtag1tag2Ika^SMqurbIHH
-
-                Response.Init(Outgoing.ValidRoom);
-                Response.AppendBoolean(true);
-                Response.AppendUInt(CurrentLoadingRoom.RoomId);
-                Response.AppendBoolean(CurrentLoadingRoom.CheckRights(Session, true));
-                response.appendResponse(GetResponse());
-            }
-
-            Response.Init(Outgoing.RoomData);
-            Response.AppendBoolean(true);
-            Response.AppendUInt(CurrentLoadingRoom.RoomId);
-            Response.AppendBoolean(false);
-            Response.AppendString(CurrentLoadingRoom.Name);
-            Response.AppendBoolean(true);
-            Response.AppendInt32(CurrentLoadingRoom.OwnerId);
-            Response.AppendStringWithBreak(CurrentLoadingRoom.Owner);
-            Response.AppendInt32(CurrentLoadingRoom.State); // room state
-            Response.AppendInt32(CurrentLoadingRoom.UsersNow);
-            Response.AppendInt32(CurrentLoadingRoom.UsersMax);
-            Response.AppendStringWithBreak(CurrentLoadingRoom.Description);
-            Response.AppendInt32(0); // dunno!
-            Response.AppendInt32(2);//Response.AppendInt32((CurrentLoadingRoom.Category == 9) ? 2 : 0); // can trade!
-            Response.AppendInt32(CurrentLoadingRoom.Score);
-            Response.AppendInt32(CurrentLoadingRoom.Category);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendStringWithBreak("");
-            Response.AppendInt32(CurrentLoadingRoom.TagCount);
-
-            foreach (string Tag in CurrentLoadingRoom.Tags)
-            {
-                Response.AppendStringWithBreak(Tag);
-            }
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendBoolean(true);
-            Response.AppendBoolean(true);
-            Response.AppendBoolean(false);
-            Response.AppendString("");
-            response.appendResponse(GetResponse());
-
-            if (CurrentLoadingRoom.Type != "public" && CurrentLoadingRoom.UsersWithRights.Count > 0/* && CurrentLoadingRoom.CheckRights(Session, true)*/)
+            if (CurrentLoadingRoom.UsersWithRights.Count > 0/* && CurrentLoadingRoom.CheckRights(Session, true)*/)
             {
                 GetResponse().Init(Outgoing.FlatControllerAdded);
                 GetResponse().AppendUInt(CurrentLoadingRoom.RoomData.Id);
@@ -450,13 +659,6 @@ namespace Firewind.Messages
 
             response.sendResponse();
             CurrentLoadingRoom = null;
-        }
-
-        internal void enterOnRoom()
-        {
-            uint cId = Request.PopWiredUInt();
-            String Password = Request.PopFixedString();
-            this.PrepareRoomForUser(cId, Password);
         }
 
         internal void PrepareRoomForUser(uint Id, string Password)
@@ -1245,7 +1447,7 @@ namespace Firewind.Messages
 
             RoomData Data = Room.RoomData;
 
-            GetResponse().Init(Outgoing.RoomData);
+            GetResponse().Init(Outgoing.GetGuestRoomResult);
             GetResponse().AppendBoolean(false);
             GetResponse().AppendUInt(Room.RoomId);
             GetResponse().AppendBoolean(false);
@@ -2569,7 +2771,7 @@ namespace Firewind.Messages
                 return;
             }
             Present.MagicRemove = true;
-            ServerMessage magicResponse = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            ServerMessage magicResponse = new ServerMessage(Outgoing.ObjectUpdate);
             Present.Serialize(magicResponse, Room.OwnerId);
             Room.SendMessage(magicResponse);
 
@@ -3521,7 +3723,7 @@ namespace Firewind.Messages
             data.Data["OUTFIT_NAME"] = newName;
 
             // Send update to room
-            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            ServerMessage Message = new ServerMessage(Outgoing.ObjectUpdate);
             item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
             Session.GetHabbo().CurrentRoom.SendMessage(Message);
 
@@ -3560,7 +3762,7 @@ namespace Firewind.Messages
             data.Data["GENDER"] = Session.GetHabbo().Gender;
 
             // Send update to room
-            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            ServerMessage Message = new ServerMessage(Outgoing.ObjectUpdate);
             item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
             Session.GetHabbo().CurrentRoom.SendMessage(Message);
 
@@ -3597,7 +3799,7 @@ namespace Firewind.Messages
             item.data = data;
 
             // Send update to room
-            ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+            ServerMessage Message = new ServerMessage(Outgoing.ObjectUpdate);
             item.Serialize(Message, Session.GetHabbo().CurrentRoom.OwnerId);
             Session.GetHabbo().CurrentRoom.SendMessage(Message);
 

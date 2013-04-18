@@ -89,16 +89,13 @@ namespace HabboEvents
         public static int CanCreateEvent = 2232;
         public static int RoomEvent = 1743;
         public static int HeightMap = 2644;
-        public static int RelativeMap = 3482;
+        public static int FloorHeightMap = 3482;
         public static int OpenGift = 1252;
         public static int Objects = 362;
         public static int SerializeWallItems = 801;
         public static int FloodFilter = 3153;
         public static int SetRoomUser = 780;
         public static int ConfigureWallandFloor = 2006;
-        public static int ValidRoom = 2877;
-        public static int RoomData = 542;
-        public static int UpdateState = 172;
         public static int SerializeClub = 3208;
         public static int ClubComposer = 3432;
         public static int PopularTags = 3132;
@@ -129,12 +126,8 @@ namespace HabboEvents
         public static int FlatControllerAdded = 658;
         public static int TypingStatus = 467;
         public static int RemoveObjectFromInventory = 1259;
-        public static int AddFloorItemToRoom = 2302;
         public static int AddWallItemToRoom = 1739;
-        public static int UpdateItemOnRoom = 2206;
         public static int UpdateWallItemOnRoom = 2540;
-        public static int UpdateFloorItemExtraData = 41;
-        public static int PickUpFloorItem = 2238;
         public static int PickUpWallItem = 342;
         public static int WiredTrigger = 1153; // causante
         public static int WiredEffect = 21;
@@ -163,5 +156,24 @@ namespace HabboEvents
         public static int PetRespectNotification = 3692;
         public static int PetAddedToInventory = 3947;
         public static int MOTDNotification = 3677;
+
+        // Floor item IDs
+        public static int ObjectAdd = 2302;
+        public static int ObjectRemove = 2238;
+        public static int ObjectUpdate = 2206;
+        public static int ObjectDataUpdate = 41;
+
+        // For multiple items
+        public static int ObjectsDataUpdate = 1208;
+        //2295 _-1qv _-09Y DiceValue
+        //2357 _-4Ng _-1-M OneWayDoorStatus
+
+        public static int UserUpdate = 172;
+
+        // Room enter
+        public static int RoomEntryInfo = 2877;
+        public static int NoSuchFlat = 1378;
+        public static int FurnitureAliases = 1765;
+        public static int GetGuestRoomResult = 542;
     }
 }

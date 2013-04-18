@@ -788,7 +788,7 @@ namespace Firewind.HabboHotel.Rooms
             if (Users.Count == 0)
                 return null;
 
-            ServerMessage Message = new ServerMessage(Outgoing.UpdateState);
+            ServerMessage Message = new ServerMessage(Outgoing.UserUpdate);
             Message.AppendInt32(Users.Count);
 
             foreach (RoomUser User in Users)
@@ -1240,7 +1240,7 @@ namespace Firewind.HabboHotel.Rooms
                             mascotaVinculada.IsWalking = false;
                             mascotaVinculada.RemoveStatus("mv");
 
-                            ServerMessage mess = new ServerMessage(Outgoing.UpdateState);
+                            ServerMessage mess = new ServerMessage(Outgoing.UserUpdate);
                             mess.AppendInt32(1);
                             mascotaVinculada.SerializeStatus(mess, "");
                             User.GetClient().GetHabbo().CurrentRoom.SendMessage(mess);
@@ -1334,7 +1334,7 @@ namespace Firewind.HabboHotel.Rooms
 
                             UpdateUserEffect(mascotaVinculada, mascotaVinculada.SetX, mascotaVinculada.SetY);
                             updated = true;
-                            ServerMessage mess = new ServerMessage(Outgoing.UpdateState);
+                            ServerMessage mess = new ServerMessage(Outgoing.UserUpdate);
                             mess.AppendInt32(2);
                             User.SerializeStatus(mess, user);
                             mascotaVinculada.SerializeStatus(mess, mascote);

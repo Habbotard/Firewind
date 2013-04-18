@@ -25,7 +25,7 @@ namespace Firewind.Messages.StaticMessageHandlers
 
             if (handlers.ContainsKey(message.Id))
             {
-                //Logging.WriteLine("Event handled => " + message.Id + " ");
+                Logging.WriteLine("Event handled => " + message.Id + " ");
                 StaticRequestHandler currentHandler = (StaticRequestHandler)handlers[message.Id];
                 currentHandler.Invoke(handler);
             }
@@ -101,15 +101,13 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.RecentRooms, new StaticRequestHandler(SharedPacketLib.GetRecentRooms));
             handlers.Add(Incoming.LoadPopularTags, new StaticRequestHandler(SharedPacketLib.GetPopularTags));
             handlers.Add(Incoming.SearchRoomByName, new StaticRequestHandler(SharedPacketLib.PerformSearch));
-            handlers.Add(Incoming.GetRoomEntryData, new StaticRequestHandler(SharedPacketLib.GetRoomEntryData));
-            handlers.Add(Incoming.GetRoomAd, new StaticRequestHandler(SharedPacketLib.GetRoomAd));
             handlers.Add(Incoming.Talk, new StaticRequestHandler(SharedPacketLib.Talk));
             handlers.Add(Incoming.Shout, new StaticRequestHandler(SharedPacketLib.Shout));
             handlers.Add(Incoming.Whisp, new StaticRequestHandler(SharedPacketLib.Whisper));
             handlers.Add(Incoming.Move, new StaticRequestHandler(SharedPacketLib.Move));
             handlers.Add(Incoming.CanCreateRoom, new StaticRequestHandler(SharedPacketLib.CanCreateRoom));
             handlers.Add(Incoming.CreateRoom, new StaticRequestHandler(SharedPacketLib.CreateRoom));
-            handlers.Add(Incoming.LoadFirstRoomData, new StaticRequestHandler(SharedPacketLib.enterOnRoom));
+            handlers.Add(Incoming.OpenFlatConnection, new StaticRequestHandler(SharedPacketLib.OpenFlatConnection));
             handlers.Add(Incoming.GetRoomSettings, new StaticRequestHandler(SharedPacketLib.GetRoomSettings));
             handlers.Add(Incoming.SaveRoomSettings, new StaticRequestHandler(SharedPacketLib.SaveRoomSettings));
             handlers.Add(Incoming.GiveRights, new StaticRequestHandler(SharedPacketLib.GiveRights));
@@ -195,6 +193,13 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.MannequeFigureChange, new StaticRequestHandler(SharedPacketLib.MannequeFigureChange));
 
             handlers.Add(Incoming.SetAdParameters, new StaticRequestHandler(SharedPacketLib.SetAdParameters));
+
+            // Load room
+            handlers.Add(Incoming.GetGuestRoom, new StaticRequestHandler(SharedPacketLib.GetGuestRoom));
+            handlers.Add(Incoming.GetFurnitureAliases, new StaticRequestHandler(SharedPacketLib.GetFurnitureAliases));
+            handlers.Add(Incoming.GetRoomEntryData, new StaticRequestHandler(SharedPacketLib.GetRoomEntryData));
+            handlers.Add(Incoming.GetRoomAd, new StaticRequestHandler(SharedPacketLib.GetRoomAd));
+            handlers.Add(Incoming.GetHabboGroupBadges, new StaticRequestHandler(SharedPacketLib.GetHabboGroupBadges));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

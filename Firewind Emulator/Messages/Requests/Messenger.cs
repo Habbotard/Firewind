@@ -186,7 +186,7 @@ namespace Firewind.Messages
             GetResponse().AppendUInt(Client.GetHabbo().CurrentRoomId);
             SendResponse();
 
-            GetResponse().Init(Outgoing.RoomData);
+            GetResponse().Init(Outgoing.GetGuestRoomResult);
             GetResponse().AppendBoolean(false);
             GetResponse().AppendUInt(Room.RoomId);
             GetResponse().AppendBoolean(false);

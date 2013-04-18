@@ -89,7 +89,7 @@ namespace Firewind.HabboHotel.Rooms
             foreach (RoomItem Item in mFloorItems.Values.ToArray())
             {
                 Item.Interactor.OnRemove(Session, Item);
-                ServerMessage Message = new ServerMessage(Outgoing.PickUpFloorItem);
+                ServerMessage Message = new ServerMessage(Outgoing.ObjectRemove);
                 Message.AppendString(Item.Id + String.Empty);
                 Message.AppendInt32(0);
                 Message.AppendInt32(room.OwnerId);
@@ -332,7 +332,7 @@ namespace Firewind.HabboHotel.Rooms
             else if (Item.IsFloorItem)
             {
                 //Logging.WriteLine("YEEEEEAH?????");
-                ServerMessage Message = new ServerMessage(Outgoing.PickUpFloorItem);
+                ServerMessage Message = new ServerMessage(Outgoing.ObjectRemove);
                 Message.AppendString(Item.Id + String.Empty);
                 Message.AppendInt32(0);
                 Message.AppendInt32(room.OwnerId);
@@ -907,7 +907,7 @@ namespace Firewind.HabboHotel.Rooms
 
                 if (sendMessage)
                 {
-                    ServerMessage Message = new ServerMessage(Outgoing.AddFloorItemToRoom);
+                    ServerMessage Message = new ServerMessage(Outgoing.ObjectAdd);
                     Item.Serialize(Message, room.OwnerId);
                     Message.AppendString(room.Owner);
                     room.SendMessage(Message);
@@ -923,7 +923,7 @@ namespace Firewind.HabboHotel.Rooms
 
                 if (!OnRoller && sendMessage)
                 {
-                    ServerMessage Message = new ServerMessage(Outgoing.UpdateItemOnRoom);
+                    ServerMessage Message = new ServerMessage(Outgoing.ObjectUpdate);
                     Item.Serialize(Message, room.OwnerId);
                     //Message.AppendString(room.Owner);
                     room.SendMessage(Message);

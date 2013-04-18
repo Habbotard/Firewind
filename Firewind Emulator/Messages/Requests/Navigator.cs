@@ -107,28 +107,6 @@ namespace Firewind.Messages
             }*/
         }
 
-        internal void GetGuestRoom()
-        {
-            Firewind.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();
-     
-            uint RoomId = Request.PopWiredUInt();
-            bool unk = Request.PopWiredBoolean();
-            bool unk2 = Request.PopWiredBoolean();
-
-            RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
-
-            if (Data == null)
-            {
-                return;
-            }
-
-            GetResponse().Init(454);
-            GetResponse().AppendInt32(0);
-            Data.Serialize(GetResponse(), false);
-            SendResponse();
-
-        }
-
         internal void PopularRoomsSearch()
         {
             Firewind.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();

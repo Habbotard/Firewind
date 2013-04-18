@@ -35,6 +35,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
                 case InteractionType.conditiontimelessthan:
                 case InteractionType.conditiontimemorethan:
                 case InteractionType.conditiontriggeronfurni:
+                case InteractionType.specialrandom:
+                case InteractionType.specialunseen:
                     return true;
                 default:
                     return false;

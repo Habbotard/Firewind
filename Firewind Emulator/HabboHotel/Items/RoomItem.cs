@@ -1027,7 +1027,7 @@ namespace Firewind.HabboHotel.Items
 
                 if (IsFloorItem)
                 {
-                    Message.Init(Outgoing.UpdateFloorItemExtraData);
+                    Message.Init(Outgoing.ObjectDataUpdate);
                     Message.AppendString(Id.ToString());
                     Message.AppendInt32(0);
                     Message.AppendString(data.GetData().ToString());

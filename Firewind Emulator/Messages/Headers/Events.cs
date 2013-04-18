@@ -50,9 +50,7 @@ namespace HabboEvents
 		public static int CreateRoom = 1665;
         public static int GetRoomSettings = 65;
         public static int SaveRoomSettings = 384;
-		public static int LoadFirstRoomData = 1730;
-        public static int GetRoomEntryData = 2709;
-		public static int GetRoomAd = 3873;
+        public static int OpenFlatConnection = 1730;
 		public static int LookTo = 3671;
 		public static int StartTrade = 1644;
 		public static int SendOffer = 882;
@@ -130,7 +128,6 @@ namespace HabboEvents
 		public static int ModActionBanUser = 1217;
 		public static int SendUserMessage = 2732;
 		public static int PerformRoomAction = 2090;
-		public static int EnterOnRoomByMod = 798; //+int(roomid)
 		public static int CreateTicket = 3468;
 		public static int PickIssue = 1641;
 		public static int IssueChatlog = 2156;
@@ -166,5 +163,12 @@ namespace HabboEvents
         public static int MannequeFigureChange = 2868;
 
         public static int SetAdParameters = 358;
+
+        // Room loading
+        public static int GetGuestRoom = 798; //+int(roomid)
+        public static int GetFurnitureAliases = 2242;
+        public static int GetHabboGroupBadges = 2709;
+        public static int GetRoomEntryData = 1081;
+		public static int GetRoomAd = 3873;
     }
 }

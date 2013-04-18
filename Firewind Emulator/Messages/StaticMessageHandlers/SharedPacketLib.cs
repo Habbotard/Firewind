@@ -473,9 +473,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.ReqLoadRoomForUser();
         }
 
-        internal static void enterOnRoom(GameClientMessageHandler handler)
+        internal static void OpenFlatConnection(GameClientMessageHandler handler)
         {
-            handler.enterOnRoom();
+            handler.OpenFlatConnection();
         }
 
         internal static void ClearRoomLoading(GameClientMessageHandler handler)
@@ -966,6 +966,16 @@ namespace Firewind.Messages.StaticMessageHandlers
         internal static void SetAdParameters(GameClientMessageHandler handler)
         {
             handler.SetAdParameters();
+        }
+
+        internal static void GetGuestRoom(GameClientMessageHandler handler)
+        {
+            handler.GetGuestRoom();
+        }
+
+        internal static void GetHabboGroupBadges(GameClientMessageHandler handler)
+        {
+            handler.GetHabboGroupBadges();
         }
     }
 }
