@@ -760,31 +760,6 @@ namespace Firewind.Messages
                 }
             }
 
-            if (Room.Type == "public")
-            {
-                if (Room.State > 0 && !Session.GetHabbo().HasFuse("fuse_mod"))
-                {
-                    // Can't enter to room!
-                    Session.SendNotif(LanguageLocale.GetValue("room.noaccess"));
-
-                    Response.Init(Outgoing.OutOfRoom);
-                    //SendResponse();//******
-                    response.appendResponse(GetResponse());
-
-                    response.sendResponse();
-                    return;
-                }
-
-                /* old packet :( Response.Init(166);
-                Response.AppendStringWithBreak("/client/public/" + Room.ModelName + "/0");
-                //SendResponse();//******
-                response.appendResponse(GetResponse());*/
-                Response.Init(Outgoing.PrepareRoomForUsers);
-                //SendResponse();//******
-                response.appendResponse(GetResponse());
-            }
-            else if (Room.Type == "private")
-            {
                 Response.Init(Outgoing.PrepareRoomForUsers);
                 //SendResponse();//******
                 response.appendResponse(GetResponse());
@@ -845,7 +820,6 @@ namespace Firewind.Messages
                 Response.AppendStringWithBreak("/client/internal/" + Room.RoomId + "/id");
                 //SendResponse(); //******
                 response.appendResponse(GetResponse());*/
-            }
 
             Session.GetHabbo().LoadingChecksPassed = true;
 
@@ -888,8 +862,6 @@ namespace Firewind.Messages
                 //response.appendResponse(GetResponse());
             }
 
-            if (Room.Type == "private" || Room.Type == "public")
-            {
                 if (Room.Wallpaper != "0.0")
                 {
                     Response.Init(Outgoing.RoomDecoration);
@@ -948,7 +920,6 @@ namespace Firewind.Messages
                     Response.AppendStringWithBreak("-1");
                     response.appendResponse(GetResponse());
                 }
-            }
 
             //response.sendResponse();
             return response;
@@ -1452,7 +1423,7 @@ namespace Firewind.Messages
             GetResponse().AppendUInt(Room.RoomId);
             GetResponse().AppendBoolean(false);
             GetResponse().AppendString(Room.Name);
-            GetResponse().AppendBoolean(true);
+            GetResponse().AppendBoolean(Room.Owner != "");
             GetResponse().AppendInt32(Room.OwnerId);
             GetResponse().AppendStringWithBreak(Room.Owner);
             GetResponse().AppendInt32(Room.State); // room state
@@ -3352,7 +3323,7 @@ namespace Firewind.Messages
             if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().GetInventoryComponent() == null)
                 return;
 
-            if (Room == null || Room.IsPublic || (!Room.AllowPets && !Room.CheckRights(Session, true)))
+            if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)))
             {
                 return;
             }
@@ -3390,7 +3361,7 @@ namespace Firewind.Messages
         {
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-            if (Room == null || Room.IsPublic || (!Room.AllowPets))
+            if (Room == null || (!Room.AllowPets))
             {
                 return;
             }
@@ -3417,7 +3388,7 @@ namespace Firewind.Messages
         {
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-            if (Room == null || Room.IsPublic || (!Room.AllowPets && !Room.CheckRights(Session, true)))
+            if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)))
             {
                 return;
             }
@@ -3449,7 +3420,7 @@ namespace Firewind.Messages
         {
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-            if (Room == null || Room.IsPublic || (!Room.AllowPets && !Room.CheckRights(Session, true)))
+            if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)))
             {
                 return;
             }

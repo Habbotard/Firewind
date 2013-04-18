@@ -173,7 +173,7 @@ namespace Firewind.Messages
 
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
 
-            if (Data == null || Data.Type != "private")
+            if (Data == null)
                 return;
 
             //PrepareRoomForUser(Id, Password);
@@ -182,7 +182,7 @@ namespace Firewind.Messages
             //FG" + Encoding.encodeVL64(Core.RoomID) + "@@M
             // D^HjTX]X
             GetResponse().Init(Outgoing.FollowBuddy);
-            GetResponse().AppendBoolean(Room.IsPublic);
+            GetResponse().AppendBoolean(false); // is public
             GetResponse().AppendUInt(Client.GetHabbo().CurrentRoomId);
             SendResponse();
 
@@ -191,7 +191,7 @@ namespace Firewind.Messages
             GetResponse().AppendUInt(Room.RoomId);
             GetResponse().AppendBoolean(false);
             GetResponse().AppendString(Room.Name);
-            GetResponse().AppendBoolean(true);
+            GetResponse().AppendBoolean(Room.Owner != "");
             GetResponse().AppendInt32(Room.OwnerId);
             GetResponse().AppendString(Room.Owner);
             GetResponse().AppendInt32(Room.State); // room state

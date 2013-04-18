@@ -318,17 +318,8 @@ namespace Firewind.HabboHotel.Rooms
                 if (!user.IsSpectator)
                 {
                     DynamicRoomModel Model = room.GetGameMap().Model;
-                    if (room.IsPublic && session.SetDoorPos)
-                    {
-                        user.SetPos(session.newDoorPos.X, session.newDoorPos.Y, room.GetGameMap().StaticModel.SqFloorHeight[session.newDoorPos.X, session.newDoorPos.Y]);
-                        user.SetRot(Model.DoorOrientation, false);
-                        session.SetDoorPos = false;
-                    }
-                    else
-                    {
                         user.SetPos(Model.DoorX, Model.DoorY, Model.DoorZ);
                         user.SetRot(Model.DoorOrientation, false);
-                    }
 
                     //if (room.CheckRights(session, true))
                     //{
@@ -366,7 +357,7 @@ namespace Firewind.HabboHotel.Rooms
                     room.SendMessage(EnterMessage);
 
 
-                    if (room.Owner != session.GetHabbo().Username && !room.IsPublic)
+                    if (room.Owner != session.GetHabbo().Username)
                     {
                         FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(user.GetClient(), HabboHotel.Quests.QuestType.SOCIAL_VISIT);
                     }
@@ -1208,11 +1199,6 @@ namespace Firewind.HabboHotel.Rooms
                         {
                             ToRemove.Add(User);
                             continue;
-                        }
-
-                        if (room.IsPublic)
-                        {
-                            room.GetGameMap().HandleRoomLinks(User);
                         }
 
                         UpdateUserStatus(User, true);

@@ -258,7 +258,7 @@ namespace Firewind.HabboHotel.Support
             RoomData data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
             if (data != null)
             {
-                message.AppendInt32(data.IsPublicRoom ? 1 : 0); // is room public?
+                message.AppendInt32(0); // is room public?
                 // have event
                 if (FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId) != null)
                 {

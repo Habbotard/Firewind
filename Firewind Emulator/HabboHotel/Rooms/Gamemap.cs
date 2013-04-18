@@ -102,9 +102,6 @@ namespace Firewind.HabboHotel.Rooms
             this.mGameMap = new byte[Model.MapSizeX, Model.MapSizeY];
             this.mItemHeightMap = new double[Model.MapSizeX, Model.MapSizeY];
             userMap = new Hashtable();
-
-            if (room.IsPublic)
-                this.roomLinkInformation = FirewindEnvironment.GetGame().GetRoomManager().getLinkedRoomData(room.RoomId);
         }
 
         internal void AddUserToMap(RoomUser user, Point coord)

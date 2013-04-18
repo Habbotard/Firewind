@@ -22,7 +22,7 @@ namespace Firewind.Messages
 
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
 
-            if (Data == null || Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(Id) || Data.Type == "public")
+            if (Data == null || Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(Id))
             {
                 // TODO: Upgrade 
                 GetResponse().Init(33);
@@ -233,7 +233,7 @@ namespace Firewind.Messages
             Logging.WriteLine("Loading room [" + Id + "]");
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
 
-            if (Data == null || Data.Type != "private")
+            if (Data == null)
                 return;
 
             PrepareRoomForUser(Id, Password);

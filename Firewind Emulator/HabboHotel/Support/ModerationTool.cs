@@ -764,7 +764,7 @@ namespace Firewind.HabboHotel.Support
                     List<ChatMessage> sortedMessages = valuePair.Value;
                     ChatMessage firstMessage = sortedMessages.First();
 
-                    Message.AppendBoolean(firstMessage.roomIsPublic);
+                    Message.AppendBoolean(false); // is public
                     Message.AppendUInt(firstMessage.roomID);
                     Message.AppendString(firstMessage.roomName);
 
@@ -850,7 +850,7 @@ namespace Firewind.HabboHotel.Support
             Message.AppendUInt(Ticket.SenderId);
             Message.AppendUInt(Ticket.ReportedId);
             Message.AppendUInt(RoomData.Id); //maybe?
-            Message.AppendBoolean(RoomData.IsPublicRoom);
+            Message.AppendBoolean(false); // is public
             Message.AppendUInt(RoomData.Id);
             Message.AppendString(RoomData.Name);
 
@@ -909,7 +909,7 @@ namespace Firewind.HabboHotel.Support
             Room currentRoom = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(roomID);
 
             ServerMessage Message = new ServerMessage(Outgoing.RoomChatlog);
-            Message.AppendBoolean(currentRoom.IsPublic);
+            Message.AppendBoolean(false); // is public
             Message.AppendUInt(currentRoom.RoomId);
             Message.AppendString(currentRoom.Name);
 

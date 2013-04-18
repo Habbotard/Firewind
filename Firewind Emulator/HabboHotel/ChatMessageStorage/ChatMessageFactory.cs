@@ -13,10 +13,9 @@ namespace Firewind.HabboHotel.ChatMessageStorage
             string username = user.GetHabbo().Username;
             uint roomID = room.RoomId;
             string roomName = room.Name;
-            bool isPublic = room.IsPublic;
             DateTime timeSpoken = DateTime.Now;
 
-            ChatMessage chatMessage = new ChatMessage(userID, username, roomID, roomName, isPublic, message, timeSpoken);
+            ChatMessage chatMessage = new ChatMessage(userID, username, roomID, roomName, message, timeSpoken);
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {

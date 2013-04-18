@@ -31,7 +31,6 @@ namespace Firewind.HabboHotel.Rooms
         private UInt32 Id;
         internal string Name;
         internal string Description;
-        internal string Type;
         internal string Owner;
         internal int OwnerId;
         internal string Password;
@@ -40,7 +39,6 @@ namespace Firewind.HabboHotel.Rooms
         internal int UsersNow; //byte
         internal int UsersMax; //byte
         internal string ModelName;
-        internal string CCTs;
         internal int Score; //short
         //internal List<string> Tags;
         private int tagCount;
@@ -306,20 +304,7 @@ namespace Firewind.HabboHotel.Rooms
         {
             get
             {
-                if (IsPublic)
-                {
-                    return false;
-                }
-
                 return true;
-            }
-        }
-
-        internal bool IsPublic
-        {
-            get
-            {
-                return (Type == "public");
             }
         }
 
@@ -345,13 +330,13 @@ namespace Firewind.HabboHotel.Rooms
 
         private void InitializeFromRoomData(RoomData Data)
         {
-            Initialize(Data.Id, Data.Name, Data.Description, Data.Type, Data.Owner, Data.OwnerId, Data.Category, Data.State,
-            Data.UsersMax, Data.ModelName, Data.CCTs, Data.Score, Data.Tags, Data.AllowPets, Data.AllowPetsEating,
+            Initialize(Data.Id, Data.Name, Data.Description, Data.Owner, Data.OwnerId, Data.Category, Data.State,
+            Data.UsersMax, Data.ModelName, Data.Score, Data.Tags, Data.AllowPets, Data.AllowPetsEating,
             Data.AllowWalkthrough, Data.Hidewall, Data.Icon, Data.Password, Data.Wallpaper, Data.Floor, Data.Landscape, Data, Data.AllowRightsOverride, Data.WallThickness, Data.FloorThickness);
         }
 
-        private void Initialize(UInt32 Id, string Name, string Description, string Type, string Owner, int OwnerId, int Category,
-            int State, int UsersMax, string ModelName, string CCTs, int Score, List<string> pTags, bool AllowPets,
+        private void Initialize(UInt32 Id, string Name, string Description, string Owner, int OwnerId, int Category,
+            int State, int UsersMax, string ModelName, int Score, List<string> pTags, bool AllowPets,
             bool AllowPetsEating, bool AllowWalkthrough, bool Hidewall, RoomIcon Icon, string Password, string Wallpaper, string Floor,
             string Landscape, RoomData RoomData, bool RightOverride, int walltickness, int floorthickness)
         {
@@ -363,12 +348,10 @@ namespace Firewind.HabboHotel.Rooms
             this.Owner = Owner;
             this.OwnerId = OwnerId;
             this.Category = Category;
-            this.Type = Type;
             this.State = State;
             this.UsersNow = 0;
             this.UsersMax = UsersMax;
             this.ModelName = ModelName;
-            this.CCTs = CCTs;
             this.Score = Score;
 
             tagCount = 0;

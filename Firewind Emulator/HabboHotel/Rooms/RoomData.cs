@@ -14,7 +14,6 @@ namespace Firewind.HabboHotel.Rooms
         internal UInt32 Id;
         internal string Name;
         internal string Description;
-        internal string Type;
         internal string Owner;
         internal int OwnerId;
         internal string Password;
@@ -23,7 +22,6 @@ namespace Firewind.HabboHotel.Rooms
         internal int UsersNow;//byte
         internal int UsersMax; //uint16
         internal string ModelName;
-        internal string CCTs;
         internal int Score; //uint16
         internal List<string> Tags;
         internal bool AllowPets;
@@ -40,20 +38,6 @@ namespace Firewind.HabboHotel.Rooms
         internal int WallThickness;
         internal int FloorThickness;
         internal string Badge;
-
-
-        internal Boolean IsPublicRoom
-        {
-            get
-            {
-                if (Type.ToLower() == "public")
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
 
         internal RoomIcon Icon
         {
@@ -88,13 +72,11 @@ namespace Firewind.HabboHotel.Rooms
             this.Id = pId;
             this.Name = "Unknown Room";
             this.Description = "-";
-            this.Type = "private";
             this.Owner = "-";
             this.Category = 0;
             this.UsersNow = 0;
             this.UsersMax = 0;
             this.ModelName = "NO_MODEL";
-            this.CCTs = "";
             this.Score = 0;
             this.Tags = new List<string>();
             this.AllowPets = true;
@@ -120,7 +102,6 @@ namespace Firewind.HabboHotel.Rooms
             this.Id = Convert.ToUInt32(Row["id"]);
             this.Name = (string)Row["caption"];
             this.Description = (string)Row["description"];
-            this.Type = (string)Row["roomtype"];
             this.Owner = (string)Row["owner"];
             this.Badge = (string)Row["badge"];
             this.OwnerId = 0;
@@ -158,7 +139,6 @@ namespace Firewind.HabboHotel.Rooms
                 this.UsersNow = 0;
             this.UsersMax = (int)Row["users_max"];
             this.ModelName = (string)Row["model_name"];
-            this.CCTs = (string)Row["public_ccts"];
             this.Score = (int)Row["score"];
             this.Tags = new List<string>();
             this.AllowPets = FirewindEnvironment.EnumToBool(Row["allow_pets"].ToString());
@@ -219,14 +199,12 @@ namespace Firewind.HabboHotel.Rooms
             this.Id = Room.RoomId;
             this.Name = Room.Name;
             this.Description = Room.Description;
-            this.Type = Room.Type;
             this.Owner = Room.Owner;
             this.Category = Room.Category;
             this.State = Room.State;
             this.UsersNow = Room.UsersNow;
             this.UsersMax = Room.UsersMax;
             this.ModelName = Room.ModelName;
-            this.CCTs = Room.CCTs;
             this.Score = Room.Score;
 
             this.Tags = new List<string>();
@@ -253,7 +231,6 @@ namespace Firewind.HabboHotel.Rooms
             this.Id = Convert.ToUInt32(Row["id"]);
             this.Name = (string)Row["caption"];
             this.Description = (string)Row["description"];
-            this.Type = (string)Row["roomtype"];
             this.Owner = (string)Row["owner"];
 
             switch (Row["state"].ToString().ToLower())
@@ -283,7 +260,6 @@ namespace Firewind.HabboHotel.Rooms
                 this.UsersNow = 0;
             this.UsersMax = (int)Row["users_max"];
             this.ModelName = (string)Row["model_name"];
-            this.CCTs = (string)Row["public_ccts"];
             this.Score = (int)Row["score"];
             this.Tags = new List<string>();
             this.AllowPets = FirewindEnvironment.EnumToBool(Row["allow_pets"].ToString());
@@ -347,7 +323,7 @@ namespace Firewind.HabboHotel.Rooms
             {
                 Message.AppendBoolean(false);
                 Message.AppendString(Name);
-                Message.AppendBoolean(true);
+                Message.AppendBoolean(Owner != "");
                 Message.AppendInt32(OwnerId);
                 Message.AppendString(Owner);
                 Message.AppendInt32(State); // room state

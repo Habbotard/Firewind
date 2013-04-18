@@ -13,9 +13,8 @@ namespace Firewind.HabboHotel.ChatMessageStorage
         private readonly DateTime timeSpoken;
 
         internal readonly string roomName;
-        internal readonly bool roomIsPublic;
 
-        public ChatMessage(uint userID, string username, uint roomID, string roomName, bool roomIsPublic, string message, DateTime timeSpoken)
+        public ChatMessage(uint userID, string username, uint roomID, string roomName, string message, DateTime timeSpoken)
         {
             this.userID = userID;
             this.username = username;
@@ -23,7 +22,6 @@ namespace Firewind.HabboHotel.ChatMessageStorage
             this.message = message;
             this.timeSpoken = timeSpoken;
             this.roomName = roomName;
-            this.roomIsPublic = roomIsPublic;
         }
 
         internal void Serialize(ref ServerMessage packet)
