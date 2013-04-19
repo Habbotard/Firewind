@@ -2320,13 +2320,6 @@ namespace Firewind.Messages
         internal void TakeItem()
         {
             int junk = Request.PopWiredInt32();
-
-            if (Session.GetHabbo().GetInventoryComponent().ItemCount + 1 >= FirewindEnvironment.InventoryLimit)
-            {
-                Session.SendNotif(LanguageLocale.GetValue("inventory.full"));
-                return;
-            }
-
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
             if (Room == null || !Room.CheckRights(Session, true))

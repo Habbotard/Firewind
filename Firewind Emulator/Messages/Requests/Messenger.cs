@@ -68,12 +68,6 @@ namespace Firewind.Messages
 
             int Amount = Request.PopWiredInt32();
 
-            if (Session.GetHabbo().GetMessenger().myFriends + Amount >= FirewindEnvironment.FriendLimit)
-            {
-                Session.SendNotif(LanguageLocale.GetValue("friends.full"));
-                return;
-            }
-
             for (int i = 0; i < Amount; i++)
             {
                 uint RequestId = Request.PopWiredUInt();
