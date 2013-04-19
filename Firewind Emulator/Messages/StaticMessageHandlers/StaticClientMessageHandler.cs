@@ -25,13 +25,14 @@ namespace Firewind.Messages.StaticMessageHandlers
 
             if (handlers.ContainsKey(message.Id))
             {
-                Logging.WriteLine("Event handled => " + message.Id + " ");
+                if (FirewindEnvironment.IsDebugging)
+                    Logging.LogDebug("Event handled => " + message.Id + " ");
                 StaticRequestHandler currentHandler = (StaticRequestHandler)handlers[message.Id];
                 currentHandler.Invoke(handler);
             }
             else
             {
-                if (unknownPackets.Contains(message.Id) && !System.Diagnostics.Debugger.IsAttached)
+                if (!FirewindEnvironment.IsDebugging || unknownPackets.Contains(message.Id))
                     return;
                 unknownPackets.Add(message.Id);
                 Logging.LogDebug("Unknown packet ID: " + message.Id);
