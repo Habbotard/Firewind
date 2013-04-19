@@ -302,16 +302,6 @@ namespace Firewind.HabboHotel.Misc
 
             if (TargetRoom != null && TargetRoom.CheckRights(Session, true))
             {
-                int wallItemCount = TargetRoom.GetRoomItemHandler().mWallItems.ToList().Count;
-                int floorItemCount = TargetRoom.GetRoomItemHandler().mFloorItems.ToList().Count;
-                int furniCount = wallItemCount + floorItemCount;
-
-                if (FirewindEnvironment.InventoryLimit <= furniCount)
-                {
-                    Session.SendNotif(LanguageLocale.GetValue("inventory.full"));
-                    return;
-                }
-                
                 List<RoomItem> RemovedItems = TargetRoom.GetRoomItemHandler().RemoveAllFurniture(Session);
 
                 Session.GetHabbo().GetInventoryComponent().AddItemArray(RemovedItems);

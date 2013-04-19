@@ -74,13 +74,6 @@ namespace Firewind.Messages
             int Amount = Request.PopWiredInt32();
             /*for (int i = 0; i < Session.GetHabbo().buyItemLoop; i++)
             {*/
-
-            if (Session.GetHabbo().GetInventoryComponent().ItemCount + Amount >= FirewindEnvironment.InventoryLimit)
-            {
-                Session.SendNotif(LanguageLocale.GetValue("inventory.full"));
-                return;
-            }
-
             FirewindEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, extraParameter, Amount, false, "", "", 0, 0, 0, false);
             //}
         }
