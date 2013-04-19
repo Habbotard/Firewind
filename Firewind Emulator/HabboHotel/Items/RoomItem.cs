@@ -597,7 +597,7 @@ namespace Firewind.HabboHotel.Items
                                                     User.GetClient().GetHabbo().IsTeleporting = true;
                                                     User.GetClient().GetHabbo().TeleportingRoomID = RoomId;
                                                     User.GetClient().GetHabbo().TeleporterId = TeleId;
-                                                    User.GetClient().GetMessageHandler().PrepareRoomForUser(RoomId, "");
+                                                    User.GetClient().GetMessageHandler().ForwardToRoom((int)RoomId);
                                                 }
                                                 else
                                                 {

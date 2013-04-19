@@ -202,44 +202,6 @@ namespace Firewind.HabboHotel.Rooms
             return (banzai != null);
         }
 
-        internal ServerMessage ReloadRoomData()
-        {
-            ServerMessage Message = new ServerMessage(Outgoing.GetGuestRoomResult);
-            Message.AppendBoolean(true);
-            Message.AppendUInt(RoomId);
-            Message.AppendBoolean(false);
-            Message.AppendString(Name);
-            Message.AppendBoolean(true);
-            Message.AppendInt32(OwnerId);
-            Message.AppendStringWithBreak(Owner);
-            Message.AppendInt32(State); // room state
-            Message.AppendInt32(UsersNow);
-            Message.AppendInt32(UsersMax);
-            Message.AppendStringWithBreak(Description);
-            Message.AppendInt32(0); // dunno!
-            Message.AppendInt32((Category == 9) ? 2 : 0); // can trade!
-            Message.AppendInt32(Score);
-            Message.AppendInt32(Category);
-            Message.AppendInt32(0);
-            Message.AppendInt32(0);
-            Message.AppendStringWithBreak("");
-            Message.AppendInt32(TagCount);
-
-            foreach (string Tag in Tags)
-            {
-                Message.AppendStringWithBreak(Tag);
-            }
-            Message.AppendInt32(0);
-            Message.AppendInt32(0);
-            Message.AppendInt32(0);
-            Message.AppendBoolean(true);
-            Message.AppendBoolean(true);
-            Message.AppendBoolean(false);
-            Message.AppendString("");
-
-            return Message;
-        }
-
         internal bool GotFreeze()
         {
             return (freeze != null);

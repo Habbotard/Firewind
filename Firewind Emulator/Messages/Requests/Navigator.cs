@@ -220,24 +220,26 @@ namespace Firewind.Messages
             Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeSearchResults(Request.PopFixedString()));
         }
 
+        #region Not in use
         internal void OpenFlat()
         {
-            Firewind.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();
-            if (targetHabbo == null)
-            {
-                return;
-            }
-            uint Id = Request.PopWiredUInt();
-            string Password = Request.PopFixedString();
-            int Junk = Request.PopWiredInt32();
-            Logging.WriteLine("Loading room [" + Id + "]");
-            RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
+            //Firewind.HabboHotel.Users.Habbo targetHabbo = Session.GetHabbo();
+            //if (targetHabbo == null)
+            //{
+            //    return;
+            //}
+            //uint Id = Request.PopWiredUInt();
+            //string Password = Request.PopFixedString();
+            //int Junk = Request.PopWiredInt32();
+            //Logging.WriteLine("Loading room [" + Id + "]");
+            //RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
 
-            if (Data == null)
-                return;
+            //if (Data == null)
+            //    return;
 
-            PrepareRoomForUser(Id, Password);
+            //PrepareRoomForUser(Id, Password);
         }
+        #endregion
 
         //internal void RegisterNavigator()
         //{

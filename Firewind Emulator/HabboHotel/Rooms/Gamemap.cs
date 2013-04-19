@@ -165,24 +165,6 @@ namespace Firewind.HabboHotel.Rooms
                 return new List<RoomUser>();
         }
 
-        internal void HandleRoomLinks(RoomUser user)
-        {
-            foreach (RoomLinkInformation square in roomLinkInformation.Where(p => p.fromX == user.SetX && p.fromY == user.SetY))
-            {
-                RoomUser userOnSquare = room.GetRoomUserManager().GetUserForSquare(square.fromX, square.fromY);
-                if (userOnSquare != null)
-                {
-                    //Session.GetMessageHandler().PrepareRoomForUser(roomID, "");
-                    if (userOnSquare.GetClient() != null && userOnSquare.GetClient().GetMessageHandler() != null)
-                    {
-                        userOnSquare.GetClient().SetDoorPos = true;
-                        userOnSquare.GetClient().newDoorPos = new Point(square.toX, square.toY);
-                        userOnSquare.GetClient().GetMessageHandler().PrepareRoomForUser(square.toRoomID, "");
-                    }
-                }
-            }
-        }
-
         internal Point getRandomWalkableSquare()
         {
             List<Point> walkableSquares = new List<Point>();

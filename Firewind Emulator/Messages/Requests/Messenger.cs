@@ -176,51 +176,13 @@ namespace Firewind.Messages
             if (Data == null)
                 return;
 
-            //PrepareRoomForUser(Id, Password);
+            ForwardToRoom((int)Id);
 
-
-            //FG" + Encoding.encodeVL64(Core.RoomID) + "@@M
-            // D^HjTX]X
-            GetResponse().Init(Outgoing.FollowBuddy);
+            // This will make the client send GetGuestRoom
+            GetResponse().Init(Outgoing.RoomForward);
             GetResponse().AppendBoolean(false); // is public
             GetResponse().AppendUInt(Client.GetHabbo().CurrentRoomId);
             SendResponse();
-
-            GetResponse().Init(Outgoing.GetGuestRoomResult);
-            GetResponse().AppendBoolean(false);
-            GetResponse().AppendUInt(Room.RoomId);
-            GetResponse().AppendBoolean(false);
-            GetResponse().AppendString(Room.Name);
-            GetResponse().AppendBoolean(Room.Owner != "");
-            GetResponse().AppendInt32(Room.OwnerId);
-            GetResponse().AppendString(Room.Owner);
-            GetResponse().AppendInt32(Room.State); // room state
-            GetResponse().AppendInt32(Room.UsersNow);
-            GetResponse().AppendInt32(Room.UsersMax);
-            GetResponse().AppendString(Room.Description);
-            GetResponse().AppendInt32(0); // dunno!
-            GetResponse().AppendInt32((Room.Category == 9) ? 2 : 0); // can trade!
-            GetResponse().AppendInt32(Room.Score);
-            GetResponse().AppendInt32(Room.Category);
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendString("");
-            GetResponse().AppendInt32(Room.TagCount);
-
-            foreach (string Tag in Room.Tags)
-            {
-                GetResponse().AppendString(Tag);
-            }
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendBoolean(true);
-            GetResponse().AppendBoolean(true);
-            GetResponse().AppendBoolean(false);
-            GetResponse().AppendString("");
-            SendResponse();
-
-            PrepareRoomForUser(Client.GetHabbo().CurrentRoomId, Password);
         }
 
         internal void SendInstantInvite()

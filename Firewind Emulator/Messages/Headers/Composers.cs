@@ -71,7 +71,6 @@ namespace HabboEvents
         public static int InstantInvite = 2675;
         public static int InstantChatError = 1133;
         public static int RoomReady = 2371; // InitialRoomInformation
-        public static int FollowBuddy = 2022;
         public static int FollowBuddyError = 805;
         public static int SearchFriend = 2653;
         public static int TradeStart = 343;
@@ -174,6 +173,8 @@ namespace HabboEvents
         public static int NoSuchFlat = 1378;
         public static int FurnitureAliases = 1765;
         public static int GetGuestRoomResult = 542;
+
+        public static int RoomForward = 2022;
 
         // Door bell
         public static int FlatAccessible = 368;

@@ -881,9 +881,9 @@ namespace Firewind.HabboHotel.Misc
 
             try
             {
-                uint roomID = uint.Parse(Params[1]);
+                int roomID = int.Parse(Params[1]);
 
-                Session.GetMessageHandler().PrepareRoomForUser(roomID, "");
+                Session.GetMessageHandler().ForwardToRoom(roomID);
             }
             catch
             {
@@ -898,7 +898,7 @@ namespace Firewind.HabboHotel.Misc
             if (TargetClient == null || TargetClient.GetHabbo() == null || TargetClient.GetHabbo().CurrentRoom == null)
                 return;
 
-            Session.GetMessageHandler().PrepareRoomForUser(TargetClient.GetHabbo().CurrentRoom.RoomId, "");
+            Session.GetMessageHandler().ForwardToRoom((int)TargetClient.GetHabbo().CurrentRoom.RoomId);
         }
 
         internal void roombadge()
@@ -1523,7 +1523,7 @@ namespace Firewind.HabboHotel.Misc
 
             Room room = Session.GetHabbo().CurrentRoom;
 
-            client.GetMessageHandler().PrepareRoomForUser(room.RoomId, room.Password);
+            client.GetMessageHandler().ForwardToRoom((int)room.RoomId);
         }
 
         internal void Fly()
