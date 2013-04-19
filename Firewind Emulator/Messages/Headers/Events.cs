@@ -141,7 +141,6 @@ namespace HabboEvents
 		public static int IgnoreUser = 2481;
 		public static int UnignoreUser = 2560;
 		public static int AnswerDoorBell = 2637;
-		public static int ReqLoadByDoorBell = 3734;
 		public static int AddFavourite = 2575;
 		public static int RemoveFavourite = 2788;
 		public static int Whisp = 3059;
@@ -170,5 +169,8 @@ namespace HabboEvents
         public static int GetHabboGroupBadges = 2709;
         public static int GetRoomEntryData = 1081;
 		public static int GetRoomAd = 3873;
+
+        // Door bell
+        public static int GoToFlat = 3734;
     }
 }

@@ -463,14 +463,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetRoomAd();
         }
 
-        internal static void OnRoomUserAdd(GameClientMessageHandler handler)
+        internal static void GoToFlat(GameClientMessageHandler handler)
         {
-            handler.OnRoomUserAdd();
-        }
-
-        internal static void ReqLoadRoomForUser(GameClientMessageHandler handler)
-        {
-            handler.ReqLoadRoomForUser();
+            handler.GoToFlat();
         }
 
         internal static void OpenFlatConnection(GameClientMessageHandler handler)

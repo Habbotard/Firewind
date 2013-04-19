@@ -62,7 +62,6 @@ namespace HabboEvents
         public static int RoomError = 3192;
         public static int DoorBellNoPerson = 2458;
         public static int Doorbell = 1689;
-        public static int ValidDoorBell = 368;
         public static int InvalidDoorBell = 2458;
         public static int InitFriends = 2479;
         public static int InitRequests = 3143;
@@ -175,5 +174,8 @@ namespace HabboEvents
         public static int NoSuchFlat = 1378;
         public static int FurnitureAliases = 1765;
         public static int GetGuestRoomResult = 542;
+
+        // Door bell
+        public static int FlatAccessible = 368;
     }
 }

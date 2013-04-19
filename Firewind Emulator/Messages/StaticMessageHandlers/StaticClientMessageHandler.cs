@@ -137,7 +137,6 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.RemoveHanditem, new StaticRequestHandler(SharedPacketLib.RemoveHanditem));
             handlers.Add(Incoming.GiveObject, new StaticRequestHandler(SharedPacketLib.GiveHanditem));
             handlers.Add(Incoming.AnswerDoorBell, new StaticRequestHandler(SharedPacketLib.AnswerDoorbell));
-            handlers.Add(Incoming.ReqLoadByDoorBell, new StaticRequestHandler(SharedPacketLib.ReqLoadRoomForUser));
             handlers.Add(Incoming.ApplySpace, new StaticRequestHandler(SharedPacketLib.ApplyRoomEffect));
             handlers.Add(Incoming.AddFloorItem, new StaticRequestHandler(SharedPacketLib.PlaceItem));
             handlers.Add(Incoming.PickupItem, new StaticRequestHandler(SharedPacketLib.TakeItem));
@@ -201,6 +200,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GetRoomEntryData, new StaticRequestHandler(SharedPacketLib.GetRoomEntryData));
             handlers.Add(Incoming.GetRoomAd, new StaticRequestHandler(SharedPacketLib.GetRoomAd));
             handlers.Add(Incoming.GetHabboGroupBadges, new StaticRequestHandler(SharedPacketLib.GetHabboGroupBadges));
+
+            // Door bell
+            handlers.Add(Incoming.GoToFlat, new StaticRequestHandler(SharedPacketLib.GoToFlat));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion
