@@ -596,17 +596,13 @@ namespace Firewind.Messages
             CurrentLoadingRoom = null;
         }
 
-        internal void ForwardToRoom(int roomID)
+        internal void ForwardToRoom(int flatID)
         {
             if (FirewindEnvironment.ShutdownStarted)
             {
                 Session.SendNotif(LanguageLocale.GetValue("shutdown.alert"));
                 return;
             }
-
-            int flatID = Request.PopWiredInt32();
-            string password = Request.PopFixedString();
-            int notUsed = Request.PopWiredInt32();
 
             if (Session.GetHabbo().IsTeleporting && Session.GetHabbo().TeleportingRoomID != flatID)
                 return;
@@ -711,7 +707,7 @@ namespace Firewind.Messages
                         return;
 
                     case 2:
-                        if (password.ToLower() != room.Password.ToLower())
+                        //if (password.ToLower() != room.Password.ToLower())
                         {
                             // your password fail :( !
 
@@ -727,7 +723,7 @@ namespace Firewind.Messages
                             //response.sendResponse();
                             return;
                         }
-                        break;
+                        //break;
                 }
             }
             Session.GetHabbo().LoadingChecksPassed = true;
