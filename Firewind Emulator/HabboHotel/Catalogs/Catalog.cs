@@ -229,12 +229,6 @@ namespace Firewind.HabboHotel.Catalogs
                 finalAmount = buyAmount - freeItemsCount;
             }
 
-            if (buyAmount + Session.GetHabbo().GetInventoryComponent().ItemCount >= 2000)
-            {
-                Session.SendMOTD("Du har nådd grensen av møbler i inventaret ditt, du må kvitte deg med noen møbler for du kjøper!");
-                return;
-            }
-
             //Logging.WriteLine("Amount: " + priceAmount + "; withOffer= " + finalAmount);
             CatalogPage Page;
             if (!Pages.TryGetValue(PageId, out Page))
