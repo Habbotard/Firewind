@@ -1363,7 +1363,7 @@ namespace Firewind.HabboHotel.Misc
         {
             DateTime Now = DateTime.Now;
             TimeSpan Uptime = Now - FirewindEnvironment.ServerStarted;
-            Session.SendBroadcastMessage("Firewind Emulator\n===============================================\n" + FirewindEnvironment.PrettyVersion + "\n\nTeam:\n      - Leon [Developer]\n      - AWA [Developer]\n\nThanks to:\n      - pLEDGE\n\n Server Status\n===============================================\nUptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)\n\nFind out more at - www.getfirewind.com");
+            Session.SendBroadcastMessage("Firewind Emulator\n===============================================\n" + FirewindEnvironment.PrettyVersion + "\n\nTeam:\n      - Leon [Developer]\n      - AWA [Developer]\n\nThanks to:\n      - pLEDGE\n\nServer Status\n===============================================\nUptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)\n\n\nLicensed to: " + FirewindEnvironment.LicenseHolder + "\n\nFind out more at - www.getfirewind.com");
         }
 
         internal void enablestatus()
