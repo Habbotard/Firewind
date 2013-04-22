@@ -22,8 +22,6 @@ namespace Firewind
 {
     static class FirewindEnvironment
     {
-        public static int FriendLimit = 350;
-        public static int InventoryLimit = 2500;
         private static ConfigurationData Configuration;
         private static Encoding DefaultEncoding;
         private static ConnectionHandling ConnectionManager;
