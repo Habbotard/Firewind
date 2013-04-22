@@ -505,7 +505,7 @@ namespace Firewind.Messages
 
             foreach (RoomUser User in UsersToDisplay)
             {
-                User.Serialize(Response, CurrentLoadingRoom.GetGameMap().gotPublicPool);
+                User.Serialize(Response);
             }
             response.appendResponse(GetResponse());
 

@@ -323,6 +323,8 @@ namespace Firewind.HabboHotel.Items
                         return new InteractorJukebox();
                     case InteractionType.mannequin:
                         return new InteractorMannequin();
+                    case InteractionType.puzzlebox:
+                        return new InteractorPuzzleBox();
 
                     case InteractionType.none:
                     default:
@@ -502,28 +504,26 @@ namespace Firewind.HabboHotel.Items
                             //GetRoom().FreeSqareForUsers(mX, mY);
                         }
 
-                        if (User != null && User.X == mX && User.Y == mY)
-                        {
-                            data =  new StringData("1");
-
-                            User.MoveTo(SquareBehind);
-
-                            ReqUpdate(1, false);
-                            UpdateState(false, true);
-                        }
-                        else if (User != null && User.Coordinate == SquareBehind)
+                        if (User != null && User.Coordinate == SquareBehind)
                         {
                             User.UnlockWalking();
 
-                            data =  new StringData("0");
+                            //data =  new StringData("0");
                             InteractingUser = 0;
 
-                            UpdateState(false, true);
+                            ServerMessage update = new ServerMessage(Outgoing.OneWayDoorStatus);
+                            update.AppendUInt(Id); // id
+                            update.AppendInt32(0); // status
+                            mRoom.SendMessage(update);
                         }
                         else if (data.ToString() == "1")
                         {
-                            data =  new StringData("0");
-                            UpdateState(false, true);
+                            //data =  new StringData("0");
+
+                            ServerMessage update = new ServerMessage(Outgoing.OneWayDoorStatus);
+                            update.AppendUInt(Id); // id
+                            update.AppendInt32(0); // status
+                            mRoom.SendMessage(update);
                         }
 
                         if (User == null)

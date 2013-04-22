@@ -166,6 +166,9 @@ namespace HabboEvents
         //2295 _-1qv _-09Y DiceValue
         //2357 _-4Ng _-1-M OneWayDoorStatus
 
+        // Interaction
+        public static int OneWayDoorStatus = 2357;
+
         public static int UserUpdate = 172;
 
         // Room enter

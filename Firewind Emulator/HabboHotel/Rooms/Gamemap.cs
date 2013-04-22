@@ -34,7 +34,6 @@ namespace Firewind.HabboHotel.Rooms
         //3 = ice skates
         private double[,] mItemHeightMap;
         internal bool DiagonalEnabled;
-        internal bool gotPublicPool;
         private Hashtable userMap;
 
         internal DynamicRoomModel Model
@@ -97,8 +96,6 @@ namespace Firewind.HabboHotel.Rooms
 
             this.mCoordinatedItems = new Hashtable();
 
-
-            this.gotPublicPool = room.RoomData.Model.gotPublicPool;
             this.mGameMap = new byte[Model.MapSizeX, Model.MapSizeY];
             this.mItemHeightMap = new double[Model.MapSizeX, Model.MapSizeY];
             userMap = new Hashtable();
@@ -363,34 +360,6 @@ namespace Firewind.HabboHotel.Rooms
                         }
                     }
                 }
-
-                if (gotPublicPool)
-                {
-                    for (int y = 0; y < StaticModel.MapSizeY; y++)
-                    {
-                        for (int x = 0; x < StaticModel.MapSizeX; x++)
-                        {
-                            if (StaticModel.mRoomModelfx[x, y] != 0)
-                            {
-                                mUserItemEffect[x, y] = StaticModel.mRoomModelfx[x, y];
-                            }
-                        }
-                    }
-                }
-
-                /** COMENTADO YA QUE SALAS PUBLICAS NUEVA CRYPTO NO NECESARIO
-                if (!string.IsNullOrEmpty(StaticModel.StaticFurniMap)) 
-                {
-                     * foreach (PublicRoomSquare square in StaticModel.Furnis)
-                    {
-                        if (square.Content.Contains("chair") || square.Content.Contains("sofa"))
-                        {
-                            mGameMap[square.X, square.Y] = 1;
-                        } else {
-                            mGameMap[square.X, square.Y] = 0;
-                        }
-                    }
-                }*/
             }
             #endregion
 
@@ -432,33 +401,6 @@ namespace Firewind.HabboHotel.Rooms
                         }
                     }
                 }
-
-                if (gotPublicPool)
-                {
-                    for (int y = 0; y < StaticModel.MapSizeY; y++)
-                    {
-                        for (int x = 0; x < StaticModel.MapSizeX; x++)
-                        {
-                            if (StaticModel.mRoomModelfx[x, y] != 0)
-                            {
-                                mUserItemEffect[x, y] = StaticModel.mRoomModelfx[x, y];
-                            }
-                        }
-                    }
-                }
-
-                /** COMENTADO YA QUE SALAS PUBLICAS NUEVA CRYPTO NO NECESARIO
-                 * foreach (PublicRoomSquare square in StaticModel.Furnis)
-                {
-                    if (square.Content.Contains("chair") || square.Content.Contains("sofa"))
-                    {
-                        mGameMap[square.X, square.Y] = 1;
-                    }
-                    else
-                    {
-                        mGameMap[square.X, square.Y] = 0;
-                    }
-                }*/
             }
             #endregion
 

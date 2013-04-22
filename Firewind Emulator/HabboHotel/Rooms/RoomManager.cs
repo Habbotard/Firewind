@@ -86,7 +86,7 @@ namespace Firewind.HabboHotel.Rooms
             DataRow RoomData;
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.setQuery("SELECT doorx,doory,height,modeldata,poolmap FROM room_models_customs WHERE roomid = " + roomID);
+                dbClient.setQuery("SELECT doorx,doory,height,modeldata FROM room_models_customs WHERE roomid = " + roomID);
                 RoomData = dbClient.getRow();
             }
 
@@ -94,7 +94,7 @@ namespace Firewind.HabboHotel.Rooms
                 throw new Exception("The custom room model for room " + roomID + " was not found");
 
             string Modeldata = (string)RoomData["modeldata"];
-            return new RoomModel((int)RoomData["doorx"], (int)RoomData["doory"], (Double)RoomData["height"], 2, Modeldata, "", false, string.Empty);
+            return new RoomModel((int)RoomData["doorx"], (int)RoomData["doory"], (Double)RoomData["height"], 2, Modeldata, false);
         }
 
         internal RoomModel GetModel(string Model, UInt32 RoomID)
@@ -368,38 +368,19 @@ namespace Firewind.HabboHotel.Rooms
         {
             roomModels.Clear();
 
-            dbClient.setQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,public_items,club_only,poolmap FROM room_models");
+            dbClient.setQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,club_only FROM room_models");
             DataTable Data = dbClient.getTable();
 
-            dbClient.setQuery("SELECT model, x, y, rot, content FROM room_model_static");
-            DataTable PublicRoomItems = dbClient.getTable();
-
-            /** COMENTADO YA QUE SALAS PUBLICAS NUEVA CRYPTO NO NECESARIO
-            List<PublicRoomSquare> PublicRoomDataSqList = new List<PublicRoomSquare>();
-
-            foreach (DataRow dRow in PublicRoomItems.Rows)
-            {
-                PublicRoomDataSqList.Add(new PublicRoomSquare(dRow));
-            }
-            */
             if (Data == null)
                 return;
 
             foreach (DataRow Row in Data.Rows)
             {
                 string Modelname = (string)Row["id"];
-                string staticFurniture = (string)Row["public_items"];
-
-                /** COMENTADO YA QUE SALAS PUBLICAS NUEVA CRYPTO NO NECESARIO
-                 * List<PublicRoomSquare> publicFurni = new List<PublicRoomSquare>();
-                if (!string.IsNullOrEmpty(staticFurniture))
-                {
-                    publicFurni.AddRange(from p in PublicRoomDataSqList where p.RoomModelName == Modelname select p);
-                }*/
 
                 roomModels.Add(Modelname, new RoomModel((int)Row["door_x"],
                     (int)Row["door_y"], (Double)Row["door_z"], (int)Row["door_dir"], (string)Row["heightmap"],
-                    staticFurniture, FirewindEnvironment.EnumToBool(Row["club_only"].ToString()), (string)Row["poolmap"]));
+                    FirewindEnvironment.EnumToBool(Row["club_only"].ToString())));
             }
         }
         #endregion

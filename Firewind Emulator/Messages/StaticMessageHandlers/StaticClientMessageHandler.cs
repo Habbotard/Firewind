@@ -32,7 +32,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             }
             else
             {
-                if (!FirewindEnvironment.IsDebugging || unknownPackets.Contains(message.Id))
+                if (!FirewindEnvironment.IsDebugging/* || unknownPackets.Contains(message.Id)*/)
                     return;
                 unknownPackets.Add(message.Id);
                 Logging.LogDebug("Unknown packet ID: " + message.Id);
@@ -203,6 +203,9 @@ namespace Firewind.Messages.StaticMessageHandlers
 
             // Door bell
             handlers.Add(Incoming.GoToFlat, new StaticRequestHandler(SharedPacketLib.GoToFlat));
+
+            // Furniture
+            handlers.Add(Incoming.EnterOneWayDoor, new StaticRequestHandler(SharedPacketLib.TriggerItem));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

@@ -694,7 +694,7 @@ namespace Firewind.HabboHotel.Rooms
         //    Statusses = new Dictionary<string, string>();
         //}
 
-        internal void Serialize(ServerMessage Message, bool gotPublicRoom)
+        internal void Serialize(ServerMessage Message)
         {
             // @\Ihqu@UMeth0d13haiihr-893-45.hd-180-8.ch-875-62.lg-280-62.sh-290-62.ca-1813-.he-1601-[IMRAPD4.0JImMcIrDK
             // MSadiePull up a pew and have a brew!hr-500-45.hd-600-1.ch-823-75.lg-716-76.sh-730-62.he-1602-75IRBPA2.0PAK
@@ -766,13 +766,6 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendBoolean(false);
                 Message.AppendInt32(0);
                 Message.AppendBoolean(true);
-
-                /*if (gotPublicRoom)
-                    Message.AppendString("ch=s01/250,56,49");
-                else
-                    Message.AppendString(string.Empty);
-                */
-
             }
         }
 

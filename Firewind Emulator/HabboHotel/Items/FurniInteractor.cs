@@ -299,7 +299,8 @@ namespace Firewind.HabboHotel.Items.Interactors
                 return;
             }
 
-            if (!Item.GetRoom().GetGameMap().CanWalk(Item.SquareBehind.X, Item.SquareBehind.Y, User.AllowOverride))
+            // This check works for some reason
+            if (!Item.GetRoom().GetGameMap().itemCanBePlacedHere(Item.SquareBehind.X, Item.SquareBehind.Y))
             {
                 return;
             }
@@ -315,8 +316,13 @@ namespace Firewind.HabboHotel.Items.Interactors
                     User.ClearMovement(true);
                 }
 
+                ServerMessage update = new ServerMessage(Outgoing.OneWayDoorStatus);
+                update.AppendUInt(Item.Id); // id
+                update.AppendInt32(1); // status
+                Item.GetRoom().SendMessage(update);
+
                 User.AllowOverride = true;
-                User.MoveTo(Item.Coordinate);
+                User.MoveTo(Item.SquareBehind);
 
                 Item.ReqUpdate(4, true);
             }
@@ -1659,8 +1665,6 @@ namespace Firewind.HabboHotel.Items.Interactors
 
         internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
-            if (Session != null)
-                return;
             RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
             Point ItemCoordx1 = new Point(Item.Coordinate.X + 1, Item.Coordinate.Y);
@@ -1707,23 +1711,24 @@ namespace Firewind.HabboHotel.Items.Interactors
                     NewY = Item.Coordinate.Y + 1;
                 }
 
-                if (Item.GetRoom().GetGameMap().ValidTile(NewX, NewY))
+                if (Item.GetRoom().GetGameMap().itemCanBePlacedHere(NewX, NewY))
                 {
                     Double NewZ = Item.GetRoom().GetGameMap().SqAbsoluteHeight(NewX, NewY);
 
-                    ServerMessage Message = new ServerMessage(Outgoing.ObjectOnRoller);
+                    ServerMessage Message = new ServerMessage();
+                    Message.Init(Outgoing.ObjectOnRoller); // Cf
                     Message.AppendInt32(Item.Coordinate.X);
                     Message.AppendInt32(Item.Coordinate.Y);
                     Message.AppendInt32(NewX);
                     Message.AppendInt32(NewY);
                     Message.AppendInt32(1);
                     Message.AppendUInt(Item.Id);
-                    Message.AppendByte(2);
-                    Message.AppendString(TextHandling.GetString(NewZ));
-                    Message.AppendString("M");
+                    Message.AppendString(Item.GetZ.ToString().Replace(',', '.'));
+                    Message.AppendString(NewZ.ToString().Replace(',', '.'));
+                    Message.AppendUInt(0);
                     Item.GetRoom().SendMessage(Message);
 
-                    Item.GetRoom().GetRoomItemHandler().SetFloorItem(User.GetClient(), Item, NewX, NewY, Item.Rot, false, false, true);
+                    Item.GetRoom().GetRoomItemHandler().SetFloorItem(User.GetClient(), Item, NewX, NewY, Item.Rot, false, false, false);
                 }
             }
         }

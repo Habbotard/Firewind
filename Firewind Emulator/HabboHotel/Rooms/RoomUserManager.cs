@@ -125,7 +125,7 @@ namespace Firewind.HabboHotel.Rooms
 
             ServerMessage EnterMessage = new ServerMessage(Outgoing.PlaceBot);
             EnterMessage.AppendInt32(1);
-            BotUser.Serialize(EnterMessage, room.GetGameMap().gotPublicPool);
+            BotUser.Serialize(EnterMessage);
             room.SendMessage(EnterMessage);
 
             BotUser.BotAI.OnSelfEnterRoom();
@@ -353,7 +353,7 @@ namespace Firewind.HabboHotel.Rooms
 
                     ServerMessage EnterMessage = new ServerMessage(Outgoing.SetRoomUser);
                     EnterMessage.AppendInt32(1);
-                    user.Serialize(EnterMessage, room.GetGameMap().gotPublicPool);
+                    user.Serialize(EnterMessage);
                     room.SendMessage(EnterMessage);
 
 

@@ -172,5 +172,8 @@ namespace HabboEvents
 
         // Door bell
         public static int GoToFlat = 3734;
+
+        // Furniture
+        public static int EnterOneWayDoor = 2505;
     }
 }

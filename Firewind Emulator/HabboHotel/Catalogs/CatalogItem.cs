@@ -127,10 +127,6 @@ namespace Firewind.HabboHotel.Catalogs
         {
             try
             {
-                if (PageID == 5)
-                    return; // club
-                
-
                 Message.AppendUInt(Id);
                 Message.AppendString(Name);
                 Message.AppendInt32(CreditsCost);

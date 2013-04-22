@@ -30,22 +30,13 @@ namespace Firewind.HabboHotel.Rooms
         internal SquareState[,] SqState;
         internal short[,] SqFloorHeight;
         internal byte[,] SqSeatRot;
-        internal byte[,] mRoomModelfx;
-
-
 
         internal int MapSizeX;
         internal int MapSizeY;
 
-        internal string StaticFurniMap;
-
         internal bool ClubOnly;
-        internal bool gotPublicPool;
 
-
-        //internal List<PublicRoomSquare> Furnis;
-
-        internal RoomModel(int DoorX, int DoorY, double DoorZ, int DoorOrientation, string Heightmap, string StaticFurniMap, bool ClubOnly, string Poolmap)
+        internal RoomModel(int DoorX, int DoorY, double DoorZ, int DoorOrientation, string Heightmap, bool ClubOnly)
         {
             try
             {
@@ -55,11 +46,7 @@ namespace Firewind.HabboHotel.Rooms
                 this.DoorOrientation = DoorOrientation;
 
                 this.Heightmap = Heightmap.ToLower();
-                this.StaticFurniMap = StaticFurniMap;
-
-                this.gotPublicPool = !string.IsNullOrEmpty(Poolmap);
                 string[] tmpHeightmap = Heightmap.Split(Convert.ToChar(13));
-                string[] tmpFxMap = Poolmap.Split(Convert.ToChar(13));
 
                 this.MapSizeX = tmpHeightmap[0].Length;
                 this.MapSizeY = tmpHeightmap.Length;
@@ -68,8 +55,6 @@ namespace Firewind.HabboHotel.Rooms
                 SqState = new SquareState[MapSizeX, MapSizeY];
                 SqFloorHeight = new short[MapSizeX, MapSizeY];
                 SqSeatRot = new byte[MapSizeX, MapSizeY];
-                if (gotPublicPool)
-                    mRoomModelfx = new byte[MapSizeX, MapSizeY];
 
                 //this.Furnis = Furnis;
 
@@ -94,37 +79,6 @@ namespace Firewind.HabboHotel.Rooms
                         x++;
                     }
                 }
-
-                if (gotPublicPool)
-                    for (int y = 0; y < MapSizeY; y++)
-                    {
-                        string line = tmpFxMap[y];
-                        line = line.Replace("\r", "");
-                        line = line.Replace("\n", "");
-
-                        int x = 0;
-                        foreach (char square in line)
-                        {
-                            if (square != '0')
-                                mRoomModelfx[x, y] = parseByte(square);
-                            x++;
-                        }
-                    }
-
-                /** COMENTADO YA QUE SALAS PUBLICAS NUEVA CRYPTO NO NECESARIO
-                 * if (!string.IsNullOrEmpty(StaticFurniMap))
-                {
-                    foreach (PublicRoomSquare square in Furnis)
-                    {
-                        if(square.Content.Contains("chair") || square.Content.Contains("sofa"))
-                        {
-                            SqState[square.X, square.Y] = SquareState.SEAT;
-                            SqSeatRot[square.X, square.Y] = square.Rotation;
-                        } else {
-                            SqState[square.X, square.Y] = SquareState.BLOCKED;
-                        }
-                    }
-                }*/
             }
             catch (Exception e)
             {
