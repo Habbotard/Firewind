@@ -331,7 +331,7 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(UsersMax);
                 Message.AppendString(Description);
                 Message.AppendInt32((Category == 3) ? 2 : 0); // dunno!
-                Message.AppendInt32(0); // can trade?
+                Message.AppendInt32(1); // can trade?
                 Message.AppendInt32(Score);
                 Message.AppendInt32(Category);
                 Message.AppendInt32(0);
