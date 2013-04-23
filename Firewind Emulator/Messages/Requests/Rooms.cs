@@ -245,7 +245,7 @@ namespace Firewind.Messages
             Response.Init(Outgoing.GetGuestRoomResult);
             Response.AppendBoolean(true); // enterRoom
             room.Serialize(Response, false);
-            Response.AppendBoolean(true); // roomForward
+            Response.AppendBoolean(false); // roomForward
             Response.AppendString("");
 
             SendResponse();
@@ -1383,7 +1383,7 @@ namespace Firewind.Messages
             Response.Init(Outgoing.GetGuestRoomResult);
             Response.AppendBoolean(true); // enterRoom
             Data.Serialize(Response, false);
-            Response.AppendBoolean(true); // roomForward
+            Response.AppendBoolean(false); // roomForward
             Response.AppendString("");
 
             Session.GetHabbo().CurrentRoom.SendMessage(GetResponse());

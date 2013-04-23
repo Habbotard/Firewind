@@ -175,5 +175,7 @@ namespace HabboEvents
 
         // Furniture
         public static int EnterOneWayDoor = 2505;
+
+        public static int UseWallItem = 3793;
     }
 }
