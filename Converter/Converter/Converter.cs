@@ -34,10 +34,8 @@ namespace Converter
 
                 using (SqlDatabaseClient Phx = PhoenixDatabaseManager.GetClient())
                 {
-                    Database.DoRoomItems(Phx, Bfly);
-                    Database.DoUserItems(Phx, Bfly);
+                    Database.DoAllNew(Phx); // Better way to do room and user items.
                     Database.DoWallItems(Phx, Bfly);
-                    Database.DoUserItems(Phx, Bfly);
                 }
             }
 
