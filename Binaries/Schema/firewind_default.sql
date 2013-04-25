@@ -8559,14 +8559,6 @@ CREATE TABLE `navigator_publics_new` (
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of navigator_publics_new
--- ----------------------------
-INSERT INTO navigator_publics_new VALUES ('1', '1', '0', 'Juegos', '', 'officialrooms_hq/gamefolder.gif', 'internal', '0', '0', '-1', '1', '0', '4', '');
-INSERT INTO navigator_publics_new VALUES ('2', '1', '1', 'Sala de Itachi', '¡Únete ahora!', 'officialrooms_hq/nav_es_02.png', 'internal', '64', '1', '1', '1', '0', '2', '');
-INSERT INTO navigator_publics_new VALUES ('3', '1', '0', 'Espacios Públicos', '', 'officialrooms_hq/official_rooms_nav_img.png', 'internal', '0', '0', '-1', '1', '0', '4', '');
-INSERT INTO navigator_publics_new VALUES ('4', '1', '0', 'El Recibidor', '', 'officialrooms_hq/welcome_lobby.png', 'internal', '57', '3', '3', '1', '0', '3', '');
-
--- ----------------------------
 -- Table structure for `pets_racesoncatalogue`
 -- ----------------------------
 DROP TABLE IF EXISTS `pets_racesoncatalogue`;

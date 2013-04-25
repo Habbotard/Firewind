@@ -24,12 +24,24 @@ namespace FirewindLauncher
             AesCryptoServiceProvider p = new AesCryptoServiceProvider();
             //XElement root = XElement.Load(json);
             //byte[] key = Convert.FromBase64String((string)root.NextNode.Document);
-            byte[] key = Convert.FromBase64String(DownloadInfo(ReadKeyFromConfig())[0]);
+            string encodedKey = DownloadInfo(ReadKeyFromConfig())[0];
+            byte[] key;
+
+            try
+            {
+                key = Convert.FromBase64String(encodedKey);
+            }
+            catch
+            {
+                Console.WriteLine("Wrong authentication key or key not found!");
+                Console.ReadKey(true);
+                return;
+            }
 
             if (key == null)
             {
                 Console.WriteLine("Wrong authentication key!");
-                Console.ReadKey(false);
+                Console.ReadKey(true);
                 return;
             }
 
@@ -49,7 +61,7 @@ namespace FirewindLauncher
             catch 
             {
                 Console.WriteLine("Wrong authentication key!");
-                Console.ReadKey(false);
+                Console.ReadKey(true);
                 return;
             }
 
@@ -96,13 +108,20 @@ namespace FirewindLauncher
 
             StreamReader sr = new StreamReader(resp.GetResponseStream());
             string result = sr.ReadToEnd().Trim();
-            if (result == "not_authed")
-                return null;
+            if (result == "not_authed" || result == "expired")
+                return new string[1];
 
             return result.Split((char)0);
         }
         private static string ReadKeyFromConfig()
         {
+            if(!File.Exists("Settings\\Configuration.ini"))
+            {
+                Console.WriteLine("Could not find configuration.ini!");
+                //Console.ReadKey(true);
+                return "";
+            }
+
             string[] lines = File.ReadAllLines("Settings\\Configuration.ini");
 
             foreach (string line in lines)
