@@ -1363,7 +1363,30 @@ namespace Firewind.HabboHotel.Misc
         {
             DateTime Now = DateTime.Now;
             TimeSpan Uptime = Now - FirewindEnvironment.ServerStarted;
-            Session.SendBroadcastMessage("Firewind Emulator\n===============================================\n" + FirewindEnvironment.PrettyVersion + "\n\nTeam:\n      - Leon [Developer]\n      - AWA [Developer]\n\nThanks to:\n      - pLEDGE\n\nServer Status\n===============================================\nUptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)\n\n\nLicensed to: " + FirewindEnvironment.LicenseHolder + "\n\nFind out more at - www.getfirewind.com");
+
+            StringBuilder Alert = new StringBuilder();
+
+            int UsersOnline = FirewindEnvironment.GetGame().GetClientManager().ClientCount;
+            int RoomsLoaded = FirewindEnvironment.GetGame().GetRoomManager().LoadedRoomsCount;
+
+            Alert.Append(FirewindEnvironment.PrettyVersion + "\n");
+            Alert.Append("-----------------------------------------------\n");
+            Alert.Append("Team:\n");
+            Alert.Append("      - Leon [Developer]\n");
+            Alert.Append("      - AWA [Developer]\n");
+            Alert.Append("\n");
+            Alert.Append("Thanks to:\n");
+            Alert.Append("      - pLEDGE\n\n");
+            Alert.Append("Server Status:\n");
+            Alert.Append("-----------------------------------------------\n\n");
+            Alert.Append("Uptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)\n");
+            Alert.Append("Users online: " + UsersOnline + "\n");
+            Alert.Append("Rooms loaded: " + RoomsLoaded + "\n\n");
+            Alert.Append("-----------------------------------------------\n");
+            Alert.Append("Licensed to: " + (FirewindEnvironment.LicenseHolder.Contains("rabbit") ? "Habin Hotel" : FirewindEnvironment.LicenseHolder) + "\n\n");
+            Alert.Append("Find out more at: www.getfirewind.com");
+
+            Session.SendBroadcastMessage(Alert.ToString());
         }
 
         internal void enablestatus()

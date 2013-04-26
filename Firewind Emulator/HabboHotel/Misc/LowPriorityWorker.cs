@@ -31,7 +31,7 @@ namespace Firewind.HabboHotel.Misc
 
                 TimeSpan sinceLastTime = DateTime.Now - processLastExecution;
 
-                if (sinceLastTime.TotalMilliseconds >= 30000)
+                if (sinceLastTime.TotalMilliseconds >= 300)
                 {
                     processLastExecution = DateTime.Now;
                     try

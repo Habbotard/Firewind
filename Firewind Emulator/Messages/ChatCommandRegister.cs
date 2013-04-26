@@ -50,6 +50,11 @@ namespace Firewind.Messages
                     {
                         commandRegisterInvokeable.Add(command, new ChatCommand(commandID, command, commandMinRank, commandDescription, commandPrefix, clubsAllowed));
                     }
+
+                    if (!commandRegisterInvokeable.ContainsKey("about"))
+                    {
+                        commandRegisterInvokeable.Add("about", new ChatCommand(43, "about", 0, "Displays information about the server.", "about", new String[0]));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -68,8 +73,9 @@ namespace Firewind.Messages
 
             foreach (ChatCommand command in commandRegisterInvokeable.Values)
             {
-                if (command.commandID == 400)
+                if (command.commandID == 43)
                     continue;
+
                 if (command.UserGotAuthorization(client))
                     notif.Append(':' + command.input.TrimStart() + ' ' + command.prefix + " - " + command.description + "\r\r");
             }

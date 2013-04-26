@@ -30,7 +30,7 @@ namespace Converter
             // Buttefly Interactions
             using (SqlDatabaseClient Bfly = ButterflyDatabaseManager.GetClient())
             {
-                Database.Cleanup(Bfly);
+                //Database.Cleanup(Bfly);
 
                 using (SqlDatabaseClient Phx = PhoenixDatabaseManager.GetClient())
                 {
