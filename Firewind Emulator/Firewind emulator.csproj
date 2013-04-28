@@ -299,9 +299,6 @@
     <Compile Include="HabboHotel\SoundMachine\SongInstance.cs" />
     <Compile Include="HabboHotel\SoundMachine\SongItem.cs" />
     <Compile Include="HabboHotel\SoundMachine\SongManager.cs" />
-    <Compile Include="HabboHotel\Support\HelpCategory.cs" />
-    <Compile Include="HabboHotel\Support\HelpTool.cs" />
-    <Compile Include="HabboHotel\Support\HelpTopic.cs" />
     <Compile Include="HabboHotel\Support\ModerationBan.cs" />
     <Compile Include="HabboHotel\Support\ModerationBanException.cs" />
     <Compile Include="HabboHotel\Support\ModerationBanManager.cs" />
@@ -362,7 +359,7 @@
     <Compile Include="Net\LoggingSystem\LogState.cs" />
     <Compile Include="Net\LoggingSystem\Message.cs" />
     <Compile Include="Net\LoggingSystem\MessageLoggerManager.cs" />
-    <Compile Include="Net\MusSocket.cs" />
+    <Compile Include="Net\RConListener.cs" />
     <Compile Include="Net\PacketMalformedException.cs" />
     <Compile Include="Net\Socket Exceptions\SocketInitializationException.cs" />
     <Compile Include="Program.cs" />

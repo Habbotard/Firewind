@@ -28,7 +28,6 @@ namespace Firewind.HabboHotel
         private GameClientManager ClientManager;
         private ModerationBanManager BanManager;
         private RoleManager RoleManager;
-        private HelpTool HelpTool;
         private Catalog Catalog;
         private Navigator Navigator;
         private ItemManager ItemManager;
@@ -71,11 +70,6 @@ namespace Firewind.HabboHotel
         internal RoleManager GetRoleManager()
         {
             return RoleManager;
-        }
-
-        internal HelpTool GetHelpTool()
-        {
-            return HelpTool;
         }
 
         internal Catalog GetCatalog()
@@ -153,7 +147,6 @@ namespace Firewind.HabboHotel
 
                 BanManager = new ModerationBanManager();
                 RoleManager = new RoleManager();
-                HelpTool = new HelpTool();
                 Catalog = new Catalog();
                 Navigator = new Navigator();
                 ItemManager = new ItemManager();
@@ -187,12 +180,6 @@ namespace Firewind.HabboHotel
                 RoleManager.LoadRights(dbClient);
                 TimeUsed = DateTime.Now - Start;
                 Logging.WriteLine("Role manager -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
-
-                Start = DateTime.Now;
-                HelpTool.LoadCategories(dbClient);
-                HelpTool.LoadTopics(dbClient);
-                TimeUsed = DateTime.Now - Start;
-                Logging.WriteLine("Help tool -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
 
                 Start = DateTime.Now;
                 Catalog.Initialize(dbClient);

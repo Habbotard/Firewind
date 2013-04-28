@@ -66,18 +66,22 @@ namespace Firewind.HabboHotel.Support
 
         internal string GetBanReason(string username, string ip)
         {
-            if (bannedUsernames.ContainsKey(username))
+            try
             {
-                ModerationBan ban = (ModerationBan)bannedUsernames[username];
-                if (!ban.Expired)
-                    return ban.ReasonMessage;
+                if (bannedUsernames.ContainsKey(username))
+                {
+                    ModerationBan ban = (ModerationBan)bannedUsernames[username];
+                    if (!ban.Expired)
+                        return ban.ReasonMessage;
+                }
+                else if (bannedIPs.ContainsKey(ip))
+                {
+                    ModerationBan ban = (ModerationBan)bannedIPs[username];
+                    if (!ban.Expired)
+                        return ban.ReasonMessage;
+                }
             }
-            else if (bannedIPs.ContainsKey(ip))
-            {
-                ModerationBan ban = (ModerationBan)bannedIPs[username];
-                if (!ban.Expired)
-                    return ban.ReasonMessage;
-            }
+            catch { return string.Empty;}
 
             return string.Empty;
         }

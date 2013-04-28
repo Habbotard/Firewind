@@ -124,6 +124,7 @@ namespace Firewind.HabboHotel.GameClients
 
         internal bool tryLogin(string AuthTicket)
         {
+            int loginProgress = 0;
             try
             {
                 string ip = GetConnection().getIp();
@@ -139,11 +140,13 @@ namespace Firewind.HabboHotel.GameClients
                     SendNotifWithScroll(LanguageLocale.GetValue("login.loggedin"));
                     return false;
                 }
+                loginProgress++;
 
 
                 FirewindEnvironment.GetGame().GetClientManager().RegisterClient(this, userData.userID, userData.user.Username);
                 this.Habbo = userData.user;
                 userData.user.LoadData(userData);
+                loginProgress++;
 
                 if (userData.user.Username == null)
                 {
@@ -151,6 +154,7 @@ namespace Firewind.HabboHotel.GameClients
                     return false;
                 }
                 string banReason = FirewindEnvironment.GetGame().GetBanManager().GetBanReason(userData.user.Username, ip);
+                loginProgress++;
                 if (!string.IsNullOrEmpty(banReason))
                 {
                     SendBanMessage(banReason);
@@ -173,6 +177,8 @@ namespace Firewind.HabboHotel.GameClients
                 HomeRoom.AppendUInt(this.GetHabbo().HomeRoom); // first home
                 SendMessage(HomeRoom);
 
+                loginProgress++;
+
                 ServerMessage FavouriteRooms = new ServerMessage(Outgoing.FavouriteRooms);
                 FavouriteRooms.AppendInt32(30); // max rooms
                 FavouriteRooms.AppendInt32(userData.user.FavoriteRooms.Count);
@@ -181,6 +187,8 @@ namespace Firewind.HabboHotel.GameClients
                     FavouriteRooms.AppendUInt(Id);
                 }
                 response.appendResponse(FavouriteRooms);
+
+                loginProgress++;
 
                 ServerMessage fuserights = new ServerMessage(Outgoing.Fuserights);
                 if (GetHabbo().GetSubscriptionManager().HasSubscription("habbo_vip")) // VIP 
@@ -192,6 +200,8 @@ namespace Firewind.HabboHotel.GameClients
                 fuserights.AppendUInt(this.GetHabbo().Rank);
                 response.appendResponse(fuserights);
 
+                loginProgress++;
+
                 ServerMessage bools1 = new ServerMessage(Outgoing.AvailabilityStatus);
                 bools1.AppendBoolean(true);
                 bools1.AppendBoolean(false);
@@ -201,9 +211,13 @@ namespace Firewind.HabboHotel.GameClients
                 bools2.AppendBoolean(false);
                 response.appendResponse(bools2);
 
+                loginProgress++;
+
                 ServerMessage setRanking = new ServerMessage(Outgoing.SerializeCompetitionWinners);
                 setRanking.AppendString("hlatCompetitions"); // competition type
                 setRanking.AppendInt32(Ranking.getCompetitionForInfo("hlatCompetitions").Count);
+
+                loginProgress++;
                 int i = 0;
                 foreach (Ranking r in Ranking.getCompetitionForInfo("hlatCompetitions"))
                 {
@@ -218,17 +232,22 @@ namespace Firewind.HabboHotel.GameClients
                 response.appendResponse(setRanking);
                 response.sendResponse();
 
+                loginProgress++;
 
                 if (FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin > 0)
                 {
                     PixelManager.GivePixels(this, FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin);
                 }
 
+                loginProgress++;
+
                 if (FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin > 0)
                 {
                     userData.user.Credits += FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin;
                     userData.user.UpdateCreditsBalance();
                 }
+
+                loginProgress++;
 
                 if (userData.user.HasFuse("fuse_mod"))
                 {
@@ -241,6 +260,7 @@ namespace Firewind.HabboHotel.GameClients
                     this.SendMOTD(LanguageLocale.welcomeAlert);
                 }
 
+                loginProgress++;
                 using (IQueryAdapter db = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
                     db.setQuery("UPDATE users SET online = '1' WHERE id = @id");
@@ -248,7 +268,7 @@ namespace Firewind.HabboHotel.GameClients
                     db.runQuery();
                 }
 
-
+                loginProgress++;
                 return true;
 
             }
@@ -258,7 +278,7 @@ namespace Firewind.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Invalid Dario bug duing user login: " + e.ToString());
+                Logging.LogCriticalException(String.Format("Invalid Dario bug duing user login (progress = {0}): ", loginProgress) + e.ToString());
                 SendNotifWithScroll("Login error: " + e.ToString());
             }
             return false;

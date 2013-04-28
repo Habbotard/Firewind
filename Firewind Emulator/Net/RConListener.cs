@@ -14,7 +14,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 
 namespace Firewind.Net
 {
-    class MusSocket
+    class RConListener
     {
         internal Socket msSocket;
 
@@ -23,7 +23,7 @@ namespace Firewind.Net
 
         internal HashSet<String> allowedIps;
 
-        internal MusSocket(String _musIp, int _musPort, String[] _allowedIps, int backlog)
+        internal RConListener(String _musIp, int _musPort, String[] _allowedIps, int backlog)
         {
             musIp = _musIp;
             musPort = _musPort;
@@ -44,12 +44,12 @@ namespace Firewind.Net
 
                 msSocket.BeginAccept(OnEvent_NewConnection, msSocket);
 
-                Logging.WriteLine("MUS socket -> READY!");
+                Logging.WriteLine("RCON socket -> READY!");
             }
 
             catch (Exception e)
             {
-                throw new ArgumentException("Could not set up MUS socket:\n" + e.ToString());
+                throw new ArgumentException("Could not set up RCON socket:\n" + e.ToString());
             }
         }
 

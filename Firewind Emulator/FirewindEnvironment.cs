@@ -35,7 +35,7 @@ namespace Firewind
         internal static string PrettyVersion;
         internal static bool diagPackets = false;
         internal static int timeout = 500;
-        internal static MusSocket MusSystem;
+        internal static RConListener MusSystem;
         internal static CultureInfo cultureInfo;
         public static uint friendRequestLimit = 300;
 
@@ -68,10 +68,11 @@ namespace Firewind
             DefaultEncoding = Encoding.Default;
             Logging.WriteLine("     " + PrettyVersion);
             Logging.WriteLine(string.Format("     Licenced to {0}", LicenseHolder));
-            Logging.WriteLine(string.Format("     Maximum players: {0}", MaxUsers));
+            Logging.WriteLine(string.Format("     Maximum players: {0}", MaxUsers == 0 ? "Unlimited!" : MaxUsers.ToString()));
 
             Logging.WriteLine("");
 
+            Logging.WriteLine("     Go to forum.getfirewind.com for help and to report bugs!");
             cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
             IsDebugging = IsDebugging ? System.Diagnostics.Debugger.IsAttached : false;
 
@@ -121,7 +122,7 @@ namespace Firewind
 
                 string[] arrayshit = FirewindEnvironment.GetConfig().data["mus.tcp.allowedaddr"].Split(';');
 
-                MusSystem = new MusSocket(FirewindEnvironment.GetConfig().data["mus.tcp.bindip"], int.Parse(FirewindEnvironment.GetConfig().data["mus.tcp.port"]), arrayshit, 0);
+                MusSystem = new RConListener(FirewindEnvironment.GetConfig().data["mus.tcp.bindip"], int.Parse(FirewindEnvironment.GetConfig().data["mus.tcp.port"]), arrayshit, 0);
 
                 groupsEnabled = false;
                 if (Configuration.data.ContainsKey("groups.enabled"))

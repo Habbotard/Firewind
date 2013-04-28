@@ -1,0 +1,1 @@
+RENAME TABLE navigator_publics_new TO navigator_publics;

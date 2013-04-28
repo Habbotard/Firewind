@@ -12,52 +12,9 @@ namespace Firewind.Messages
     {
         internal void InitHelpTool()
         {
-            Session.SendMessage(FirewindEnvironment.GetGame().GetHelpTool().SerializeFrontpage());
-        }
-
-        internal void GetHelpCategories()
-        {
-            Session.SendMessage(FirewindEnvironment.GetGame().GetHelpTool().SerializeIndex());
-        }
-
-        internal void ViewHelpTopic()
-        {
-            uint TopicId = Request.PopWiredUInt();
-
-            HelpTopic Topic = FirewindEnvironment.GetGame().GetHelpTool().GetTopic(TopicId);
-
-            if (Topic == null)
-            {
-                return;
-            }
-
-            Session.SendMessage(HelpTool.SerializeTopic(Topic));
-        }
-
-        internal void SearchHelpTopics()
-        {
-            string SearchQuery = Request.PopFixedString();
-
-            if (SearchQuery.Length < 3)
-            {
-                return;
-            }
-
-            Session.SendMessage(HelpTool.SerializeSearchResults(SearchQuery));
-        }
-
-        internal void GetTopicsInCategory()
-        {
-            uint Id = Request.PopWiredUInt();
-
-            HelpCategory Category = FirewindEnvironment.GetGame().GetHelpTool().GetCategory(Id);
-
-            if (Category == null)
-            {
-                return;
-            }
-
-            Session.SendMessage(FirewindEnvironment.GetGame().GetHelpTool().SerializeCategory(Category));
+            Response.Init(Outgoing.OpenHelpTool);
+            Response.AppendInt32(0);
+            SendResponse();
         }
 
         internal void SubmitHelpTicket()
