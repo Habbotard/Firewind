@@ -19,7 +19,6 @@ namespace Firewind.HabboHotel.Catalogs
     {
         internal Dictionary<int, CatalogPage> Pages;
         internal List<EcotronReward> EcotronRewards;
-        private Hashtable gifts;
 
         private Marketplace Marketplace;
 
@@ -35,7 +34,6 @@ namespace Firewind.HabboHotel.Catalogs
         {
             Pages = new Dictionary<int, CatalogPage>();
             EcotronRewards = new List<EcotronReward>();
-            gifts = new Hashtable();
 
             dbClient.setQuery("SELECT * FROM catalog_pages ORDER BY order_num");
             DataTable Data = dbClient.getTable();
@@ -123,25 +121,6 @@ namespace Firewind.HabboHotel.Catalogs
             foreach (CatalogPage Page in Pages.Values)
             {
                 Page.InitMsg();
-            }
-
-            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            {
-                dbClient.setQuery("SELECT * FROM items_base_gifts");
-                DataTable dgifts = dbClient.getTable();
-                foreach (DataRow dRow in dgifts.Rows)
-                {
-                    uint ID = Convert.ToUInt32(dRow[0]);
-                    Item baseItem = FirewindEnvironment.GetGame().GetItemManager().GetItem(ID);
-
-                    if (baseItem == null)
-                    {
-                        //Logging.WriteLine("WARNING: Unknown gift ID: " + ID);
-                        continue;
-                    }
-
-                    gifts.Add(ID, baseItem);
-                }
             }
         }
 
@@ -819,31 +798,6 @@ namespace Firewind.HabboHotel.Catalogs
                     Session.SendNotif(LanguageLocale.GetValue("catalog.buyerror"));
                     return result;
             }
-        }
-
-        internal Item GeneratePresent()
-        {
-            int count = gifts.Count;
-
-            int countID = FirewindEnvironment.GetRandomNumber(0, count);
-            int countAmount = 0;
-
-            if (count == 0)
-                return null;
-
-            foreach (Item item in gifts.Values)
-            {
-                if (item == null)
-                    continue;
-                if (countAmount == countID)
-                {
-                    return item;
-                }
-
-                countAmount++;
-            }
-
-            return null;
         }
 
         internal static Pet CreatePet(uint UserId, string Name, int Type, string Race, string Color)

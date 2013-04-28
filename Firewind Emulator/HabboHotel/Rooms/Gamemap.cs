@@ -24,8 +24,6 @@ namespace Firewind.HabboHotel.Rooms
         private Hashtable mCoordinatedItems;
         //private Dictionary<Point, List<RoomItem>> mCoordinatedItems;
 
-        private List<RoomLinkInformation> roomLinkInformation;
-
         private byte[,] mGameMap;
         private byte[,] mUserItemEffect;
         //0 = none
@@ -1124,8 +1122,6 @@ namespace Firewind.HabboHotel.Rooms
             userMap.Clear();
             mDynamicModel.Destroy();
             mCoordinatedItems.Clear();
-            if (roomLinkInformation != null)
-                roomLinkInformation.Clear();
 
             Array.Clear(mGameMap, 0, mGameMap.Length);
             Array.Clear(mUserItemEffect, 0, mUserItemEffect.Length);
@@ -1136,7 +1132,6 @@ namespace Firewind.HabboHotel.Rooms
             mUserItemEffect = null;
             mItemHeightMap = null;
             mCoordinatedItems = null;
-            roomLinkInformation = null;
             mDynamicModel = null;
             room = null;
             mStaticModel = null;

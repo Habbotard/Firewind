@@ -241,7 +241,6 @@
     <Compile Include="HabboHotel\Rooms\Items\RoomItemHandling.cs" />
     <Compile Include="HabboHotel\Rooms\RoomIvokedItems\RoomAlert.cs" />
     <Compile Include="HabboHotel\Rooms\RoomIvokedItems\RoomKick.cs" />
-    <Compile Include="HabboHotel\Rooms\RoomLinkInformation.cs" />
     <Compile Include="HabboHotel\Rooms\RoomManager.cs" />
     <Compile Include="HabboHotel\Rooms\RoomModel.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUser.cs" />

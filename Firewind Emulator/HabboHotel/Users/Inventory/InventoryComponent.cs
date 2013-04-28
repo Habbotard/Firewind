@@ -349,7 +349,7 @@ namespace Firewind.HabboHotel.Users.Inventory
                     {
                         using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                         {
-                            dbClient.runFastQuery("DELETE FROM room_items_songs WHERE item_id = " + Id);
+                            dbClient.runFastQuery("DELETE FROM items_rooms_songs WHERE item_id = " + Id);
                             //dbClient.runFastQuery("REPLACE INTO user_items_songs (item_id,user_id,song_id) VALUES (" + Id + "," + UserId + "," + songID + ")");
                         }
                     }

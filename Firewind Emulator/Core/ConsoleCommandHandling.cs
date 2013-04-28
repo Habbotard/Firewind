@@ -164,7 +164,6 @@ namespace Firewind.Core
                                                             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                                                             {
                                                                 getGame().GetRoomManager().LoadModels(dbClient);
-                                                                getGame().GetRoomManager().InitRoomLinks(dbClient);
                                                             }
                                                             Logging.WriteLine("Models flushed");
 

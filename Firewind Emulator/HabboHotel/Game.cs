@@ -199,7 +199,6 @@ namespace Firewind.HabboHotel
 
                 Start = DateTime.Now;
                 RoomManager.LoadModels(dbClient);
-                RoomManager.InitRoomLinks(dbClient);
                 RoomManager.InitVotedRooms(dbClient);
                 TimeUsed = DateTime.Now - Start;
                 Logging.WriteLine("Room manager -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");

@@ -34,7 +34,6 @@ namespace Firewind.HabboHotel.Rooms
 
         private Hashtable roomModels;
         private Hashtable loadedRoomData;
-        private Dictionary<uint, List<RoomLinkInformation>> roomLinks;
 
         private Dictionary<RoomData, int> votedRooms;
         private IEnumerable<KeyValuePair<RoomData, int>> orderedVotedRooms;
@@ -71,15 +70,6 @@ namespace Firewind.HabboHotel.Rooms
         {
             return orderedVotedRooms.ToArray();
         }
-
-        internal List<RoomLinkInformation> getLinkedRoomData(uint roomID)
-        {
-            if (roomLinks.ContainsKey(roomID))
-                return roomLinks[roomID];
-            else
-                return new List<RoomLinkInformation>();
-        }
-
 
         private static RoomModel GetCustomData(UInt32 roomID)
         {
@@ -323,30 +313,6 @@ namespace Firewind.HabboHotel.Rooms
             this.activeRoomsAddQueue = new Queue();
 
             this.eventManager = new EventManager();
-        }
-
-        internal void InitRoomLinks(IQueryAdapter dbClient)
-        {
-            this.roomLinks = new Dictionary<uint, List<RoomLinkInformation>>();
-
-            dbClient.setQuery("SELECT * FROM room_links");
-            DataTable roomLinkData = dbClient.getTable();
-
-            foreach (DataRow row in roomLinkData.Rows)
-            {
-                RoomLinkInformation info = new RoomLinkInformation(row);
-
-                if (roomLinks.ContainsKey(info.roomID))
-                {
-                    roomLinks[info.roomID].Add(info);
-                }
-                else
-                {
-                    List<RoomLinkInformation> newList = new List<RoomLinkInformation>();
-                    newList.Add(info);
-                    roomLinks.Add(info.roomID, newList);
-                }
-            }
         }
 
         internal void InitVotedRooms(IQueryAdapter dbClient)

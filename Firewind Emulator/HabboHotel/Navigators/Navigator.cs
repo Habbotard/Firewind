@@ -35,7 +35,7 @@ namespace Firewind.HabboHotel.Navigators
             dbClient.setQuery("SELECT id,caption,min_rank FROM navigator_flatcats WHERE enabled = 2");
             DataTable dPrivCats = dbClient.getTable();
 
-            dbClient.setQuery("SELECT * FROM navigator_publics_new ORDER BY ordernum ASC");
+            dbClient.setQuery("SELECT * FROM navigator_publics ORDER BY ordernum ASC");
             DataTable dPubItems = dbClient.getTable();
 
             //if (dPubCats != null)
