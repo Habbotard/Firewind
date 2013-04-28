@@ -82,6 +82,8 @@ namespace Firewind.HabboHotel.Navigators
             ParentId = mParentId;
             CategoryId = mCategoryId;
             Recommended = mRecommand;
+            TagsToSearch = mTags;
+
             if (mTypeOfData == 1)
                 itemType = PublicItemType.TAG;
             else if (mTypeOfData == 2)
