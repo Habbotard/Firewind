@@ -100,17 +100,7 @@ namespace Firewind.HabboHotel.Navigators
         {
             get
             {
-                try
-                {
-                    if (RoomId > 0)
-                        return FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
-                    else
-                        return null;
-                }
-                catch
-                {
-                    return null;
-                }
+                return FirewindEnvironment.GetGame().GetRoomManager().GenerateNullableRoomData(RoomId);
             }
         }
 
@@ -125,7 +115,7 @@ namespace Firewind.HabboHotel.Navigators
                 Message.AppendString(this.itemType == PublicItemType.PUBLIC_FLAT ? Caption : String.Empty);
                 Message.AppendString(Image);
                 Message.AppendInt32(ParentId > 0 ? ParentId : 0);
-                Message.AppendInt32(RoomInfo != null ? RoomInfo.UsersNow : 0);
+                Message.AppendInt32(RoomInfo.UsersNow);
                 Message.AppendInt32(itemType == PublicItemType.NONE ? 0 : (itemType == PublicItemType.TAG ? 1 : (itemType == PublicItemType.FLAT ? 2 : (itemType == PublicItemType.PUBLIC_FLAT ? 2 : (itemType == PublicItemType.CATEGORY ? 4 : 0)))));
 
                 if (this.itemType == PublicItemType.TAG)

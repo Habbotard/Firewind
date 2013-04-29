@@ -424,7 +424,7 @@ namespace Firewind.HabboHotel.Rooms
 
                 FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.SOCIAL_CHAT);
 
-                ChatMessageFactory.CreateMessage(Message, this.GetClient(), this.GetRoom());
+                GetClient().GetHabbo().GetChatMessageManager().AddMessage(ChatMessageFactory.CreateMessage(Message, this.GetClient(), this.GetRoom()));
             }
 
             InvokedChatMessage message = new InvokedChatMessage(this, Message, Shout);

@@ -215,7 +215,7 @@ namespace Firewind.Messages
         // GetRoomData2
         internal void GetRoomEntryData()
         {
-            if (Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed)
+            if ((Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed))
                 return;
 
             Response.Init(Outgoing.RoomEntryInfo);
@@ -227,20 +227,44 @@ namespace Firewind.Messages
 
         internal void GetGuestRoom()
         {
-            if (Session.GetHabbo().LoadingRoom <= 0 || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed)
-                return;
-            Habbo targetHabbo = Session.GetHabbo();
-
             int roomID = Request.PopWiredInt32();
             bool unk1 = Request.PopWiredBoolean(); // these 2 bools could have with forwarding to do
             bool unk2 = Request.PopWiredBoolean();
 
+            if (!Session.GetHabbo().HasFuse("fuse_enter_any_room") && (Session.GetHabbo().LoadingRoom != roomID || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed))
+                return;
+
+            Habbo targetHabbo = Session.GetHabbo();
+
             RoomData room = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData((uint)roomID);
 
-            if (room == null)
+            if (CurrentLoadingRoom == null) // Happens with MOD-tool
             {
-                return;
+                CurrentLoadingRoom = FirewindEnvironment.GetGame().GetRoomManager().LoadRoom((uint)roomID);
+
+                Response.Init(Outgoing.PrepareRoomForUsers);
+                SendResponse();
+
+                Response.Init(Outgoing.RoomReady);
+                Response.AppendStringWithBreak(room.ModelName); // if starts with "model_", roomCategory = 1
+                Response.AppendInt32(roomID); // flatId
+                SendResponse();
+                //return;
             }
+
+            if (Session.GetHabbo().InRoom)
+            {
+                Room oldRoom = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+
+                if (oldRoom != null)
+                {
+                    oldRoom.GetRoomUserManager().RemoveUserFromRoom(Session, false, false);
+                    Session.CurrentRoomUserID = -1;
+                }
+            }
+
+            if (room == null || CurrentLoadingRoom == null)
+                return;
 
             Response.Init(Outgoing.GetGuestRoomResult);
             Response.AppendBoolean(true); // enterRoom
