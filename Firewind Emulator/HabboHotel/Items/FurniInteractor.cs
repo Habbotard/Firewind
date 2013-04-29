@@ -17,14 +17,14 @@ namespace Firewind.HabboHotel.Items.Interactors
     {
         internal abstract void OnPlace(GameClient Session, RoomItem Item);
         internal abstract void OnRemove(GameClient Session, RoomItem Item);
-        internal abstract void OnTrigger(GameClient Session, RoomItem Item, int Request, Boolean UserHasRights);
+        internal abstract bool OnTrigger(GameClient Session, RoomItem Item, int Request, Boolean UserHasRights);
     }
 
     //class InteractorStatic : FurniInteractor
     //{
     //    internal override void OnPlace(GameClient Session, RoomItem Item) { }
     //    internal override void OnRemove(GameClient Session, RoomItem Item) { }
-    //    internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights) { }
+    //    internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights) { }
     //}
 
     class InteractorTeleport : FurniInteractor
@@ -95,16 +95,16 @@ namespace Firewind.HabboHotel.Items.Interactors
             //Item.GetRoom().RegenerateUserMatrix();
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             // Is this user valid?
             if (Item == null || Item.GetRoom() == null || Session == null || Session.GetHabbo() == null)
-                return;
+                return false;
             RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
             if (User == null)
             {
-                return;
+                return false;
             }
 
             // Alright. But is this user in the right position?
@@ -113,7 +113,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 // Fine. But is this tele even free?
                 if (Item.InteractingUser != 0)
                 {
-                    return;
+                    return false;
                 }
 
                 //User.TeleDelay = -1;
@@ -123,6 +123,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             {
                 User.MoveTo(Item.SquareInFront);
             }
+            return true;
         }
     }
 
@@ -139,7 +140,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             Item.data = new StringData("0");
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Item.data.GetData() != "-1")
             {
@@ -147,6 +148,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(3, true);
             }
+            return true;
         }
     }
 
@@ -155,13 +157,13 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             RoomUser User = null;
             if (Session != null)
                 User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
             if (User == null)
-                return;
+                return false;
 
             if (Gamemap.TilesTouching(Item.GetX, Item.GetY, User.X, User.Y))
             {
@@ -184,6 +186,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             {
                 User.MoveTo(Item.SquareInFront);
             }
+            return true;
         }
     }
 
@@ -200,11 +203,11 @@ namespace Firewind.HabboHotel.Items.Interactors
             ((StringData)Item.data).Data = "-1";
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             if (Item.data.GetData() != "-1")
@@ -213,6 +216,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 Item.UpdateState();
                 Item.ReqUpdate(10, true);
             }
+            return true;
         }
     }
 
@@ -228,11 +232,11 @@ namespace Firewind.HabboHotel.Items.Interactors
             ((StringData)Item.data).Data = "-1";
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             if (Item.data.GetData() != "0")
@@ -241,6 +245,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(10, true);
             }
+            return true;
         }
     }
 
@@ -282,27 +287,27 @@ namespace Firewind.HabboHotel.Items.Interactors
             }
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null)
-                return;
+                return false;
             RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
             if (User == null)
             {
-                return;
+                return false;
             }
 
             if (User.Coordinate != Item.SquareInFront && User.CanWalk)
             {
                 User.MoveTo(Item.SquareInFront);
-                return;
+                return false;
             }
 
             // This check works for some reason
             if (!Item.GetRoom().GetGameMap().itemCanBePlacedHere(Item.SquareBehind.X, Item.SquareBehind.Y))
             {
-                return;
+                return false;
             }
 
             if (Item.InteractingUser == 0)
@@ -325,7 +330,9 @@ namespace Firewind.HabboHotel.Items.Interactors
                 User.MoveTo(Item.SquareBehind);
 
                 Item.ReqUpdate(4, true);
+                return true;
             }
+            return false;
         }
     }
 
@@ -341,11 +348,11 @@ namespace Firewind.HabboHotel.Items.Interactors
             Item.data = new StringData("0");
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             if (Item.data.GetData() == "0")
@@ -353,7 +360,9 @@ namespace Firewind.HabboHotel.Items.Interactors
                 ((StringData)Item.data).Data = "1";
                 Item.UpdateState(false, true);
                 Item.ReqUpdate(4, true);
+                return true;
             }
+            return false;
         }
     }
 
@@ -389,7 +398,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             }
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (((StringData)Item.data).Data != "1" && Item.GetBaseItem().VendingIds.Count >= 1 && Item.InteractingUser == 0 && Session != null)
             {
@@ -397,13 +406,13 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 if (User == null)
                 {
-                    return;
+                    return false;
                 }
 
                 if (!Gamemap.TilesTouching(User.X, User.Y, Item.GetX, Item.GetY))
                 {
                     User.MoveTo(Item.SquareInFront);
-                    return;
+                    return false;
                 }
 
                 Item.InteractingUser = Session.GetHabbo().Id;
@@ -416,7 +425,9 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 ((StringData)Item.data).Data = "1";
                 Item.UpdateState(false, true);
+                return true;
             }
+            return false;
         }
     }
 
@@ -437,18 +448,18 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session != null)
                 FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.FURNI_SWITCH);
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             if (this.Modes == 0)
             {
-                return;
+                return false;
             }
 
             int currentMode = 0;
@@ -478,6 +489,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(newMode.ToString());
             Item.UpdateState();
+            return true;
         }
     }
 
@@ -486,8 +498,9 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
+            return true;
         }
     }
 
@@ -509,16 +522,12 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
-
-            InteractionType type = Item.GetBaseItem().InteractionType;
-            if (type != Firewind.HabboHotel.Items.InteractionType.gate)
-                return;
 
             if (this.Modes == 0)
             {
@@ -554,7 +563,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             {
                 if (!Item.GetRoom().GetGameMap().itemCanBePlacedHere(Item.GetX, Item.GetY))
                 {
-                    return;
+                    return false;
                 }
 
                 //Dictionary<int, ThreeDCoord> Points = Gamemap.GetAffectedTiles(Item.GetBaseItem().Length, Item.GetBaseItem().Width,
@@ -576,6 +585,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             Item.UpdateState();
             Item.GetRoom().GetGameMap().updateMapForItem(Item);
             //Item.GetRoom().GenerateMaps();
+            return true;
         }
     }
 
@@ -584,11 +594,11 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             int oldValue = 0;
@@ -625,6 +635,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
+            return true;
         }
     }
 
@@ -633,10 +644,10 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null)
-                return;
+                return false;
             RoomUser interactingUser = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
             Point userCoord = interactingUser.Coordinate;
@@ -680,6 +691,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 interactingUser.MoveTo(new Point(newX, newY));
             }
+            return true;
         }
     }
 
@@ -695,11 +707,11 @@ namespace Firewind.HabboHotel.Items.Interactors
         }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             int oldValue = 0;
@@ -729,6 +741,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(oldValue.ToString());
             Item.UpdateState(false, true);
+            return true;
         }
 
         private static void UpdateTeamPoints(int points, Team team, RoomItem Item)
@@ -752,11 +765,11 @@ namespace Firewind.HabboHotel.Items.Interactors
         }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
 
@@ -764,6 +777,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData("0");
             Item.UpdateState();
+            return true;
         }
 
         private static void UpdateTeamPoints(int points, Team team, RoomItem Item)
@@ -783,11 +797,11 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             int oldValue = 0;
@@ -851,6 +865,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
+            return true;
         }
     }
 
@@ -859,10 +874,10 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null)
-                return;
+                return false;
             RoomUser interactingUser = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
             Point userCoord = interactingUser.Coordinate;
@@ -906,6 +921,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 interactingUser.MoveTo(new Point(newX, newY));
             }
+            return true;
         }
     }
 
@@ -914,11 +930,11 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (!UserHasRights)
             {
-                return;
+                return false;
             }
 
             int oldValue = 0;
@@ -982,6 +998,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
+            return true;
         }
     }
 
@@ -990,10 +1007,10 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null || Session.GetHabbo() == null || Item.InteractingUser > 0)
-                return;
+                return false;
 
             string username = Session.GetHabbo().Username;
             RoomUser user = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(username);
@@ -1024,6 +1041,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             //Item.data = new StringData(oldValue.ToString());
             //Item.UpdateState();
+            return true;
         }
     }
 
@@ -1032,7 +1050,7 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
 
             int oldValue = 0;
@@ -1050,6 +1068,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             Item.data = new StringData(oldValue.ToString());
             Item.UpdateState();
+            return true;
         }
     }
 
@@ -1058,8 +1077,9 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
+            return true;
         }
     }
 
@@ -1068,13 +1088,13 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             if (Session == null || Item == null)
-                return;
+                return false;
 
             if (!UserHasRights)
-                return;
+                return false;
 
             String ExtraInfo = "";
             List<RoomItem> items = new List<RoomItem>();
@@ -1633,6 +1653,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 #endregion
 
             }
+            return true;
         }
     }
 
@@ -1641,7 +1662,7 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             /*if (((StringData)Item.data).Data == "1")
             {
@@ -1655,6 +1676,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             }
 
             Item.UpdateState();*/
+            return true;
         }
     }
 
@@ -1663,7 +1685,7 @@ namespace Firewind.HabboHotel.Items.Interactors
         internal override void OnPlace(GameClient Session, RoomItem Item) { }
         internal override void OnRemove(GameClient Session, RoomItem Item) { }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
 
@@ -1674,7 +1696,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             if (User == null)
             {
-                return;
+                return false;
             }
 
             if (User.Coordinate != ItemCoordx1 && User.Coordinate != ItemCoordx2 && User.Coordinate != ItemCoordy1 && User.Coordinate != ItemCoordy2)
@@ -1682,7 +1704,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                 if (User.CanWalk)
                 {
                     User.MoveTo(Item.SquareInFront);
-                    return;
+                    return false;
                 }
             }
             else
@@ -1731,6 +1753,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                     Item.GetRoom().GetRoomItemHandler().SetFloorItem(User.GetClient(), Item, NewX, NewY, Item.Rot, false, false, false);
                 }
             }
+            return true;
         }
     }
 
@@ -1746,7 +1769,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
         }
 
-        internal override void OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
+        internal override bool OnTrigger(GameClient Session, RoomItem Item, int Request, bool UserHasRights)
         {
             Room Room = Session.GetHabbo().CurrentRoom;
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
@@ -1795,6 +1818,8 @@ namespace Firewind.HabboHotel.Items.Interactors
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Motto);
             RoomUpdate.AppendInt32(Session.GetHabbo().AchievementPoints);
             Room.SendMessage(RoomUpdate);
+
+            return true;
         }
 
     }

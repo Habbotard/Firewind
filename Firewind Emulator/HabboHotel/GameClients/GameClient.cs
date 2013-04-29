@@ -293,9 +293,10 @@ namespace Firewind.HabboHotel.GameClients
 
         internal void SendBanMessage(string Message)
         {
-            ServerMessage BanMessage = new ServerMessage(35);
-            BanMessage.AppendStringWithBreak(LanguageLocale.GetValue("moderation.banmessage"), 13);
-            BanMessage.AppendString(Message);
+            ServerMessage BanMessage = new ServerMessage(Outgoing.DisconnectReason);
+            //BanMessage.AppendStringWithBreak(LanguageLocale.GetValue("moderation.banmessage"), 13);
+            //BanMessage.AppendString(Message);
+            BanMessage.AppendInt32(10);
             GetConnection().SendData(BanMessage.GetBytes());
         }
 

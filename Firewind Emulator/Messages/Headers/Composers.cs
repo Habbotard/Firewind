@@ -181,5 +181,8 @@ namespace HabboEvents
 
         // Door bell
         public static int FlatAccessible = 368;
+
+        // Disconnection
+        public static int DisconnectReason = 4000;
     }
 }

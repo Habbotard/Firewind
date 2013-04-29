@@ -2520,8 +2520,8 @@ namespace Firewind.Messages
             }
 
             int request = Request.PopWiredInt32();
-            Item.Interactor.OnTrigger(Session, Item, request, hasRights);
-            Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
+            if(Item.Interactor.OnTrigger(Session, Item, request, hasRights))
+                Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
             Room.GetRoomItemHandler().UpdateItem(Item);
 
             if (Room.GotWired() && !WiredUtillity.TypeIsWired(Item.GetBaseItem().InteractionType))
