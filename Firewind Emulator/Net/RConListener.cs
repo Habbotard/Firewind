@@ -11,6 +11,8 @@ using Firewind.Messages;
 using Firewind.Core;
 
 using Database_Manager.Database.Session_Details.Interfaces;
+using HabboEvents;
+using System.Threading.Tasks;
 
 namespace Firewind.Net
 {
@@ -61,7 +63,7 @@ namespace Firewind.Net
                 String ip = socket.RemoteEndPoint.ToString().Split(':')[0];
                 if (allowedIps.Contains(ip) || ip == "127.0.0.1")
                 {
-                    MusConnection nC = new MusConnection(socket);
+                    RConConnection nC = new RConConnection(socket);
                 }
                     else
                 {
@@ -74,12 +76,12 @@ namespace Firewind.Net
         }
     }
 
-    class MusConnection
+    class RConConnection
     {
         private Socket socket;
         private byte[] buffer = new byte[1024];
 
-        internal MusConnection(Socket _socket)
+        internal RConConnection(Socket _socket)
         {
             socket = _socket;
 
@@ -171,7 +173,16 @@ namespace Firewind.Net
                     }
                 case "signout":
                     {
-                        FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(uint.Parse(param)).Disconnect();
+                        GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(uint.Parse(param));
+                        if (client == null)
+                            return;
+
+                        ServerMessage message = new ServerMessage(Outgoing.DisconnectReason);
+                        message.AppendInt32(0); // reason
+                        client.SendMessage(message);
+
+                        // Wait 5 seconds and disconnect if not already done by client itself
+                        new Task(async delegate { await Task.Delay(5000); client.Disconnect(); }).Start();
                         break;
                     }
                 
