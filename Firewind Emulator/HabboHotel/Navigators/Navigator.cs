@@ -29,6 +29,8 @@ namespace Firewind.HabboHotel.Navigators
 
         internal void Initialize(IQueryAdapter dbClient)
         {
+            PrivateCategories.Clear();
+            PublicItems.Clear();
             //dbClient.setQuery("SELECT id,caption FROM navigator_pubcats WHERE enabled = 2"); //wtf?
             //DataTable dPubCats = dbClient.getTable();
 

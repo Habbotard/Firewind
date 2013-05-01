@@ -1848,6 +1848,15 @@ namespace Firewind.HabboHotel.Misc
                     LanguageLocale.InitSwearWord();
                     Session.SendNotif("Reloaded word filter.");
                     break;
+                case "catalog":
+                    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                    {
+                        FirewindEnvironment.GetGame().GetCatalog().Initialize(dbClient);
+                        FirewindEnvironment.GetGame().GetItemManager().LoadItems(dbClient);
+                    }
+                    FirewindEnvironment.GetGame().GetCatalog().InitCache();
+                    FirewindEnvironment.GetGame().GetClientManager().QueueBroadcaseMessage(new ServerMessage(Outgoing.UpdateShop));
+                    break;
             }
         }
         #endregion
