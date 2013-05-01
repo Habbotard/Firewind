@@ -55,5 +55,12 @@ namespace Firewind.Core
                 throw new ArgumentException("Could not process configuration file: " + e.Message);
             }
         }
+
+        internal string GetEntry(string key, string defaultValue)
+        {
+            if (!data.ContainsKey(key))
+                return defaultValue;
+            return data[key];
+        }
     }
 }
