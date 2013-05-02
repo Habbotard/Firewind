@@ -1,0 +1,11 @@
+### BETA BUILD 4870
+- New default database (cleaned up and properly working)
+- Changed "navigator_publics_new" to "navigator_publics"
+- Fixed several crash bugs with public room listing in navigator
+- Fixed(?) user chatlog in MOD-tool
+- Fixed "Enter room"-button in MOD-tool
+- Users now gets redirected to disconnect URL when banned
+- Fixed small wired error with "furni state changed" trigger
+- Fixed :refresh navigator
+- Added :refresh catalog
+- Friend stream imager URL is now configurable (game.friendstream.imagerurl in config)
