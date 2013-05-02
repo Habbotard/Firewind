@@ -32,7 +32,7 @@
 
         internal static void Main(string[] args)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (System.Diagnostics.Debugger.IsAttached || true)
             {
                 FirewindEnvironment.MaxUsers = 0;
                 FirewindEnvironment.LicenseHolder = "Testing rabbit";

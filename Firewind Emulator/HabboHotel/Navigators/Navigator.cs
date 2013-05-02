@@ -143,8 +143,8 @@ namespace Firewind.HabboHotel.Navigators
             {
                 Frontpage.AppendInt32(1); // FEATURED ROOM
                 Random random = new Random();
-                int randomINT = random.Next(1, this.PublicItems.Count);
-                this.PublicItems[randomINT].Serialize(Frontpage);
+                int randomINT = random.Next(0, this.PublicItems.Count - 1);
+                this.PublicItems.ElementAt(randomINT).Value.Serialize(Frontpage);
             }
             else
             {

@@ -374,6 +374,10 @@ namespace Firewind.HabboHotel.GameClients
 
         internal void SendMessage(ServerMessage Message)
         {
+            if (Message == null)
+                return;
+            if (GetConnection() == null)
+                return;
             GetConnection().SendData(Message.GetBytes());
         }
 
