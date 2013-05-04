@@ -34,11 +34,18 @@ namespace Firewind.Messages
                 newBadgeData[i] = Request.PopWiredInt32();
             }
         }
+
         // ID: 1137
         public void StartGuildPurchase()
         {
-            // REPLY ID: 3529
-            // Array(int,string,bool), bool, int, string, string, int, int, int, int, int, bool, string, array(???), string, int
+            // REPLY ID: 3341
+            // int=group cost, Array(int=roomid,string=roomname,bool)=available group rooms, Array(int,int,int="position")
+        }
+
+        // ID: 2282
+        public void CreateGuild()
+        {
+            // string, string, int, int, int, int[]
         }
     }
 }
