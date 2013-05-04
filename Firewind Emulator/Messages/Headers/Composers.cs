@@ -184,5 +184,9 @@ namespace HabboEvents
 
         // Disconnection
         public static int DisconnectReason = 4000;
+
+        // Groups/guilds
+        public static int PurchaseGuildInfo = 3341;
+        public static int GuildEditorData = 1725;
     }
 }

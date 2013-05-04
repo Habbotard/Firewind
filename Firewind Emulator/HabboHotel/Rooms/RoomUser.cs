@@ -759,13 +759,12 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(1);
                 Message.AppendString(User.Gender.ToLower());
 
-                Message.AppendInt32(0);
-                Message.AppendInt32(0);
-                Message.AppendString("");
+                Message.AppendInt32(0); // group ID
+                Message.AppendInt32(0); // Looks like unused
+                Message.AppendString(""); // groupName
 
-                Message.AppendBoolean(false);
-                Message.AppendInt32(0);
-                Message.AppendBoolean(true);
+                Message.AppendString(""); // botFigure
+                Message.AppendInt32(User.AchievementPoints);
             }
         }
 

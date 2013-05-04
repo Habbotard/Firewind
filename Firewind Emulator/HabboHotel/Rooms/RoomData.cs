@@ -38,6 +38,7 @@ namespace Firewind.HabboHotel.Rooms
         internal int WallThickness;
         internal int FloorThickness;
         internal string Badge;
+        internal int GroupID;
 
         internal RoomIcon Icon
         {
