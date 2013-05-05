@@ -68,7 +68,7 @@ namespace Firewind.HabboHotel.Users.Inventory
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.runFastQuery("INSERT INTO user_effects (user_id,effect_id,total_duration,is_activated,activated_stamp) VALUES (" + UserId + "," + EffectId + "," + Duration + ",0,0)");
+                dbClient.runFastQuery("INSERT INTO user_effects (user_id,effect_id,total_duration,is_activated,activated_stamp) VALUES (" + UserId + "," + EffectId + "," + Duration + ",'0',0)");
             }
 
             EffectCount++;
@@ -92,7 +92,7 @@ namespace Firewind.HabboHotel.Users.Inventory
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.runFastQuery("DELETE FROM user_effects WHERE user_id = " + UserId + " AND effect_id = " + EffectId + " AND is_activated = 1");
+                dbClient.runFastQuery("DELETE FROM user_effects WHERE user_id = " + UserId + " AND effect_id = " + EffectId + " AND is_activated = '1'");
             }
 
             lock (_removeQueue.SyncRoot)
@@ -178,7 +178,7 @@ namespace Firewind.HabboHotel.Users.Inventory
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.runFastQuery("UPDATE user_effects SET is_activated = 1, activated_stamp = " + FirewindEnvironment.GetUnixTimestamp() + " WHERE user_id = " + UserId + " AND effect_id = " + EffectId + "");
+                dbClient.runFastQuery("UPDATE user_effects SET is_activated = '1', activated_stamp = " + FirewindEnvironment.GetUnixTimestamp() + " WHERE user_id = " + UserId + " AND effect_id = " + EffectId + "");
             }
 
             Effect.Activate();
