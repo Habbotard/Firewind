@@ -458,11 +458,11 @@ namespace Firewind.HabboHotel.Catalogs
                     Session.SendNotif(LanguageLocale.GetValue("catalog.gift.send.error"));
                     return;
                 }
-                IRoomItemData itemData;
+                IRoomItemData itemData = new StringData(extraParameter);
                 switch (Item.GetBaseItem(i).InteractionType)
                 {
                     case InteractionType.none:
-                        itemData = new StringData("");
+                        //itemData = new StringData(extraParameter);
                         break;
 
                     case InteractionType.musicdisc:
@@ -539,7 +539,7 @@ namespace Firewind.HabboHotel.Catalogs
                         break;
 
                     case InteractionType.trophy:
-                        itemData = new StringData(Session.GetHabbo().Username + Convert.ToChar(9) + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + Convert.ToChar(9) + FirewindEnvironment.FilterInjectionChars(extraParameter, true));
+                        itemData = new StringData(String.Format("{0}\t{1}\t{2}", Session.GetHabbo().Username, DateTime.Now.ToString("d-M-yyy"), extraParameter));
                         break;
 
                     //case InteractionType.mannequin:
@@ -551,7 +551,7 @@ namespace Firewind.HabboHotel.Catalogs
                     //    break;
 
                     default:
-                        itemData = new StringData("");
+                        //itemData = new StringData(extraParameter);
                         break;
                 }
 
@@ -630,7 +630,7 @@ namespace Firewind.HabboHotel.Catalogs
 
                         dbClient.setQuery("INSERT INTO user_presents (item_id,base_id,amount,extra_data) VALUES (" + itemID + "," + Item.GetBaseItem(i).ItemId + "," + Item.Amount + ",@extra_data)");
                         dbClient.addParameter("gift_message", "!" + GiftMessage);
-                        dbClient.addParameter("extra_data", extraParameter);
+                        dbClient.addParameter("extra_data", itemData.ToString());
                         dbClient.runQuery();
                     }
 
@@ -667,7 +667,7 @@ namespace Firewind.HabboHotel.Catalogs
                             Type = 1;
                     }
                     Session.GetMessageHandler().GetResponse().AppendInt32(Type);
-                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), extraParameter, Item.songID);
+                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), itemData.ToString(), Item.songID);
                     Session.GetMessageHandler().GetResponse().AppendInt32(items.Count);
                     foreach (UserItem u in items)
                         Session.GetMessageHandler().GetResponse().AppendUInt(u.Id);
