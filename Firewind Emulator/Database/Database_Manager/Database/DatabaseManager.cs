@@ -17,7 +17,6 @@
     {
         private int beginClientAmount;
         private string connectionString;
-        private List<MySqlClient> databaseClients;
         private bool isConnected = false;
         private uint maxPoolSize;
         private DatabaseServer server;
@@ -33,13 +32,6 @@
             this.beginClientAmount = clientAmount;
             this.maxPoolSize = maxPoolSize;
             this.connections = new Queue();
-        }
-
-        private void addConnection(int id)
-        {
-            MySqlClient item = new MySqlClient(this, id);
-            item.connect();
-            this.databaseClients.Add(item);
         }
 
         private void createNewConnectionString()
@@ -67,32 +59,6 @@
             lock (this)
             {
                 this.isConnected = false;
-                if (this.databaseClients != null)
-                {
-                    foreach (MySqlClient client in this.databaseClients)
-                    {
-                        if (!client.isAvailable())
-                        {
-                            client.Dispose();
-                        }
-                        client.disconnect();
-                    }
-                    this.databaseClients.Clear();
-                }
-            }
-        }
-
-        private void disconnectUnusedClients()
-        {
-            lock (this)
-            {
-                foreach (MySqlClient client in this.databaseClients)
-                {
-                    if (client.isAvailable())
-                    {
-                        client.disconnect();
-                    }
-                }
             }
         }
 
@@ -140,7 +106,6 @@
             try
             {
                 this.createNewConnectionString();
-                this.databaseClients = new List<MySqlClient>((int) this.maxPoolSize);
             }
             catch (MySqlException exception)
             {
