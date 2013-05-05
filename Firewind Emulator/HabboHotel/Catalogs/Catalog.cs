@@ -611,10 +611,7 @@ namespace Firewind.HabboHotel.Catalogs
                     //Logging.WriteLine("Resultado regalo: " + FirewindEnvironment.GetGame().GetItemManager().GetItem((uint)GiftSpriteId - FirewindEnvironment.giftInt));
                     using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                     {
-                        if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                            dbClient.setQuery("INSERT INTO items (base_id) OUTPUT INSERTED.* VALUES (" + Present.ItemId + ")");
-                        else
-                            dbClient.setQuery("INSERT INTO items (base_id) VALUES (" + Present.ItemId + ")");
+                        dbClient.setQuery("INSERT INTO items (base_id) VALUES (" + Present.ItemId + ")");
                         itemID = (uint)dbClient.insertQuery();
 
                         dbClient.runFastQuery("INSERT INTO items_users VALUES (" + itemID + "," + GiftUserId + ")");
@@ -807,10 +804,7 @@ namespace Firewind.HabboHotel.Catalogs
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                    dbClient.setQuery("INSERT INTO user_pets (user_id,name,type,race,color,expirience,energy,createstamp,nutrition,respect,x,y,z) OUTPUT INSERTED.* VALUES (" + pet.OwnerId + ",@" + pet.PetId + "name," + pet.Type + ",@" + pet.PetId + "race,@" + pet.PetId + "color,0,100,'" + pet.CreationStamp + "',0,0,0,0,0)");
-                else
-                    dbClient.setQuery("INSERT INTO user_pets (user_id,name,type,race,color,expirience,energy,createstamp) VALUES (" + pet.OwnerId + ",@" + pet.PetId + "name," + pet.Type + ",@" + pet.PetId + "race,@" + pet.PetId + "color,0,100,'" + pet.CreationStamp + "')");
+                dbClient.setQuery("INSERT INTO user_pets (user_id,name,type,race,color,expirience,energy,createstamp) VALUES (" + pet.OwnerId + ",@" + pet.PetId + "name," + pet.Type + ",@" + pet.PetId + "race,@" + pet.PetId + "color,0,100,'" + pet.CreationStamp + "')");
                 dbClient.addParameter(pet.PetId + "name", pet.Name);
                 dbClient.addParameter(pet.PetId + "race", pet.Race);
                 dbClient.addParameter(pet.PetId + "color", pet.Color);

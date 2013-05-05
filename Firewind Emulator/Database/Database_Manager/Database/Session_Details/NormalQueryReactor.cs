@@ -13,14 +13,6 @@
             base.command = client.getNewCommand();
         }
 
-        public DatabaseType dbType
-        {
-            get
-            {
-                return DatabaseType.MySQL;
-            }
-        }
-
         public void Dispose()
         {
             base.command.Dispose();

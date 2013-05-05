@@ -97,16 +97,12 @@
     <Compile Include="Core\Writer.cs" />
     <Compile Include="Database\Database_Manager\Database\DatabaseManager.cs" />
     <Compile Include="Database\Database_Manager\Database\DatabaseStats.cs" />
-    <Compile Include="Database\Database_Manager\Database\DatabaseType.cs" />
     <Compile Include="Database\Database_Manager\Database\Database_Exceptions\DatabaseException.cs" />
     <Compile Include="Database\Database_Manager\Database\Database_Exceptions\QueryException.cs" />
     <Compile Include="Database\Database_Manager\Database\Database_Exceptions\TransactionException.cs" />
-    <Compile Include="Database\Database_Manager\Database\MsSqlClient.cs" />
     <Compile Include="Database\Database_Manager\Database\MySqlClient.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\Interfaces\IDatabaseClient.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\Interfaces\IQueryAdapter.cs" />
-    <Compile Include="Database\Database_Manager\Database\Session_Details\MSSQLQueryAdapter.cs" />
-    <Compile Include="Database\Database_Manager\Database\Session_Details\MsSqlQueryReactor.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\NormalQueryReactor.cs" />
     <Compile Include="Database\Database_Manager\Database\Session_Details\QueryAdapter.cs" />
     <Compile Include="Database\Database_Manager\Managers\Database\DatabaseServer.cs" />

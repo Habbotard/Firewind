@@ -82,7 +82,7 @@ namespace ConnectionManager.Messages
 
                 if (loggedMessages.Count > 0)
                 {
-                    DatabaseManager dbManager = new DatabaseManager(1, 1, DatabaseType.MySQL);
+                    DatabaseManager dbManager = new DatabaseManager(1, 1);
                     //To-do: Init dbManager from configuration file
 
                     using (IQueryAdapter dbClient = dbManager.getQueryreactor())

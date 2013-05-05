@@ -3112,10 +3112,7 @@ namespace Firewind.Messages
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                    dbClient.setQuery("INSERT INTO user_items (user_id,base_item,extra_data) OUTPUT INSERTED.* VALUES ( @userid ,1478, @timestamp)");
-                else
-                    dbClient.setQuery("INSERT INTO user_items (user_id,base_item,extra_data) VALUES ( @userid ,1478, @timestamp)");
+                dbClient.setQuery("INSERT INTO user_items (user_id,base_item,extra_data) VALUES ( @userid ,1478, @timestamp)");
                 dbClient.addParameter("userid", (int)Session.GetHabbo().Id);
                 dbClient.addParameter("timestamp", DateTime.Now.ToLongDateString());
 

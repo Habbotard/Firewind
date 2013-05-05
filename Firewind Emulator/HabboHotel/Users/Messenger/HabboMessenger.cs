@@ -120,15 +120,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                {
-                    dbClient.runFastQuery("DELETE FROM messenger_friendships WHERE sender = " + UserId + " AND receiver = " + friendID);
-                    dbClient.runFastQuery("INSERT INTO messenger_friendships (sender,receiver) VALUES (" + UserId + "," + friendID + ")");
-                }
-                else
-                {
-                    dbClient.runFastQuery("REPLACE INTO messenger_friendships (sender,receiver) VALUES (" + UserId + "," + friendID + ")");
-                }
+                dbClient.runFastQuery("REPLACE INTO messenger_friendships (sender,receiver) VALUES (" + UserId + "," + friendID + ")");
             }
 
             OnNewFriendship(friendID);
@@ -262,15 +254,7 @@ namespace Firewind.HabboHotel.Users.Messenger
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                {
-                    dbClient.runFastQuery("DELETE FROM messenger_requests WHERE sender = " + userID + " AND receiver = " + ToId);
-                    dbClient.runFastQuery("INSERT INTO messenger_requests (sender,receiver) VALUES (" + this.UserId + "," + ToId + ")");
-                }
-                else
-                {
-                    dbClient.runFastQuery("REPLACE INTO messenger_requests (sender,receiver) VALUES (" + this.UserId + "," + ToId + ")");
-                }
+                dbClient.runFastQuery("REPLACE INTO messenger_requests (sender,receiver) VALUES (" + this.UserId + "," + ToId + ")");
             }
 
             GameClient ToUser = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(ToId);

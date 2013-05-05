@@ -255,10 +255,7 @@ namespace Firewind.HabboHotel.Support
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                    dbClient.setQuery("INSERT INTO moderation_tickets (score,type,status,sender_id,reported_id,moderator_id,message,room_id,room_name,timestamp) OUTPUT INSERTED.* VALUES (1,'" + Category + "','open','" + Session.GetHabbo().Id + "','" + ReportedUser + "','0',@message,'" + Data.Id + "',@name,'" + FirewindEnvironment.GetUnixTimestamp() + "')");
-                else
-                    dbClient.setQuery("INSERT INTO moderation_tickets (score,type,status,sender_id,reported_id,moderator_id,message,room_id,room_name,timestamp) VALUES (1,'" + Category + "','open','" + Session.GetHabbo().Id + "','" + ReportedUser + "','0',@message,'" + Data.Id + "',@name,'" + FirewindEnvironment.GetUnixTimestamp() + "')");
+                dbClient.setQuery("INSERT INTO moderation_tickets (score,type,status,sender_id,reported_id,moderator_id,message,room_id,room_name,timestamp) VALUES (1,'" + Category + "','open','" + Session.GetHabbo().Id + "','" + ReportedUser + "','0',@message,'" + Data.Id + "',@name,'" + FirewindEnvironment.GetUnixTimestamp() + "')");
                 dbClient.addParameter("message", Message);
                 dbClient.addParameter("name", Data.Name);
                 TicketId = (uint)dbClient.insertQuery();

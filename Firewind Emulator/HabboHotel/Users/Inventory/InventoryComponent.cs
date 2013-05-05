@@ -189,16 +189,9 @@ namespace Firewind.HabboHotel.Users.Inventory
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                {
-                    dbClient.setQuery("CALL getuseritems(@userid)");
-                }
-                else
-                {
-                    dbClient.setQuery("EXECUTE getuseritems @userid");
-                }
+                dbClient.setQuery("CALL getuseritems(@userid)");
                 dbClient.addParameter("userid", (int)UserId);
-                
+
                 Data = dbClient.getTable();
 
                 //dbClient.setQuery("SELECT item_id, song_id FROM user_items_songs WHERE user_id = " + UserId);

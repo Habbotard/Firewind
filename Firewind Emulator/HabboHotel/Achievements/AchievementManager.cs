@@ -95,15 +95,7 @@ namespace Firewind.HabboHotel.Achievements
 
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
-                    if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                        dbClient.setQuery("REPLACE INTO user_achievement VALUES (" + Session.GetHabbo().Id + ", @group, " + NewLevel + ", " + NewProgress + ")");
-                    else
-                    {
-                        dbClient.setQuery("IF EXISTS (SELECT userid FROM user_achievement WHERE userid = " + Session.GetHabbo().Id + " AND group = @group) " +
-                                        "	UPDATE user_achievement SET level = " + NewLevel + ", progress = " + NewProgress + " WHERE userid = " + Session.GetHabbo().Id + " AND group = @group " +
-                                        "ELSE" +
-                                        "	INSERT INTO user_achievement VALUES (" + Session.GetHabbo().Id + ",@group," + NewLevel + "," + NewProgress + ")");
-                    }
+                    dbClient.setQuery("REPLACE INTO user_achievement VALUES (" + Session.GetHabbo().Id + ", @group, " + NewLevel + ", " + NewProgress + ")");
                     dbClient.addParameter("group", AchievementGroup);
                     dbClient.runQuery();
                 }
@@ -130,15 +122,7 @@ namespace Firewind.HabboHotel.Achievements
                 UserData.Progress = NewProgress;
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
-                    if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                        dbClient.setQuery("REPLACE INTO user_achievement VALUES (" + Session.GetHabbo().Id + ", @group, " + NewLevel + ", " + NewProgress + ")");
-                    else
-                    {
-                        dbClient.setQuery("IF EXISTS (SELECT userid FROM user_achievement WHERE userid = " + Session.GetHabbo().Id + " AND group = @group) " +
-                                        "	UPDATE user_achievement SET level = " + NewLevel + ", progress = " + NewProgress + " WHERE userid = " + Session.GetHabbo().Id + " AND group = @group " +
-                                        "ELSE" +
-                                        "	INSERT INTO user_achievement VALUES (" + Session.GetHabbo().Id + ",@group," + NewLevel + "," + NewProgress + ")");
-                    }
+                    dbClient.setQuery("REPLACE INTO user_achievement VALUES (" + Session.GetHabbo().Id + ", @group, " + NewLevel + ", " + NewProgress + ")");
                     dbClient.addParameter("group", AchievementGroup);
                     dbClient.runQuery();
                 }

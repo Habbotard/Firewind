@@ -372,17 +372,7 @@ namespace Firewind.HabboHotel.Rooms
             //LoadBots();
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                {
-                    dbClient.runFastQuery("REPLACE INTO room_active VALUES (" + Id + ",1)");
-                }
-                else
-                {
-                    dbClient.runFastQuery("IF EXISTS (SELECT roomid FROM room_active WHERE roomid = " + Id + ") " +
-	                                        "UPDATE room_active SET active_users = 1 WHERE roomid = " + Id + " " +
-                                            "ELSE " +
-	                                        "INSERT INTO room_active VALUES (" + Id + ",1)");
-                }
+                dbClient.runFastQuery("REPLACE INTO room_active VALUES (" + Id + ",1)");
             }
 
             FirewindEnvironment.GetGame().GetRoomManager().QueueActiveRoomAdd(mRoomData);

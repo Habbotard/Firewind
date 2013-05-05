@@ -247,10 +247,7 @@ namespace Firewind.HabboHotel.Navigators
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.setQuery("SELECT rooms.tags, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE active_users > 0 ORDER BY active_users DESC LIMIT 50");
-                else
-                    dbClient.setQuery("SELECT TOP 50 rooms.tags, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE active_users > 0 ORDER BY active_users DESC");
+                dbClient.setQuery("SELECT rooms.tags, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE active_users > 0 ORDER BY active_users DESC LIMIT 50");
                 DataTable Data = dbClient.getTable();
 
 
@@ -327,18 +324,13 @@ namespace Firewind.HabboHotel.Navigators
                                     "SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE caption = @query " +
                                     "ORDER BY active_users DESC LIMIT 50");
                     }
-                    if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                        dbClient.setQuery("SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE owner = @query " +
-                                    "UNION ALL " +
-                                    "SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE caption = @query " +
-                                    "ORDER BY active_users DESC LIMIT 50");
-                    else
-                        dbClient.setQuery("SELECT TOP 50 rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE owner = @query " +
-                                    "UNION ALL " +
-                                    "SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE caption = @query " +
-                                    "ORDER BY active_users DESC");
-                    if(OwnerOnly)
-                    dbClient.addParameter("query", SearchQuery.Substring(SearchQuery.IndexOf(':') + 1));
+
+                    dbClient.setQuery("SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE owner = @query " +
+                                "UNION ALL " +
+                                "SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE caption = @query " +
+                                "ORDER BY active_users DESC LIMIT 50");
+                    if (OwnerOnly)
+                        dbClient.addParameter("query", SearchQuery.Substring(SearchQuery.IndexOf(':') + 1));
                     else
                         dbClient.addParameter("query", SearchQuery);
                     Data = dbClient.getTable();

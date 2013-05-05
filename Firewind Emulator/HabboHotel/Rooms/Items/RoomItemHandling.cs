@@ -155,16 +155,8 @@ namespace Firewind.HabboHotel.Rooms
             DataTable Data;
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                {
-                    dbClient.setQuery("CALL getroomitems(@roomid)");
-                    dbClient.addParameter("roomid", room.RoomId);
-                }
-                else
-                {
-                    dbClient.setQuery("EXECUTE getroomitems " + room.RoomId);
-                }
-
+                dbClient.setQuery("CALL getroomitems(@roomid)");
+                dbClient.addParameter("roomid", room.RoomId);
                 Data = dbClient.getTable();
 
 
@@ -506,100 +498,8 @@ namespace Firewind.HabboHotel.Rooms
             return mMessage;
         }
 
-        internal void SaveFurnitureToMSSQL(IQueryAdapter dbClient)
-        {
-            try
-            {
-                if (mAddedItems.Count > 0 || mRemovedItems.Count > 0 || mMovedItems.Count > 0 || room.GetRoomUserManager().PetCount > 0)
-                {
-                    QueryChunk standardQueries = new QueryChunk();
-                    QueryChunk itemInserts = new QueryChunk(); // REPLACE INTO items_rooms (item_id,room_id,x,y,n) VALUES 
-                    QueryChunk extradataInserts = new QueryChunk(); //"REPLACE INTO items_extradata (item_id,data) VALUES "
-
-                    foreach (RoomItem Item in mRemovedItems.Values)
-                    {
-                        standardQueries.AddQuery("DELETE FROM items_rooms WHERE item_id = " + Item.Id + " AND room_id = " + room.RoomId); //Do join + function
-                    }
-
-                    if (mAddedItems.Count > 0)
-                    {
-                        foreach (RoomItem Item in mAddedItems.Values)
-                        {
-                           // if (!string.IsNullOrEmpty(Item.data))
-                            {
-                                extradataInserts.AddQuery("DELETE FROM items_extradata WHERE item_id = " + Item.Id);
-                                extradataInserts.AddQuery("INSERT INTO items_extradata (item_id,data_type,data) VALUES (" + Item.Id + ",@datatype_id" + Item.Id + ",@data_id" + Item.Id + ")");
-                                extradataInserts.AddParameter("@data_type_id" + Item.Id, Item.data.GetTypeID());
-                                extradataInserts.AddParameter("@data_id" + Item.Id, Item.data.ToString());
-                            }
-
-                            itemInserts.AddQuery("DELETE FROM items_rooms WHERE item_id = " + Item.Id);
-
-                            if (Item.IsFloorItem)
-                            {
-                                double combinedCoords = TextHandling.Combine(Item.GetX, Item.GetY);
-                                itemInserts.AddQuery("INSERT INTO items_rooms (item_id,room_id,x,y,n) VALUES (" + Item.Id + "," + Item.RoomId + "," + TextHandling.GetString(combinedCoords) + "," + TextHandling.GetString(Item.GetZ) + "," + Item.Rot + ")");
-                            }
-                            else
-                            {
-                                itemInserts.AddQuery("INSERT INTO items_rooms (item_id,room_id,x,y,n) VALUES (" + Item.Id + "," + Item.RoomId + "," + TextHandling.GetString(Item.wallCoord.GetXValue()) + "," + TextHandling.GetString(Item.wallCoord.GetYValue()) + "," + Item.wallCoord.n() + ")");
-                            }
-                        }
-                    }
-
-
-                    foreach (RoomItem Item in mMovedItems.Values)
-                    {
-                        //if (!string.IsNullOrEmpty((string)Item.data.GetData()))
-                        {
-                            standardQueries.AddQuery("UPDATE items_extradata SET data = @data" + Item.Id + " WHERE item_id = " + Item.Id);
-                            standardQueries.AddParameter("data" + Item.Id, Item.data.ToString());
-                        }
-
-                        if (Item.IsWallItem)
-                        {
-                            standardQueries.AddQuery("UPDATE items_rooms SET x=" + TextHandling.GetString(Item.wallCoord.GetXValue()) + ", y=" + TextHandling.GetString(Item.wallCoord.GetYValue()) + ", n=" + Item.wallCoord.n() + " WHERE item_id = " + Item.Id);
-                        }
-                        else
-                        {
-                            double combinedCoords = TextHandling.Combine(Item.GetX, Item.GetY);
-                            standardQueries.AddQuery("UPDATE items_rooms SET x=" + TextHandling.GetString(combinedCoords) + ", y=" + TextHandling.GetString(Item.GetZ) + ", n=" + Item.Rot + " WHERE item_id = " + Item.Id);
-                        }
-                    }
-
-                    room.GetRoomUserManager().AppendPetsUpdateString(dbClient);
-
-                    mAddedItems.Clear();
-                    mRemovedItems.Clear();
-                    mMovedItems.Clear();
-
-                    standardQueries.Execute(dbClient);
-                    itemInserts.Execute(dbClient);
-                    extradataInserts.Execute(dbClient);
-
-                    standardQueries.Dispose();
-                    itemInserts.Dispose();
-                    extradataInserts.Dispose();
-
-                    standardQueries = null;
-                    itemInserts = null;
-                    extradataInserts = null;
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.LogCriticalException("Error during saving furniture for room " + room.RoomId + ". Stack: " + e.ToString());
-            }
-        }
-
         internal void SaveFurniture(IQueryAdapter dbClient)
         {
-            if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-            {
-                SaveFurnitureToMSSQL(dbClient);
-                return;
-            }
-
             try
             {
                 if (mAddedItems.Count > 0 || mRemovedItems.Count > 0 || mMovedItems.Count > 0 || room.GetRoomUserManager().PetCount > 0)

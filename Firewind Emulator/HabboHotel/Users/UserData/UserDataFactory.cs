@@ -106,10 +106,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dbClient.setQuery("SELECT * FROM user_badges WHERE user_id = " + userID);
                 dBadges = dbClient.getTable();
 
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.setQuery("CALL getuseritems(" + userID + ")");
-                else
-                    dbClient.setQuery("EXECUTE getuseritems " + userID + "");
+                dbClient.setQuery("CALL getuseritems(" + userID + ")");
                 dInventory = dbClient.getTable();
 
                 dbClient.setQuery("SELECT * FROM user_effects WHERE user_id =  " + userID);
@@ -170,11 +167,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dbClient.addParameter("ip", ip);
                 dbClient.runQuery();
 
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.runFastQuery("REPLACE INTO user_online VALUES (" + userID + ")");
-                else
-                    dbClient.runFastQuery("IF NOT EXISTS (SELECT userid FROM user_online WHERE userid = " + userID + ") " +
-                                            "INSERT INTO user_online VALUES (" + userID + ")");
+                dbClient.runFastQuery("REPLACE INTO user_online VALUES (" + userID + ")");
             }
 
             Dictionary<string, UserAchievement> achievements = new Dictionary<string, UserAchievement>();

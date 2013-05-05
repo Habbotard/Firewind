@@ -22,16 +22,14 @@
         private uint maxPoolSize;
         private DatabaseServer server;
         private Queue connections;
-        internal DatabaseType type { get; set; }
 
         public static bool dbEnabled = true;
 
-        public DatabaseManager(uint maxPoolSize, int clientAmount, DatabaseType dbType)
+        public DatabaseManager(uint maxPoolSize, int clientAmount)
         {
             if (maxPoolSize < clientAmount)
                 throw new DatabaseException("The poolsize can not be larger than the client amount!");
 
-            this.type = dbType;
             this.beginClientAmount = clientAmount;
             this.maxPoolSize = maxPoolSize;
             this.connections = new Queue();
@@ -46,8 +44,6 @@
 
         private void createNewConnectionString()
         {
-            if (this.type == DatabaseType.MySQL)
-            {
                 MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
                 {
                     Server = this.server.getHost(),
@@ -64,27 +60,6 @@
                 };
 
                 this.setConnectionString(connectionString.ToString());
-            }
-            else
-            {
-                SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder
-                {
-                    DataSource = this.server.getHost(),
-                    //Port = this.server.getPort(),
-                    UserID = this.server.getUsername(),
-                    Password = this.server.getPassword(),
-                    InitialCatalog = this.server.getDatabaseName(),
-                    MinPoolSize = (int)this.maxPoolSize / 2,
-                    MaxPoolSize = (int)this.maxPoolSize,
-                    //AllowZeroDateTime = true,
-                    //ConvertZeroDateTime = true,
-                    //DefaultCommandTimeout = 300,
-                    ConnectTimeout = 10,
-                    Pooling = true
-                };
-
-                this.setConnectionString(connectionString.ToString());
-            }
         }
 
         public void destroy()
@@ -145,20 +120,10 @@
             }
             else
             {
-                if (type == DatabaseType.MySQL)
-                {
-                    IDatabaseClient connection = new MySqlClient(this, 0);
-                    connection.connect();
-                    connection.prepare();
-                    return connection.getQueryReactor();
-                }
-                else
-                {
-                    IDatabaseClient connection = new MsSQLClient(this, 0);
-                    connection.connect();
-                    connection.prepare();
-                    return connection.getQueryReactor();
-                }
+                IDatabaseClient connection = new MySqlClient(this, 0);
+                connection.connect();
+                connection.prepare();
+                return connection.getQueryReactor();
             }
         }
 

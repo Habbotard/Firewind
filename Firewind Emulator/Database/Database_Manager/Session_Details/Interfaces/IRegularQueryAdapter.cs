@@ -14,7 +14,6 @@
         DataTable getTable();
         void runFastQuery(string query);
         void setQuery(string query);
-        DatabaseType dbType { get; }
     }
 }
 

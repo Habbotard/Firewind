@@ -45,10 +45,7 @@ namespace Firewind.HabboHotel.Catalogs
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == DatabaseType.MSSQL)
-                    dbClient.setQuery("INSERT INTO catalog_marketplace_offers (item_id,user_id,asking_price,total_price,public_name,sprite_id,item_type,timestamp,extra_data,state) VALUES (" + Item.BaseItem + "," + Session.GetHabbo().Id + "," + SellingPrice + "," + TotalPrice + ",@public_name," + Item.GetBaseItem().SpriteId + "," + ItemType + "," + FirewindEnvironment.GetUnixTimestamp() + ",@extra_data, '1')");
-                else
-                    dbClient.setQuery("INSERT INTO catalog_marketplace_offers (item_id,user_id,asking_price,total_price,public_name,sprite_id,item_type,timestamp,extra_data) VALUES (" + Item.BaseItem + "," + Session.GetHabbo().Id + "," + SellingPrice + "," + TotalPrice + ",@public_name," + Item.GetBaseItem().SpriteId + "," + ItemType + "," + FirewindEnvironment.GetUnixTimestamp() + ",@extra_data)");
+                dbClient.setQuery("INSERT INTO catalog_marketplace_offers (item_id,user_id,asking_price,total_price,public_name,sprite_id,item_type,timestamp,extra_data) VALUES (" + Item.BaseItem + "," + Session.GetHabbo().Id + "," + SellingPrice + "," + TotalPrice + ",@public_name," + Item.GetBaseItem().SpriteId + "," + ItemType + "," + FirewindEnvironment.GetUnixTimestamp() + ",@extra_data)");
                 dbClient.addParameter("public_name", Item.GetBaseItem().PublicName);
                 dbClient.addParameter("extra_data", Item.Data);
                 dbClient.runQuery();
@@ -116,10 +113,8 @@ namespace Firewind.HabboHotel.Catalogs
                 if (SearchQuery.Length >= 1)
                     WhereClause.Append(" AND public_name LIKE @search_query");
 
-                if (dbClient.dbType == DatabaseType.MySQL)
-                    dbClient.setQuery("SELECT offer_id, item_type, sprite_id, total_price FROM catalog_marketplace_offers " + WhereClause.ToString() + " " + OrderMode + " LIMIT 100");
-                else
-                    dbClient.setQuery("SELECT TOP 100 offer_id, item_type, sprite_id, total_price FROM catalog_marketplace_offers " + WhereClause.ToString() + " " + OrderMode + "");
+
+                dbClient.setQuery("SELECT offer_id, item_type, sprite_id, total_price FROM catalog_marketplace_offers " + WhereClause.ToString() + " " + OrderMode + " LIMIT 100");
                 dbClient.addParameter("search_query", SearchQuery + "%");
 
                 Data = dbClient.getTable();

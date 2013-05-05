@@ -91,7 +91,7 @@ namespace Firewind
                 DateTime Starts = DateTime.Now;
                 Logging.WriteLine("Connecting to database...");
 
-                manager = new DatabaseManager(uint.Parse(FirewindEnvironment.GetConfig().data["db.pool.maxsize"]), int.Parse(FirewindEnvironment.GetConfig().data["db.pool.minsize"]), DatabaseType.MySQL);
+                manager = new DatabaseManager(uint.Parse(FirewindEnvironment.GetConfig().data["db.pool.maxsize"]), int.Parse(FirewindEnvironment.GetConfig().data["db.pool.minsize"]));
                 manager.setServerDetails(
                     FirewindEnvironment.GetConfig().data["db.hostname"],
                     uint.Parse(FirewindEnvironment.GetConfig().data["db.port"]),

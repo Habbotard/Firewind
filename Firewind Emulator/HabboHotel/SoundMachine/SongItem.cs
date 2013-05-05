@@ -34,13 +34,7 @@ namespace Firewind.HabboHotel.SoundMachine
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-                {
-                    dbClient.runFastQuery("DELETE FROM items_rooms_songs WHERE itemid = " + itemID);
-                    dbClient.runFastQuery("INSERT INTO items_rooms_songs VALUES (" + itemID + "," + roomID + "," + songID + ")");
-                }
-                else
-                    dbClient.runFastQuery("REPLACE INTO items_rooms_songs VALUES (" + itemID + "," + roomID + "," + songID + ")");
+                dbClient.runFastQuery("REPLACE INTO items_rooms_songs VALUES (" + itemID + "," + roomID + "," + songID + ")");
             }
         }
 

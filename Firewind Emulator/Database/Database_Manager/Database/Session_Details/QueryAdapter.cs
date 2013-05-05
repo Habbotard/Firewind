@@ -19,14 +19,6 @@ namespace Database_Manager.Database.Session_Details
         protected MySqlClient client;
         protected MySqlCommand command;
 
-        public DatabaseType dbType
-        {
-            get
-            {
-                return DatabaseType.MySQL;
-            }
-        }
-
         internal QueryAdapter(MySqlClient client)
         {
             this.client = client;

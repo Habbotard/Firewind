@@ -846,11 +846,7 @@ namespace Firewind.HabboHotel.GameClients
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.setQuery("REPLACE INTO user_online VALUES (" + userID + ")");
-                else
-                    dbClient.setQuery("IF NOT EXISTS (SELECT userid FROM user_online WHERE userid = " + userID + ") " +
-                                      "   INSERT INTO user_online VALUES (" + userID + ")");
+                dbClient.setQuery("REPLACE INTO user_online VALUES (" + userID + ")");
             }
         }
 

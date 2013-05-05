@@ -35,13 +35,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
 
         public void SaveToDatabase(IQueryAdapter dbClient)
         {
-            if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-            {
-                dbClient.runFastQuery("DELETE FROM trigger_item WHERE trigger_id = " + item.Id);
-                dbClient.setQuery("REPLACE INTO trigger_item SET trigger_id = @id, trigger_input = 'integer',  trigger_data = @trigger_data , all_user_triggerable = 0");
-            }
-            else
-                dbClient.setQuery("REPLACE INTO trigger_item SET trigger_id = @id, trigger_input = 'integer',  trigger_data = @trigger_data , all_user_triggerable = 0");
+            dbClient.setQuery("REPLACE INTO trigger_item SET trigger_id = @id, trigger_input = 'integer',  trigger_data = @trigger_data , all_user_triggerable = 0");
 
             dbClient.addParameter("id", (int)this.item.Id);
             dbClient.addParameter("trigger_data", timeout);

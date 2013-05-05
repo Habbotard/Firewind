@@ -238,10 +238,7 @@ namespace Firewind.HabboHotel.Rooms
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)//description,public_ccts,tags,password
-                    dbClient.setQuery("INSERT INTO rooms (caption,owner,model_name,description,tags,password) OUTPUT INSERTED.* VALUES (@caption,@username,@model,'','','')");
-                else
-                    dbClient.setQuery("INSERT INTO rooms (caption,owner,model_name) VALUES (@caption,@username,@model)");
+                dbClient.setQuery("INSERT INTO rooms (caption,owner,model_name) VALUES (@caption,@username,@model)");
                 dbClient.addParameter("caption", Name);
                 dbClient.addParameter("model", Model);
                 dbClient.addParameter("username", Session.GetHabbo().Username);
@@ -317,11 +314,8 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void InitVotedRooms(IQueryAdapter dbClient)
         {
-            if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                dbClient.setQuery("SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE score > 0 ORDER BY score DESC LIMIT 40");
-            else
-                dbClient.setQuery("SELECT TOP 40 rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE score > 0 ORDER BY score DESC");
-            DataTable dTable = dbClient.getTable();
+             dbClient.setQuery("SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE score > 0 ORDER BY score DESC LIMIT 40");
+             DataTable dTable = dbClient.getTable();
 
             foreach (DataRow dRow in dTable.Rows)
             {

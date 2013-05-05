@@ -115,13 +115,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
         {
             WiredUtillity.SaveTriggerItem(dbClient, (int)itemID, "integer", string.Empty, delay.ToString(), false);
 
-            if (dbClient.dbType == Database_Manager.Database.DatabaseType.MSSQL)
-            {
-                dbClient.runFastQuery("DELETE FROM trigger_rotation WHERE item_id = " + itemID);
-                dbClient.setQuery("INSERT INTO trigger_rotation(item_id,rotation_status,movement_status) VALUES (@id,@rot_id,@mov_id)");
-            }
-            else
-                dbClient.setQuery("REPLACE INTO trigger_rotation SET item_id = @id, rotation_status = @rot_id,  movement_status = @mov_id");
+            dbClient.setQuery("REPLACE INTO trigger_rotation SET item_id = @id, rotation_status = @rot_id,  movement_status = @mov_id");
             dbClient.addParameter("id", (int)itemID);
             dbClient.addParameter("rot_id", (int)this.rotation);
             dbClient.addParameter("mov_id", (int)this.movement);
@@ -129,7 +123,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 
             lock (items)
             {
-                dbClient.runFastQuery("DELETE FROM trigger_in_place WHERE original_trigger = '" + this.itemID + "'"); 
+                dbClient.runFastQuery("DELETE FROM trigger_in_place WHERE original_trigger = '" + this.itemID + "'");
                 foreach (RoomItem i in items)
                 {
                     WiredUtillity.SaveTrigger(dbClient, (int)itemID, (int)i.Id);

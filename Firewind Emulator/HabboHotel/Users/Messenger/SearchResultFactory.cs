@@ -17,10 +17,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             DataTable dTable;
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.setQuery("SELECT id,username,motto,look,last_online FROM users WHERE username LIKE @query LIMIT 50");
-                else
-                    dbClient.setQuery("SELECT TOP 50 id,username,motto,look,last_online FROM users WHERE username LIKE @query");
+                dbClient.setQuery("SELECT id,username,motto,look,last_online FROM users WHERE username LIKE @query LIMIT 50");
                 dbClient.addParameter("query", query + "%");
                 dTable = dbClient.getTable();
             }

@@ -182,11 +182,8 @@ namespace Firewind.HabboHotel.Quests
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.runFastQuery("REPLACE INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + Quest.Id + ", 0)");
-                else
-                    dbClient.runFastQuery("IF NOT EXISTS (SELECT user_id FROM user_quests WHERE user_id = " + Session.GetHabbo().Id + " AND quest_id = " + Quest.Id + ") " + 
-	                                      "INSERT INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + Quest.Id + ", 0)");
+
+                dbClient.runFastQuery("REPLACE INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + Quest.Id + ", 0)");
                 dbClient.runFastQuery("UPDATE users SET currentquestid = " + Quest.Id + " WHERE id = " + Session.GetHabbo().Id);
             }
 
@@ -214,11 +211,7 @@ namespace Firewind.HabboHotel.Quests
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (dbClient.dbType == Database_Manager.Database.DatabaseType.MySQL)
-                    dbClient.runFastQuery("REPLACE INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + NextQuest.Id + ", 0)");
-                else
-                    dbClient.runFastQuery("IF NOT EXISTS (SELECT user_id FROM user_quests WHERE user_id = " + Session.GetHabbo().Id + " AND quest_id = " + NextQuest.Id + ") " +
-                                          "INSERT INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + NextQuest.Id + ", 0)");
+                dbClient.runFastQuery("REPLACE INTO user_quests VALUES (" + Session.GetHabbo().Id + ", " + NextQuest.Id + ", 0)");
                 dbClient.runFastQuery("UPDATE users SET currentquestid = " + NextQuest.Id + " WHERE id = " + Session.GetHabbo().Id);
             }
 
