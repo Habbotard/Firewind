@@ -177,5 +177,8 @@ namespace HabboEvents
         public static int EnterOneWayDoor = 2505;
 
         public static int UseWallItem = 3793;
+
+        // Groups
+        public static object StartGuildPurchase = 1137;
     }
 }

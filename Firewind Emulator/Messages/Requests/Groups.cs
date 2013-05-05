@@ -62,19 +62,43 @@ namespace Firewind.Messages
             SendResponse();
 
             // We just send blank data for now
-            Response.Init(Outgoing.GuildEditorData);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
-            Response.AppendInt32(0);
+            // fuck im lazy, leon make this real
+            Response.Init(Outgoing.GuildEditorData); // i dont even know if this is the right header dammet
+
+            // first bases
+            Response.AppendInt32(1);
+            Response.AppendInt32(1);
+            Response.AppendString("base_basic_1.gif");
+            Response.AppendString("");
+
+            // then symbols
+            Response.AppendInt32(1);
+            Response.AppendInt32(2);
+            Response.AppendString("symbol_background_1.gif");
+            Response.AppendString("");
+
+            // then color 1s
+            Response.AppendInt32(1);
+            Response.AppendInt32(3);
+            Response.AppendString("ffffff");
+
+            // then color 2s
+            Response.AppendInt32(1);
+            Response.AppendInt32(4);
+            Response.AppendString("ffffff");
+
+            // then color 3s
+            Response.AppendInt32(1);
+            Response.AppendInt32(5);
+            Response.AppendString("ffffff");
+
             SendResponse();
         }
 
-        // ID: 2282
-        public void CreateGuild()
+        // ID: 1660
+        public void GetGuildInfo()
         {
-            // string, string, int, int, int, int[]
+            // int, bool
         }
     }
 }

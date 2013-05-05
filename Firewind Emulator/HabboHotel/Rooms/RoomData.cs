@@ -335,9 +335,10 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(2); // can trade?
                 Message.AppendInt32(Score);
                 Message.AppendInt32(Category);
-                Message.AppendInt32(0);
-                Message.AppendInt32(0);
-                Message.AppendString("");
+                Message.AppendInt32(0); // group id
+                Message.AppendString("test"); // group name
+                Message.AppendString("b0000"); // group image
+                Message.AppendString(""); // ???
                 Message.AppendInt32(TagCount);
 
                 foreach (string Tag in Tags)

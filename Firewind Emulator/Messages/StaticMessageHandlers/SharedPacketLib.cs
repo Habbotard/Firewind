@@ -972,5 +972,10 @@ namespace Firewind.Messages.StaticMessageHandlers
         {
             handler.GetHabboGroupBadges();
         }
+
+        internal static void StartGuildPurchase(GameClientMessageHandler handler)
+        {
+            handler.StartGuildPurchase();
+        }
     }
 }

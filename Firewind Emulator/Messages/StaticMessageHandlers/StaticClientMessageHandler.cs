@@ -207,6 +207,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             // Furniture
             handlers.Add(Incoming.EnterOneWayDoor, new StaticRequestHandler(SharedPacketLib.TriggerItem));
             handlers.Add(Incoming.UseWallItem, new StaticRequestHandler(SharedPacketLib.TriggerItem));
+
+            // Groups
+            handlers.Add(Incoming.StartGuildPurchase, new StaticRequestHandler(SharedPacketLib.StartGuildPurchase));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion
