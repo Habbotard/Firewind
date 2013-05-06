@@ -160,7 +160,7 @@ namespace Firewind.Messages
             SendResponse();*/
         }
 
-        internal void GetCataData1()
+        internal void GetMarketplaceConfiguration()
         {
             GetResponse().Init(Outgoing.ShopData1);
             //  1 1 1 5 1 10000 48 7
@@ -173,6 +173,8 @@ namespace Firewind.Messages
             GetResponse().AppendInt32(48);
             GetResponse().AppendInt32(7);
             SendResponse();
+
+            //1244
         }
 
         internal void GetCataData2()

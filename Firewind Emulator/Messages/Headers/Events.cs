@@ -24,7 +24,7 @@ namespace HabboEvents
 		public static int GetWardrobe = 902;
 		public static int SaveWardrobe = 222;
 		public static int OpenAchievements = 137;
-		public static int CatalogData1 = 1937;
+        public static int GetMarketplaceConfiguration = 1937;
 		public static int CatalogData2 = 3355;
 		public static int OpenCatalog = 3509;
 		public static int OpenCatalogPage = 991;

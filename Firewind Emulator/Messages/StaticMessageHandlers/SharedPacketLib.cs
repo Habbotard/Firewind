@@ -93,9 +93,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.CanGift();
         }
 
-        internal static void GetCataData1(GameClientMessageHandler handler)
+        internal static void GetMarketplaceConfiguration(GameClientMessageHandler handler)
         {
-            handler.GetCataData1();
+            handler.GetMarketplaceConfiguration();
         }
 
         internal static void GetCataData2(GameClientMessageHandler handler)

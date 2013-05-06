@@ -55,7 +55,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.PurchaseCatalogItem, new StaticRequestHandler(SharedPacketLib.HandlePurchase));
             handlers.Add(Incoming.PurchaseFromCatalogAsGift, new StaticRequestHandler(SharedPacketLib.PurchaseFromCatalogAsGift));
             handlers.Add(Incoming.GetRecyclerPrizes, new StaticRequestHandler(SharedPacketLib.GetRecyclerRewards));
-            handlers.Add(Incoming.CatalogData1, new StaticRequestHandler(SharedPacketLib.GetCataData1));
+            handlers.Add(Incoming.GetMarketplaceConfiguration, new StaticRequestHandler(SharedPacketLib.GetMarketplaceConfiguration));
             handlers.Add(Incoming.CatalogData2, new StaticRequestHandler(SharedPacketLib.GetCataData2));
             handlers.Add(Incoming.CheckPetName, new StaticRequestHandler(SharedPacketLib.CheckPetName));
             handlers.Add(Incoming.CatalogGetRace, new StaticRequestHandler(SharedPacketLib.PetRaces));
