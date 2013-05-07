@@ -189,5 +189,6 @@ namespace HabboEvents
         public static int PurchaseGuildInfo = 3341;
         public static int GuildEditorData = 1725;
         public static int HabboGroupJoinFailed = 2407;
+        public static int GroupInfo = 2602;
     }
 }

@@ -349,6 +349,9 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(Group != null ? Group.Id : 0); // group id
                 Message.AppendString(Group != null ? Group.Name : ""); // group name
                 Message.AppendString(Group != null ? Group.Badge : ""); // group image
+                //Message.AppendInt32(1);
+                //Message.AppendString("GRP");
+                //Message.AppendString("");
                 Message.AppendString(""); // ???
                 Message.AppendInt32(TagCount);
 

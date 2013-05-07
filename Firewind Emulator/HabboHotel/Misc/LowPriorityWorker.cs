@@ -9,6 +9,7 @@ namespace Firewind.HabboHotel.Misc
 {
     internal class LowPriorityWorker
     {
+        private static int _runFrequency;
         private static int UserPeak;
 
 
@@ -18,6 +19,8 @@ namespace Firewind.HabboHotel.Misc
         {
             dbClient.setQuery("SELECT userpeak FROM server_status");
             UserPeak = dbClient.getInteger();
+
+            _runFrequency = int.Parse(FirewindEnvironment.GetConfig().GetEntry("backgroundworker.interval", "10000")); // leon is crazy, 300!?! (THIS IS MADNESS!!)
         }
 
         private static DateTime processLastExecution;
@@ -31,7 +34,7 @@ namespace Firewind.HabboHotel.Misc
 
                 TimeSpan sinceLastTime = DateTime.Now - processLastExecution;
 
-                if (sinceLastTime.TotalMilliseconds >= 300)
+                if (sinceLastTime.TotalMilliseconds >= _runFrequency)
                 {
                     processLastExecution = DateTime.Now;
                     try

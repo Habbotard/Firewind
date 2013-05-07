@@ -179,6 +179,10 @@ namespace HabboEvents
         public static int UseWallItem = 3793;
 
         // Groups
-        public static object StartGuildPurchase = 1137;
+        public static int StartGuildPurchase = 1137;
+        public static int GetGuildInfo = 1660;
+
+        // Engine
+        public static int EventLog = 2087;
     }
 }

@@ -977,5 +977,15 @@ namespace Firewind.Messages.StaticMessageHandlers
         {
             handler.StartGuildPurchase();
         }
+
+        internal static void GetGuildInfo(GameClientMessageHandler handler)
+        {
+            handler.GetGuildInfo();
+        }
+
+        internal static void EventLog(GameClientMessageHandler handler)
+        {
+            handler.EventLog();
+        }
     }
 }

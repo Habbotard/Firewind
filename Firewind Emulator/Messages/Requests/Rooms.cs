@@ -231,6 +231,7 @@ namespace Firewind.Messages
             bool unk1 = Request.PopWiredBoolean(); // these 2 bools could have with forwarding to do
             bool unk2 = Request.PopWiredBoolean();
 
+            //Logging.LogDebug(String.Format("p1: {0}, p2: {1}", unk1, unk2));
             if (!Session.GetHabbo().HasFuse("fuse_enter_any_room") && (Session.GetHabbo().LoadingRoom != roomID || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed))
                 return;
 

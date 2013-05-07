@@ -5,6 +5,7 @@ using HabboEvents;
 using Firewind.HabboHotel.Rooms;
 using System.Collections.Generic;
 using Firewind.HabboHotel.Groups;
+using Firewind.HabboHotel.Groups.Types;
 
 namespace Firewind.Messages
 {
@@ -134,6 +135,31 @@ namespace Firewind.Messages
         public void GetGuildInfo()
         {
             // int, bool
+            int groupID = Request.PopWiredInt32();
+
+            // int, bool, int, string, string, string, int, string, int int, bool, string, bool, bool, string, bool, bool, int
+            Response.Init(Outgoing.GroupInfo);
+
+            Response.AppendInt32(groupID); // groupId
+            Response.AppendBoolean(false); // is member?
+            Response.AppendInt32(0); // type
+            Response.AppendString("Awasome group"); // groupName
+            Response.AppendString("This text is hardcoded!"); // description
+            Response.AppendString(""); // badgeCode
+            Response.AppendInt32(1); // roomId
+            Response.AppendString("Awesome room"); // roomName
+            Response.AppendInt32(0); // status
+            Response.AppendInt32(51); // totalMembers
+            Response.AppendBoolean(true); // favourite
+            Response.AppendString("0-0-1024"); // date created?
+            Response.AppendBoolean(true); // is owner?
+            Response.AppendBoolean(true); // is admin?
+            Response.AppendString("Leonislzy"); // owner name?
+            Response.AppendBoolean(true); // openDetails?
+            Response.AppendBoolean(false); // show group name?
+            Response.AppendInt32(0); // ???
+
+            SendResponse();
         }
     }
 }

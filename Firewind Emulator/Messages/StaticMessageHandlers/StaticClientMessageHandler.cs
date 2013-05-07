@@ -210,6 +210,10 @@ namespace Firewind.Messages.StaticMessageHandlers
 
             // Groups
             handlers.Add(Incoming.StartGuildPurchase, new StaticRequestHandler(SharedPacketLib.StartGuildPurchase));
+            handlers.Add(Incoming.GetGuildInfo, new StaticRequestHandler(SharedPacketLib.GetGuildInfo));
+
+            // Engine
+            handlers.Add(Incoming.EventLog, new StaticRequestHandler(SharedPacketLib.EventLog));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion
