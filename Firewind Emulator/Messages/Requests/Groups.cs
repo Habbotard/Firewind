@@ -4,6 +4,7 @@ using System;
 using HabboEvents;
 using Firewind.HabboHotel.Rooms;
 using System.Collections.Generic;
+using Firewind.HabboHotel.Groups;
 
 namespace Firewind.Messages
 {
@@ -65,32 +66,66 @@ namespace Firewind.Messages
             // fuck im lazy, leon make this real
             Response.Init(Outgoing.GuildEditorData); // i dont even know if this is the right header dammet
 
-            // first bases
-            Response.AppendInt32(1);
-            Response.AppendInt32(1);
-            Response.AppendString("base_basic_1.gif");
-            Response.AppendString("");
 
-            // then symbols
-            Response.AppendInt32(1);
-            Response.AppendInt32(2);
-            Response.AppendString("symbol_background_1.gif");
-            Response.AppendString("");
+            Response.AppendInt32(GuildsPartsData.BaseBadges.Count);
+            foreach (GuildsPartsData data in GuildsPartsData.BaseBadges)
+            {
+                Response.AppendInt32(data.Id);
+                Response.AppendString(data.ExtraData1);
+                Response.AppendString(data.ExtraData2);
+            }
+            Response.AppendInt32(GuildsPartsData.SymbolBadges.Count);
+            foreach (GuildsPartsData data in GuildsPartsData.SymbolBadges)
+            {
+                Response.AppendInt32(data.Id);
+                Response.AppendString(data.ExtraData1);
+                Response.AppendString(data.ExtraData2);
+            }
+            Response.AppendInt32(GuildsPartsData.ColorBadges1.Count);
+            foreach (GuildsPartsData data in GuildsPartsData.ColorBadges1)
+            {
+                Response.AppendInt32(data.Id);
+                Response.AppendString(data.ExtraData1);
+            }
+            Response.AppendInt32(GuildsPartsData.ColorBadges2.Count);
+            foreach (GuildsPartsData data in GuildsPartsData.ColorBadges2)
+            {
+                Response.AppendInt32(data.Id);
+                Response.AppendString(data.ExtraData1);
+            }
+            Response.AppendInt32(GuildsPartsData.ColorBadges3.Count);
+            foreach (GuildsPartsData data in GuildsPartsData.ColorBadges3)
+            {
+                Response.AppendInt32(data.Id);
+                Response.AppendString(data.ExtraData1);
+            }
 
-            // then color 1s
-            Response.AppendInt32(1);
-            Response.AppendInt32(3);
-            Response.AppendString("ffffff");
+            //// first bases
+            //Response.AppendInt32(1);
+            //Response.AppendInt32(1);
+            //Response.AppendString("base_basic_1.gif");
+            //Response.AppendString("");
 
-            // then color 2s
-            Response.AppendInt32(1);
-            Response.AppendInt32(4);
-            Response.AppendString("ffffff");
+            //// then symbols
+            //Response.AppendInt32(1);
+            //Response.AppendInt32(2);
+            //Response.AppendString("symbol_background_1.gif");
+            //Response.AppendString("");
 
-            // then color 3s
-            Response.AppendInt32(1);
-            Response.AppendInt32(5);
-            Response.AppendString("ffffff");
+            //// then color 1s
+            //Response.AppendInt32(1);
+            //Response.AppendInt32(3);
+            //Response.AppendString("ffffff");
+
+            //// then color 2s
+            //Response.AppendInt32(1);
+            //Response.AppendInt32(4);
+            //Response.AppendString("ffffff");
+
+            //// then color 3s
+            //Response.AppendInt32(1);
+            //Response.AppendInt32(5);
+            //Response.AppendString("ffffff");
 
             SendResponse();
         }

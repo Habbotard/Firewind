@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,6 +24,11 @@ namespace FirewindLauncher
             byte[] outBlock = xfrm.TransformFinalBlock(inBytes, 0, inBytes.Length);
 
             return outBlock;
+        }
+        public static string MD5HashFile(string fn)
+        {
+            byte[] hash = MD5.Create().ComputeHash(File.ReadAllBytes(fn));
+            return BitConverter.ToString(hash).Replace("-", "");
         }
     }
 }

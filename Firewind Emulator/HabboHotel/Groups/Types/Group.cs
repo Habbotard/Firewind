@@ -9,7 +9,7 @@ namespace Firewind.HabboHotel.Groups.Types
 {
     class Group
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Badge { get; set; }
@@ -37,7 +37,7 @@ namespace Firewind.HabboHotel.Groups.Types
 
         public Group(DataRow Data, DataTable Members)
         {
-            this.Id = (uint)Data["id"];
+            this.Id = (int)Data["id"];
             this.Name = (string)Data["name"];
             this.Description = (string)Data["description"];
             this.Badge = (string)Data["badge"];

@@ -19,6 +19,7 @@ using System.Threading;
 using Firewind.HabboHotel.Quests;
 using Firewind.HabboHotel.SoundMachine;
 using Firewind.HabboHotel.Users.Competitions;
+using Firewind.HabboHotel.Groups;
 
 namespace Firewind.HabboHotel
 {
@@ -244,6 +245,9 @@ namespace Firewind.HabboHotel
                 SongManager.Initialize();
                 TimeUsed = DateTime.Now - Start;
                 Logging.WriteLine("Sound manager -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
+
+
+                GuildsPartsData.InitGroups();
 
 
                 Start = DateTime.Now;

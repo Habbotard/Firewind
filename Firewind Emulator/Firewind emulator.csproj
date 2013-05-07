@@ -138,6 +138,7 @@
     <Compile Include="HabboHotel\Achievements\Composer\AchievementScoreUpdateComposer.cs" />
     <Compile Include="HabboHotel\Achievements\Composer\AchievementUnlockedComposer.cs" />
     <Compile Include="HabboHotel\Groups\GroupManager.cs" />
+    <Compile Include="HabboHotel\Groups\GuildsPartsData.cs" />
     <Compile Include="HabboHotel\Groups\Types\Group.cs" />
     <Compile Include="HabboHotel\Groups\Types\GroupMember.cs" />
     <Compile Include="HabboHotel\Items\WallCoordinate.cs" />

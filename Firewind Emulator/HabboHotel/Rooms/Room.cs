@@ -21,6 +21,7 @@ using Firewind.HabboHotel.SoundMachine;
 using System.Drawing;
 using Firewind.HabboHotel.Groups;
 using HabboEvents;
+using Firewind.HabboHotel.Groups.Types;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -294,13 +295,13 @@ namespace Firewind.HabboHotel.Rooms
         {
             Initialize(Data.Id, Data.Name, Data.Description, Data.Owner, Data.OwnerId, Data.Category, Data.State,
             Data.UsersMax, Data.ModelName, Data.Score, Data.Tags, Data.AllowPets, Data.AllowPetsEating,
-            Data.AllowWalkthrough, Data.Hidewall, Data.Icon, Data.Password, Data.Wallpaper, Data.Floor, Data.Landscape, Data, Data.AllowRightsOverride, Data.WallThickness, Data.FloorThickness);
+            Data.AllowWalkthrough, Data.Hidewall, Data.Icon, Data.Password, Data.Wallpaper, Data.Floor, Data.Landscape, Data, Data.AllowRightsOverride, Data.WallThickness, Data.FloorThickness, Data.Group);
         }
 
         private void Initialize(UInt32 Id, string Name, string Description, string Owner, int OwnerId, int Category,
             int State, int UsersMax, string ModelName, int Score, List<string> pTags, bool AllowPets,
             bool AllowPetsEating, bool AllowWalkthrough, bool Hidewall, RoomIcon Icon, string Password, string Wallpaper, string Floor,
-            string Landscape, RoomData RoomData, bool RightOverride, int walltickness, int floorthickness)
+            string Landscape, RoomData RoomData, bool RightOverride, int walltickness, int floorthickness, Group group)
         {
 
             this.mDisposed = false;
@@ -363,6 +364,8 @@ namespace Firewind.HabboHotel.Rooms
             this.roomItemHandling = new RoomItemHandling(this);
             this.roomUserManager = new RoomUserManager(this);
             this.wiredHandler = new WiredHandler(this);
+
+            this.Group = group;
 
             LoadRights();
             GetRoomItemHandler().LoadFurniture();
@@ -964,6 +967,7 @@ namespace Firewind.HabboHotel.Rooms
         }
 
         private bool mDisposed;
+        private Group Group;
 
         #region IDisposable members
 

@@ -6,6 +6,7 @@ using Firewind.Messages;
 using HabboEvents;
 using Firewind.HabboHotel.GameClients;
 using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.HabboHotel.Groups.Types;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -39,6 +40,7 @@ namespace Firewind.HabboHotel.Rooms
         internal int FloorThickness;
         internal string Badge;
         internal int GroupID;
+        internal Group Group;
 
         internal RoomIcon Icon
         {
@@ -106,13 +108,22 @@ namespace Firewind.HabboHotel.Rooms
             this.Owner = (string)Row["owner"];
             this.Badge = (string)Row["badge"];
             this.OwnerId = 0;
+
+            DataRow groupRow;
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
                 dbClient.setQuery("SELECT id FROM users WHERE username = '" + this.Owner + "'");
                 int result = dbClient.getInteger();
                 if(result > 0)
                     this.OwnerId = result;
+
+                dbClient.setQuery("SELECT * FROM groups_details WHERE roomid = @id");
+                dbClient.addParameter("id", Id);
+                groupRow = dbClient.getRow();
             }
+
+            if(groupRow != null)
+                Group = new Group(groupRow, new DataTable());
 
             switch (Row["state"].ToString().ToLower())
             {
@@ -335,9 +346,9 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(2); // can trade?
                 Message.AppendInt32(Score);
                 Message.AppendInt32(Category);
-                Message.AppendInt32(0); // group id
-                Message.AppendString("test"); // group name
-                Message.AppendString("b0000"); // group image
+                Message.AppendInt32(Group != null ? Group.Id : 0); // group id
+                Message.AppendString(Group != null ? Group.Name : ""); // group name
+                Message.AppendString(Group != null ? Group.Badge : ""); // group image
                 Message.AppendString(""); // ???
                 Message.AppendInt32(TagCount);
 
