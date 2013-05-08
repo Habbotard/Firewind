@@ -24,19 +24,6 @@ namespace Firewind.Messages
             }
         }
 
-        //private static readonly string expl0it = Convert.ToChar(1).ToString();
-
-        private void CheckForExploits(string packetdata)
-        {
-            /*if (packetdata.Contains(expl0it))
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.AppendLine("PACKET EXPLOIT IN PACKET " + MessageId);
-                builder.AppendLine("Packet content : " + ToString());
-                Logging.LogCriticalException(builder.ToString());
-            }*/
-        }
-
         internal int RemainingLength
         {
             get

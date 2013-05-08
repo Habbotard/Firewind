@@ -194,5 +194,8 @@ namespace HabboEvents
         // User
         public static int SoundSettings = 89;
         public static int WelcomeBack = 3015;
+
+        // Pets
+        public static int PetCommands = 2603;
     }
 }

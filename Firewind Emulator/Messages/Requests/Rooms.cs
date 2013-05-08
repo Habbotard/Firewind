@@ -3548,7 +3548,7 @@ namespace Firewind.Messages
             if (PetUser == null || PetUser.PetData == null)
                 return;
 
-            GetResponse().Init(605);
+            GetResponse().Init(Outgoing.PetCommands);
             GetResponse().AppendUInt(PetID);
 
             int level = PetUser.PetData.Level;
