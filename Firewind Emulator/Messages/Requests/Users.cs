@@ -127,8 +127,8 @@ namespace Firewind.Messages
 
             for(int i = 0; i < 5; i++)
             {
-                int Slot = Request.PopWiredInt32();
-                string Badge = Request.PopFixedString();
+                int Slot = Request.ReadInt32();
+                string Badge = Request.ReadString();
 
                 if(Badge.Length == 0)
                     continue;
@@ -180,7 +180,7 @@ namespace Firewind.Messages
 
         internal void PrepareCampaing()
         {
-            String campaingbadge = Request.PopFixedString();
+            String campaingbadge = Request.ReadString();
 
             Response.Init(Outgoing.PrepareCampaing);
             Response.AppendString(campaingbadge); // tha badge
@@ -242,8 +242,8 @@ namespace Firewind.Messages
         {
             try
             {
-                int UserId = Request.PopWiredInt32();
-                Boolean IsMe = Request.PopWiredBoolean();
+                int UserId = Request.ReadInt32();
+                Boolean IsMe = Request.ReadBoolean();
                 /* don't know
                  * if (IsMe)
                     UserId = (int)Session.GetHabbo().Id;*/
@@ -294,8 +294,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            string Gender = Request.PopFixedString().ToUpper();
-            string Look = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
+            string Gender = Request.ReadString().ToUpper();
+            string Look = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
             if (!AntiMutant.ValidateLook(Look, Gender))
             {
@@ -353,7 +353,7 @@ namespace Firewind.Messages
 
         internal void ChangeMotto()
         {
-            string Motto = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
+            string Motto = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
             if (Motto.Length == 0 || Motto == Session.GetHabbo().Motto) // Prevents spam?
             {
@@ -441,10 +441,10 @@ namespace Firewind.Messages
 
         internal void SaveWardrobe()
         {
-            uint SlotId = Request.PopWiredUInt();
+            uint SlotId = Request.ReadUInt32();
 
-            string Look = Request.PopFixedString();
-            string Gender = Request.PopFixedString();
+            string Look = Request.ReadString();
+            string Gender = Request.ReadString();
 
             if (!AntiMutant.ValidateLook(Look, Gender))
             {

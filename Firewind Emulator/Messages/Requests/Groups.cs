@@ -16,16 +16,16 @@ namespace Firewind.Messages
         public void CreateGuild()
         {
             // string, string, int, int, int, int[]
-            string name = Request.PopFixedString();
-            string desc = Request.PopFixedString();
-            int roomID = Request.PopWiredInt32();
-            int color1 = Request.PopWiredInt32();
-            int color2 = Request.PopWiredInt32();
+            string name = Request.ReadString();
+            string desc = Request.ReadString();
+            int roomID = Request.ReadInt32();
+            int color1 = Request.ReadInt32();
+            int color2 = Request.ReadInt32();
 
-            int[] badgeData = new int[Request.PopWiredInt32()];
+            int[] badgeData = new int[Request.ReadInt32()];
             for (int i = 0; i < badgeData.Length; i++)
             {
-                badgeData[i] = Request.PopWiredInt32();
+                badgeData[i] = Request.ReadInt32();
             }
         }
 
@@ -33,11 +33,11 @@ namespace Firewind.Messages
         public void UpdateGuildBadge()
         {
             // int, int[]
-            int guildID = Request.PopWiredInt32();
-            int[] newBadgeData = new int[Request.PopWiredInt32()];
+            int guildID = Request.ReadInt32();
+            int[] newBadgeData = new int[Request.ReadInt32()];
             for (int i = 0; i < newBadgeData.Length; i++)
             {
-                newBadgeData[i] = Request.PopWiredInt32();
+                newBadgeData[i] = Request.ReadInt32();
             }
         }
 
@@ -135,7 +135,7 @@ namespace Firewind.Messages
         public void GetGuildInfo()
         {
             // int, bool
-            int groupID = Request.PopWiredInt32();
+            int groupID = Request.ReadInt32();
 
             // int, bool, int, string, string, string, int, string, int int, bool, string, bool, bool, string, bool, bool, int
             Response.Init(Outgoing.GroupInfo);

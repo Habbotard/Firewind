@@ -18,7 +18,7 @@ namespace Firewind.Messages
             {
                 return;
             }
-            uint Id = Request.PopWiredUInt();
+            uint Id = Request.ReadUInt32();
 
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(Id);
 
@@ -52,7 +52,7 @@ namespace Firewind.Messages
             {
                 return;
             }
-            uint Id = Request.PopWiredUInt();
+            uint Id = Request.ReadUInt32();
 
             Session.GetHabbo().FavoriteRooms.Remove(Id);
 
@@ -114,7 +114,7 @@ namespace Firewind.Messages
             {
                 return;
             }
-            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeNavigator(Session, int.Parse(Request.PopFixedString())));
+            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeNavigator(Session, int.Parse(Request.ReadString())));
         }
 
         internal void GetHighRatedRooms()
@@ -184,7 +184,7 @@ namespace Firewind.Messages
             {
                 return;
             }
-            int Category = int.Parse(Request.PopFixedString());
+            int Category = int.Parse(Request.ReadString());
 
             Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeEventListing(Category));
         }
@@ -206,7 +206,7 @@ namespace Firewind.Messages
             {
                 return;
             }
-            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeSearchResults(Request.PopFixedString()));
+            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeSearchResults(Request.ReadString()));
         }
 
         internal void PerformSearch2()
@@ -216,8 +216,8 @@ namespace Firewind.Messages
             {
                 return;
             }
-            int junk = Request.PopWiredInt32();
-            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeSearchResults(Request.PopFixedString()));
+            int junk = Request.ReadInt32();
+            Session.SendMessage(FirewindEnvironment.GetGame().GetNavigator().SerializeSearchResults(Request.ReadString()));
         }
 
         #region Not in use

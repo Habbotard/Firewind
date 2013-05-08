@@ -41,7 +41,7 @@ namespace Firewind.Messages
        
         internal void StreamLike()
         {
-            int ID = Request.PopWiredInt32();
+            int ID = Request.ReadInt32();
             
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -50,7 +50,7 @@ namespace Firewind.Messages
         }
         internal void SendToStream()
         {
-            string MessageX = Request.PopFixedString();
+            string MessageX = Request.ReadString();
 
             //int time = (TimeHelper.ago(DateTime.Now));
             DateTime timex = DateTime.Now;

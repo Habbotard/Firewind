@@ -252,9 +252,9 @@ namespace Firewind.HabboHotel.Rooms.Wired
             {
                 case InteractionType.triggeronusersay:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        bool isOnlyOwner = (clientMessage.PopWiredInt32() == 1);
-                        string message = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        bool isOnlyOwner = (clientMessage.ReadInt32() == 1);
+                        string message = clientMessage.ReadString();
                         //Logging.WriteLine("Handle 'onusersay' itemid(" + item.Id + ") junk(" + junk + ") wired: isOnlyOwner(" + isOnlyOwner + ") message = " + message);
                         
                         IWiredTrigger handler = new UserSays(item, room.GetWiredHandler(), isOnlyOwner, message, room);
@@ -263,11 +263,11 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.triggerwalkonfurni:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string message = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string message = clientMessage.ReadString();
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new WalksOnFurni(item, room.GetWiredHandler(), items, delay);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -275,11 +275,11 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.triggerwalkofffurni:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string message = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string message = clientMessage.ReadString();
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new WalksOnFurni(item, room.GetWiredHandler(), items, delay);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -287,8 +287,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.actionshowmessage:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string message = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string message = clientMessage.ReadString();
 
                         IWiredTrigger action = new ShowMessage(message, room.GetWiredHandler(), itemID);
                         HandleTriggerSave(action, room.GetWiredHandler(), room, itemID);
@@ -296,11 +296,11 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.actionteleportto:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string junk2 = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string junk2 = clientMessage.ReadString();
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger action = new TeleportToItem(room.GetGameMap(), room.GetWiredHandler(), items, delay, itemID);
                         HandleTriggerSave(action, room.GetWiredHandler(), room, itemID);
@@ -308,11 +308,11 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.actiontogglestate:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string message = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string message = clientMessage.ReadString();
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
                         //Logging.WriteLine("Save action toogle wired with " + items.Count + " item(s) and " + delay + " second(s) of delay!");
 
                         IWiredTrigger action = new ToggleItemState(room.GetGameMap(), room.GetWiredHandler(), items, delay, item);
@@ -321,15 +321,15 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.actionmoverotate:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        MovementState movement = (MovementState)clientMessage.PopWiredInt32();
-                        RotationState rotation = (RotationState)clientMessage.PopWiredInt32();
+                        int junk = clientMessage.ReadInt32();
+                        MovementState movement = (MovementState)clientMessage.ReadInt32();
+                        RotationState rotation = (RotationState)clientMessage.ReadInt32();
 
-                        bool junk3 = clientMessage.PopWiredBoolean();
-                        bool junk2 = clientMessage.PopWiredBoolean(); 
+                        bool junk3 = clientMessage.ReadBoolean();
+                        bool junk2 = clientMessage.ReadBoolean(); 
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new MoveRotate(movement, rotation, items, delay, room, room.GetWiredHandler(), itemID);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -338,13 +338,13 @@ namespace Firewind.HabboHotel.Rooms.Wired
                 case InteractionType.actionposreset:
                     {
 
-                        int junk = clientMessage.PopWiredInt32();
-                        bool junk3 = clientMessage.PopWiredBoolean();
-                        bool junk2 = clientMessage.PopWiredBoolean(); 
+                        int junk = clientMessage.ReadInt32();
+                        bool junk3 = clientMessage.ReadBoolean();
+                        bool junk2 = clientMessage.ReadBoolean(); 
 
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger action = new PositionReset(items, delay, room.GetRoomItemHandler(), room.GetWiredHandler(), itemID);
                         HandleTriggerSave(action, room.GetWiredHandler(), room, itemID);
@@ -355,12 +355,12 @@ namespace Firewind.HabboHotel.Rooms.Wired
                 case InteractionType.actionresettimer:
                     {
 
-                        int junk = clientMessage.PopWiredInt32();
-                        bool junk3 = clientMessage.PopWiredBoolean();
-                        bool junk2 = clientMessage.PopWiredBoolean(); 
+                        int junk = clientMessage.ReadInt32();
+                        bool junk3 = clientMessage.ReadBoolean();
+                        bool junk2 = clientMessage.ReadBoolean(); 
                         int furniCount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniCount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger action = new TimerReset(room, room.GetWiredHandler(), items, delay, itemID);
                         HandleTriggerSave(action, room.GetWiredHandler(), room, itemID);
@@ -369,9 +369,9 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.actiongivescore:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        int points = clientMessage.PopWiredInt32();
-                        int games = clientMessage.PopWiredInt32();
+                        int junk = clientMessage.ReadInt32();
+                        int points = clientMessage.ReadInt32();
+                        int games = clientMessage.ReadInt32();
 
                         IWiredTrigger action = new GiveScore(games, points, room.GetGameManager(), itemID);
                         HandleTriggerSave(action, room.GetWiredHandler(), room, itemID);
@@ -393,8 +393,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     }
                 case InteractionType.triggerrepeater:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        int cycleTimes = clientMessage.PopWiredInt32();
+                        int junk = clientMessage.ReadInt32();
+                        int cycleTimes = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new Repeater(room.GetWiredHandler(), item, cycleTimes);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -404,8 +404,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
                 case InteractionType.triggerroomenter:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        string users = clientMessage.PopFixedString();
+                        int junk = clientMessage.ReadInt32();
+                        string users = clientMessage.ReadString();
 
                         IWiredTrigger handler = new EntersRoom(item, room.GetWiredHandler(), room.GetRoomUserManager(), !string.IsNullOrEmpty(users), users);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -414,8 +414,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
                 case InteractionType.triggerscoreachieved:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        int score = clientMessage.PopWiredInt32();
+                        int junk = clientMessage.ReadInt32();
+                        int score = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new ScoreAchieved(item, room.GetWiredHandler(), score, room.GetGameManager());
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -425,8 +425,8 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
                 case InteractionType.triggertimer:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        int cycles = clientMessage.PopWiredInt32();
+                        int junk = clientMessage.ReadInt32();
+                        int cycles = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new Timer(item, room.GetWiredHandler(), cycles, room.GetGameManager());
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -436,13 +436,13 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
                 case InteractionType.triggerstatechanged:
                     {
-                        int junk = clientMessage.PopWiredInt32();
-                        bool junk3 = clientMessage.PopWiredBoolean();
-                        bool junk2 = clientMessage.PopWiredBoolean();
+                        int junk = clientMessage.ReadInt32();
+                        bool junk3 = clientMessage.ReadBoolean();
+                        bool junk2 = clientMessage.ReadBoolean();
 
                         int furniAmount;
                         List<RoomItem> items = GetItems(clientMessage, room, out furniAmount);
-                        int delay = clientMessage.PopWiredInt32();
+                        int delay = clientMessage.ReadInt32();
 
                         IWiredTrigger handler = new SateChanged(room.GetWiredHandler(), item, items, delay);
                         HandleTriggerSave(handler, room.GetWiredHandler(), room, itemID);
@@ -738,9 +738,9 @@ namespace Firewind.HabboHotel.Rooms.Wired
                 return;
             
             clientMessage.AdvancePointer(1);
-            bool a = clientMessage.PopWiredBoolean();
-            bool b = clientMessage.PopWiredBoolean();
-            bool c = clientMessage.PopWiredBoolean();
+            bool a = clientMessage.ReadBoolean();
+            bool b = clientMessage.ReadBoolean();
+            bool c = clientMessage.ReadBoolean();
             clientMessage.AdvancePointer(2);
 
             int furniCount;
@@ -795,13 +795,13 @@ namespace Firewind.HabboHotel.Rooms.Wired
         private static List<RoomItem> GetItems(ClientMessage message, Room room, out int itemCount)
         {
             List<RoomItem> items = new List<RoomItem>();
-            itemCount = message.PopWiredInt32();
+            itemCount = message.ReadInt32();
 
             uint itemID;
             RoomItem item;
             for (int i = 0; i < itemCount; i++)
             {
-                itemID = message.PopWiredUInt();
+                itemID = message.ReadUInt32();
                 item = room.GetRoomItemHandler().GetItem(itemID);
 
                 if (item != null && !WiredUtillity.TypeIsWired(item.GetBaseItem().InteractionType))

@@ -28,11 +28,11 @@ namespace Firewind.Messages
 
             if (!errorOccured)
             {
-                String Message = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
+                String Message = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
-                int Junk = Request.PopWiredInt32();
-                int Type = Request.PopWiredInt32();
-                uint ReportedUser = Request.PopWiredUInt();
+                int Junk = Request.ReadInt32();
+                int Type = Request.ReadInt32();
+                uint ReportedUser = Request.ReadUInt32();
 
                 FirewindEnvironment.GetGame().GetModerationTool().SendNewTicket(Session, Type, ReportedUser, Message);
             }
@@ -62,7 +62,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
+            uint UserId = Request.ReadUInt32();
 
             if (FirewindEnvironment.GetGame().GetClientManager().GetNameById(UserId) != "Unknown User")
             {
@@ -81,7 +81,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            Session.SendMessage(ModerationTool.SerializeUserChatlog(Request.PopWiredUInt()));
+            Session.SendMessage(ModerationTool.SerializeUserChatlog(Request.ReadUInt32()));
         }
 
         internal void ModGetRoomChatlog()
@@ -91,8 +91,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Junk = Request.PopWiredInt32();
-            uint RoomId = Request.PopWiredUInt();
+            int Junk = Request.ReadInt32();
+            uint RoomId = Request.ReadUInt32();
 
             if (FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId) != null)
             {
@@ -107,7 +107,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint RoomId = Request.PopWiredUInt();
+            uint RoomId = Request.ReadUInt32();
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateNullableRoomData(RoomId);
 
             Session.SendMessage(ModerationTool.SerializeRoomTool(Data));
@@ -120,8 +120,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Junk = Request.PopWiredInt32();
-            uint TicketId = Request.PopWiredUInt();
+            int Junk = Request.ReadInt32();
+            uint TicketId = Request.ReadUInt32();
             FirewindEnvironment.GetGame().GetModerationTool().PickTicket(Session, TicketId);
         }
 
@@ -132,11 +132,11 @@ namespace Firewind.Messages
                 return;
             }
 
-            int amount = Request.PopWiredInt32();
+            int amount = Request.ReadInt32();
 
             for (int i = 0; i < amount; i++)
             {
-                uint TicketId = Request.PopWiredUInt();
+                uint TicketId = Request.ReadUInt32();
 
                 FirewindEnvironment.GetGame().GetModerationTool().ReleaseTicket(Session, TicketId);
             }
@@ -149,9 +149,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Result = Request.PopWiredInt32(); // result, 1 = useless, 2 = abusive, 3 = resolved
-            for(int i = 0; i < Request.PopWiredInt32(); i++)
-                FirewindEnvironment.GetGame().GetModerationTool().CloseTicket(Session, Request.PopWiredUInt(), Result);
+            int Result = Request.ReadInt32(); // result, 1 = useless, 2 = abusive, 3 = resolved
+            for(int i = 0; i < Request.ReadInt32(); i++)
+                FirewindEnvironment.GetGame().GetModerationTool().CloseTicket(Session, Request.ReadUInt32(), Result);
         }
 
         internal void ModGetTicketChatlog()
@@ -162,7 +162,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            SupportTicket Ticket = FirewindEnvironment.GetGame().GetModerationTool().GetTicket(Request.PopWiredUInt());
+            SupportTicket Ticket = FirewindEnvironment.GetGame().GetModerationTool().GetTicket(Request.ReadUInt32());
 
             if (Ticket == null)
             {
@@ -186,7 +186,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
+            uint UserId = Request.ReadUInt32();
 
             Session.SendMessage(ModerationTool.SerializeRoomVisits(UserId));
         }
@@ -198,9 +198,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            int One = Request.PopWiredInt32();
-            int Two = Request.PopWiredInt32();
-            String Message = Request.PopFixedString();
+            int One = Request.ReadInt32();
+            int Two = Request.ReadInt32();
+            String Message = Request.ReadString();
 
             ServerMessage Alert = new ServerMessage(Outgoing.SendNotif);
             Alert.AppendString(Message);
@@ -214,10 +214,10 @@ namespace Firewind.Messages
             {
                 return;
             }
-            uint RoomId = Request.PopWiredUInt();
-            Boolean ActOne = (Request.PopWiredInt32() == 1); // set room lock to doorbell
-            Boolean ActTwo = (Request.PopWiredInt32() == 1); // set room to inappropiate
-            Boolean ActThree = (Request.PopWiredInt32() == 1); // kick all users
+            uint RoomId = Request.ReadUInt32();
+            Boolean ActOne = (Request.ReadInt32() == 1); // set room lock to doorbell
+            Boolean ActTwo = (Request.ReadInt32() == 1); // set room to inappropiate
+            Boolean ActThree = (Request.ReadInt32() == 1); // kick all users
 
             ModerationTool.PerformRoomAction(Session, RoomId, ActThree, ActOne, ActTwo);
         }
@@ -229,8 +229,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
-            String Message = Request.PopFixedString();
+            uint UserId = Request.ReadUInt32();
+            String Message = Request.ReadString();
             Logging.WriteLine("UserId: " + UserId + "; Message => " + Message);
             ModerationTool.AlertUser(Session, UserId, Message, true);
         }
@@ -242,8 +242,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
-            String Message = Request.PopFixedString();
+            uint UserId = Request.ReadUInt32();
+            String Message = Request.ReadString();
 
             ModerationTool.AlertUser(Session, UserId, Message, false);
         }
@@ -255,8 +255,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
-            String Message = Request.PopFixedString();
+            uint UserId = Request.ReadUInt32();
+            String Message = Request.ReadString();
 
             ModerationTool.KickUser(Session, UserId, Message, false);
         }
@@ -268,9 +268,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.PopWiredUInt();
-            String Message = Request.PopFixedString();
-            int Length = Request.PopWiredInt32() * 3600;
+            uint UserId = Request.ReadUInt32();
+            String Message = Request.ReadString();
+            int Length = Request.ReadInt32() * 3600;
 
             ModerationTool.BanUser(Session, UserId, Length, Message);
         }

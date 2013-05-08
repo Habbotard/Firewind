@@ -15,12 +15,12 @@ namespace Firewind.Messages
         internal void GetMusicData()
         {
 
-            int Amount = Request.PopWiredInt32();
+            int Amount = Request.ReadInt32();
             List<SongData> Songs = new List<SongData>();
 
             for (int i = 0; i < Amount; i++)
             {
-                SongData Song = SongManager.GetSong(Request.PopWiredUInt());
+                SongData Song = SongManager.GetSong(Request.ReadUInt32());
 
                 if (Song == null)
                 {
@@ -53,7 +53,7 @@ namespace Firewind.Messages
             if (musicController.PlaylistSize >= musicController.PlaylistCapacity)
                 return;
 
-            uint itemID = Request.PopWiredUInt();
+            uint itemID = Request.ReadUInt32();
             UserItem item = Session.GetHabbo().GetInventoryComponent().GetItem(itemID);
             if (item == null || item.GetBaseItem().InteractionType != InteractionType.musicdisc)
                 return;
@@ -83,7 +83,7 @@ namespace Firewind.Messages
 
             RoomMusicController musicController = currentRoom.GetRoomMusicController();
 
-            SongItem item = musicController.RemoveDisk(Request.PopWiredInt32());
+            SongItem item = musicController.RemoveDisk(Request.ReadInt32());
             if (item == null)
                 return;
 

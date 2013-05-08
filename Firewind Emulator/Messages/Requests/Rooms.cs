@@ -51,9 +51,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            int flatID = Request.PopWiredInt32();
-            string password = Request.PopFixedString();
-            int notUsed = Request.PopWiredInt32();
+            int flatID = Request.ReadInt32();
+            string password = Request.ReadString();
+            int notUsed = Request.ReadInt32();
 
             if (Session.GetHabbo().IsTeleporting && Session.GetHabbo().TeleportingRoomID != flatID)
                 return;
@@ -227,9 +227,9 @@ namespace Firewind.Messages
 
         internal void GetGuestRoom()
         {
-            int roomID = Request.PopWiredInt32();
-            bool unk1 = Request.PopWiredBoolean(); // these 2 bools could have with forwarding to do
-            bool unk2 = Request.PopWiredBoolean();
+            int roomID = Request.ReadInt32();
+            bool unk1 = Request.ReadBoolean(); // these 2 bools could have with forwarding to do
+            bool unk2 = Request.ReadBoolean();
 
             //Logging.LogDebug(String.Format("p1: {0}, p2: {1}", unk1, unk2));
             if (!Session.GetHabbo().HasFuse("fuse_enter_any_room") && (Session.GetHabbo().LoadingRoom != roomID || CurrentLoadingRoom == null || !Session.GetHabbo().LoadingChecksPassed))
@@ -869,7 +869,7 @@ namespace Firewind.Messages
 
         internal void GetTrainerPanel()
         {
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             Pet PetData = null;
 
             Room Room = Session.GetHabbo().CurrentRoom;
@@ -936,7 +936,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()), false);
+            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), false);
         }
 
         internal void Shout()
@@ -957,7 +957,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()), true);
+            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), true);
         }
 
         internal void Whisper()
@@ -998,7 +998,7 @@ namespace Firewind.Messages
             FloodTime = DateTime.Now;
             FloodCount++;
 
-            string Params = Request.PopFixedString();
+            string Params = Request.ReadString();
             string ToUser = Params.Split(' ')[0];
             string Message = Params.Substring(ToUser.Length + 1);
 
@@ -1061,8 +1061,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            int MoveX = Request.PopWiredInt32();
-            int MoveY = Request.PopWiredInt32();
+            int MoveX = Request.ReadInt32();
+            int MoveY = Request.ReadInt32();
 
             if (MoveX == User.X && MoveY == User.Y)
             {
@@ -1084,8 +1084,8 @@ namespace Firewind.Messages
 
         internal void CreateRoom()
         {
-            string RoomName = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            string ModelName = Request.PopFixedString();
+            string RoomName = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            string ModelName = Request.ReadString();
             //string RoomState = Request.PopFixedString(); // unused, room open by default on creation. may be added in later build of Habbo?
 
             RoomData NewRoom = FirewindEnvironment.GetGame().GetRoomManager().CreateRoom(Session, RoomName, ModelName);
@@ -1172,18 +1172,18 @@ namespace Firewind.Messages
                 return;
             }//that is icon =D
 
-            int Junk = Request.PopWiredInt32(); // always 3
+            int Junk = Request.ReadInt32(); // always 3
 
             Dictionary<int, int> Items = new Dictionary<int, int>();
 
-            int Background = Request.PopWiredInt32();
-            int TopLayer = Request.PopWiredInt32();
-            int AmountOfItems = Request.PopWiredInt32();
+            int Background = Request.ReadInt32();
+            int TopLayer = Request.ReadInt32();
+            int AmountOfItems = Request.ReadInt32();
 
             for (int i = 0; i < AmountOfItems; i++)
             {
-                int Pos = Request.PopWiredInt32();
-                int Item = Request.PopWiredInt32();
+                int Pos = Request.ReadInt32();
+                int Item = Request.ReadInt32();
 
                 if (Pos < 0 || Pos > 10)
                 {
@@ -1263,15 +1263,15 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Id = Request.PopWiredInt32(); // roomId
-            string Name = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()); // name
-            string Description = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()); // description
-            int State = Request.PopWiredInt32(); // doorMode
-            string Password = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()); // password
-            int MaxUsers = Request.PopWiredInt32(); // maximumVisitors
-            int CategoryId = Request.PopWiredInt32(); // categoryId
+            int Id = Request.ReadInt32(); // roomId
+            string Name = FirewindEnvironment.FilterInjectionChars(Request.ReadString()); // name
+            string Description = FirewindEnvironment.FilterInjectionChars(Request.ReadString()); // description
+            int State = Request.ReadInt32(); // doorMode
+            string Password = FirewindEnvironment.FilterInjectionChars(Request.ReadString()); // password
+            int MaxUsers = Request.ReadInt32(); // maximumVisitors
+            int CategoryId = Request.ReadInt32(); // categoryId
 
-            int TagCount = Request.PopWiredInt32(); // tags count
+            int TagCount = Request.ReadInt32(); // tags count
             List<string> Tags = new List<string>();
             StringBuilder formattedTags = new StringBuilder();
 
@@ -1282,21 +1282,21 @@ namespace Firewind.Messages
                     formattedTags.Append(",");
                 }
 
-                string tag = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString().ToLower());
+                string tag = FirewindEnvironment.FilterInjectionChars(Request.ReadString().ToLower());
 
                 Tags.Add(tag);
                 formattedTags.Append(tag);
             }
 
             // not used
-            bool AllowTrade = (Request.PopWiredInt32() == 1);
+            bool AllowTrade = (Request.ReadInt32() == 1);
 
-            bool AllowPets = Request.PopWiredBoolean(); // allowPets
-            bool AllowPetsEat = Request.PopWiredBoolean(); // allowFoodConsume
-            bool AllowWalkthrough = Request.PopWiredBoolean(); // allowWalkThrough
-            bool Hidewall = Request.PopWiredBoolean(); // hideWalls
-            int WallThickness = Request.PopWiredInt32(); // wallThickness
-            int FloorThickness = Request.PopWiredInt32(); // floorThickness
+            bool AllowPets = Request.ReadBoolean(); // allowPets
+            bool AllowPetsEat = Request.ReadBoolean(); // allowFoodConsume
+            bool AllowWalkthrough = Request.ReadBoolean(); // allowWalkThrough
+            bool Hidewall = Request.ReadBoolean(); // hideWalls
+            int WallThickness = Request.ReadInt32(); // wallThickness
+            int FloorThickness = Request.ReadInt32(); // floorThickness
 
          
 
@@ -1416,7 +1416,7 @@ namespace Firewind.Messages
 
         internal void GiveRights()
         {
-            uint UserId = Request.PopWiredUInt();
+            uint UserId = Request.ReadUInt32();
 
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
             if (Room == null)
@@ -1470,7 +1470,7 @@ namespace Firewind.Messages
 
             StringBuilder DeleteParams = new StringBuilder();
 
-            int Amount = Request.PopWiredInt32();
+            int Amount = Request.ReadInt32();
 
             for (int i = 0; i < Amount; i++)
             {
@@ -1479,7 +1479,7 @@ namespace Firewind.Messages
                     DeleteParams.Append(" OR ");
                 }
 
-                uint UserId = Request.PopWiredUInt();
+                uint UserId = Request.ReadUInt32();
                 Room.UsersWithRights.Remove(UserId);
                 DeleteParams.Append("room_id = '" + Room.RoomId + "' AND user_id = '" + UserId + "'");
 
@@ -1559,7 +1559,7 @@ namespace Firewind.Messages
                 return; // insufficient permissions
             }
 
-            uint UserId = Request.PopWiredUInt();
+            uint UserId = Request.ReadUInt32();
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
             if (User == null || User.IsBot)
@@ -1585,7 +1585,7 @@ namespace Firewind.Messages
                 return; // insufficient permissions
             }
 
-            uint UserId = Request.PopWiredUInt();
+            uint UserId = Request.ReadUInt32();
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
             if (User == null || User.IsBot)
@@ -1606,7 +1606,7 @@ namespace Firewind.Messages
 
         internal void SetHomeRoom()
         {
-            uint RoomId = Request.PopWiredUInt();
+            uint RoomId = Request.ReadUInt32();
             RoomData Data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
 
             if (RoomId != 0)
@@ -1632,7 +1632,7 @@ namespace Firewind.Messages
 
         internal void DeleteRoom()
         {
-            uint RoomId = Request.PopWiredUInt();
+            uint RoomId = Request.ReadUInt32();
             if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().UsersRooms == null)
                 return;
             
@@ -1698,8 +1698,8 @@ namespace Firewind.Messages
 
             User.Unidle();
 
-            int X = Request.PopWiredInt32();
-            int Y = Request.PopWiredInt32();
+            int X = Request.ReadInt32();
+            int Y = Request.ReadInt32();
 
             if (X == User.X && Y == User.Y)
             {
@@ -1764,7 +1764,7 @@ namespace Firewind.Messages
             if (Room == null)
                 return;
 
-            String username = Request.PopFixedString();
+            String username = Request.ReadString();
             Habbo user = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(username).GetHabbo();
 
             if (user == null)
@@ -1789,7 +1789,7 @@ namespace Firewind.Messages
             if (Room == null)
                 return;
 
-            String username = Request.PopFixedString();
+            String username = Request.ReadString();
             Habbo user = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(username).GetHabbo();
 
             if (user == null)
@@ -1839,17 +1839,17 @@ namespace Firewind.Messages
                 return;
             }
 
-            int category = Request.PopWiredInt32();
-            string name = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            string descr = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            int tagCount = Request.PopWiredInt32();
+            int category = Request.ReadInt32();
+            string name = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            string descr = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            int tagCount = Request.ReadInt32();
 
             Room.Event = new RoomEvent(Room.RoomId, name, descr, category, null);
             Room.Event.Tags = new ArrayList();
 
             for (int i = 0; i < tagCount; i++)
             {
-                Room.Event.Tags.Add(FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()));
+                Room.Event.Tags.Add(FirewindEnvironment.FilterInjectionChars(Request.ReadString()));
             }
 
             Room.SendMessage(Room.Event.Serialize(Session));
@@ -1884,10 +1884,10 @@ namespace Firewind.Messages
                 return;
             }
 
-            int category = Request.PopWiredInt32();
-            string name = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            string descr = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            int tagCount = Request.PopWiredInt32();
+            int category = Request.ReadInt32();
+            string name = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            string descr = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            int tagCount = Request.ReadInt32();
 
             Room.Event.Category = category;
             Room.Event.Name = name;
@@ -1898,7 +1898,7 @@ namespace Firewind.Messages
 
             for (int i = 0; i < tagCount; i++)
             {
-                Room.Event.Tags.Add(FirewindEnvironment.FilterInjectionChars(Request.PopFixedString()));
+                Room.Event.Tags.Add(FirewindEnvironment.FilterInjectionChars(Request.ReadString()));
             }
 
             Room.SendMessage(Room.Event.Serialize(Session));
@@ -1921,7 +1921,7 @@ namespace Firewind.Messages
             }
 
             User.Unidle();
-            int Action = Request.PopWiredInt32();
+            int Action = Request.ReadInt32();
             User.DanceId = 0;
 
             ServerMessage Message = new ServerMessage(Outgoing.Action);
@@ -1959,7 +1959,7 @@ namespace Firewind.Messages
             }
 
             User.Unidle();
-            int SignId = Request.PopWiredInt32();
+            int SignId = Request.ReadInt32();
             User.AddStatus("sign", Convert.ToString(SignId));
             User.UpdateNeeded = true;
         }
@@ -1973,7 +1973,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.PopWiredUInt());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
 
             if (User == null || User.IsBot)
             {
@@ -2001,7 +2001,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.PopWiredUInt());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
 
             if (User == null || User.IsBot)
                 return;
@@ -2037,7 +2037,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Rating = Request.PopWiredInt32();
+            int Rating = Request.ReadInt32();
 
             switch (Rating)
             {
@@ -2090,7 +2090,7 @@ namespace Firewind.Messages
 
             User.Unidle();
 
-            int DanceId = Request.PopWiredInt32();
+            int DanceId = Request.ReadInt32();
 
             if (DanceId < 0 || DanceId > 4 || (!Session.GetHabbo().GetSubscriptionManager().HasSubscription("habbo_vip") && DanceId > 1))
             {
@@ -2121,8 +2121,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            string Name = Request.PopFixedString();
-            bool Result = Request.PopWiredBoolean();
+            string Name = Request.ReadString();
+            bool Result = Request.ReadBoolean();
 
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(Name);
 
@@ -2156,7 +2156,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.PopWiredUInt());
+            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.ReadUInt32());
 
             if (Item == null)
             {
@@ -2222,8 +2222,8 @@ namespace Firewind.Messages
                 return;
             }
             
-            uint itemId = Request.PopWiredUInt();
-            string locationData = Request.PopFixedString();
+            uint itemId = Request.ReadUInt32();
+            string locationData = Request.ReadString();
 
             UserItem item = Session.GetHabbo().GetInventoryComponent().GetItem(itemId);
 
@@ -2263,7 +2263,7 @@ namespace Firewind.Messages
 
 
 
-            string PlacementData = Request.PopFixedString();
+            string PlacementData = Request.ReadString();
             string[] DataBits = PlacementData.Split(' ');
             uint ItemId = uint.Parse(DataBits[0].Replace("-",""));
 
@@ -2340,7 +2340,7 @@ namespace Firewind.Messages
 
         internal void TakeItem()
         {
-            int junk = Request.PopWiredInt32();
+            int junk = Request.ReadInt32();
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
             if (Room == null || !Room.CheckRights(Session, true))
@@ -2348,7 +2348,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null)
             {
@@ -2376,7 +2376,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null)
             {
@@ -2405,10 +2405,10 @@ namespace Firewind.Messages
                 Item.wiredCondition = null;
             }
 
-            int x = Request.PopWiredInt32();
-            int y = Request.PopWiredInt32();
-            int Rotation = Request.PopWiredInt32();
-            int Junk = Request.PopWiredInt32();
+            int x = Request.ReadInt32();
+            int y = Request.ReadInt32();
+            int Rotation = Request.ReadInt32();
+            int Junk = Request.ReadInt32();
 
             bool UpdateNeeded = false;
 
@@ -2450,8 +2450,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint itemID = Request.PopWiredUInt();
-            string wallPositionData = Request.PopFixedString();
+            uint itemID = Request.ReadUInt32();
+            string wallPositionData = Request.ReadString();
 
             RoomItem Item = Room.GetRoomItemHandler().GetItem(itemID);
 
@@ -2496,12 +2496,12 @@ namespace Firewind.Messages
                 return;
             }
 
-            int itemID = Request.PopWiredInt32();
+            int itemID = Request.ReadInt32();
 
 
             if (itemID < 0)
             {
-                int data = Request.PopWiredInt32();
+                int data = Request.ReadInt32();
                 Logging.LogDebug(string.Format("Item triggered with negative ({0}) item ID, data was {1}!", itemID, data));
 
                 itemID = Math.Abs(itemID);
@@ -2520,7 +2520,7 @@ namespace Firewind.Messages
                 hasRights = true;
             }
 
-            int request = Request.PopWiredInt32();
+            int request = Request.ReadInt32();
             if(Item.Interactor.OnTrigger(Session, Item, request, hasRights))
                 Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
             Room.GetRoomItemHandler().UpdateItem(Item);
@@ -2575,7 +2575,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null)
             {
@@ -2602,7 +2602,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null || Item.GetBaseItem().InteractionType != Firewind.HabboHotel.Items.InteractionType.postit)
             {
@@ -2625,14 +2625,14 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null || Item.GetBaseItem().InteractionType != Firewind.HabboHotel.Items.InteractionType.postit)
             {
                 return;
             }
-            String Color = Request.PopFixedString();
-            String Text = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString(), true);
+            String Color = Request.ReadString();
+            String Text = FirewindEnvironment.FilterInjectionChars(Request.ReadString(), true);
 
             if (!Room.CheckRights(Session))
             {
@@ -2669,7 +2669,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Item = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Item == null || Item.GetBaseItem().InteractionType != Firewind.HabboHotel.Items.InteractionType.postit)
             {
@@ -2688,7 +2688,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint ItemId = Request.PopWiredUInt();
+            uint ItemId = Request.ReadUInt32();
             RoomItem Present = Room.GetRoomItemHandler().GetItem(ItemId);
             //Logging.WriteLine("Item of present >> " + ItemId);
             if (Present == null)
@@ -2845,10 +2845,10 @@ namespace Firewind.Messages
 
             // EVIH@G#EA4532RbI
 
-            int Preset = Request.PopWiredInt32();
-            int BackgroundMode = Request.PopWiredInt32();
-            string ColorCode = Request.PopFixedString();
-            int Intensity = Request.PopWiredInt32();
+            int Preset = Request.ReadInt32();
+            int BackgroundMode = Request.ReadInt32();
+            string ColorCode = Request.ReadString();
+            int Intensity = Request.ReadInt32();
 
             bool BackgroundOnly = false;
 
@@ -2902,7 +2902,7 @@ namespace Firewind.Messages
             }
 
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
-            RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByVirtualId(Request.PopWiredInt32());
+            RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByVirtualId(Request.ReadInt32());
 
             if (User2 == null || User2.GetClient() == null || User2.GetClient().GetHabbo() == null)
                 return;
@@ -2934,7 +2934,7 @@ namespace Firewind.Messages
             }
 
             Trade Trade = Room.GetUserTrade(Session.GetHabbo().Id);
-            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.PopWiredUInt());
+            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.ReadUInt32());
 
             if (Trade == null || Item == null)
             {
@@ -2954,7 +2954,7 @@ namespace Firewind.Messages
             }
 
             Trade Trade = Room.GetUserTrade(Session.GetHabbo().Id);
-            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.PopWiredUInt());
+            UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.ReadUInt32());
 
             if (Trade == null || Item == null)
             {
@@ -3042,7 +3042,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.PopWiredUInt());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
             
             if (User == null || User.GetClient().GetHabbo().Id == Session.GetHabbo().Id || User.IsBot)
             {
@@ -3072,12 +3072,12 @@ namespace Firewind.Messages
 
         internal void ApplyEffect()
         {
-            Session.GetHabbo().GetAvatarEffectsInventoryComponent().ApplyEffect(Request.PopWiredInt32());
+            Session.GetHabbo().GetAvatarEffectsInventoryComponent().ApplyEffect(Request.ReadInt32());
         }
 
         internal void EnableEffect()
         {
-            Session.GetHabbo().GetAvatarEffectsInventoryComponent().EnableEffect(Request.PopWiredInt32());
+            Session.GetHabbo().GetAvatarEffectsInventoryComponent().EnableEffect(Request.ReadInt32());
         }
 
         internal void RecycleItems()
@@ -3087,7 +3087,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            int itemCount = Request.PopWiredInt32();
+            int itemCount = Request.ReadInt32();
 
             if (itemCount != 5)
             {
@@ -3096,7 +3096,7 @@ namespace Firewind.Messages
 
             for (int i = 0; i < itemCount; i++)
             {
-                UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.PopWiredUInt());
+                UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(Request.ReadUInt32());
 
                 if (Item != null && Item.GetBaseItem().AllowRecycle)
                 {
@@ -3139,7 +3139,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomItem Exchange = Room.GetRoomItemHandler().GetItem(Request.PopWiredUInt());
+            RoomItem Exchange = Room.GetRoomItemHandler().GetItem(Request.ReadUInt32());
 
             if (Exchange == null)
             {
@@ -3183,7 +3183,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser Bot = Room.GetRoomUserManager().GetRoomUserByVirtualId(Request.PopWiredInt32());
+            RoomUser Bot = Room.GetRoomUserManager().GetRoomUserByVirtualId(Request.ReadInt32());
 
             if (Bot == null || !Bot.IsBot)
             {
@@ -3207,7 +3207,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
 
             Pet Pet = Session.GetHabbo().GetInventoryComponent().GetPet(PetId);
 
@@ -3216,8 +3216,8 @@ namespace Firewind.Messages
                 return;
             }
 
-            int X = Request.PopWiredInt32();
-            int Y = Request.PopWiredInt32();
+            int X = Request.ReadInt32();
+            int Y = Request.ReadInt32();
 
             if (!Room.GetGameMap().CanWalk(X, Y, false))
             {
@@ -3257,7 +3257,7 @@ namespace Firewind.Messages
             if (Session.GetHabbo() == null ||Session.GetHabbo().CurrentRoom == null)
                 return;
 
-            RoomUser pet = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetPet(Request.PopWiredUInt());
+            RoomUser pet = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetPet(Request.ReadUInt32());
             if (pet == null || pet.PetData == null)
             {
                 Session.SendNotif(LanguageLocale.GetValue("user.petinfoerror"));
@@ -3279,7 +3279,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
             if (PetUser == null)
                 return;
@@ -3317,7 +3317,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
 
             if (PetUser == null || PetUser.PetData == null)
@@ -3344,12 +3344,12 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint ItemId = Request.PopWiredUInt();
+            uint ItemId = Request.ReadUInt32();
             RoomItem Item = Room.GetRoomItemHandler().GetItem(ItemId);
             if (Item == null)
                 return;;
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
 
             if (PetUser == null || PetUser.PetData == null || PetUser.PetData.OwnerId != Session.GetHabbo().Id)
@@ -3376,7 +3376,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
 
             if (PetUser == null || PetUser.PetData == null || PetUser.PetData.OwnerId != Session.GetHabbo().Id)
@@ -3406,7 +3406,7 @@ namespace Firewind.Messages
             if (User == null)
                 return;
 
-            RoomUser toGive = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.PopWiredUInt());
+            RoomUser toGive = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
             if (toGive == null)
                 return;
 
@@ -3451,9 +3451,9 @@ namespace Firewind.Messages
             if (User == null)
                 return;
 
-            uint PetId = Request.PopWiredUInt();
+            uint PetId = Request.ReadUInt32();
             // true = RWUAM_MOUNT_PET, false = RWUAM_DISMOUNT_PET
-            bool mountOn = Request.PopWiredBoolean();
+            bool mountOn = Request.ReadBoolean();
             RoomUser Pet = Room.GetRoomUserManager().GetPet(PetId);
 
             //if (Pet == null || Pet.PetData == null || Pet.PetData.OwnerId != Session.GetHabbo().Id)
@@ -3519,10 +3519,10 @@ namespace Firewind.Messages
             if (Room == null || !Room.CheckRights(Session))
                 return;
 
-            uint ItemID = Request.PopWiredUInt();
+            uint ItemID = Request.ReadUInt32();
 
-            string Gender = Request.PopFixedString().ToUpper();
-            string Look = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
+            string Gender = Request.ReadString().ToUpper();
+            string Look = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
             RoomItem RoomItemToSet = Room.GetRoomItemHandler().mFloorItems.GetValue(ItemID);
 
@@ -3540,7 +3540,7 @@ namespace Firewind.Messages
 
         internal void CommandsPet()
         {
-            uint PetID = Request.PopWiredUInt();
+            uint PetID = Request.ReadUInt32();
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
             RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetID);
@@ -3616,13 +3616,13 @@ namespace Firewind.Messages
 
         internal void SaveWired()
         {
-            uint itemID = Request.PopWiredUInt();
+            uint itemID = Request.ReadUInt32();
             WiredSaver.HandleSave(Session, itemID, Session.GetHabbo().CurrentRoom, Request);
         }
 
         internal void SaveWiredConditions()
         {
-            uint itemID = Request.PopWiredUInt();
+            uint itemID = Request.ReadUInt32();
             WiredSaver.HandleConditionSave(itemID, Session.GetHabbo().CurrentRoom, Request);
         }
 
@@ -3672,8 +3672,8 @@ namespace Firewind.Messages
             if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
                 return;
 
-            int itemID = Request.PopWiredInt32();
-            string newName = Request.PopFixedString(Encoding.UTF8);
+            int itemID = Request.ReadInt32();
+            string newName = Request.ReadString(Encoding.UTF8);
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
             if (item == null || item.data.GetTypeID() != 1)
@@ -3699,7 +3699,7 @@ namespace Firewind.Messages
             if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
                 return;
 
-            int itemID = Request.PopWiredInt32();
+            int itemID = Request.ReadInt32();
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
             if (item == null || item.data.GetTypeID() != 1)
@@ -3738,7 +3738,7 @@ namespace Firewind.Messages
             if (Session.GetHabbo().CurrentRoom == null || !Session.GetHabbo().CurrentRoom.CheckRights(Session, true))
                 return;
 
-            int itemID = Request.PopWiredInt32();
+            int itemID = Request.ReadInt32();
 
             RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
             if (item == null)
@@ -3746,11 +3746,11 @@ namespace Firewind.Messages
 
             List<string> allowedParameters = new List<string>(new string[] { "imageUrl", "clickUrl", "offsetX", "offsetY", "offsetZ" });
             MapStuffData data = new MapStuffData();
-            int mapLength = Request.PopWiredInt32();
+            int mapLength = Request.ReadInt32();
             for (int i = 0; i < mapLength/2; i++)
             {
-                string key = Request.PopFixedString();
-                string value = Request.PopFixedString();
+                string key = Request.ReadString();
+                string value = Request.ReadString();
 
                 if (!allowedParameters.Contains(key))
                 {

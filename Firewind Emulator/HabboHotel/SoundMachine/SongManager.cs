@@ -74,12 +74,12 @@ namespace Firewind.HabboHotel.SoundMachine
 
         private static void GetSongData(GameClient Session, ClientMessage Message)
         {
-            int Amount = Message.PopWiredInt32();
+            int Amount = Message.ReadInt32();
             List<SongData> Songs = new List<SongData>();
 
             for (int i = 0; i < Amount; i++)
             {
-                SongData Song = GetSong(Message.PopWiredUInt());
+                SongData Song = GetSong(Message.ReadUInt32());
 
                 if (Song == null)
                     continue;
@@ -100,7 +100,7 @@ namespace Firewind.HabboHotel.SoundMachine
                 return;
             }
 
-            UserItem DiskUserItem = Session.GetHabbo().GetInventoryComponent().GetItem(Message.PopWiredUInt());
+            UserItem DiskUserItem = Session.GetHabbo().GetInventoryComponent().GetItem(Message.ReadUInt32());
 
             if (DiskUserItem == null || DiskUserItem.GetBaseItem().InteractionType != InteractionType.musicdisc)
             {
@@ -131,7 +131,7 @@ namespace Firewind.HabboHotel.SoundMachine
                 return;
             }
 
-            SongItem TakenItem = Instance.GetRoomMusicController().RemoveDisk(Message.PopWiredInt32());
+            SongItem TakenItem = Instance.GetRoomMusicController().RemoveDisk(Message.ReadInt32());
             // playlist will skip to the next item automatically if it has to
 
             if (TakenItem == null)

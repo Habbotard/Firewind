@@ -118,32 +118,21 @@ namespace Firewind.Messages
             return ReadBytes(len);
         }
 
-        internal string PopFixedString()
+        internal string ReadString()
         {
-            string data = PopFixedString(FirewindEnvironment.GetDefaultEncoding());
+            string data = ReadString(FirewindEnvironment.GetDefaultEncoding());
             //CheckForExploits(data);
             return data;
         }
 
-        internal string PopFixedString(Encoding encoding)
+        internal string ReadString(Encoding encoding)
         {
             string data = encoding.GetString(ReadFixedValue());
             //CheckForExploits(data);
             return data;
         }
 
-        internal Int32 PopFixedInt32()
-        {
-            Int32 i = 0;
-
-            string s = PopFixedString(Encoding.ASCII);
-
-            Int32.TryParse(s, out i);
-
-            return i;
-        }
-
-        internal Boolean PopWiredBoolean()
+        internal Boolean ReadBoolean()
         {
             if (this.RemainingLength > 0 && Body[Pointer++] == Convert.ToChar(1))
             {
@@ -153,7 +142,7 @@ namespace Firewind.Messages
             return false;
         }
 
-        internal Int32 PopWiredInt32()
+        internal Int32 ReadInt32()
         {
             if (RemainingLength < 1)
             {
@@ -169,7 +158,7 @@ namespace Firewind.Messages
             return i;
         }
 
-        internal uint PopWiredUInt()
+        internal uint ReadUInt32()
         {
             //int i = PopWiredInt32();
 
@@ -183,7 +172,7 @@ namespace Firewind.Messages
             //    throw e;
             //}
 
-            return uint.Parse(PopWiredInt32().ToString());
+            return uint.Parse(ReadInt32().ToString());
         }
 
         public void Dispose()

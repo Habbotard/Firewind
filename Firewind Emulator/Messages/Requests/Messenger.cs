@@ -40,12 +40,12 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Requests = Request.PopWiredInt32();
+            int Requests = Request.ReadInt32();
 
 
             for (int i = 0; i < Requests; i++)
             {
-                Session.GetHabbo().GetMessenger().DestroyFriendship(Request.PopWiredUInt());
+                Session.GetHabbo().GetMessenger().DestroyFriendship(Request.ReadUInt32());
             }
         }
 
@@ -56,7 +56,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            Session.SendMessage(Session.GetHabbo().GetMessenger().PerformSearch(Request.PopFixedString()));
+            Session.SendMessage(Session.GetHabbo().GetMessenger().PerformSearch(Request.ReadString()));
         }
 
         internal void AcceptRequest()
@@ -66,11 +66,11 @@ namespace Firewind.Messages
                 return;
             }
 
-            int Amount = Request.PopWiredInt32();
+            int Amount = Request.ReadInt32();
 
             for (int i = 0; i < Amount; i++)
             {
-                uint RequestId = Request.PopWiredUInt();
+                uint RequestId = Request.ReadUInt32();
 
                 MessengerRequest massRequest = Session.GetHabbo().GetMessenger().GetRequest(RequestId);
 
@@ -97,8 +97,8 @@ namespace Firewind.Messages
         {
             if (this.Session.GetHabbo().GetMessenger() != null)
             {
-                bool declineAll = Request.PopWiredBoolean();
-                int count = Request.PopWiredInt32();
+                bool declineAll = Request.ReadBoolean();
+                int count = Request.ReadInt32();
 
                 if (declineAll)
                 {
@@ -108,7 +108,7 @@ namespace Firewind.Messages
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        uint sender = Request.PopWiredUInt();
+                        uint sender = Request.ReadUInt32();
                         this.Session.GetHabbo().GetMessenger().HandleRequest(sender);
                     }
                 }
@@ -122,7 +122,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            if (Session.GetHabbo().GetMessenger().RequestBuddy(Request.PopFixedString()))
+            if (Session.GetHabbo().GetMessenger().RequestBuddy(Request.ReadString()))
             {
                 FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.SOCIAL_FRIEND);
             }
@@ -133,8 +133,8 @@ namespace Firewind.Messages
             if (FirewindEnvironment.SystemMute)
                 return;
             //if the user we are sending an IM to is on IRC, get the IRC client / connection and send the data there instead of here. Then gtfo.
-            uint userId = Request.PopWiredUInt();
-            string message = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
+            uint userId = Request.ReadUInt32();
+            string message = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
             if (Session.GetHabbo().GetMessenger() == null)
             {
@@ -146,7 +146,7 @@ namespace Firewind.Messages
 
         internal void FollowBuddy()
         {
-            uint BuddyId = Request.PopWiredUInt();
+            uint BuddyId = Request.ReadUInt32();
 
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(BuddyId);
 
@@ -181,16 +181,16 @@ namespace Firewind.Messages
 
         internal void SendInstantInvite()
         {
-            int count = Request.PopWiredInt32();
+            int count = Request.ReadInt32();
 
             List<UInt32> UserIds = new List<uint>();
 
             for (int i = 0; i < count; i++)
             {
-                UserIds.Add(Request.PopWiredUInt());
+                UserIds.Add(Request.ReadUInt32());
             }
 
-            string message = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString(), true);
+            string message = FirewindEnvironment.FilterInjectionChars(Request.ReadString(), true);
 
             ServerMessage Message = new ServerMessage(Outgoing.InstantInvite);
             Message.AppendUInt(Session.GetHabbo().Id);

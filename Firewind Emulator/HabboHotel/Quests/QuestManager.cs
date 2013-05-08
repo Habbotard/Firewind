@@ -173,7 +173,7 @@ namespace Firewind.HabboHotel.Quests
 
         internal void ActivateQuest(GameClient Session, ClientMessage Message)
         {
-            Quest Quest = GetQuest(Message.PopWiredUInt());
+            Quest Quest = GetQuest(Message.ReadUInt32());
 
             if (Quest == null)
             {

@@ -16,7 +16,7 @@ namespace Firewind.Messages
     {
         internal void AnyoneRide()
         {
-            int ID = Request.PopWiredInt32(); // Get Next ID
+            int ID = Request.ReadInt32(); // Get Next ID
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
                 dbClient.setQuery("SELECT * FROM user_pets WHERE id='" + ID + "'");

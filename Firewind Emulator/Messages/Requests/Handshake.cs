@@ -9,7 +9,7 @@ namespace Firewind.Messages
     {
         internal void CheckRelease()
         {
-            string clientVersion = Request.PopFixedString();
+            string clientVersion = Request.ReadString();
 
             if (clientVersion != "RELEASE63-201207100852-501822384") // not using current supported client
             {
@@ -36,13 +36,13 @@ namespace Firewind.Messages
 
         internal void setClientVars()
         {
-            string swfs = Request.PopFixedString();
-            string vars = Request.PopFixedString();
+            string swfs = Request.ReadString();
+            string vars = Request.ReadString();
         }
 
         internal void setUniqueIDToClient()
         {
-            string Id = Request.PopFixedString();
+            string Id = Request.ReadString();
             Session.MachineId = Id;
         }
 
@@ -50,7 +50,7 @@ namespace Firewind.Messages
         {
             if (Session.GetHabbo() == null)
             {
-                Session.tryLogin(Request.PopFixedString());
+                Session.tryLogin(Request.ReadString());
                 Session.TimePingedReceived = DateTime.Now;
                 //if (Session.tryLogin(Request.PopFixedString()))
                 //{

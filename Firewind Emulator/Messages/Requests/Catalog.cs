@@ -19,7 +19,7 @@ namespace Firewind.Messages
 
         internal void GetCatalogPage()
         {
-            CatalogPage Page = FirewindEnvironment.GetGame().GetCatalog().GetPage(Request.PopWiredInt32());
+            CatalogPage Page = FirewindEnvironment.GetGame().GetCatalog().GetPage(Request.ReadInt32());
 
             if (Page == null || !Page.Enabled || !Page.Visible || Page.MinRank > Session.GetHabbo().Rank)
             {
@@ -63,15 +63,15 @@ namespace Firewind.Messages
 
         internal void RedeemVoucher()
         {
-            VoucherHandler.TryRedeemVoucher(Session, Request.PopFixedString());
+            VoucherHandler.TryRedeemVoucher(Session, Request.ReadString());
         }
 
         internal void HandlePurchase()
         {
-            int PageId = Request.PopWiredInt32();
-            uint ItemId = Request.PopWiredUInt();
-            string extraParameter = Request.PopFixedString();
-            int Amount = Request.PopWiredInt32();
+            int PageId = Request.ReadInt32();
+            uint ItemId = Request.ReadUInt32();
+            string extraParameter = Request.ReadString();
+            int Amount = Request.ReadInt32();
             /*for (int i = 0; i < Session.GetHabbo().buyItemLoop; i++)
             {*/
             FirewindEnvironment.GetGame().GetCatalog().HandlePurchase(Session, PageId, ItemId, extraParameter, Amount, false, "", "", 0, 0, 0, false);
@@ -80,15 +80,15 @@ namespace Firewind.Messages
 
         internal void PurchaseFromCatalogAsGift() // (k:int, k:int, k:String, k:String, k:String, k:int, k:int, k:int, k:Boolean)
         {
-            int PageId = Request.PopWiredInt32(); // pageId
-            uint ItemId = Request.PopWiredUInt(); // offerId
-            string ExtraData = Request.PopFixedString(); // extraParameter
-            string GiftUser = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            string GiftMessage = FirewindEnvironment.FilterInjectionChars(Request.PopFixedString());
-            int SpriteId = Request.PopWiredInt32();
-            int Lazo = Request.PopWiredInt32();
-            int Color = Request.PopWiredInt32();
-            bool showIdentity = Request.PopWiredBoolean();
+            int PageId = Request.ReadInt32(); // pageId
+            uint ItemId = Request.ReadUInt32(); // offerId
+            string ExtraData = Request.ReadString(); // extraParameter
+            string GiftUser = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            string GiftMessage = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
+            int SpriteId = Request.ReadInt32();
+            int Lazo = Request.ReadInt32();
+            int Color = Request.ReadInt32();
+            bool showIdentity = Request.ReadBoolean();
 
             //bool dnow = Request.PopWiredBoolean();
             //Logging.WriteLine("PageId: " + PageId + "; ItemId: " + ItemId + "; ExtraData: " + ExtraData + "; User: " + GiftUser + "; Message: " + GiftMessage + "; SpriteId: " + SpriteId + "; Color: " + Color + "; Lazo: " + Lazo);
@@ -145,7 +145,7 @@ namespace Firewind.Messages
 
         internal void CanGift()
         {
-            uint Id = Request.PopWiredUInt();
+            uint Id = Request.ReadUInt32();
 
             CatalogItem Item = FirewindEnvironment.GetGame().GetCatalog().FindItem(Id);
 
@@ -242,9 +242,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            int sellingPrice = Request.PopWiredInt32();
-            int junk = Request.PopWiredInt32();
-            uint itemId = Request.PopWiredUInt();
+            int sellingPrice = Request.ReadInt32();
+            int junk = Request.ReadInt32();
+            uint itemId = Request.ReadUInt32();
 
             UserItem Item = Session.GetHabbo().GetInventoryComponent().GetItem(itemId);
 
@@ -263,7 +263,7 @@ namespace Firewind.Messages
 
         internal void MarketplaceTakeBack()
         {
-            uint ItemId = Request.PopWiredUInt();
+            uint ItemId = Request.ReadUInt32();
             DataRow Row = null;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
@@ -333,17 +333,17 @@ namespace Firewind.Messages
 
         internal void MarketplaceGetOffers()
         {
-            int MinPrice = Request.PopWiredInt32();
-            int MaxPrice = Request.PopWiredInt32();
-            string SearchQuery = Request.PopFixedString();
-            int FilterMode = Request.PopWiredInt32();
+            int MinPrice = Request.ReadInt32();
+            int MaxPrice = Request.ReadInt32();
+            string SearchQuery = Request.ReadString();
+            int FilterMode = Request.ReadInt32();
 
             Session.SendMessage(Marketplace.SerializeOffers(MinPrice, MaxPrice, SearchQuery, FilterMode));
         }
 
         internal void MarketplacePurchase()
         {
-            uint ItemId = Request.PopWiredUInt();
+            uint ItemId = Request.ReadUInt32();
             DataRow Row = null;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
@@ -400,7 +400,7 @@ namespace Firewind.Messages
 
         internal void CheckPetName()
         {
-            String PetName = Request.PopFixedString();
+            String PetName = Request.ReadString();
             Session.GetMessageHandler().GetResponse().Init(Outgoing.CheckPetName);
             Session.GetMessageHandler().GetResponse().AppendInt32(Catalog.CheckPetName(PetName) ? 0 : 2);
             Session.GetMessageHandler().GetResponse().AppendString(PetName);
@@ -409,7 +409,7 @@ namespace Firewind.Messages
 
         internal void PetRaces()
         {
-            string PetType = Request.PopFixedString();
+            string PetType = Request.ReadString();
 
             int count = 0, petid = 0;
             GetResponse().Init(Outgoing.PetRace);
