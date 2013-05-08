@@ -52,6 +52,13 @@ namespace Firewind.Messages
             GetResponse().AppendInt32(Session.GetHabbo().AchievementPoints);
             SendResponse();
 
+            // Welcome back message, TODO: make it optional?
+            Response.Init(Outgoing.WelcomeBack);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0); // prizes count
+            SendResponse();
+
             InitMessenger();
         }
 

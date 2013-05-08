@@ -268,12 +268,6 @@ namespace Firewind.HabboHotel.GameClients
 
                 loginProgress++;
 
-                // Welcome back message, TODO: make it optional?
-                ServerMessage welcomeMessage = new ServerMessage(Outgoing.WelcomeBack);
-                welcomeMessage.AppendInt32(0);
-                welcomeMessage.AppendInt32(0);
-                welcomeMessage.AppendInt32(0); // prizes count
-                response.appendResponse(welcomeMessage);
                 // Send the big chunk
                 response.sendResponse();
                 return true;
