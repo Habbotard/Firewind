@@ -55,13 +55,13 @@ namespace Firewind.Messages
             InitMessenger();
         }
 
-        internal void GetBalance()
+        internal void GetCreditsInfo()
         {
             Session.GetHabbo().UpdateCreditsBalance();
             Session.GetHabbo().UpdateActivityPointsBalance(false);
         }
 
-        internal void GetSubscriptionData()
+        internal void ScrGetUserInfo()
         {
             GetResponse().Init(Outgoing.SerializeClub);
             GetResponse().AppendString("club_habbo");
@@ -477,6 +477,12 @@ namespace Firewind.Messages
             Session.SendMessage(Session.GetHabbo().GetInventoryComponent().SerializePetInventory());
         }
 
+        internal void GetSoundSettings()
+        {
+            Response.Init(Outgoing.SoundSettings);
+            Response.AppendInt32(100); // TODO: dynamic soud settings
+            SendResponse();
+        }
 
         //internal void RegisterUsers()
         //{

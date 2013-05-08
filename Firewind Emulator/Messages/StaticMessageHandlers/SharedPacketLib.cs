@@ -878,14 +878,14 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.LoadProfile();
         }
 
-        internal static void GetBalance(GameClientMessageHandler handler)
+        internal static void GetCreditsInfo(GameClientMessageHandler handler)
         {
-            handler.GetBalance();
+            handler.GetCreditsInfo();
         }
 
-        internal static void GetSubscriptionData(GameClientMessageHandler handler)
+        internal static void ScrGetUserInfo(GameClientMessageHandler handler)
         {
-            handler.GetSubscriptionData();
+            handler.ScrGetUserInfo();
         }
 
         internal static void GetBadges(GameClientMessageHandler handler)
@@ -986,6 +986,21 @@ namespace Firewind.Messages.StaticMessageHandlers
         internal static void EventLog(GameClientMessageHandler handler)
         {
             handler.EventLog();
+        }
+
+        internal static void PerformanceLog(GameClientMessageHandler handler)
+        {
+            handler.PerformanceLog();
+        }
+
+        internal static void GetBadgePointLimits(GameClientMessageHandler handler)
+        {
+            // TODO: Send BadgePointLimits message in return?
+        }
+
+        internal static void GetSoundSettings(GameClientMessageHandler handler)
+        {
+            handler.GetSoundSettings();
         }
     }
 }

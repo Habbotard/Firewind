@@ -9,8 +9,12 @@ namespace Firewind.Messages
     {
         internal void CheckRelease()
         {
-            // Logging.WriteLine("Hallo, we're on " + Request.PopFixedString());
-            Session.bannertimmer = DateTime.Now;
+            string clientVersion = Request.PopFixedString();
+
+            if (clientVersion != "RELEASE63-201207100852-501822384") // not using current supported client
+            {
+                Session.SendMOTD(String.Format("Firewind doesn't support {0}!\rPlease use {1}.", clientVersion, "RELEASE63-201207100852-501822384"));
+            }
         }
 
         internal void InitCrypto()
@@ -46,8 +50,6 @@ namespace Firewind.Messages
         {
             if (Session.GetHabbo() == null)
             {
-                TimeSpan result = DateTime.Now - Session.bannertimmer;
-                //Logging.WriteLine("banner parsed on " + result.Milliseconds + "ms");
                 Session.tryLogin(Request.PopFixedString());
                 Session.TimePingedReceived = DateTime.Now;
                 //if (Session.tryLogin(Request.PopFixedString()))

@@ -21,6 +21,10 @@ namespace Firewind.Messages
 
             //Logging.LogDebug(String.Format("Event log: Category {0}, type {1}, action {2}, extraString {3}, extraInt {4}", category, type, action, extraString, extraInt));
         }
+        internal void PerformanceLog()
+        {
+            // int, string, string, string, string, int(bool), int, int, int, int, int
+        }
 
         //internal void RegisterGlobal()
         //{

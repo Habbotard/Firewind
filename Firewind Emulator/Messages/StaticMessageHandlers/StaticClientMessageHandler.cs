@@ -175,7 +175,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.SaveWiredTrigger, new StaticRequestHandler(SharedPacketLib.SaveWired));
             handlers.Add(Incoming.UserInformation, new StaticRequestHandler(SharedPacketLib.GetUserInfo));
             handlers.Add(Incoming.LoadProfile, new StaticRequestHandler(SharedPacketLib.LoadProfile));
-            handlers.Add(Incoming.SerializeClub, new StaticRequestHandler(SharedPacketLib.GetSubscriptionData));
+            handlers.Add(Incoming.ScrGetUserInfo, new StaticRequestHandler(SharedPacketLib.ScrGetUserInfo));
             handlers.Add(Incoming.BadgesInventary, new StaticRequestHandler(SharedPacketLib.GetBadges));
             handlers.Add(Incoming.ApplyBadge, new StaticRequestHandler(SharedPacketLib.UpdateBadges));
             handlers.Add(Incoming.OpenAchievements, new StaticRequestHandler(SharedPacketLib.GetAchievements));
@@ -214,6 +214,12 @@ namespace Firewind.Messages.StaticMessageHandlers
 
             // Engine
             handlers.Add(Incoming.EventLog, new StaticRequestHandler(SharedPacketLib.EventLog));
+            handlers.Add(Incoming.PerformanceLog, new StaticRequestHandler(SharedPacketLib.PerformanceLog));
+
+            // User
+            handlers.Add(Incoming.GetCreditsInfo, new StaticRequestHandler(SharedPacketLib.GetCreditsInfo));
+            handlers.Add(Incoming.GetBadgePointLimits, new StaticRequestHandler(SharedPacketLib.GetBadgePointLimits));
+            handlers.Add(Incoming.GetSoundSettings, new StaticRequestHandler(SharedPacketLib.GetSoundSettings));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

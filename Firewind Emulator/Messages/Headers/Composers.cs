@@ -19,7 +19,7 @@ namespace HabboEvents
         public static int AvailabilityStatus = 812;
         public static int InfoFeedEnable = 1343;
         public static int ActivityPoints = 845;
-        public static int CreditsBalance = 912;
+        public static int CreditBalance = 912;
         public static int UniqueID = 1374;
         public static int HabboInfomation = 3668;
         public static int ProfileInformation = 1720;
@@ -190,5 +190,9 @@ namespace HabboEvents
         public static int GuildEditorData = 1725;
         public static int HabboGroupJoinFailed = 2407;
         public static int GroupInfo = 2602;
+
+        // User
+        public static int SoundSettings = 89;
+        public static int WelcomeBack = 3015;
     }
 }

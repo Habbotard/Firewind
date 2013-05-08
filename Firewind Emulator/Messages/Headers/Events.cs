@@ -16,7 +16,7 @@ namespace HabboEvents
 		public static int MachineInformation = 181;
 		public static int OnEventHappend = 2087;
 		public static int UserInformation = 1551;
-		public static int SerializeClub = 2783;
+        public static int ScrGetUserInfo = 2783;
 		public static int LoadCategorys = 1946;
         public static int Pong = 2168;
 		public static int PingInternval = 530;
@@ -184,5 +184,11 @@ namespace HabboEvents
 
         // Engine
         public static int EventLog = 2087;
+        public static int PerformanceLog = 7;
+
+        // User
+        public static int GetCreditsInfo = 3249;
+        public static int GetBadgePointLimits = 2344;
+        public static int GetSoundSettings = 3995;
     }
 }

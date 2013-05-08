@@ -422,7 +422,7 @@ namespace Firewind.HabboHotel.Users
 
         internal void UpdateCreditsBalance()
         {
-            mClient.GetMessageHandler().GetResponse().Init(Outgoing.CreditsBalance);
+            mClient.GetMessageHandler().GetResponse().Init(Outgoing.CreditBalance);
             mClient.GetMessageHandler().GetResponse().AppendString(Credits + ".0");
             mClient.GetMessageHandler().SendResponse();
         }
