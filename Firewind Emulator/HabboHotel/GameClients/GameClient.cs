@@ -232,21 +232,6 @@ namespace Firewind.HabboHotel.GameClients
 
                 loginProgress++;
 
-                if (FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin > 0)
-                {
-                    PixelManager.GivePixels(this, FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin);
-                }
-
-                loginProgress++;
-
-                if (FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin > 0)
-                {
-                    userData.user.Credits += FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin;
-                    userData.user.UpdateCreditsBalance();
-                }
-
-                loginProgress++;
-
                 if (userData.user.HasFuse("fuse_mod"))
                 {
                     this.SendMessage(FirewindEnvironment.GetGame().GetModerationTool().SerializeTool());

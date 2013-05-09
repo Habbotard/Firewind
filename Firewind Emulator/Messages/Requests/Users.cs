@@ -64,8 +64,15 @@ namespace Firewind.Messages
 
         internal void GetCreditsInfo()
         {
+            if (FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin > 0)
+                PixelManager.GivePixels(Session, FirewindEnvironment.GetGame().GetClientManager().pixelsOnLogin);
+            else
+                Session.GetHabbo().UpdateActivityPointsBalance(false);
+
+            if (FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin > 0)
+                Session.GetHabbo().Credits += FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin;
+
             Session.GetHabbo().UpdateCreditsBalance();
-            Session.GetHabbo().UpdateActivityPointsBalance(false);
         }
 
         internal void ScrGetUserInfo()
