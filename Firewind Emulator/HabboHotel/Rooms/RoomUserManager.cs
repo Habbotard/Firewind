@@ -436,7 +436,7 @@ namespace Firewind.HabboHotel.Rooms
                 {
                     if (NotifyKick)
                     {
-                        Session.GetMessageHandler().GetResponse().Init(Outgoing.RoomError);
+                        Session.GetMessageHandler().GetResponse().Init(Outgoing.GenericError);
                         Session.GetMessageHandler().GetResponse().AppendInt32(4008);
                         Session.GetMessageHandler().SendResponse();
                     }

@@ -238,9 +238,9 @@ namespace Firewind.HabboHotel.Users.Messenger
 
             if (hasFQDisabled)
             {
-                GetClient().GetMessageHandler().GetResponse().Init(260);
-                GetClient().GetMessageHandler().GetResponse().AppendInt32(39);
-                GetClient().GetMessageHandler().GetResponse().AppendInt32(3);
+                GetClient().GetMessageHandler().GetResponse().Init(Outgoing.MessengerError);
+                GetClient().GetMessageHandler().GetResponse().AppendInt32(0); // clientMessageId (not that important really)
+                GetClient().GetMessageHandler().GetResponse().AppendInt32(3); // errorCode (1=limit reached,2=limit reached for other person,3=requests disabled,4=requestnotfound)
                 GetClient().GetMessageHandler().SendResponse();
                 return true;
             }

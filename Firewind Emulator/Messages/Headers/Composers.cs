@@ -59,7 +59,6 @@ namespace HabboEvents
         public static int PrepareRoomForUsers = 2466;
         public static int RoomErrorToEnter = 3673;
         public static int OutOfRoom = 450;
-        public static int RoomError = 3192;
         public static int DoorBellNoPerson = 2458;
         public static int Doorbell = 1689;
         public static int InvalidDoorBell = 2458;
@@ -197,5 +196,18 @@ namespace HabboEvents
 
         // Pets
         public static int PetCommands = 2603;
+
+        // Messenger
+        public static int MessengerError = 3736;
+
+        // Engine
+        public static int GenericError = 3192;
+
+        // Vouchers
+        public static int VoucherRedeemError = 3694;
+        public static int VoucherRedeemOk = 3049;
+
+        // Inventory
+        public static int PetRemovedFromInventory = 3225;
     }
 }

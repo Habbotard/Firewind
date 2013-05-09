@@ -162,8 +162,8 @@ namespace Firewind.Messages
                         {
                             // your password fail :( !
 
-                            Response.Init(Outgoing.RoomError);
-                            Response.AppendInt32(-100002); // can be 4009 if you want something like 'need.to.be.vip'
+                            Response.Init(Outgoing.GenericError);
+                            Response.AppendInt32(-100002);
                             SendResponse();
                             //response.appendResponse(GetResponse());
 
@@ -736,7 +736,7 @@ namespace Firewind.Messages
                         {
                             // your password fail :( !
 
-                            Response.Init(Outgoing.RoomError);
+                            Response.Init(Outgoing.GenericError);
                             Response.AppendInt32(-100002); // can be 4009 if you want something like 'need.to.be.vip'
                             SendResponse();
                             //response.appendResponse(GetResponse());
@@ -864,50 +864,6 @@ namespace Firewind.Messages
         {
             Session.GetHabbo().LoadingRoom = 0;
             Session.GetHabbo().LoadingChecksPassed = false;
-        }
-
-
-        internal void GetTrainerPanel()
-        {
-            uint PetId = Request.ReadUInt32();
-            Pet PetData = null;
-
-            Room Room = Session.GetHabbo().CurrentRoom;
-
-            if (Room == null)
-            {
-                return;
-            }
-
-            if ((PetData = Room.GetRoomUserManager().GetPet(PetId).PetData) == null)
-            {
-                return;
-            }
-            else
-            {
-                int Level = PetData.Level;
-                PetData = null;
-
-                GetResponse().Init(605);
-                GetResponse().AppendUInt(PetId);
-                GetResponse().AppendInt32(18);
-
-                GetResponse().AppendBoolean(false);
-
-                for (int i = 0; i < 18; i++)
-                {
-                    GetResponse().AppendInt32(i);
-                }
-
-                GetResponse().AppendBoolean(false);
-
-                for (int i = 0; i < Level; i++)
-                {
-                    GetResponse().AppendInt32(i);
-                }
-
-                SendResponse();
-            }
         }
 
         internal void GetInventory()

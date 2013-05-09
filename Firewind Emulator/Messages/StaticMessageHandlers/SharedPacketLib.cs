@@ -433,11 +433,6 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetAdvertisement();
         }
 
-        internal static void GetTrainerPanel(GameClientMessageHandler handler)
-        {
-            handler.GetTrainerPanel();
-        }
-
         internal static void OpenPub(GameClientMessageHandler handler)
         {
             handler.OpenConnection();

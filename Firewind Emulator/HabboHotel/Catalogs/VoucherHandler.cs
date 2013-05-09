@@ -3,6 +3,7 @@ using System.Data;
 using Firewind.HabboHotel.GameClients;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
+using HabboEvents;
 
 namespace Firewind.HabboHotel.Catalogs
 {
@@ -56,11 +57,10 @@ namespace Firewind.HabboHotel.Catalogs
 
         internal static void TryRedeemVoucher(GameClient Session, string Code)
         {
-            // TODO: Update headers?
             if (!IsValidCode(Code))
             {
-                ServerMessage Error = new ServerMessage(213);
-                Error.AppendRawInt32(1);
+                ServerMessage Error = new ServerMessage(Outgoing.VoucherRedeemError);
+                Error.AppendRawInt32(0); // 0=invalid code,1=technical issue,3=redeem at webpage
                 Session.SendMessage(Error);
                 return;
             }
@@ -72,7 +72,10 @@ namespace Firewind.HabboHotel.Catalogs
             Session.GetHabbo().Credits += Value;
             Session.GetHabbo().UpdateCreditsBalance();
 
-            Session.SendMessage(new ServerMessage(212));
+            ServerMessage message = new ServerMessage(Outgoing.VoucherRedeemOk);
+            message.AppendString("Credits"); // productName
+            message.AppendString("Awesome"); // productDescription
+            Session.SendMessage(message);
         }
     }
 }

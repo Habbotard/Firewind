@@ -141,7 +141,7 @@ namespace Firewind.HabboHotel.Users.Inventory
         internal bool RemovePet(uint PetId)
         {
             isUpdated = false;
-            ServerMessage RemoveMessage = new ServerMessage(604);
+            ServerMessage RemoveMessage = new ServerMessage(Outgoing.PetRemovedFromInventory);
             RemoveMessage.AppendUInt(PetId);
             GetClient().SendMessage(RemoveMessage);
 

@@ -25,9 +25,9 @@ namespace Firewind.Messages
             if (Data == null || Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(Id))
             {
                 // TODO: Upgrade 
-                GetResponse().Init(33);
+                GetResponse().Init(Outgoing.GenericError);
                 GetResponse().AppendInt32(-9001);
-                //SendResponse();
+                SendResponse();
 
                 return;
             }
