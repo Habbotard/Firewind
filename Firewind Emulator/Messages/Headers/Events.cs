@@ -190,5 +190,8 @@ namespace HabboEvents
         public static int GetCreditsInfo = 3249;
         public static int GetBadgePointLimits = 2344;
         public static int GetSoundSettings = 3995;
+
+        // Pets
+        public static int GetPetCommands = 2687;
     }
 }

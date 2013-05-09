@@ -220,6 +220,8 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GetCreditsInfo, new StaticRequestHandler(SharedPacketLib.GetCreditsInfo));
             handlers.Add(Incoming.GetBadgePointLimits, new StaticRequestHandler(SharedPacketLib.GetBadgePointLimits));
             handlers.Add(Incoming.GetSoundSettings, new StaticRequestHandler(SharedPacketLib.GetSoundSettings));
+
+            handlers.Add(Incoming.GetPetCommands, new StaticRequestHandler(SharedPacketLib.GetPetCommands));
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

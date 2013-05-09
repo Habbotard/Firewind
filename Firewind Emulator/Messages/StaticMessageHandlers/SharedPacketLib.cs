@@ -823,9 +823,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.SetLookTransfer();
         }
 
-        internal static void CommandsPet(GameClientMessageHandler handler)
+        internal static void GetPetCommands(GameClientMessageHandler handler)
         {
-            handler.CommandsPet();
+            handler.GetPetCommands();
         }
 
         internal static void PetRaces(GameClientMessageHandler handler)

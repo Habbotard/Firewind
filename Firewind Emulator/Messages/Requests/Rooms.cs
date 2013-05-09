@@ -3538,7 +3538,7 @@ namespace Firewind.Messages
             ((StringData)RoomItemToSet.data).Data = Gender + ":" + Look;
         }
 
-        internal void CommandsPet()
+        internal void GetPetCommands()
         {
             uint PetID = Request.ReadUInt32();
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
@@ -3549,41 +3549,20 @@ namespace Firewind.Messages
                 return;
 
             GetResponse().Init(Outgoing.PetCommands);
-            GetResponse().AppendUInt(PetID);
+            GetResponse().AppendUInt(PetID); // petId
 
             int level = PetUser.PetData.Level;
 
-            GetResponse().AppendInt32(18);
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendInt32(1);
-            GetResponse().AppendInt32(2);
-            GetResponse().AppendInt32(3);
-            GetResponse().AppendInt32(4);
-            GetResponse().AppendInt32(17);
-            GetResponse().AppendInt32(5);
-            GetResponse().AppendInt32(6);
-            GetResponse().AppendInt32(7);
-            GetResponse().AppendInt32(8);
-            GetResponse().AppendInt32(9);
-            GetResponse().AppendInt32(10);
-            GetResponse().AppendInt32(11);
-            GetResponse().AppendInt32(12);
-            GetResponse().AppendInt32(13);
-            GetResponse().AppendInt32(14);
-            GetResponse().AppendInt32(15);
-            GetResponse().AppendInt32(16);
-
-            for (int i = 0; level > i; )
-            {
-                i++;
+            GetResponse().AppendInt32(18); // allCommands count
+            for (int i = 0; i < 18; i++)
                 GetResponse().AppendInt32(i);
-            }
 
-            GetResponse().AppendInt32(0);
-            GetResponse().AppendInt32(1);
-            GetResponse().AppendInt32(2);
+            GetResponse().AppendInt32(Math.Min(level, 18)); // enabledCommands count
+            for (int i = 0; i < Math.Min(level, 18); i++)
+                GetResponse().AppendInt32(i);
+
             SendResponse();
-        }  
+        }
 
 
 
