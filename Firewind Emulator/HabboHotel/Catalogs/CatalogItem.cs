@@ -14,16 +14,16 @@ namespace Firewind.HabboHotel.Catalogs
         internal List<uint> Items;
         internal readonly string Name;
         internal readonly int CreditsCost;
-        internal readonly int PixelsCost;
         internal readonly int Amount;
         internal readonly int PageID;
-        internal readonly int CrystalCost;
-        internal readonly int OudeCredits;
         internal readonly uint songID;
         internal readonly bool IsLimited;
         internal int LimitedSelled;
         internal readonly int LimitedStack;
         internal readonly bool HaveOffer;
+
+        internal byte ActivityPointType;
+        internal int ActivityPointCost;
 
         internal CatalogItem(DataRow Row)
         {
@@ -46,16 +46,15 @@ namespace Firewind.HabboHotel.Catalogs
             }
             this.PageID = (int)Row["page_id"];
             this.CreditsCost = (int)Row["cost_credits"];
-            this.PixelsCost = (int)Row["cost_pixels"];
             this.Amount = (int)Row["amount"];
-            this.CrystalCost = (int)Row["cost_points"];
-            //this.OudeCredits = (int)Row["cost_oude_belcredits"];
-            this.OudeCredits = 0;
             this.songID = Convert.ToUInt32(Row["song_id"]);
             this.LimitedSelled = (int)Row["limited_sells"];
             this.LimitedStack = (int)Row["limited_stack"];
             this.IsLimited = (this.LimitedStack > 0);
             this.HaveOffer = ((int)Row["offer_active"] == 1);
+
+            this.ActivityPointCost = (int)Row["cost_activitypoints"];
+            this.ActivityPointType = (byte)Row["activitypoints_type"];
             //this.songID = 0;
         }
 
@@ -130,18 +129,10 @@ namespace Firewind.HabboHotel.Catalogs
                 Message.AppendUInt(Id);
                 Message.AppendString(Name);
                 Message.AppendInt32(CreditsCost);
-
-                if (CrystalCost > 0)
-                {
-                    Message.AppendInt32(CrystalCost);
-                    Message.AppendInt32(103);
-                }
-                else
-                {
-                    Message.AppendInt32(PixelsCost);
-                    Message.AppendInt32(0); // ID of currency (0 = pixel)
-                }
+                Message.AppendInt32(ActivityPointCost);
+                Message.AppendInt32(ActivityPointType);
                 Message.AppendBoolean(true); // AllowBuy
+
                 Message.AppendInt32(Items.Count); // items on pack
                 // and serialize it
                 foreach (uint i in Items)

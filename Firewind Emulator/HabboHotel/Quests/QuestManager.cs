@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Quests.Composer;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System;
+using Firewind.HabboHotel.Users.Currencies;
 
 namespace Firewind.HabboHotel.Quests
 {
@@ -147,8 +148,8 @@ namespace Firewind.HabboHotel.Quests
                 Session.GetHabbo().CurrentQuestId = 0;
                 Session.GetHabbo().LastCompleted = UserQuest.Id;
                 Session.SendMessage(QuestCompletedComposer.Compose(Session, UserQuest));
-                Session.GetHabbo().ActivityPoints += UserQuest.Reward;
-                Session.GetHabbo().UpdateActivityPointsBalance(false);
+                Session.GetHabbo().Currencies.AddAmountOfCurrency(CurrencyType.PIXEL, UserQuest.Reward);
+                Session.GetHabbo().Currencies.RefreshActivityPointsBalance(CurrencyType.PIXEL);
                 GetList(Session, null);
             }
         }

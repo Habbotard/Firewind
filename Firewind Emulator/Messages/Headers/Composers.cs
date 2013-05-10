@@ -209,5 +209,8 @@ namespace HabboEvents
 
         // Inventory
         public static int PetRemovedFromInventory = 3225;
+
+        // Catalog
+        public static int NotEnoughBalance = 3269;
     }
 }

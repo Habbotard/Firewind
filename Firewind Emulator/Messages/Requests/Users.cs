@@ -65,7 +65,7 @@ namespace Firewind.Messages
         internal void GetCreditsInfo()
         {
             Session.GetHabbo().UpdateCreditsBalance();
-            Session.GetHabbo().UpdateActivityPointsBalance(false);
+            Session.GetHabbo().Currencies.SendAllCurrencies();
         }
 
         internal void ScrGetUserInfo()

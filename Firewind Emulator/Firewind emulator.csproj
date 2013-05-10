@@ -137,6 +137,7 @@
     <Compile Include="HabboHotel\Achievements\Composer\AchievementProgressComposer.cs" />
     <Compile Include="HabboHotel\Achievements\Composer\AchievementScoreUpdateComposer.cs" />
     <Compile Include="HabboHotel\Achievements\Composer\AchievementUnlockedComposer.cs" />
+    <Compile Include="HabboHotel\Users\Currencies\CurrencyTypes.cs" />
     <Compile Include="HabboHotel\Groups\GroupManager.cs" />
     <Compile Include="HabboHotel\Groups\GuildsPartsData.cs" />
     <Compile Include="HabboHotel\Groups\Types\Group.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="HabboHotel\Users\Badges\Badge.cs" />
     <Compile Include="HabboHotel\Users\Badges\BadgeComponent.cs" />
     <Compile Include="HabboHotel\Users\Competitions\Ranking.cs" />
+    <Compile Include="HabboHotel\Users\Currencies\CurrencyComponent.cs" />
     <Compile Include="HabboHotel\Users\Habbo.cs" />
     <Compile Include="HabboHotel\Users\Inventory\AvatarEffect.cs" />
     <Compile Include="HabboHotel\Users\Inventory\AvatarEffectsInventoryComponent.cs" />

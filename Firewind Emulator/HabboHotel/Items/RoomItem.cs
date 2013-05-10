@@ -193,19 +193,19 @@ namespace Firewind.HabboHotel.Items
             {
                 Point Sq = new Point(mX, mY);
 
-                if (Rot == 0)
+                if (Rot == 0) // 0 degrees
                 {
                     Sq.Y--;
                 }
-                else if (Rot == 2)
+                else if (Rot == 2) // 90 degrees
                 {
                     Sq.X++;
                 }
-                else if (Rot == 4)
+                else if (Rot == 4) // 180 degrees
                 {
                     Sq.Y++;
                 }
-                else if (Rot == 6)
+                else if (Rot == 6) // 270 degrees
                 {
                     Sq.X--;
                 }
@@ -1080,60 +1080,9 @@ namespace Firewind.HabboHotel.Items
 
                 data.AppendToMessage(Message);
 
-                //if (this.GetBaseItem().InteractionType == InteractionType.gift)
-                //{
-                //    int result = 0;
-                //    if (ExtraData.Contains(Convert.ToChar(5).ToString()))
-                //    {
-                //        int color = int.Parse(ExtraData.Split((char)5)[1]);
-                //        int lazo = int.Parse(ExtraData.Split((char)5)[2]);
-                //        result = color * 1000 + lazo;
-                //    }
-                //    Message.AppendInt32(result);
-                //    if (this.ExtraData.Contains(Convert.ToChar(5).ToString()))
-                //    {
-                //        uint PurchaserId = (uint)int.Parse(ExtraData.Split(';')[0]);
-                //        Habbo Purchaser = FirewindEnvironment.getHabboForId(PurchaserId);
-                //        if (Purchaser != null)
-                //        {
-                //            // "MESSAGE", "PRODUCT_CODE", "EXTRA_PARAM", "PURCHASER_NAME", "PURCHASER_FIGURE";
-
-                //            Message.AppendInt32(1);
-                //            Message.AppendInt32(6);
-                //            Message.AppendString("EXTRA_PARAM");
-                //            Message.AppendString("");
-                //            Message.AppendString("MESSAGE");
-                //            Message.AppendString(ExtraData.Split(';')[1].Split((char)5)[0]);
-                //            Message.AppendString("PURCHASER_NAME");
-                //            Message.AppendString(Purchaser.Username);
-                //            Message.AppendString("PURCHASER_FIGURE");
-                //            Message.AppendString(Purchaser.Look);
-                //            Message.AppendString("PRODUCT_CODE");
-                //            Message.AppendString("");
-                //            Message.AppendString("state");
-                //            Message.AppendString(MagicRemove ? "1" : "0");
-                //        }
-                //        else
-                //        {
-                //            Message.AppendInt32(0);
-                //        }
-                //    }
-                //    // this.ExtraData.Contains(Convert.ToChar(5).ToString()) ? ExtraData.Split((char)5)[1] : "0"
-                //    else
-                //        Message.AppendInt32(0);
-                //}
-                //else
-                //{
-                //    Message.AppendInt32(0);
-                //    Message.AppendInt32(0);
-                //    if (GetBaseItem().InteractionType != InteractionType.fbgate)
-                //        Message.AppendString(ExtraData);
-                //    else
-                //        Message.AppendString(string.Empty);
-                //}
-                Message.AppendInt32(-1);
-                Message.AppendInt32(1); // Type New R63 ('use bottom')
-                Message.AppendInt32(UserId);
+                Message.AppendInt32(-1); // expire time
+                Message.AppendInt32(1); // Type New R63 ('use bottom') (furniture_usage_policy)
+                Message.AppendInt32(UserId); // owner id
             }
             else if (IsWallItem)
             {
