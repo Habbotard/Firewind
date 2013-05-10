@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Firewind.Core;
 using Firewind.HabboHotel.GameClients;
+using Firewind.HabboHotel.Users.Currencies;
 
 namespace Firewind.HabboHotel.Misc
 {
@@ -35,8 +36,8 @@ namespace Firewind.HabboHotel.Misc
             Double Timestamp = FirewindEnvironment.GetUnixTimestamp();
 
             Client.GetHabbo().LastActivityPointsUpdate = Timestamp;
-            Client.GetHabbo().ActivityPoints += RCV_AMOUNT;
-            Client.GetHabbo().UpdateActivityPointsBalance(0);
+            Client.GetHabbo().Currencies.AddAmountOfCurrency(CurrencyType.PIXEL, RCV_AMOUNT);
+            Client.GetHabbo().Currencies.RefreshActivityPointsBalance(CurrencyType.PIXEL);
         }
 
         internal static void GivePixels(GameClient Client, int amount)
@@ -44,8 +45,8 @@ namespace Firewind.HabboHotel.Misc
             Double Timestamp = FirewindEnvironment.GetUnixTimestamp();
 
             Client.GetHabbo().LastActivityPointsUpdate = Timestamp;
-            Client.GetHabbo().ActivityPoints += amount;
-            Client.GetHabbo().UpdateActivityPointsBalance(0);
+            Client.GetHabbo().Currencies.AddAmountOfCurrency(CurrencyType.PIXEL, amount);
+            Client.GetHabbo().Currencies.RefreshActivityPointsBalance(CurrencyType.PIXEL);
         }
     }
 }

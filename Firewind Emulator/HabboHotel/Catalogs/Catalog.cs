@@ -313,78 +313,29 @@ namespace Firewind.HabboHotel.Catalogs
             uint GiftUserId = 0;
 
             Boolean CreditsError = false;
-            Boolean PixelError = false;
-            Boolean CrystalError = false;
+            Boolean ActivityPointError = false;
 
             if (Session.GetHabbo().Credits < (Item.CreditsCost * finalAmount))
             {
                 CreditsError = true;
             }
 
-            if (Session.GetHabbo().VipPoints < (Item.CrystalCost * finalAmount))
+            if (Session.GetHabbo().Currencies.GetAmountOfCurrency(Item.ActivityPointType) < (Item.ActivityPointCost * finalAmount))
             {
-                CrystalError = true;
+                ActivityPointError = true;
             }
 
-            if (Session.GetHabbo().ActivityPoints < (Item.PixelsCost * finalAmount))
+            if (CreditsError || ActivityPointError)
             {
-                PixelError = true;
-            }
-
-            if (CreditsError || PixelError)
-            {
-                /*Session.GetMessageHandler().GetResponse().Init(68);
+                Session.GetMessageHandler().GetResponse().Init(Outgoing.NotEnoughBalance);
                 Session.GetMessageHandler().GetResponse().AppendBoolean(CreditsError);
-                Session.GetMessageHandler().GetResponse().AppendBoolean(PixelError);
-                Session.GetMessageHandler().SendResponse();*/
+                Session.GetMessageHandler().GetResponse().AppendBoolean(ActivityPointError);
+                Session.GetMessageHandler().GetResponse().AppendInt32(Item.ActivityPointType);
+                Session.GetMessageHandler().SendResponse();
 
                 return;
             }
 
-
-            if (Item.CrystalCost > 0)
-            {
-                int cost = Item.CrystalCost * finalAmount;
-                if (Session.GetHabbo().VipPoints < cost)
-                {
-                    Session.SendNotif("You can't afford that item!");
-                    return;
-                }
-
-                Session.GetHabbo().VipPoints -= cost;
-                Session.GetHabbo().UpdateActivityPointsBalance(true);
-
-                using (IQueryAdapter adapter = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    adapter.runFastQuery("UPDATE users SET vip_points = " + Session.GetHabbo().VipPoints + " WHERE id = " + Session.GetHabbo().Id);
-                }                               
-  
-            }
-
-
-            if ((Item.OudeCredits * finalAmount) > 0)
-            {
-                int oudeCredits = 0;
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    dbClient.setQuery("SELECT belcredits FROM users WHERE id = " + Session.GetHabbo().Id);
-                    oudeCredits = dbClient.getInteger();
-                }
-
-                if (Item.OudeCredits > oudeCredits)
-                {
-                    Session.SendNotif(LanguageLocale.GetValue("catalog.oudebelcreditserror") + Item.OudeCredits);
-                    return;
-                }
-
-                oudeCredits = oudeCredits - (Item.OudeCredits * finalAmount);
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    dbClient.runFastQuery("UPDATE users SET belcredits = " + oudeCredits + " WHERE id = " + Session.GetHabbo().Id);
-                }
-
-                Session.SendNotif(LanguageLocale.GetValue("catalog.oudebelcreditsok") + oudeCredits);
-            }
 
             if (Item.CreditsCost > 0 && !IsGift)
             {
@@ -392,10 +343,10 @@ namespace Firewind.HabboHotel.Catalogs
                 Session.GetHabbo().UpdateCreditsBalance();
             }
 
-            if (Item.PixelsCost > 0 && !IsGift)
+            if (Item.ActivityPointCost > 0 && !IsGift)
             {
-                Session.GetHabbo().ActivityPoints -= (Item.PixelsCost * finalAmount);
-                Session.GetHabbo().UpdateActivityPointsBalance(true);
+                Session.GetHabbo().Currencies.RemoveAmountOfCurrency(Item.ActivityPointType, Item.ActivityPointCost * finalAmount);
+                Session.GetHabbo().Currencies.RefreshActivityPointsBalance(Item.ActivityPointType);
             }
             foreach (uint i in Item.Items)
             {
@@ -445,10 +396,10 @@ namespace Firewind.HabboHotel.Catalogs
                         Session.GetHabbo().UpdateCreditsBalance();
                     }
 
-                    if (Item.PixelsCost > 0 && IsGift)
+                    if (Item.ActivityPointCost > 0 && IsGift)
                     {
-                        Session.GetHabbo().ActivityPoints -= (Item.PixelsCost * finalAmount);
-                        Session.GetHabbo().UpdateActivityPointsBalance(true);
+                        Session.GetHabbo().Currencies.RemoveAmountOfCurrency(Item.ActivityPointType, Item.ActivityPointCost * finalAmount);
+                        Session.GetHabbo().Currencies.RefreshActivityPointsBalance(Item.ActivityPointType);
                     }
                 }
 
@@ -563,8 +514,8 @@ namespace Firewind.HabboHotel.Catalogs
                 Session.GetMessageHandler().GetResponse().AppendUInt(Item.GetBaseItem(i).ItemId); // offerID
                 Session.GetMessageHandler().GetResponse().AppendString(Item.GetBaseItem(i).Name);  // localizationId
                 Session.GetMessageHandler().GetResponse().AppendInt32(Item.CreditsCost); // priceInCredits
-                Session.GetMessageHandler().GetResponse().AppendInt32(Item.PixelsCost); // priceInActivityPoints
-                Session.GetMessageHandler().GetResponse().AppendInt32(0); // activityPointType
+                Session.GetMessageHandler().GetResponse().AppendInt32(Item.ActivityPointCost); // priceInActivityPoints
+                Session.GetMessageHandler().GetResponse().AppendInt32(Item.ActivityPointType); // activityPointType
                 Session.GetMessageHandler().GetResponse().AppendBoolean(true); // unknown
                 Session.GetMessageHandler().GetResponse().AppendInt32(1); // products count
                 Session.GetMessageHandler().GetResponse().AppendString(Item.GetBaseItem(i).Type.ToString().ToLower()); // productType [i,s,e,b]

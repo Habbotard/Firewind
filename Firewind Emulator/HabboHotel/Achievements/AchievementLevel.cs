@@ -3,14 +3,16 @@
     struct AchievementLevel
     {
         internal readonly int Level;
-        internal readonly int RewardPixels;
+        internal readonly int RewardActivityPoints;
+        internal readonly byte ActivityPointType;
         internal readonly int RewardPoints;
         internal readonly int Requirement;
 
-        public AchievementLevel(int level, int rewardPixels, int rewardPoints, int requirement)
+        public AchievementLevel(int level, int rewardActivityPoints, byte activityPointType, int rewardPoints, int requirement)
         {
             this.Level = level;
-            this.RewardPixels = rewardPixels;
+            this.RewardActivityPoints = rewardActivityPoints;
+            this.ActivityPointType = activityPointType;
             this.RewardPoints = rewardPoints;
             this.Requirement = requirement;
         }

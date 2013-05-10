@@ -17,7 +17,6 @@ namespace Firewind.HabboHotel.Users.Authenticator
             string gender = (string)dRow["gender"];
             string lastonline = Convert.ToString(dRow["last_online"]);
             int credits = (int)dRow["credits"];
-            int activityPoints = (int)dRow["activity_points"];
             double activityPointsLastUpdate = Convert.ToDouble(dRow["activity_points_lastupdate"]);
             bool isMuted = FirewindEnvironment.EnumToBool(dRow["is_muted"].ToString());
             uint homeRoom = Convert.ToUInt32(dRow["home_room"]);
@@ -29,9 +28,8 @@ namespace Firewind.HabboHotel.Users.Authenticator
             uint questID = Convert.ToUInt32(dRow["currentquestid"]);
             int questProgress = Convert.ToInt32(dRow["currentquestprogress"]);
             int achiecvementPoints = Convert.ToInt32(dRow["achievement_points"]);
-            int vippoints = Convert.ToInt32(dRow["vip_points"]);
 
-            return new Habbo(id, username, realname, rank, motto, look, gender, credits, vippoints, activityPoints, activityPointsLastUpdate, isMuted, homeRoom, respect, dailyRespect, dailyPetRespect, mtantPenalty, blockFriends, questID, questProgress, group, achiecvementPoints, lastonline);
+            return new Habbo(id, username, realname, rank, motto, look, gender, credits, activityPointsLastUpdate, isMuted, homeRoom, respect, dailyRespect, dailyPetRespect, mtantPenalty, blockFriends, questID, questProgress, group, achiecvementPoints, lastonline);
         }
     }
 }

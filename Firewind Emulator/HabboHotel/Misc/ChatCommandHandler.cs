@@ -18,6 +18,7 @@ using System.Drawing;
 using Firewind.Util;
 using HabboEvents;
 using Firewind.Collections;
+using Firewind.HabboHotel.Users.Currencies;
 
 namespace Firewind.HabboHotel.Misc
 {
@@ -587,8 +588,9 @@ namespace Firewind.HabboHotel.Misc
                 int creditsToAdd;
                 if (int.TryParse(Params[2], out creditsToAdd))
                 {
-                    TargetClient.GetHabbo().ActivityPoints = TargetClient.GetHabbo().ActivityPoints + creditsToAdd;
-                    TargetClient.GetHabbo().UpdateActivityPointsBalance(true);
+                    TargetClient.GetHabbo().Currencies.AddAmountOfCurrency(CurrencyType.PIXEL, creditsToAdd);
+                    TargetClient.GetHabbo().Currencies.RefreshActivityPointsBalance(CurrencyType.PIXEL);
+
                     TargetClient.SendNotif(Session.GetHabbo().Username + LanguageLocale.GetValue("pixels.awardmessage1") + creditsToAdd.ToString() + LanguageLocale.GetValue("pixels.awardmessage2"));
                     Session.SendNotif(LanguageLocale.GetValue("pixels.updateok"));
                     return;
@@ -1762,8 +1764,8 @@ namespace Firewind.HabboHotel.Misc
 
             GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(username);
        
-            if (client == null)
-            {
+            //if (client == null)
+            //{
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
                     int UserAmount = 0;
@@ -1784,21 +1786,21 @@ namespace Firewind.HabboHotel.Misc
                 }
 
                 return;
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 
-                client.GetHabbo().VipPoints += amount;
+            //    client.GetHabbo().VipPoints += amount;
 
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    dbClient.runFastQuery("UPDATE users SET vip_points = " + client.GetHabbo().VipPoints + " WHERE id = " + client.GetHabbo().Id);
-                }
+            //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            //    {
+            //        dbClient.runFastQuery("UPDATE users SET vip_points = " + client.GetHabbo().VipPoints + " WHERE id = " + client.GetHabbo().Id);
+            //    }
 
-                client.GetHabbo().UpdateActivityPointsBalance(false);
+            //    client.GetHabbo().UpdateActivityPointsBalance(false);
 
-                Session.SendNotif(client.GetHabbo().Username + " now has " + client.GetHabbo().VipPoints + " VIP Points.");
-            }
+            //    Session.SendNotif(client.GetHabbo().Username + " now has " + client.GetHabbo().VipPoints + " VIP Points.");
+            //}
         }
 
         internal void close()
