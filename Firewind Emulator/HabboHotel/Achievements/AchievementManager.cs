@@ -5,7 +5,6 @@ using Firewind.HabboHotel.GameClients;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System;
-using Firewind.HabboHotel.Users.Currencies;
 
 namespace Firewind.HabboHotel.Achievements
 {
@@ -88,11 +87,11 @@ namespace Firewind.HabboHotel.Achievements
                     NewTarget = TotalLevels;
                 }
 
-                Session.GetHabbo().Currencies.AddAmountOfCurrency(TargetLevelData.ActivityPointType, TargetLevelData.RewardActivityPoints);
-                Session.GetHabbo().Currencies.RefreshActivityPointsBalance(TargetLevelData.ActivityPointType);
+                Session.GetHabbo().ActivityPoints += TargetLevelData.RewardPixels;
+                Session.GetHabbo().UpdateActivityPointsBalance(false);
 
                 Session.SendMessage(AchievementUnlockedComposer.Compose(AchievementData, TargetLevel, TargetLevelData.RewardPoints,
-                    TargetLevelData.RewardActivityPoints));
+                    TargetLevelData.RewardPixels));
 
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
@@ -106,8 +105,8 @@ namespace Firewind.HabboHotel.Achievements
                 UserData.Progress = NewProgress;
 
                 Session.GetHabbo().AchievementPoints += TargetLevelData.RewardPoints;
-                Session.GetHabbo().Currencies.AddAmountOfCurrency(TargetLevelData.ActivityPointType, TargetLevelData.RewardActivityPoints);
-                Session.GetHabbo().Currencies.RefreshActivityPointsBalance(TargetLevelData.ActivityPointType);
+                Session.GetHabbo().ActivityPoints += TargetLevelData.RewardPixels;
+                Session.GetHabbo().UpdateActivityPointsBalance(false);
                 Session.SendMessage(AchievementScoreUpdateComposer.Compose(Session.GetHabbo().AchievementPoints));
 
                 

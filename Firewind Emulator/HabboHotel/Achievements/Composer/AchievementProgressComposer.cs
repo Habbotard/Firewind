@@ -17,7 +17,7 @@ namespace Firewind.HabboHotel.Achievements.Composer
             Message.AppendInt32(TargetLevel);                                                   // Target level
             Message.AppendString(Achievement.GroupName + TargetLevel);                 // Target name/desc/badge
             Message.AppendInt32(TargetLevelData.Requirement);                                   // Progress req/target        
-            Message.AppendInt32(TargetLevelData.RewardActivityPoints);                                   // Pixel reward       
+            Message.AppendInt32(TargetLevelData.RewardPixels);                                   // Pixel reward       
             Message.AppendInt32(TargetLevelData.RewardPoints);                                  // Unknown(??)
             Message.AppendInt32(0); // ?
             Message.AppendInt32(UserData != null ? UserData.Progress : 0);                      // Current progress

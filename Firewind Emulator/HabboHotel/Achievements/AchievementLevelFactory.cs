@@ -31,7 +31,7 @@ namespace Firewind.HabboHotel.Achievements
                 rewardPoints = (int)dRow["reward_points"];
                 progressNeeded = (int)dRow["progress_needed"];
 
-                AchievementLevel achievementLevel = new AchievementLevel(level, rewardPixels, 0, rewardPoints, progressNeeded); // TODO: Support other currencies
+                AchievementLevel achievementLevel = new AchievementLevel(level, rewardPixels, rewardPoints, progressNeeded);
 
                 if (!achievements.ContainsKey(groupName))
                 {

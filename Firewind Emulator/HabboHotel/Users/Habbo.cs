@@ -16,8 +16,6 @@ using Firewind.HabboHotel.Users.UserDataManagement;
 using Firewind.HabboHotel.Groups;
 using System.Collections;
 using HabboEvents;
-using System.Text;
-using Firewind.HabboHotel.Users.Currencies;
 
 namespace Firewind.HabboHotel.Users
 {
@@ -44,6 +42,7 @@ namespace Firewind.HabboHotel.Users
         internal Int32 Credits;
 
         internal int AchievementPoints;
+        internal Int32 ActivityPoints;
         internal Double LastActivityPointsUpdate;
         internal bool Muted;
         internal int Respect;
@@ -106,7 +105,8 @@ namespace Firewind.HabboHotel.Users
         internal int LevelIdentity;
         internal int LevelExplorer;
 
-        internal CurrencyComponent Currencies;
+        internal int VipPoints;
+
 
         internal Boolean InRoom
         {
@@ -135,7 +135,8 @@ namespace Firewind.HabboHotel.Users
         }
 
         internal Habbo(UInt32 Id, string Username, string RealName,
-            uint Rank, string Motto, string Look, string Gender, Int32 Credits, Double LastActivityPointsUpdate, bool Muted,
+            uint Rank, string Motto, string Look, string Gender, Int32 Credits, Int32 VipPoints,
+            Int32 ActivityPoints, Double LastActivityPointsUpdate, bool Muted,
             UInt32 HomeRoom, Int32 Respect, Int32 DailyRespectPoints, Int32 DailyPetRespectPoints,
             bool MutantPenalty, bool HasFriendRequestsDisabled, uint currentQuestID, int currentQuestProgress, DataRow groupRow, int achievementPoints,
             string LastOnline)
@@ -149,6 +150,8 @@ namespace Firewind.HabboHotel.Users
 
             this.Gender = Gender.ToLower();
             this.Credits = Credits;
+            this.VipPoints = VipPoints;
+            this.ActivityPoints = ActivityPoints;
             this.AchievementPoints = achievementPoints;
             this.LastActivityPointsUpdate = LastActivityPointsUpdate;
             this.Muted = Muted;
@@ -212,9 +215,6 @@ namespace Firewind.HabboHotel.Users
             this.SpectatorMode = false;
             this.Disconnected = false;
             this.UsersRooms = data.rooms;
-
-            this.Currencies = new CurrencyComponent(mClient);
-            this.Currencies.LoadCurrencies();
         }
 
         //internal HabboData GetUserData
@@ -353,9 +353,8 @@ namespace Firewind.HabboHotel.Users
             get
             {
                 HabboinfoSaved = true;
-                return "UPDATE users SET users.last_online = '" + DateTime.Now.ToString() + "', activity_points_lastupdate = '" + LastActivityPointsUpdate + "', credits = '" + Credits + "', achievement_points = " + AchievementPoints + " WHERE id = '" + Id + "'; "
-                    + "DELETE FROM user_online WHERE userid = " + Id + "; "
-                    + Currencies.GenerateCurrencyQuery();
+                return "UPDATE users SET users.last_online = '" + DateTime.Now.ToString() + "', activity_points = '" + ActivityPoints + "', vip_points = " + VipPoints + ", activity_points_lastupdate = '" + LastActivityPointsUpdate + "', credits = '" + Credits + "', achievement_points = " + AchievementPoints + " WHERE id = '" + Id + "'; "
+                    + "DELETE FROM user_online WHERE userid = " + Id + "; ";
             }
         }
 
@@ -376,7 +375,7 @@ namespace Firewind.HabboHotel.Users
                 HabboinfoSaved = true;
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
-                    dbClient.runFastQuery(GetQueryString);
+                    dbClient.runFastQuery("UPDATE users SET users.last_online = '" + DateTime.Now.ToString() + "', activity_points = " + ActivityPoints + ", vip_points = " + VipPoints + ", activity_points_lastupdate = '" + LastActivityPointsUpdate + "', credits = " + Credits + ", achievement_points = " + AchievementPoints + " WHERE id = " + Id + " ;");
                 }
             }
 
@@ -428,6 +427,26 @@ namespace Firewind.HabboHotel.Users
             mClient.GetMessageHandler().SendResponse();
         }
 
+        internal void UpdateActivityPointsBalance(Boolean InDatabase)
+        {
+            UpdateActivityPointsBalance(0);
+        }
+
+        internal void UpdateActivityPointsBalance(int NotifAmount)
+        {
+            if (mClient == null || mClient.GetMessageHandler() == null || mClient.GetMessageHandler().GetResponse() == null)
+                return;
+
+            mClient.GetMessageHandler().GetResponse().Init(Outgoing.ActivityPoints);
+            mClient.GetMessageHandler().GetResponse().AppendInt32(2); // count
+            mClient.GetMessageHandler().GetResponse().AppendInt32(0); // type
+            mClient.GetMessageHandler().GetResponse().AppendInt32(ActivityPoints);
+            mClient.GetMessageHandler().GetResponse().AppendInt32(103);
+            mClient.GetMessageHandler().GetResponse().AppendInt32(VipPoints);
+            mClient.GetMessageHandler().SendResponse();
+
+        }
+
         internal void Mute()
         {
             if (!this.Muted)
@@ -476,10 +495,10 @@ namespace Firewind.HabboHotel.Users
             return AvatarEffectsInventoryComponent;
         }
 
-        //internal void RunDBUpdate(IQueryAdapter dbClient)
-        //{
-        //    dbClient.runFastQuery("UPDATE users SET users.last_online = '" + DateTime.Now.ToString() + "', activity_points = '" + ActivityPoints + "', vip_points = " + VipPoints + ", activity_points_lastupdate = '" + LastActivityPointsUpdate + "', credits = '" + Credits + "' WHERE id = '" + Id + "'; ");
-        //}
+        internal void RunDBUpdate(IQueryAdapter dbClient)
+        {
+            dbClient.runFastQuery("UPDATE users SET users.last_online = '" + DateTime.Now.ToString() + "', activity_points = '" + ActivityPoints + "', vip_points = " + VipPoints + ", activity_points_lastupdate = '" + LastActivityPointsUpdate + "', credits = '" + Credits + "' WHERE id = '" + Id + "'; ");
+        }
 
         internal ChatMessageManager GetChatMessageManager()
         {

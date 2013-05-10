@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using HabboEvents;
 using Firewind.Messages.ClientMessages;
-using Firewind.HabboHotel.Users.Currencies;
 namespace Firewind.HabboHotel.GameClients
 {
     class GameClientManager
@@ -598,8 +597,8 @@ namespace Firewind.HabboHotel.GameClients
                                     continue;
                                 try
                                 {
-                                    client.GetHabbo().Currencies.AddAmountOfCurrency(CurrencyType.PIXEL, amount);
-                                    client.GetHabbo().Currencies.RefreshActivityPointsBalance(CurrencyType.PIXEL);
+                                    client.GetHabbo().ActivityPoints += amount;
+                                    client.GetHabbo().UpdateActivityPointsBalance(true);
                                     client.SendNotif(LanguageLocale.GetValue("user.pixelsreceived") + ": " + amount);
                                 }
                                 catch { }
