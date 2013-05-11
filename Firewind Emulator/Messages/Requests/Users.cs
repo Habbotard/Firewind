@@ -304,10 +304,10 @@ namespace Firewind.Messages
             string Gender = Request.ReadString().ToUpper();
             string Look = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
-            if (!AntiMutant.ValidateLook(Look, Gender))
-            {
-                return;
-            }
+            //if (!AntiMutant.ValidateLook(Look, Gender))
+            //{
+            //    return;
+            //}
 
             FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.PROFILE_CHANGE_LOOK);
 
@@ -453,10 +453,10 @@ namespace Firewind.Messages
             string Look = Request.ReadString();
             string Gender = Request.ReadString();
 
-            if (!AntiMutant.ValidateLook(Look, Gender))
-            {
-                return;
-            }
+            //if (!AntiMutant.ValidateLook(Look, Gender))
+            //{
+            //    return;
+            //}
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {

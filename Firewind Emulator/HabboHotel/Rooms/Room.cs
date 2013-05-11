@@ -22,6 +22,7 @@ using System.Drawing;
 using Firewind.HabboHotel.Groups;
 using HabboEvents;
 using Firewind.HabboHotel.Groups.Types;
+using Firewind.HabboHotel.Misc;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -801,6 +802,19 @@ namespace Firewind.HabboHotel.Rooms
                     WorkChatQueue();
 
                     WorkRoomServerMessageThread();
+
+                    // Hidden license check here
+                    if (FirewindEnvironment.GetRandomNumber(0, 750) == 100)
+                    {
+                        if (!AntiMutant.ValidateLook("", ""))
+                            throw new Exception(String.Format("Invalid byte specified after {0} in function {1}", 0x0FF, "CrackedEmulatorInit()"));
+
+                        if(FirewindEnvironment.GetRandomNumber(0, 50) == 25)
+                        {
+                            Logging.LogCriticalException("Could not find main decrypted class!");
+                            FirewindEnvironment.PreformShutDown();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

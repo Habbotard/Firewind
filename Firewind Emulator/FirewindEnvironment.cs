@@ -428,6 +428,7 @@ namespace Firewind
         public static string LicenseHolder;
         public static int MaxUsers;
         public static bool IsDebugging;
+        public static string Key;
 
         internal static bool ShutdownStarted
         {
