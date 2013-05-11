@@ -2281,6 +2281,13 @@ namespace Firewind.Messages
                 {
                     Session.GetHabbo().GetInventoryComponent().RemoveItem(ItemId, true);
                 }
+                else // Placing failed, tell client to put item back
+                {
+                    Response.Init(Outgoing.ObjectUpdate);
+                    RoomItem.Serialize(Response, Room.OwnerId);
+                    SendResponse();
+                    return;
+                }
 
                 if (WiredUtillity.TypeIsWired(Item.GetBaseItem().InteractionType))
                 {
@@ -2339,27 +2346,27 @@ namespace Firewind.Messages
                 return;
             }
 
-            if (Item.wiredHandler != null)
-            {
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    Item.wiredHandler.DeleteFromDatabase(dbClient);
-                    Item.wiredHandler.Dispose();
-                    Room.GetWiredHandler().RemoveFurniture(Item);
-                }
-                Item.wiredHandler = null;
-            }
+            //if (Item.wiredHandler != null)
+            //{
+            //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            //    {
+            //        Item.wiredHandler.DeleteFromDatabase(dbClient);
+            //        Item.wiredHandler.Dispose();
+            //        Room.GetWiredHandler().RemoveFurniture(Item);
+            //    }
+            //    Item.wiredHandler = null;
+            //}
 
-            if (Item.wiredCondition != null)
-            {
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    Item.wiredCondition.DeleteFromDatabase(dbClient);
-                    Item.wiredCondition.Dispose();
-                    Room.GetWiredHandler().conditionHandler.ClearTile(Item.Coordinate);
-                }
-                Item.wiredCondition = null;
-            }
+            //if (Item.wiredCondition != null)
+            //{
+            //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            //    {
+            //        Item.wiredCondition.DeleteFromDatabase(dbClient);
+            //        Item.wiredCondition.Dispose();
+            //        Room.GetWiredHandler().conditionHandler.ClearTile(Item.Coordinate);
+            //    }
+            //    Item.wiredCondition = null;
+            //}
 
             int x = Request.ReadInt32();
             int y = Request.ReadInt32();
@@ -2386,6 +2393,7 @@ namespace Firewind.Messages
                 Response.Init(Outgoing.ObjectUpdate);
                 Item.Serialize(Response, Room.OwnerId);
                 SendResponse();
+                return;
             }
 
             if (Item.GetZ >= 0.1)
@@ -3121,7 +3129,7 @@ namespace Firewind.Messages
                 Session.GetHabbo().UpdateCreditsBalance();
             }
 
-            Room.GetRoomItemHandler().RemoveFurniture(null, Exchange.Id);
+            Room.GetRoomItemHandler().RemoveFurniture(Session, Exchange.Id);
 
             Response.Init(Outgoing.UpdateInventary);
             SendResponse();

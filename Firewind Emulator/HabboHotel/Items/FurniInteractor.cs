@@ -1130,19 +1130,22 @@ namespace Firewind.HabboHotel.Items.Interactors
                 case InteractionType.triggerwalkonfurni:
                     {
                         ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
-                        message.AppendBoolean(false);
-                        message.AppendInt32(5);
-                        message.AppendInt32(items.Count);
+                        message.AppendBoolean(false); // stuffTypeSelectionEnabled
+                        message.AppendInt32(5); // furniLimit
+
+                        message.AppendInt32(items.Count); //stuffIds
                         foreach (RoomItem item in items)
                             message.AppendUInt(item.Id);
-                        message.AppendInt32(Item.GetBaseItem().SpriteId);
-                        message.AppendUInt(Item.Id);
-                        message.AppendString(ExtraInfo);
 
-                        message.AppendInt32(0);
-                        message.AppendInt32(8);
-                        message.AppendInt32(0);
-                        message.AppendInt32(0);
+                        message.AppendInt32(Item.GetBaseItem().SpriteId); // stuffTypeId
+                        message.AppendUInt(Item.Id); // id
+                        message.AppendString(ExtraInfo); // stringParam
+
+                        message.AppendInt32(0); // intParams
+
+                        message.AppendInt32(8); // type
+                        message.AppendInt32(0); // delayInPulses
+                        message.AppendInt32(0); // conflictingTriggers
                         message.AppendInt32(0);
                         message.AppendInt32(0);
                         Session.SendMessage(message);
@@ -1151,7 +1154,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggergamestart:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(0);
                         message.AppendInt32(items.Count);
@@ -1172,7 +1175,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerroomenter:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(0);
                         message.AppendInt32(items.Count);
@@ -1194,7 +1197,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggergameend:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(0);
                         message.AppendInt32(items.Count);
@@ -1216,7 +1219,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggertimer:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);
@@ -1239,7 +1242,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerwalkofffurni:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);
@@ -1262,7 +1265,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggeronusersay:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(0);
                         message.AppendInt32(items.Count);
@@ -1284,7 +1287,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerscoreachieved:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);
@@ -1306,7 +1309,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerrepeater:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);
@@ -1328,7 +1331,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerstatechanged:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);

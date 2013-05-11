@@ -126,10 +126,6 @@ namespace HabboEvents
         public static int AddWallItemToRoom = 1739;
         public static int UpdateWallItemOnRoom = 2540;
         public static int PickUpWallItem = 342;
-        public static int WiredTrigger = 1153; // causante
-        public static int WiredEffect = 21;
-        public static int WiredCondition = 2626;
-        public static int SaveWired = 3725;
         public static int UserLeftRoom = 1325;
         public static int RoomTool = 1569;
         public static int UserTool = 628;
@@ -153,6 +149,12 @@ namespace HabboEvents
         public static int PetRespectNotification = 3692;
         public static int PetAddedToInventory = 3947;
         public static int MOTDNotification = 3677;
+
+        // Wired
+        public static int WiredFurniTrigger = 1153; // causante
+        public static int WiredEffect = 21;
+        public static int WiredCondition = 2626;
+        public static int SaveWired = 3725;
 
         // Floor item IDs
         public static int ObjectAdd = 2302;
