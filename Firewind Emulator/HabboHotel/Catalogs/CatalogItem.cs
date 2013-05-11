@@ -172,7 +172,7 @@ namespace Firewind.HabboHotel.Catalogs
                     Message.AppendInt32(this.LimitedStack - this.LimitedSelled);
                 }
                 Message.AppendInt32(0); // club_level
-                Message.AppendBoolean((this.IsLimited) ? false : this.HaveOffer); // IsOffer
+                Message.AppendBoolean(!this.IsLimited && this.HaveOffer); // IsOffer
             }
             catch
             {
