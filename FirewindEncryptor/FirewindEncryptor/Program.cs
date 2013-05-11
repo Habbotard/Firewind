@@ -10,9 +10,10 @@ namespace FirewindEncryptor
 {
     class Program
     {
-        private static byte[] ENCRYPTION_KEY = {161, 221, 123, 139,  28, 54, 120, 60, 240, 209, 139, 68, 73, 120, 222, 43};
+        private static byte[] ENCRYPTION_KEY = {75, 22, 12, 44,  28, 54, 120, 53, 240, 209, 139, 63, 69, 211, 86, 23};
         static void Main(string[] args)
         {
+            string s = Convert.ToBase64String(ENCRYPTION_KEY);
             if(args.Length != 1)
             {
                 Console.WriteLine("WRONG ARGS LENGTH");

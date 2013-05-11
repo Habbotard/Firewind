@@ -26,62 +26,62 @@ namespace Firewind.HabboHotel.Groups
             ColorBadges1 = new List<GuildsPartsData>();
             ColorBadges2 = new List<GuildsPartsData>();
             ColorBadges3 = new List<GuildsPartsData>();
-            using (IQueryAdapter adapter = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            {
-                adapter.setQuery("SELECT * FROM groups_elements");
-                DataTable table = adapter.getTable();
-                foreach (DataRow row in table.Rows)
-                {
-                    GuildsPartsData data;
-                    if (row["Type"].ToString() == "Base")
-                    {
-                        data = new GuildsPartsData
-                        {
-                            Id = (int)row["Id"],
-                            ExtraData1 = (string)row["ExtraData1"],
-                            ExtraData2 = (string)row["ExtraData2"]
-                        };
-                        BaseBadges.Add(data);
-                    }
-                    else if (row["ExtraData1"].ToString().StartsWith("symbol_"))
-                    {
-                        data = new GuildsPartsData
-                        {
-                            Id = (int)row["Id"],
-                            ExtraData1 = (string)row["ExtraData1"],
-                            ExtraData2 = (string)row["ExtraData2"]
-                        };
-                        SymbolBadges.Add(data);
-                    }
-                    else if (row["Type"].ToString() == "Color1")
-                    {
-                        data = new GuildsPartsData
-                        {
-                            Id = (int)row["Id"],
-                            ExtraData1 = (string)row["ExtraData1"]
-                        };
-                        ColorBadges1.Add(data);
-                    }
-                    else if (row["Type"].ToString() == "Color2")
-                    {
-                        data = new GuildsPartsData
-                        {
-                            Id = (int)row["Id"],
-                            ExtraData1 = (string)row["ExtraData1"]
-                        };
-                        ColorBadges2.Add(data);
-                    }
-                    else if (row["Type"].ToString() == "Color3")
-                    {
-                        data = new GuildsPartsData
-                        {
-                            Id = (int)row["Id"],
-                            ExtraData1 = (string)row["ExtraData1"]
-                        };
-                        ColorBadges3.Add(data);
-                    }
-                }
-            }
+            //using (IQueryAdapter adapter = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            //{
+            //    adapter.setQuery("SELECT * FROM groups_elements");
+            //    DataTable table = adapter.getTable();
+            //    foreach (DataRow row in table.Rows)
+            //    {
+            //        GuildsPartsData data;
+            //        if (row["Type"].ToString() == "Base")
+            //        {
+            //            data = new GuildsPartsData
+            //            {
+            //                Id = (int)row["Id"],
+            //                ExtraData1 = (string)row["ExtraData1"],
+            //                ExtraData2 = (string)row["ExtraData2"]
+            //            };
+            //            BaseBadges.Add(data);
+            //        }
+            //        else if (row["ExtraData1"].ToString().StartsWith("symbol_"))
+            //        {
+            //            data = new GuildsPartsData
+            //            {
+            //                Id = (int)row["Id"],
+            //                ExtraData1 = (string)row["ExtraData1"],
+            //                ExtraData2 = (string)row["ExtraData2"]
+            //            };
+            //            SymbolBadges.Add(data);
+            //        }
+            //        else if (row["Type"].ToString() == "Color1")
+            //        {
+            //            data = new GuildsPartsData
+            //            {
+            //                Id = (int)row["Id"],
+            //                ExtraData1 = (string)row["ExtraData1"]
+            //            };
+            //            ColorBadges1.Add(data);
+            //        }
+            //        else if (row["Type"].ToString() == "Color2")
+            //        {
+            //            data = new GuildsPartsData
+            //            {
+            //                Id = (int)row["Id"],
+            //                ExtraData1 = (string)row["ExtraData1"]
+            //            };
+            //            ColorBadges2.Add(data);
+            //        }
+            //        else if (row["Type"].ToString() == "Color3")
+            //        {
+            //            data = new GuildsPartsData
+            //            {
+            //                Id = (int)row["Id"],
+            //                ExtraData1 = (string)row["ExtraData1"]
+            //            };
+            //            ColorBadges3.Add(data);
+            //        }
+            //    }
+            //}
         }
     }
 }

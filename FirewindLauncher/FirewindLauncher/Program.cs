@@ -15,6 +15,7 @@ namespace FirewindLauncher
 {
     class Program
     {
+        public const int VERSION = 4879;
         static void Main(string[] args)
         {
             if (!CheckHost())
@@ -24,6 +25,15 @@ namespace FirewindLauncher
             AesCryptoServiceProvider p = new AesCryptoServiceProvider();
             //XElement root = XElement.Load(json);
             //byte[] key = Convert.FromBase64String((string)root.NextNode.Document);
+            string[] info = DownloadInfo(ReadKeyFromConfig()); // 0=key,1=user limit,2=license holder name,3=latestver
+
+            if (info.Length == 4 && int.Parse(info[3]) > VERSION) // New version available!
+            {
+                Console.WriteLine("There is a new version available.");
+                Console.WriteLine("Go to the download section at getfirewind.com to get it.");
+                Console.ReadKey(true);
+                return;
+            }
             string encodedKey = DownloadInfo(ReadKeyFromConfig())[0];
             byte[] key;
 

@@ -1,1 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?><project outputDir="D:\Users\Audun\Documents\GitHub\Firewind\Firewind Emulator\bin\Release\Confused" snKey="" xmlns="http://confuser.codeplex.com"><settings name="settings1"><confusion id="rename" /><confusion id="anti debug" /></settings><settings name="settings2"><confusion id="anti debug" /></settings><settings name="settings3" /><assembly path="D:\Users\Audun\Documents\GitHub\Firewind\Firewind Emulator\bin\Release\Firewind Emulator.exe" isMain="true"><config id="settings1" applytomembers="true" /><module name="Firewind Emulator.exe"><ns name="Firewind"><type name="Program"><config id="settings2" applytomembers="true" /></type></ns><ns name="Firewind.HabboHotel.Rooms"><type name="MapStuffData"><config id="settings3" applytomembers="true" /></type><type name="StringData"><config id="settings3" applytomembers="true" /></type><type name="IRoomItemData"><config id="settings3" applytomembers="true" /></type><type name="StringIntData"><config id="settings3" applytomembers="true" /></type><type name="StringArrayStuffData"><config id="settings3" applytomembers="true" /></type></ns></module></assembly></project>
+<project outputDir="D:\Users\Audun\Documents\GitHub\Firewind\Firewind Emulator\bin\Release\Confused" snKey="" xmlns="http://confuser.codeplex.com">
+  <settings name="settings1">
+    <confusion id="rename" />
+    <confusion id="anti debug" />
+    <confusion id="anti ildasm" />
+    <confusion id="invalid md" />
+    <confusion id="reduce md" />
+    <confusion id="const encrypt" />
+  </settings>
+  <settings name="settings2">
+    <confusion id="anti debug" />
+  </settings>
+  <settings name="settings3" />
+  <assembly path="D:\Users\Audun\Documents\GitHub\Firewind\Firewind Emulator\bin\Release\Firewind Emulator.exe" isMain="true">
+    <config id="settings1" applytomembers="true" />
+    <module name="Firewind Emulator.exe">
+      <ns name="Firewind">
+        <type name="Program">
+          <config id="settings2" applytomembers="true" />
+        </type>
+      </ns>
+      <ns name="Firewind.HabboHotel.Rooms">
+        <type name="MapStuffData">
+          <config id="settings3" applytomembers="true" />
+        </type>
+        <type name="StringData">
+          <config id="settings3" applytomembers="true" />
+        </type>
+        <type name="IRoomItemData">
+          <config id="settings3" applytomembers="true" />
+        </type>
+        <type name="StringIntData">
+          <config id="settings3" applytomembers="true" />
+        </type>
+        <type name="StringArrayStuffData">
+          <config id="settings3" applytomembers="true" />
+        </type>
+      </ns>
+    </module>
+  </assembly>
+</project>

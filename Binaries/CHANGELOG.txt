@@ -1,3 +1,15 @@
+### BETA BUILD 4879
+- Wired furni data no longer resets when you move the item
+- Fixed 'ghost floor items' bug when moving floor items
+- Fixed achievement point indicator
+- Trophy text now works correctly
+- Possible fix of rare bug causing client to crash
+- Removed a lot of old sections of the code (minor performance improvements)
+- Added "backgroundworker.interval" to config. (explained in new config)
+- Added "welcome back" message at hotel view
+- Fixed the pet training panel
+- Added messages when redeeming vouchers
+
 ### BETA BUILD 4870
 - New default database (cleaned up and properly working)
 - Changed "navigator_publics_new" to "navigator_publics"
