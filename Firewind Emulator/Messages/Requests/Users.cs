@@ -73,10 +73,6 @@ namespace Firewind.Messages
                 Session.GetHabbo().Credits += FirewindEnvironment.GetGame().GetClientManager().creditsOnLogin;
 
             Session.GetHabbo().UpdateCreditsBalance();
-<<<<<<< HEAD
-            Session.GetHabbo().UpdateActivityPointsBalance(false);
-=======
->>>>>>> parent of d4151c4... Merged stuff
         }
 
         internal void ScrGetUserInfo()

@@ -2381,7 +2381,12 @@ namespace Firewind.Messages
                 FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.FURNI_ROTATE);
             }
 
-            Room.GetRoomItemHandler().SetFloorItem(Session, Item, x, y, Rotation, false, false, true);
+            if (!Room.GetRoomItemHandler().SetFloorItem(Session, Item, x, y, Rotation, false, false, true)) // Placing failed, tell client to put item back
+            {
+                Response.Init(Outgoing.ObjectUpdate);
+                Item.Serialize(Response, Room.OwnerId);
+                SendResponse();
+            }
 
             if (Item.GetZ >= 0.1)
             {
