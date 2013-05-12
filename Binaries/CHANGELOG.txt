@@ -1,3 +1,6 @@
+### HOTFIX 4880
+- Fixed random shutdown of emulator
+
 ### BETA BUILD 4879
 - Wired furni data no longer resets when you move the item
 - Fixed 'ghost floor items' bug when moving floor items

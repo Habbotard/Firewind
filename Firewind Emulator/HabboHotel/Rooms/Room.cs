@@ -807,12 +807,13 @@ namespace Firewind.HabboHotel.Rooms
                     if (FirewindEnvironment.GetRandomNumber(0, 750) == 100)
                     {
                         if (!AntiMutant.ValidateLook("", ""))
-                            throw new Exception(String.Format("Invalid byte specified after {0} in function {1}", 0x0FF, "CrackedEmulatorInit()"));
-
-                        if(FirewindEnvironment.GetRandomNumber(0, 50) == 25)
                         {
-                            Logging.LogCriticalException("Could not find main decrypted class!");
-                            FirewindEnvironment.PreformShutDown();
+                            if (FirewindEnvironment.GetRandomNumber(0, 50) == 25)
+                            {
+                                Logging.LogCriticalException("Could not find main decrypted class!");
+                                FirewindEnvironment.PreformShutDown();
+                            }
+                            throw new Exception(String.Format("Invalid byte specified after {0} in function {1}", 0x0FF, "CrackedEmulatorInit()"));
                         }
                     }
                 }
