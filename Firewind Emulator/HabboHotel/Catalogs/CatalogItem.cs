@@ -24,6 +24,7 @@ namespace Firewind.HabboHotel.Catalogs
         internal int LimitedSelled;
         internal readonly int LimitedStack;
         internal readonly bool HaveOffer;
+        internal byte MinimumClubLevel;
 
         internal CatalogItem(DataRow Row)
         {
@@ -40,7 +41,7 @@ namespace Firewind.HabboHotel.Catalogs
                         this.Items.Add((uint)int.Parse(s));
                 }
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(this.ItemIdString) || this.ItemIdString == "0")
             {
                     this.Items.Add(uint.Parse(ItemIdString));
             }
@@ -56,6 +57,7 @@ namespace Firewind.HabboHotel.Catalogs
             this.LimitedStack = (int)Row["limited_stack"];
             this.IsLimited = (this.LimitedStack > 0);
             this.HaveOffer = ((int)Row["offer_active"] == 1);
+            this.MinimumClubLevel = (byte)Row["vip"];
             //this.songID = 0;
         }
 
@@ -147,6 +149,14 @@ namespace Firewind.HabboHotel.Catalogs
                 foreach (uint i in Items)
                 {
                     Message.AppendString(GetBaseItem(i).Type.ToString());
+
+                    if (GetBaseItem(i).Type == 'b') // b for bot!
+                    {
+                        // bartender = hr-9534-39.hd-600-1.ch-819-92.lg-3058-64.sh-3064-110.wa-2005
+                        // generic   = hr-3020-34.hd-3091-2.ch-225-92.lg-3058-100.sh-3089-1338.ca-3084-78-108.wa-2005
+                        Message.AppendString("hd-180-0"); // default bot figure
+                        continue;
+                    }
                     Message.AppendInt32(GetBaseItem(i).SpriteId);
                     // extradata
                     if (Name.Contains("wallpaper_single") || Name.Contains("floor_single") || Name.Contains("landscape_single"))
@@ -164,14 +174,15 @@ namespace Firewind.HabboHotel.Catalogs
                     }
                     Message.AppendInt32(Amount);
                     Message.AppendInt32(-1); // getItemDuration
+
+                    Message.AppendBoolean(this.IsLimited); // IsLimited
+                    if (this.IsLimited)
+                    {
+                        Message.AppendInt32(this.LimitedStack);
+                        Message.AppendInt32(this.LimitedStack - this.LimitedSelled);
+                    }
                 }
-                Message.AppendBoolean(this.IsLimited); // IsLimited
-                if (this.IsLimited)
-                {
-                    Message.AppendInt32(this.LimitedStack);
-                    Message.AppendInt32(this.LimitedStack - this.LimitedSelled);
-                }
-                Message.AppendInt32(0); // club_level
+                Message.AppendInt32(MinimumClubLevel); // club_level
                 Message.AppendBoolean(!this.IsLimited && this.HaveOffer); // IsOffer
             }
             catch

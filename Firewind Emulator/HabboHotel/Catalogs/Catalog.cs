@@ -226,7 +226,7 @@ namespace Firewind.HabboHotel.Catalogs
             }
             CatalogItem Item = Page.GetItem(ItemId);
 
-            if (Item == null)
+            if (Item == null) // TODO: Check item minimum club rank
             {
                 return;
             }
@@ -1097,6 +1097,8 @@ namespace Firewind.HabboHotel.Catalogs
             if (!Page.Layout.Equals("frontpage") && !Page.Layout.Equals("club_buy"))
             {
                 PageData.AppendInt32(Page.Items.Count);
+
+                //if (Page.Layout == "trophies") // We have to order descending here!
                 foreach (CatalogItem Item in Page.Items.Values)
                 {
                     Item.Serialize(PageData);

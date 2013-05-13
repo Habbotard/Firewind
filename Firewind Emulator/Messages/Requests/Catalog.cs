@@ -14,6 +14,8 @@ namespace Firewind.Messages
     {
         internal void GetCatalogIndex()
         {
+            if (Session.GetHabbo() == null)
+                return;
             Session.SendMessage(FirewindEnvironment.GetGame().GetCatalog().GetIndexMessageForRank(Session.GetHabbo().Rank));
         }
 

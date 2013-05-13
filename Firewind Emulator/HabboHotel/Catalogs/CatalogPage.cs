@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Firewind.Messages;
+using System.Linq;
 
 namespace Firewind.HabboHotel.Catalogs
 {
@@ -32,7 +33,7 @@ namespace Firewind.HabboHotel.Catalogs
         internal string TextTeaser;
 
         //internal List<CatalogItem> Items;
-        internal Hashtable Items;
+        internal Dictionary<uint, CatalogItem> Items;
 
         private ServerMessage mMessage;
 
@@ -49,7 +50,7 @@ namespace Firewind.HabboHotel.Catalogs
             string LayoutTeaser, string LayoutSpecial, string Text1, string Text2, string TextDetails,
             string TextTeaser, ref Hashtable CataItems)
         {
-            Items = new Hashtable();
+            Items = new Dictionary<uint, CatalogItem>();
 
             this.Id = Id;
             this.ParentId = ParentId;
@@ -69,10 +70,21 @@ namespace Firewind.HabboHotel.Catalogs
             this.TextDetails = TextDetails;
             this.TextTeaser = TextTeaser;
 
-            foreach (CatalogItem Item in CataItems.Values)
+            if (Layout == "trophies") // Order descending!
             {
-                if (Item.PageID == Id)
-                    Items.Add(Item.Id, Item);
+                foreach (var item in Items.OrderByDescending(t => t.Value.Name))
+                {
+                    if (item.Value.PageID == Id)
+                        Items.Add(item.Value.Id, item.Value);
+                }
+            }
+            else
+            {
+                foreach (CatalogItem Item in CataItems.Values)
+                {
+                    if (Item.PageID == Id)
+                        Items.Add(Item.Id, Item);
+                }
             }
         }
 

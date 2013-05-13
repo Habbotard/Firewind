@@ -17,24 +17,20 @@ namespace Firewind.Messages.ClientMessages
 
         internal static ClientMessage GetClientMessage(int messageID, byte[] body)
         {
-            if (freeObjects.Count > 0)
-            {
-                ClientMessage message;
+            ClientMessage message;
 
-                lock (freeObjects.SyncRoot)
-                {
+            lock (freeObjects.SyncRoot)
+            {
+                if (freeObjects.Count > 0)
                     message = (ClientMessage)freeObjects.Dequeue();
-                }
-                if (message == null)
+                else
                     return new ClientMessage(messageID, body);
-
-                message.Init(messageID, body);
-                return message;
             }
-            else
-            {
+            if (message == null)
                 return new ClientMessage(messageID, body);
-            }
+
+            message.Init(messageID, body);
+            return message;
         }
 
         internal static void ObjectCallback(ClientMessage message)
