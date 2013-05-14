@@ -181,6 +181,7 @@ namespace HabboEvents
         // Groups
         public static int StartGuildPurchase = 1137;
         public static int GetGuildInfo = 1660;
+        public static int CreateGuild = 2282;
 
         // Engine
         public static int EventLog = 2087;

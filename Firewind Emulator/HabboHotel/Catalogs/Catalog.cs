@@ -42,7 +42,7 @@ namespace Firewind.HabboHotel.Catalogs
             DataTable EcoData = dbClient.getTable();
 
             Hashtable CataItems = new Hashtable();
-            dbClient.setQuery("SELECT id,item_ids,catalog_name,cost_credits,cost_pixels,cost_points,amount,page_id,song_id,limited_sells,limited_stack,offer_active FROM catalog_items");
+            dbClient.setQuery("SELECT * FROM catalog_items");
             DataTable CatalogueItems = dbClient.getTable();
 
             if (CatalogueItems != null)

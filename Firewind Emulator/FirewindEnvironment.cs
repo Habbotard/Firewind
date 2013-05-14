@@ -223,7 +223,7 @@ namespace Firewind
             {
                 using (IQueryAdapter dbClient = manager.getQueryreactor())
                 {
-                    dbClient.setQuery("SELECT column_name FROM information_schema.columns WHERE table_name = 'users' AND column_name = 'hpo'");
+                    dbClient.setQuery("SELECT column_name FROM information_schema.columns WHERE table_schema = '" + FirewindEnvironment.GetConfig().data["db.name"] + "' AND table_name = 'users' AND column_name = 'hpo'");
                     IsHabin = dbClient.findsResult();
                 }
             }

@@ -973,6 +973,11 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.StartGuildPurchase();
         }
 
+        internal static void CreateGuild(GameClientMessageHandler handler)
+        {
+            handler.CreateGuild();
+        }
+
         internal static void GetGuildInfo(GameClientMessageHandler handler)
         {
             handler.GetGuildInfo();

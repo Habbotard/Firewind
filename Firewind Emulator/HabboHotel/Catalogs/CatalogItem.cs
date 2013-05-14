@@ -57,7 +57,7 @@ namespace Firewind.HabboHotel.Catalogs
             this.LimitedStack = (int)Row["limited_stack"];
             this.IsLimited = (this.LimitedStack > 0);
             this.HaveOffer = ((int)Row["offer_active"] == 1);
-            this.MinimumClubLevel = (byte)Row["vip"];
+            this.MinimumClubLevel = 0;
             //this.songID = 0;
         }
 

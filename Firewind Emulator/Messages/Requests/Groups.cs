@@ -22,11 +22,14 @@ namespace Firewind.Messages
             int color1 = Request.ReadInt32();
             int color2 = Request.ReadInt32();
 
+            // I THINK I DID THIS WRONG LEON, CHECK BCSTORM IF IT IS WRONG
             int[] badgeData = new int[Request.ReadInt32()];
             for (int i = 0; i < badgeData.Length; i++)
             {
                 badgeData[i] = Request.ReadInt32();
             }
+
+            Console.WriteLine(name);
         }
 
         // ID: 2616
@@ -60,7 +63,25 @@ namespace Firewind.Messages
                 Response.AppendBoolean(false); // WTF IS THIS SHIT WTF
             }
 
-            Response.AppendInt32(0); // IDK what next array actually is
+            //Response.AppendInt32(0); // IDK what next array actually is
+
+            Response.AppendInt32(5);
+            Response.AppendInt32(10);
+            Response.AppendInt32(3);
+            Response.AppendInt32(4);
+            Response.AppendInt32(19);
+            Response.AppendInt32(11);
+            Response.AppendInt32(5);
+            Response.AppendInt32(19);
+            Response.AppendInt32(1);
+            Response.AppendInt32(3);
+            Response.AppendInt32(29);
+            Response.AppendInt32(11);
+            Response.AppendInt32(4);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+
             SendResponse();
 
             // We just send blank data for now
