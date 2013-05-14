@@ -1,0 +1,1 @@
+ALTER TABLE items_base DROP COLUMN public_name;
