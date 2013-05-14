@@ -39,6 +39,9 @@ namespace Firewind
         internal static CultureInfo cultureInfo;
         public static uint friendRequestLimit = 300;
 
+        // veggy needs his special features
+        internal static bool IsHabin;
+
         // Multi Tasking (configurations.ini)
         internal static bool SeparatedTasksInMainLoops = false;
         internal static bool SeparatedTasksInGameClientManager = false;
@@ -214,6 +217,17 @@ namespace Firewind
                 Console.ReadKey();
                 Environment.Exit(1);
             }
+
+            // Check if this is habin or not
+            try
+            {
+                using (IQueryAdapter dbClient = manager.getQueryreactor())
+                {
+                    dbClient.setQuery("SELECT column_name FROM information_schema.columns WHERE table_name = 'users' AND column_name = 'hpo'");
+                    IsHabin = dbClient.findsResult();
+                }
+            }
+            catch { }
         }
 
 

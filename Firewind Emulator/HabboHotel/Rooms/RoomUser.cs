@@ -14,6 +14,8 @@ using Firewind.Messages;
 using System.Drawing;
 using Firewind.Core;
 using HabboEvents;
+using System.Data;
+using Database_Manager.Database.Session_Details.Interfaces;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -356,6 +358,95 @@ namespace Firewind.HabboHotel.Rooms
                             }
                         }
                         catch (Exception x) { Logging.LogException("In-game command error: " + x.ToString()); }
+                    }
+                    if (FirewindEnvironment.IsHabin)
+                    {
+                        bool result;
+                        using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                        {
+                            dbClient.setQuery("SELECT id FROM users WHERE hpo = '1' OR hpo = '1' OR hds = '1' OR hmg = '1' OR hmb = '1'");
+
+                            if (dbClient.findsResult())
+                            {
+                                dbClient.addParameter("myid", Session.GetHabbo().Id);
+
+                                // Fuck this command system, we make our own!
+                                string command = parsedCommand[0].Substring(1);
+                                switch (command)
+                                {
+                                    case "relationship":
+                                        dbClient.setQuery("SELECT id FROM users WHERE username = @name");
+                                        dbClient.addParameter("name", parsedCommand[1]);
+                                        int id = dbClient.getInteger();
+
+                                        dbClient.setQuery("INSERT IGNORE INTO users_relationships(sender_id,recipent_id) VALUES(@myid,@hisid)");
+                                        dbClient.addParameter("hisid", id);
+                                        dbClient.runQuery();
+
+                                        Session.SendMOTD("Du har sendt en forespørsel til " + parsedCommand[1]);
+                                        return;
+
+                                    case "mystatus":
+                                        StringBuilder statusMessage = new StringBuilder();
+                                        statusMessage.AppendLine("Du har følgende forespørsler:");
+                                        dbClient.setQuery("SELECT sender_id FROM users_relationships WHERE recipent_id = @myid LIMIT 7");
+                                        DataTable table = dbClient.getTable();
+                                        foreach (DataRow row in table.Rows)
+                                        {
+                                            statusMessage.AppendLine(FirewindEnvironment.getHabboForId((uint)row[0]).Username);
+                                        }
+                                        statusMessage.AppendLine("Du kan maks ha 6 forespørsler på en gang.");
+                                        statusMessage.AppendLine("Skriv :accept navn for å akseptere en forespørsel.");
+                                        Session.SendMOTD(statusMessage.ToString());
+                                        return;
+
+                                    case "accept":
+                                        dbClient.setQuery("SELECT sender_id FROM users_relationships WHERE (recipent_id = @myid OR sender_id = @myid) AND accepted = '1'");
+                                        if (dbClient.findsResult())
+                                        {
+                                            Session.SendMOTD("Du er allerede i et forhold!");
+                                            return;
+                                        }
+                                        dbClient.setQuery("UPDATE users_relationships SET accepted = '1' WHERE sender_id = @sid AND recipent_id = @myid LIMIT 1");
+                                        dbClient.addParameter("sid", FirewindEnvironment.getHabboForName(parsedCommand[1]).Id);
+                                        dbClient.runQuery();
+                                        Session.SendMOTD("Du er nå i et forhold med " + parsedCommand[1]);
+                                        return;
+
+                                    case "decline":
+                                        dbClient.setQuery("DELETE FROM users_relationships WHERE sender_id = @sid AND recipent_id = @myid AND accepted = '0' LIMIT 1");
+                                        dbClient.addParameter("sid", FirewindEnvironment.getHabboForName(parsedCommand[1]).Id);
+                                        dbClient.runQuery();
+                                        Session.SendMOTD("Du har avslått " + parsedCommand[1]);
+                                        return;
+
+                                    case "declineall":
+                                        dbClient.setQuery("DELETE FROM users_relationships WHERE recipent_id = @myid AND accepted = '0' LIMIT 1");
+                                        dbClient.runQuery();
+                                        Session.SendMOTD("Du har avslått alle.");
+                                        return;
+
+                                    case "status":
+                                        dbClient.setQuery("SELECT sender_id,recipent_id FROM users_relationships WHERE (recipent_id = @myid OR sender_id = @myid) AND accepted = '1' LIMIT 1");
+                                        DataRow resultRow = dbClient.getRow();
+
+                                        if (resultRow == null)
+                                            Session.SendMOTD(parsedCommand[1] + " er singel.");
+                                        else
+                                        {
+                                            bool isSender = (uint)resultRow[0] == Session.GetHabbo().Id;
+                                            Session.SendMOTD(parsedCommand[1] + " er i et forhold med " + (isSender ? FirewindEnvironment.getHabboForId((uint)resultRow[1]).Username : FirewindEnvironment.getHabboForId((uint)resultRow[0]).Username));
+                                        }
+                                        return;
+
+                                    case "removerelationship":
+                                        dbClient.setQuery("DELETE FROM users_relationships WHERE accepted = '1' AND (recipent_id = @myid OR sender_id = @myid) LIMIT 1");
+                                        dbClient.runQuery();
+                                        Session.SendMOTD("Du er ikke lenger i noen forhold.");
+                                        return;
+                                }
+                            }
+                        }
                     }
                 }
 
