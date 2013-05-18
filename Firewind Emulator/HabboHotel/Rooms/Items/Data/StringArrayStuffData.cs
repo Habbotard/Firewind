@@ -10,7 +10,7 @@ namespace Firewind.HabboHotel.Rooms
     internal class StringArrayStuffData : IRoomItemData
     {
         // 2 = (StringArrayStuffData) - int i, foreach i { string }
-        internal string[] Data;
+        internal List<string> Data;
 
         public int GetTypeID()
         {

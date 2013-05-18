@@ -27,7 +27,6 @@ namespace Firewind.HabboHotel.Items
             {
                 uint id;
                 int spriteID;
-                string publicName;
                 string itemName;
                 string type;
                 int width;
@@ -51,7 +50,6 @@ namespace Firewind.HabboHotel.Items
                     {
                         id = Convert.ToUInt32(dRow["id"]);
                         spriteID = (int)dRow["sprite_id"];
-                        publicName = (string)dRow["public_name"];
                         itemName = (string)dRow["item_name"];
                         type = (string)dRow["type"];
                         width = (int)dRow["width"];
@@ -69,7 +67,7 @@ namespace Firewind.HabboHotel.Items
                         cycleCount = (int)dRow["interaction_modes_count"];
                         vendingIDS = (string)dRow["vending_ids"];
 
-                        Item item = new Item(id, spriteID, publicName, itemName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, cycleCount, vendingIDS);
+                        Item item = new Item(id, spriteID, itemName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, cycleCount, vendingIDS);
                         Items.Add(id, item);
                     }
                     catch (Exception e)

@@ -10,7 +10,6 @@ namespace Firewind.HabboHotel.Items
 
         internal int SpriteId;
 
-        internal string PublicName;
         internal string Name;
         internal char Type;
 
@@ -44,11 +43,10 @@ namespace Firewind.HabboHotel.Items
             }
         }
 
-        internal Item(UInt32 Id, int Sprite, string PublicName, string Name, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat, bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int Modes, string VendingIds)
+        internal Item(UInt32 Id, int Sprite, string Name, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat, bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int Modes, string VendingIds)
         {
             this.Id = Id;
             this.SpriteId = Sprite;
-            this.PublicName = PublicName;
             this.Name = Name;
             this.Type = char.Parse(Type);
             this.Width = Width;

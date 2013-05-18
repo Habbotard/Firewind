@@ -115,7 +115,9 @@ namespace Firewind.HabboHotel.Items
         wireStandard,
 
         gift,
-        mannequin
+        mannequin,
+        guildgeneric,
+        guilddoor
     }
 
     class InterractionTypes

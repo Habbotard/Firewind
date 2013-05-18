@@ -549,7 +549,6 @@ namespace Firewind.HabboHotel.Catalogs
                     //    data.Data.Add("GENDER", "");
                     //    itemData = data;
                     //    break;
-
                     default:
                         //itemData = new StringData(extraParameter);
                         break;
@@ -771,6 +770,18 @@ namespace Firewind.HabboHotel.Catalogs
                                 data.Data.Add("GENDER", "M");
 
                                 result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, data, 0, true, false, songID));
+                                break;
+                                
+                            case InteractionType.guildgeneric:
+                            case InteractionType.guilddoor:
+                                StringArrayStuffData stringData = new StringArrayStuffData();
+                                stringData.Data.Add(""); // furniture state
+                                stringData.Data.Add("1"); // guild id
+                                stringData.Data.Add(""); // badge string
+                                stringData.Data.Add("FFFFFF"); // COLOR_1_STUFFDATA
+                                stringData.Data.Add("FFFFFF"); // COLOR_2_STUFFDATA
+
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, stringData, 0, true, false, songID));
                                 break;
 
                             default:
