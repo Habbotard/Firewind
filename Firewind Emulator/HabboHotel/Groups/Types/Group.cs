@@ -63,5 +63,107 @@ namespace Firewind.HabboHotel.Groups.Types
                 this.Members.Add((uint)Member["user_id"]);
             }
         }
+
+        public static string GenerateBadgeImage(int backgroundID, int backgroundColor, List<Tuple<int,int,int>> parts)
+        {
+            // b 22 13  s03044  s27044  s1701  s01051
+            StringBuilder image = new StringBuilder();
+            image.Append("b");
+            image.Append(backgroundID.ToString("D2"));
+            image.Append(backgroundColor.ToString("D2"));
+
+            foreach (var part in parts)
+            {
+                if (part.Item1 == 0)
+                    continue;
+                image.Append("s");
+                image.Append((part.Item1 - 20).ToString("D2"));
+                image.Append(part.Item2.ToString("D2"));
+                image.Append(part.Item3);
+            }
+
+            return image.ToString();
+        }
+        public static string GenerateGuildImage(int GuildBase, int GuildBaseColor, List<int> GStates)
+        {
+            List<int> list = GStates;
+            string str = "";
+            int num = 0;
+            string str2 = "b";
+            if (GuildBase.ToString().Length >= 2)
+            {
+                str2 = str2 + GuildBase;
+            }
+            else
+            {
+                str2 = str2 + "0" + GuildBase;
+            }
+            str = GuildBaseColor.ToString();
+            if (str.Length >= 2)
+            {
+                str2 = str2 + str;
+            }
+            else if (str.Length <= 1)
+            {
+                str2 = str2 + "0" + str;
+            }
+            int num2 = 0;
+            if (list[9] != 0) // 0 3 6 9
+            {
+                num2 = 4;
+            }
+            else if (list[6] != 0)
+            {
+                num2 = 3;
+            }
+            else if (list[3] != 0)
+            {
+                num2 = 2;
+            }
+            else if (list[0] != 0)
+            {
+                num2 = 1;
+            }
+            int num3 = 0;
+            for (int i = 0; i < num2; i++)
+            {
+                str2 = str2 + "s";
+                num = list[num3] - 20;
+                if (num.ToString().Length >= 2)
+                {
+                    str2 = str2 + num;
+                }
+                else
+                {
+                    str2 = str2 + "0" + num;
+                }
+                int num5 = list[1 + num3];
+                str = num5.ToString();
+                if (str.Length >= 2)
+                {
+                    str2 = str2 + str;
+                }
+                else if (str.Length <= 1)
+                {
+                    str2 = str2 + "0" + str;
+                }
+                str2 = str2 + list[2 + num3].ToString();
+                switch (num3)
+                {
+                    case 0:
+                        num3 = 3;
+                        break;
+
+                    case 3:
+                        num3 = 6;
+                        break;
+
+                    case 6:
+                        num3 = 9;
+                        break;
+                }
+            }
+            return str2;
+        }
     }
 }

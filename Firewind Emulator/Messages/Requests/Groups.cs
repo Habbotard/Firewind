@@ -16,20 +16,58 @@ namespace Firewind.Messages
         public void CreateGuild()
         {
             // string, string, int, int, int, int[]
+
+            // Step 1, parse the data
             string name = Request.ReadString();
             string desc = Request.ReadString();
             int roomID = Request.ReadInt32();
             int color1 = Request.ReadInt32();
             int color2 = Request.ReadInt32();
 
-            // I THINK I DID THIS WRONG LEON, CHECK BCSTORM IF IT IS WRONG
-            int[] badgeData = new int[Request.ReadInt32()];
-            for (int i = 0; i < badgeData.Length; i++)
+            int dataLength = Request.ReadInt32();
+            List<Tuple<int, int, int>> badgeData = new List<Tuple<int, int, int>>();
+            for (int i = 0; i < dataLength / 3; i++) // each part is 3 ints
             {
-                badgeData[i] = Request.ReadInt32();
+                badgeData.Add(new Tuple<int, int, int>(Request.ReadInt32(), Request.ReadInt32(), Request.ReadInt32()));
             }
 
-            Console.WriteLine(name);
+            // Step 2, check the data
+            // Does the user own the room?
+            if (!Session.GetHabbo().UsersRooms.Exists(t => t.Id == roomID))
+                return;
+
+            // Step 3, do the work
+            //ServerMessage message = new ServerMessage(Outgoing.SerializePurchaseInformation);
+
+            //message.AppendInt32(0x1815);
+            //message.AppendString("CREATE_GUILD");
+            //message.AppendInt32(10);
+            //message.AppendInt32(0);
+            //message.AppendInt32(0);
+            //message.AppendBoolean(true);
+            //message.AppendInt32(0);
+            //message.AppendInt32(2);
+            //message.AppendBoolean(false);
+
+            //Session.SendMessage(message);
+
+            Response.Init(Outgoing.GroupCreated);
+            Response.AppendInt32(roomID);
+            Response.AppendInt32(1);
+            SendResponse();
+
+            //ForwardToRoom(roomID);
+            Response.Init(Outgoing.OwnGuilds);
+            Response.AppendInt32(1); // count
+
+            Response.AppendInt32(1); // groupId
+            Response.AppendString(name); // groupName
+            Response.AppendString(""); // groupName
+            Response.AppendString("FFFFFF"); // color 1
+            Response.AppendString("FFFFFF"); // color 2
+            Response.AppendBoolean(true); // favourite
+
+            SendResponse();
         }
 
         // ID: 2616
@@ -66,18 +104,23 @@ namespace Firewind.Messages
             //Response.AppendInt32(0); // IDK what next array actually is
 
             Response.AppendInt32(5);
+
             Response.AppendInt32(10);
             Response.AppendInt32(3);
             Response.AppendInt32(4);
+
             Response.AppendInt32(19);
             Response.AppendInt32(11);
             Response.AppendInt32(5);
+
             Response.AppendInt32(19);
             Response.AppendInt32(1);
             Response.AppendInt32(3);
+
             Response.AppendInt32(29);
             Response.AppendInt32(11);
             Response.AppendInt32(4);
+
             Response.AppendInt32(0);
             Response.AppendInt32(0);
             Response.AppendInt32(0);

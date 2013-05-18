@@ -191,6 +191,8 @@ namespace HabboEvents
         public static int GuildEditorData = 1725;
         public static int HabboGroupJoinFailed = 2407;
         public static int GroupInfo = 2602;
+        public static int OwnGuilds = 1463;
+        public static int GroupCreated = 1327;
 
         // User
         public static int SoundSettings = 89;

@@ -49,7 +49,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.UniqueMachineID, new StaticRequestHandler(SharedPacketLib.setUniqueId));
             handlers.Add(Incoming.PrepareCampaing, new StaticRequestHandler(SharedPacketLib.PrepareCampaing));
             handlers.Add(Incoming.SendCampaingData, new StaticRequestHandler(SharedPacketLib.SendCampaingData));
-            handlers.Add(Incoming.OpenCatalog, new StaticRequestHandler(SharedPacketLib.GetCatalogIndex));
+            handlers.Add(Incoming.GetCatalogIndex, new StaticRequestHandler(SharedPacketLib.GetCatalogIndex));
             handlers.Add(Incoming.OpenCatalogPage, new StaticRequestHandler(SharedPacketLib.GetCatalogPage));
             handlers.Add(Incoming.RedeemVoucher, new StaticRequestHandler(SharedPacketLib.RedeemVoucher));
             handlers.Add(Incoming.PurchaseCatalogItem, new StaticRequestHandler(SharedPacketLib.HandlePurchase));
@@ -211,6 +211,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             // Groups
             handlers.Add(Incoming.StartGuildPurchase, new StaticRequestHandler(SharedPacketLib.StartGuildPurchase));
             handlers.Add(Incoming.GetGuildInfo, new StaticRequestHandler(SharedPacketLib.GetGuildInfo));
+            handlers.Add(Incoming.CreateGuild, new StaticRequestHandler(SharedPacketLib.CreateGuild));
 
             // Engine
             handlers.Add(Incoming.EventLog, new StaticRequestHandler(SharedPacketLib.EventLog));

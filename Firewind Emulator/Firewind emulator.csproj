@@ -140,6 +140,7 @@
     <Compile Include="HabboHotel\Groups\GroupManager.cs" />
     <Compile Include="HabboHotel\Groups\GuildsPartsData.cs" />
     <Compile Include="HabboHotel\Groups\Types\Group.cs" />
+    <Compile Include="HabboHotel\Groups\Types\GroupBadgePart.cs" />
     <Compile Include="HabboHotel\Groups\Types\GroupMember.cs" />
     <Compile Include="HabboHotel\Items\WallCoordinate.cs" />
     <Compile Include="HabboHotel\Pets\PetRace.cs" />

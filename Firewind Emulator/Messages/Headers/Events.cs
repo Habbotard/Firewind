@@ -24,14 +24,6 @@ namespace HabboEvents
 		public static int GetWardrobe = 902;
 		public static int SaveWardrobe = 222;
 		public static int OpenAchievements = 137;
-        public static int GetMarketplaceConfiguration = 1937;
-		public static int CatalogData2 = 3355;
-		public static int OpenCatalog = 3509;
-		public static int OpenCatalogPage = 991;
-		public static int CatalogGetRace = 2738;
-		public static int CheckPetName = 926;
-		public static int PurchaseCatalogItem = 1581;
-        public static int PurchaseFromCatalogAsGift = 1574;
 		public static int OpenGift = 3897;
 		public static int StartEffect = 2996;
 		public static int EnableEffect = 2989;
@@ -194,5 +186,16 @@ namespace HabboEvents
 
         // Pets
         public static int GetPetCommands = 2687;
+
+        // Catalog
+        public static int GetCatalogIndex = 2053;
+        public static int GetMarketplaceConfiguration = 1937;
+        public static int CatalogData2 = 3355;
+        public static int GetSomethingUnknown = 3509;
+        public static int OpenCatalogPage = 991;
+        public static int CatalogGetRace = 2738;
+        public static int CheckPetName = 926;
+        public static int PurchaseCatalogItem = 1581;
+        public static int PurchaseFromCatalogAsGift = 1574;
     }
 }
