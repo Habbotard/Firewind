@@ -43,6 +43,7 @@ namespace Firewind.HabboHotel
         private InventoryGlobal globalInventory;
         private QuestManager questManager;
         //private SoundMachineManager soundMachineManager;
+        private GroupManager groupManager;
 
         private Thread gameLoop;
         private Thread gameLoopSUBRooms;
@@ -126,6 +127,11 @@ namespace Firewind.HabboHotel
         internal QuestManager GetQuestManager()
         {
             return questManager;
+        }
+
+        internal GroupManager GetGroupManager()
+        {
+            return groupManager;
         }
         #endregion
 

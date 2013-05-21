@@ -10,11 +10,11 @@ namespace Firewind.HabboHotel.Groups
 {
     class GroupManager
     {
-        internal Dictionary<uint, Group> Groups;
+        internal Dictionary<int, Group> Groups;
 
         internal GroupManager(IQueryAdapter dbClient)
         {
-            this.Groups = new Dictionary<uint, Group>();
+            this.Groups = new Dictionary<int, Group>();
             LoadGroups(dbClient);
         }
 
@@ -33,15 +33,48 @@ namespace Firewind.HabboHotel.Groups
             }
         }
 
-        public Group GetGroup(uint Id, out Group group)
+        public Group GetGroup(int Id, out Group group)
         {
-            this.GetGroups().TryGetValue(Id, out group);
-            return group;
+            if (this.GetGroups().TryGetValue(Id, out group))
+                return group;
+            return null;
         }
 
-        public Dictionary<uint, Group> GetGroups()
+        public Dictionary<int, Group> GetGroups()
         {
             return this.Groups;
+        }
+
+        public Group CreateGroup(string name, string description, int roomID, int color1, int color2, List<Tuple<int, int, int>> badgeData)
+        {
+            int groupID;
+            string badgeCode = Group.GenerateBadgeImage(badgeData);
+            string createTime = DateTime.Now.ToString("d-M-yyyy");
+            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            {
+                dbClient.setQuery("INSERT INTO groups(name,description,badge,users_id,rooms_id,color1,color2,date_created) VALUES(@name,@desc,@badge,@ownerid,@roomid,@color1,@color2,@date)");
+                dbClient.addParameter("name", name);
+                dbClient.addParameter("desc", description);
+                dbClient.addParameter("roomid", roomID);
+                dbClient.addParameter("color1", color1);
+                dbClient.addParameter("color2", color2);
+                dbClient.addParameter("badge", badgeCode);
+                dbClient.addParameter("date", createTime);
+                groupID = (int)dbClient.insertQuery();
+            }
+            Group group = new Group()
+            {
+                ID = groupID,
+                Name = name,
+                Description = description,
+                RoomID = roomID,
+                Color1 = color1,
+                Color2 = color2,
+                BadgeCode = badgeCode,
+                DateCreated = createTime,
+                
+            };
+            return group;
         }
     }
 }

@@ -346,13 +346,13 @@ namespace Firewind.HabboHotel.Rooms
                 Message.AppendInt32(2); // can trade?
                 Message.AppendInt32(Score);
                 Message.AppendInt32(Category);
-                Message.AppendInt32(Group != null ? Group.Id : 0); // group id
+                Message.AppendInt32(Group != null ? Group.ID : 0); // group id
                 Message.AppendString(Group != null ? Group.Name : ""); // group name
-                Message.AppendString(Group != null ? Group.Badge : ""); // group image
+                Message.AppendString(Group != null ? Group.BadgeCode : ""); // group image
                 //Message.AppendInt32(1);
                 //Message.AppendString("GRP");
                 //Message.AppendString("");
-                Message.AppendString(""); // ???
+                Message.AppendString(""); // event start time
                 Message.AppendInt32(TagCount);
 
                 foreach (string Tag in Tags)

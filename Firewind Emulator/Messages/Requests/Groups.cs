@@ -200,25 +200,32 @@ namespace Firewind.Messages
         {
             // int, bool
             int groupID = Request.ReadInt32();
+            bool unknownFlag = Request.ReadBoolean();
+
+            Group group;
+            FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID, out group);
+
+            if (group == null)
+                return;
 
             // int, bool, int, string, string, string, int, string, int int, bool, string, bool, bool, string, bool, bool, int
             Response.Init(Outgoing.GroupInfo);
 
             Response.AppendInt32(groupID); // groupId
-            Response.AppendBoolean(false); // is member?
-            Response.AppendInt32(0); // type
-            Response.AppendString("Awasome group"); // groupName
-            Response.AppendString("This text is hardcoded!"); // description
-            Response.AppendString(""); // badgeCode
-            Response.AppendInt32(1); // roomId
-            Response.AppendString("Awesome room"); // roomName
+            Response.AppendBoolean(group.Members.Contains(Session.GetHabbo().Id)); // is member?
+            Response.AppendInt32(group.Type); // type
+            Response.AppendString(group.Name); // groupName
+            Response.AppendString(group.Description); // description
+            Response.AppendString(group.BadgeCode); // badgeCode
+            Response.AppendInt32((int)group.RoomID); // roomId
+            Response.AppendString(""); // roomName
             Response.AppendInt32(0); // status
             Response.AppendInt32(51); // totalMembers
             Response.AppendBoolean(true); // favourite
-            Response.AppendString("0-0-1024"); // date created?
-            Response.AppendBoolean(true); // is owner?
+            Response.AppendString(group.DateCreated); // date created?
+            Response.AppendBoolean(group.OwnerID == Session.GetHabbo().Id); // is owner?
             Response.AppendBoolean(true); // is admin?
-            Response.AppendString("Leonislzy"); // owner name?
+            Response.AppendString(group.OwnerName); // owner name?
             Response.AppendBoolean(true); // openDetails?
             Response.AppendBoolean(false); // show group name?
             Response.AppendInt32(0); // ???

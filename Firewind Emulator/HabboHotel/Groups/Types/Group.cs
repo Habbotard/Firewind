@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Firewind.HabboHotel.Rooms;
+using Firewind.HabboHotel.Users;
+using Firewind.HabboHotel.Users.UserDataManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -9,50 +12,59 @@ namespace Firewind.HabboHotel.Groups.Types
 {
     class Group
     {
-        public int Id { get; set; }
+        private Habbo _owner;
+        private RoomData _room;
+
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Badge { get; set; }
+        public string BadgeCode { get; set; }
         public string DateCreated { get; set; }
 
-        public uint OwnerId { get; set; }
-        public string OwnerName { get; set; }
-        public uint RoomId { get; set; }
+        public int OwnerID { get; set; }
+        public string OwnerName 
+        {
+            get
+            {
+                if (_owner == null)
+                    _owner = FirewindEnvironment.getHabboForId((uint)OwnerID);
+                return _owner.Username;
+            }
+        }
+        public int RoomID { get; set; }
+        public string RoomName
+        {
+            get
+            {
+                if (_room == null)
+                    _room = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData((uint)RoomID);
+                return _room.Name;
+            }
+        }
 
-        public int ColourOne { get; set; }
-        public int ColourTwo { get; set; }
-
-        public int GuildBase { get; set; }
-        public string GuildBaseColour { get; set; }
-        public string GuildStates { get; set; }
+        public int Color1 { get; set; }
+        public int Color2 { get; set; }
 
         public string HtmlColourOne { get; set; }
         public string HtmlColourTwo { get; set; }
 
-        public string Petitions { get; set; }
+        public List<int> PendingMembers { get; set; }
+        public List<uint> Members { get; set; }
+
         public int Type { get; set; }
         public int RightsType { get; set; }
 
-        public List<uint> Members { get; set; }
-
         public Group(DataRow Data, DataTable Members)
         {
-            this.Id = (int)Data["id"];
+            this.ID = (int)Data["id"];
             this.Name = (string)Data["name"];
             this.Description = (string)Data["description"];
-            this.Badge = (string)Data["badge"];
+            this.BadgeCode = (string)Data["badge"];
             this.DateCreated = (string)Data["date_created"];
-            this.OwnerId = (uint)Data["owner_id"];
-            this.OwnerName = (string)Data["owner_name"];
-            this.RoomId = (uint)Data["room_id"];
-            this.ColourOne = (int)Data["colour_one"];
-            this.ColourTwo = (int)Data["colour_two"];
-            this.GuildBase = (int)Data["guild_base"];
-            this.GuildBaseColour = (string)Data["guild_base_colour"];
-            this.GuildStates = (string)Data["guild_states"];
-            this.HtmlColourOne = (string)Data["html_colour_one"];
-            this.HtmlColourTwo = (string)Data["html_colour_two"];
-            this.Petitions = (string)Data["petitions"];
+            this.OwnerID = Convert.ToInt32(Data["owner_id"]);
+            this.RoomID = (int)Data["room_id"];
+            this.Color1 = (int)Data["colour_one"];
+            this.Color2 = (int)Data["colour_two"];
             this.Type = (int)Data["type"];
             this.RightsType = (int)Data["rights_type"];
 
@@ -64,16 +76,22 @@ namespace Firewind.HabboHotel.Groups.Types
             }
         }
 
-        public static string GenerateBadgeImage(int backgroundID, int backgroundColor, List<Tuple<int,int,int>> parts)
+        public Group()
+        {
+            // TODO: Complete member initialization
+        }
+
+        public static string GenerateBadgeImage(List<Tuple<int, int, int>> parts)
         {
             // b 22 13  s03044  s27044  s1701  s01051
             StringBuilder image = new StringBuilder();
             image.Append("b");
-            image.Append(backgroundID.ToString("D2"));
-            image.Append(backgroundColor.ToString("D2"));
+            image.Append(parts[0].Item1.ToString("D2"));
+            image.Append(parts[0].Item2.ToString("D2"));
 
-            foreach (var part in parts)
+            for (int i = 1; i < parts.Count; i++)
             {
+                var part = parts[i];
                 if (part.Item1 == 0)
                     continue;
                 image.Append("s");
@@ -83,87 +101,6 @@ namespace Firewind.HabboHotel.Groups.Types
             }
 
             return image.ToString();
-        }
-        public static string GenerateGuildImage(int GuildBase, int GuildBaseColor, List<int> GStates)
-        {
-            List<int> list = GStates;
-            string str = "";
-            int num = 0;
-            string str2 = "b";
-            if (GuildBase.ToString().Length >= 2)
-            {
-                str2 = str2 + GuildBase;
-            }
-            else
-            {
-                str2 = str2 + "0" + GuildBase;
-            }
-            str = GuildBaseColor.ToString();
-            if (str.Length >= 2)
-            {
-                str2 = str2 + str;
-            }
-            else if (str.Length <= 1)
-            {
-                str2 = str2 + "0" + str;
-            }
-            int num2 = 0;
-            if (list[9] != 0) // 0 3 6 9
-            {
-                num2 = 4;
-            }
-            else if (list[6] != 0)
-            {
-                num2 = 3;
-            }
-            else if (list[3] != 0)
-            {
-                num2 = 2;
-            }
-            else if (list[0] != 0)
-            {
-                num2 = 1;
-            }
-            int num3 = 0;
-            for (int i = 0; i < num2; i++)
-            {
-                str2 = str2 + "s";
-                num = list[num3] - 20;
-                if (num.ToString().Length >= 2)
-                {
-                    str2 = str2 + num;
-                }
-                else
-                {
-                    str2 = str2 + "0" + num;
-                }
-                int num5 = list[1 + num3];
-                str = num5.ToString();
-                if (str.Length >= 2)
-                {
-                    str2 = str2 + str;
-                }
-                else if (str.Length <= 1)
-                {
-                    str2 = str2 + "0" + str;
-                }
-                str2 = str2 + list[2 + num3].ToString();
-                switch (num3)
-                {
-                    case 0:
-                        num3 = 3;
-                        break;
-
-                    case 3:
-                        num3 = 6;
-                        break;
-
-                    case 6:
-                        num3 = 9;
-                        break;
-                }
-            }
-            return str2;
         }
     }
 }
