@@ -14,6 +14,8 @@ namespace Firewind.HabboHotel.Groups.Types
     {
         private Habbo _owner;
         private RoomData _room;
+        private string _color1;
+        private string _color2;
 
         public int ID { get; set; }
         public string Name { get; set; }
@@ -42,11 +44,37 @@ namespace Firewind.HabboHotel.Groups.Types
             }
         }
 
-        public int Color1 { get; set; }
-        public int Color2 { get; set; }
+        public int ColorID1 { get; set; }
+        public int ColorID2 { get; set; }
 
-        public string HtmlColourOne { get; set; }
-        public string HtmlColourTwo { get; set; }
+        public string Color1 
+        {
+            get
+            {
+                if (_color1 == null)
+                    _color1 = GuildsPartsData.ColorBadges3.Find(t => t.Id == ColorID1).ExtraData1;
+                return _color1;
+            }
+            set
+            {
+                ColorID1 = GuildsPartsData.ColorBadges3.Find(t => t.ExtraData1 == value).Id;
+                _color1 = value;
+            }
+        }
+        public string Color2
+        {
+            get
+            {
+                if (_color2 == null)
+                    _color2 = GuildsPartsData.ColorBadges3.Find(t => t.Id == ColorID2).ExtraData1;
+                return _color2;
+            }
+            set
+            {
+                ColorID2 = GuildsPartsData.ColorBadges3.Find(t => t.ExtraData1 == value).Id;
+                _color2 = value;
+            }
+        }
 
         public List<int> PendingMembers { get; set; }
         public List<uint> Members { get; set; }
@@ -63,8 +91,8 @@ namespace Firewind.HabboHotel.Groups.Types
             this.DateCreated = (string)Data["date_created"];
             this.OwnerID = Convert.ToInt32(Data["owner_id"]);
             this.RoomID = (int)Data["room_id"];
-            this.Color1 = (int)Data["colour_one"];
-            this.Color2 = (int)Data["colour_two"];
+            this.ColorID1 = (int)Data["colour_one"];
+            this.ColorID2 = (int)Data["colour_two"];
             this.Type = (int)Data["type"];
             this.RightsType = (int)Data["rights_type"];
 

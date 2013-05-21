@@ -255,6 +255,9 @@ namespace Firewind.HabboHotel.GameClients
 
                 // Send the big chunk
                 response.sendResponse();
+
+                // fire the event!
+                FirewindEnvironment.GetGame().GetClientManager().ClientLoggedIn(this);
                 return true;
 
             }

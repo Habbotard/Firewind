@@ -40,7 +40,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             DataTable dPets;
             DataTable dQuests;
             //DataTable dSongs;
-            DataRow dGroups = null;
+            DataTable dGroups = null;
 
             UInt32 userID;
 
@@ -144,12 +144,12 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
 
                 if (FirewindEnvironment.groupsEnabled)
                 {
-                    dbClient.setQuery("SELECT groups_memberships.*, groups_details.* FROM groups_memberships " +
-                                        "LEFT JOIN groups_details " +
-                                        "ON groups_memberships.groupid = groups_details.id " +
-                                        "WHERE groups_memberships.userid = " + userID + " AND groups_memberships.is_current = '1'");
+                    dbClient.setQuery("SELECT groups_memberships.*, group.* FROM groups_memberships " +
+                                        "LEFT JOIN group " +
+                                        "ON groups_memberships.groupid = group.id " +
+                                        "WHERE groups_memberships.userid = " + userID + "");
 
-                    dGroups = dbClient.getRow();
+                    dGroups = dbClient.getTable();
                 }
 
                 //dbClient.setQuery("SELECT item_id, song_id FROM user_items_songs WHERE user_id = " + userID);
@@ -448,7 +448,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             DataTable dPets;
             DataTable dQuests;
             //DataTable dSongs;
-            DataRow dGroups = null;
+            DataTable dGroups = null;
 
             UInt32 userID;
 
@@ -544,12 +544,12 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 **/
                 if (FirewindEnvironment.groupsEnabled)
                 {
-                    dbClient.setQuery("SELECT groups_memberships.*, groups_details.* FROM groups_memberships " +
-                                        "LEFT JOIN groups_details " +
-                                        "ON groups_memberships.groupid = groups_details.id " +
-                                        "WHERE groups_memberships.userid = " + userID + " AND groups_memberships.is_current = '1'");
+                    dbClient.setQuery("SELECT groups_memberships.*, group.* FROM groups_memberships " +
+                                        "LEFT JOIN group " +
+                                        "ON groups_memberships.groupid = group.id " +
+                                        "WHERE groups_memberships.userid = " + userID);
 
-                    dGroups = dbClient.getRow();
+                    dGroups = dbClient.getTable();
                 }
             }
 

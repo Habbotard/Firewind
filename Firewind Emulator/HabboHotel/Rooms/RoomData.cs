@@ -117,7 +117,7 @@ namespace Firewind.HabboHotel.Rooms
                 if(result > 0)
                     this.OwnerId = result;
 
-                dbClient.setQuery("SELECT * FROM groups_details WHERE roomid = @id");
+                dbClient.setQuery("SELECT * FROM group WHERE roomid = @id");
                 dbClient.addParameter("id", Id);
                 groupRow = dbClient.getRow();
             }

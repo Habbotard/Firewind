@@ -30,7 +30,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             reply.AppendString(username);
             reply.AppendString(motto);
 
-            bool Online = (FirewindEnvironment.GetGame().GetClientManager().GetClient(userID) != null);
+            bool Online = (FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null);
 
             reply.AppendBoolean(Online);
           

@@ -19,12 +19,12 @@ namespace Firewind.HabboHotel.Rooms
 
         public void Parse(string rawData)
         {
-            Data = rawData.Split(Convert.ToChar(1));
+            Data = rawData.Split(Convert.ToChar(1)).ToList<string>();
         }
 
         public void AppendToMessage(ServerMessage message)
         {
-            message.AppendInt32(Data.Length);
+            message.AppendInt32(Data.Count);
             foreach (string value in Data)
                 message.AppendString(value);
         }

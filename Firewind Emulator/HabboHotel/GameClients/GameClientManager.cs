@@ -53,6 +53,9 @@ namespace Firewind.HabboHotel.GameClients
         private Task FirstThread_Task;
         private Task SecondThread_Task;
         private Task ThirdThread_Task;
+
+        public delegate void ClientAddedArgs(GameClient client);
+        public event ClientAddedArgs OnLoggedInClient;
         #endregion      
 
         #region Return values
@@ -941,6 +944,12 @@ namespace Firewind.HabboHotel.GameClients
             }
             clients.Clear();
             Logging.WriteLine("Connections closed!");
+        }
+
+        internal void ClientLoggedIn(GameClient client)
+        {
+            if (OnLoggedInClient != null)
+                OnLoggedInClient.Invoke(client);
         }
         #endregion
     }

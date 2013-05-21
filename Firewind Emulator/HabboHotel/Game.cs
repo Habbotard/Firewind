@@ -319,6 +319,7 @@ namespace Firewind.HabboHotel
                             GameLoopStatus = 6;
                             ClientManager.OnCycle();
                             GameLoopStatus = 7;
+                            groupManager.OnCycle();
                         }
                         else
                         {

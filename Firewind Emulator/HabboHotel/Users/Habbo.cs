@@ -16,6 +16,7 @@ using Firewind.HabboHotel.Users.UserDataManagement;
 using Firewind.HabboHotel.Groups;
 using System.Collections;
 using HabboEvents;
+using Firewind.HabboHotel.Groups.Types;
 
 namespace Firewind.HabboHotel.Users
 {
@@ -107,6 +108,9 @@ namespace Firewind.HabboHotel.Users
 
         internal int VipPoints;
 
+        internal List<int> Groups;
+        internal int FavouriteGroup;
+
 
         internal Boolean InRoom
         {
@@ -138,8 +142,8 @@ namespace Firewind.HabboHotel.Users
             uint Rank, string Motto, string Look, string Gender, Int32 Credits, Int32 VipPoints,
             Int32 ActivityPoints, Double LastActivityPointsUpdate, bool Muted,
             UInt32 HomeRoom, Int32 Respect, Int32 DailyRespectPoints, Int32 DailyPetRespectPoints,
-            bool MutantPenalty, bool HasFriendRequestsDisabled, uint currentQuestID, int currentQuestProgress, DataRow groupRow, int achievementPoints,
-            string LastOnline)
+            bool MutantPenalty, bool HasFriendRequestsDisabled, uint currentQuestID, int currentQuestProgress, DataTable groups, int achievementPoints,
+            string LastOnline, int favouriteGroup)
         {
             this.Id = Id;
             this.Username = Username;
@@ -179,6 +183,12 @@ namespace Firewind.HabboHotel.Users
             this.CurrentQuestId = currentQuestID;
             this.CurrentQuestProgress = currentQuestProgress;
 
+            this.Groups = new List<int>();
+            foreach (DataRow row in groups.Rows)
+            {
+                this.Groups.Add(Convert.ToInt32(row["id"]));
+            }
+            this.FavouriteGroup = favouriteGroup;
         }
 
         internal void InitInformation(UserData data)
@@ -525,6 +535,25 @@ namespace Firewind.HabboHotel.Users
             UserAchievement achievement = null;
             Achievements.TryGetValue(p, out achievement);
             return achievement;
+        }
+
+        internal void SendGroupList()
+        {
+            List<Group> groups = FirewindEnvironment.GetGame().GetGroupManager().GetGroups(this.Groups);
+            ServerMessage message = new ServerMessage(Outgoing.OwnGuilds);
+
+            message.AppendInt32(groups.Count); // count
+            foreach (Group group in groups)
+            {
+                message.AppendInt32(group.ID); // groupId
+                message.AppendString(group.Name); // groupName
+                message.AppendString(group.BadgeCode); // badge
+                message.AppendString(group.Color1); // color 1
+                message.AppendString(group.Color2); // color 2
+                message.AppendBoolean(true); // favourite
+            }
+
+            GetClient().SendMessage(message);
         }
     }
 }

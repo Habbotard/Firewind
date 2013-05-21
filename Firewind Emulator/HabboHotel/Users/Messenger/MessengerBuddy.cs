@@ -82,7 +82,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         #region Methods
         internal void UpdateUser()
         {
-            client = FirewindEnvironment.GetGame().GetClientManager().GetClient(UserId);
+            client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
             UpdateUser(client);
         }
 

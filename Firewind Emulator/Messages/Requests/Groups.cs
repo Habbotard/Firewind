@@ -51,9 +51,15 @@ namespace Firewind.Messages
 
             //Session.SendMessage(message);
 
+            // All checks done, create the stuff
+            Group group = FirewindEnvironment.GetGame().GetGroupManager().CreateGroup(Session, name, desc, roomID, color1, color2, badgeData);
+
+            if (group == null)
+                return; // TODO: Error message?
+
             Response.Init(Outgoing.GroupCreated);
-            Response.AppendInt32(roomID);
-            Response.AppendInt32(1);
+            Response.AppendInt32(group.RoomID);
+            Response.AppendInt32(group.ID);
             SendResponse();
 
             //ForwardToRoom(roomID);
@@ -202,8 +208,7 @@ namespace Firewind.Messages
             int groupID = Request.ReadInt32();
             bool unknownFlag = Request.ReadBoolean();
 
-            Group group;
-            FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID, out group);
+            Group group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID);
 
             if (group == null)
                 return;
