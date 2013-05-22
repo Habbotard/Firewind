@@ -32,22 +32,22 @@
 
         internal static void Main(string[] args)
         {
-            //if (System.Diagnostics.Debugger.IsAttached)
-            //{
-            //    FirewindEnvironment.MaxUsers = 0;
-            //    FirewindEnvironment.LicenseHolder = "Testing rabbit";
-            //    FirewindEnvironment.IsDebugging = true;
-            //}
-            //else
+            if (System.Diagnostics.Debugger.IsAttached || true)
             {
-                if (args.Length == 0)
-                    return;
-
-                FirewindEnvironment.Key = args[0];
-                FirewindEnvironment.MaxUsers = int.Parse(args[1]);
-                FirewindEnvironment.LicenseHolder = args[2];
-                FirewindEnvironment.IsDebugging = false;
+                FirewindEnvironment.MaxUsers = 0;
+                FirewindEnvironment.LicenseHolder = "you!";
+                FirewindEnvironment.IsDebugging = true;
             }
+            //else
+            //{
+            //    if (args.Length == 0)
+            //        return;
+
+            //    FirewindEnvironment.Key = args[0];
+            //    FirewindEnvironment.MaxUsers = int.Parse(args[1]);
+            //    FirewindEnvironment.LicenseHolder = args[2];
+            //    FirewindEnvironment.IsDebugging = false;
+            //}
             Writer.Init();
 
             _handler += Handler;

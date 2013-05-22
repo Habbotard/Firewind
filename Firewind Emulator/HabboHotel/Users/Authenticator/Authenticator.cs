@@ -30,7 +30,7 @@ namespace Firewind.HabboHotel.Users.Authenticator
             int questProgress = Convert.ToInt32(dRow["currentquestprogress"]);
             int achiecvementPoints = Convert.ToInt32(dRow["achievement_points"]);
             int vippoints = Convert.ToInt32(dRow["vip_points"]);
-            int favgroup = Convert.ToInt32(dRow["favourite_group"]);
+            int favgroup = 0;// dRow["favourite_group"] == DBNull.Value ? 0 : Convert.ToInt32(dRow["favourite_group"]);
 
             return new Habbo(id, username, realname, rank, motto, look, gender, credits, vippoints, activityPoints, activityPointsLastUpdate, isMuted, homeRoom, respect, dailyRespect, dailyPetRespect, mtantPenalty, blockFriends, questID, questProgress, group, achiecvementPoints, lastonline, favgroup);
         }

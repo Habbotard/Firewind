@@ -183,12 +183,15 @@ namespace Firewind.HabboHotel.Users
             this.CurrentQuestId = currentQuestID;
             this.CurrentQuestProgress = currentQuestProgress;
 
-            this.Groups = new List<int>();
-            foreach (DataRow row in groups.Rows)
-            {
-                this.Groups.Add(Convert.ToInt32(row["id"]));
-            }
-            this.FavouriteGroup = favouriteGroup;
+            //this.Groups = new List<int>();
+            //if (groups != null)
+            //{
+            //    foreach (DataRow row in groups.Rows)
+            //    {
+            //        this.Groups.Add(Convert.ToInt32(row["id"]));
+            //    }
+            //}
+            //this.FavouriteGroup = favouriteGroup;
         }
 
         internal void InitInformation(UserData data)

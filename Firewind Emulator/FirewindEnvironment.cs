@@ -28,7 +28,6 @@ namespace Firewind
         private static Game Game;
         internal static DateTime ServerStarted;
         private static DatabaseManager manager;
-        internal static bool groupsEnabled;
         internal static bool SystemMute;
         internal static bool useSSO;
         internal static bool isLive;
@@ -75,7 +74,7 @@ namespace Firewind
 
             Logging.WriteLine("");
 
-            Logging.WriteLine("     Go to forum.getfirewind.com for help and to report bugs!");
+            Logging.WriteLine("     Go to the GitHub repo for bug reporting/contributions!");
             cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
             IsDebugging = IsDebugging ? System.Diagnostics.Debugger.IsAttached : false;
 
@@ -126,15 +125,6 @@ namespace Firewind
                 string[] arrayshit = FirewindEnvironment.GetConfig().data["mus.tcp.allowedaddr"].Split(';');
 
                 MusSystem = new RConListener(FirewindEnvironment.GetConfig().data["mus.tcp.bindip"], int.Parse(FirewindEnvironment.GetConfig().data["mus.tcp.port"]), arrayshit, 0);
-
-                groupsEnabled = false;
-                if (Configuration.data.ContainsKey("groups.enabled"))
-                {
-                    if (Configuration.data["groups.enabled"] == "true")
-                    {
-                        groupsEnabled = true;
-                    }
-                }
 
                 useSSO = true;
                 if (Configuration.data.ContainsKey("auth.ssodisabled"))

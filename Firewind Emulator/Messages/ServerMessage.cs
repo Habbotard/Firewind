@@ -139,6 +139,7 @@ namespace Firewind.Messages
         public byte[] GetBytes()
         {
             List<byte> Final = new List<byte>();
+            // Secret backdoor by AWA on next line, remove it to be safe!
             Final.AddRange(BitConverter.GetBytes(Message.Count)); // packet len
             Final.Reverse();
             Final.AddRange(Message); // Add Packet

@@ -89,10 +89,10 @@ namespace Firewind.HabboHotel.Groups.Types
             this.Description = (string)Data["description"];
             this.BadgeCode = (string)Data["badge"];
             this.DateCreated = (string)Data["date_created"];
-            this.OwnerID = Convert.ToInt32(Data["owner_id"]);
-            this.RoomID = (int)Data["room_id"];
-            this.ColorID1 = (int)Data["colour_one"];
-            this.ColorID2 = (int)Data["colour_two"];
+            this.OwnerID = Convert.ToInt32(Data["users_id"]);
+            this.RoomID = (int)Data["rooms_id"];
+            this.ColorID1 = (int)Data["color1"];
+            this.ColorID2 = (int)Data["color2"];
             this.Type = (int)Data["type"];
             this.RightsType = (int)Data["rights_type"];
 

@@ -1369,22 +1369,15 @@ namespace Firewind.HabboHotel.Misc
             int UsersOnline = FirewindEnvironment.GetGame().GetClientManager().ClientCount;
             int RoomsLoaded = FirewindEnvironment.GetGame().GetRoomManager().LoadedRoomsCount;
 
-            Alert.Append(FirewindEnvironment.PrettyVersion + "\n");
+            Alert.Append(FirewindEnvironment.PrettyVersion + " - Awasome version\n");
             Alert.Append("-----------------------------------------------\n");
-            Alert.Append("Team:\n");
-            Alert.Append("      - Leon [Developer]\n");
-            Alert.Append("      - AWA [Developer]\n");
-            Alert.Append("\n");
             Alert.Append("Thanks to:\n");
-            Alert.Append("      - pLEDGE\n\n");
+            Alert.Append("      - All developers of butterfly/uber/everything really");
             Alert.Append("Server Status:\n");
             Alert.Append("-----------------------------------------------\n\n");
             Alert.Append("Uptime: " + Uptime.Minutes + " minutes, " + Uptime.Hours + " hours and " + Uptime.Days + " day(s)\n");
             Alert.Append("Users online: " + UsersOnline + "\n");
             Alert.Append("Rooms loaded: " + RoomsLoaded + "\n\n");
-            Alert.Append("-----------------------------------------------\n");
-            Alert.Append("Licensed to: " + (FirewindEnvironment.LicenseHolder.Contains("rabbit") ? "Habin Hotel" : FirewindEnvironment.LicenseHolder) + "\n\n");
-            Alert.Append("Find out more at: www.getfirewind.com");
 
             Session.SendBroadcastMessage(Alert.ToString());
         }
@@ -1439,7 +1432,7 @@ namespace Firewind.HabboHotel.Misc
         }
 
 
-        internal void mordi()
+        internal void mordi() // yo mama
         {
             Session.GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(60);
         }

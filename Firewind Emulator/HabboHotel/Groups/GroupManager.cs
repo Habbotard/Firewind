@@ -132,7 +132,7 @@ namespace Firewind.HabboHotel.Groups
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.setQuery("SELECT * FROM group WHERE id = @id");
+                dbClient.setQuery("SELECT * FROM guild WHERE id = @id");
                 dbClient.addParameter("id", id);
                 DataRow row = dbClient.getRow();
 
@@ -163,7 +163,7 @@ namespace Firewind.HabboHotel.Groups
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
                 // Insert the group
-                dbClient.setQuery("INSERT INTO group(name,description,badge,users_id,rooms_id,color1,color2,date_created) VALUES(@name,@desc,@badge,@ownerid,@roomid,@color1,@color2,@date)");
+                dbClient.setQuery("INSERT INTO guild(name,description,badge,users_id,rooms_id,color1,color2,date_created) VALUES(@name,@desc,@badge,@ownerid,@roomid,@color1,@color2,@date)");
                 dbClient.addParameter("name", name);
                 dbClient.addParameter("desc", description);
                 dbClient.addParameter("ownerid", creator.GetHabbo().Id);

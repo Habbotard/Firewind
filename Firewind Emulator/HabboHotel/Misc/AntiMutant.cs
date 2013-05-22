@@ -12,28 +12,29 @@ namespace Firewind.HabboHotel.Misc
         // This is now a hidden license check
         internal static bool ValidateLook(string Look, string Gender)
         {
-            WebRequest req = WebRequest.Create("http://getfirewind.com/auth");
-
-            req.ContentType = "application/x-www-form-urlencoded";
-            req.Method = "POST";
-
-            byte[] bytes = Encoding.UTF8.GetBytes(string.Format("key={0}", FirewindEnvironment.Key));
-            req.ContentLength = bytes.Length;
-
-            Stream os = req.GetRequestStream();
-            os.Write(bytes, 0, bytes.Length); //Push it out there
-            os.Close();
-
-            WebResponse resp = req.GetResponse();
-            if (resp == null)
-                return true;
-
-            StreamReader sr = new StreamReader(resp.GetResponseStream());
-            string result = sr.ReadToEnd().Trim();
-            if (result == "not_authed" || result == "expired")
-                return false;
-
             return true;
+            //WebRequest req = WebRequest.Create("http://getfirewind.com/auth");
+
+            //req.ContentType = "application/x-www-form-urlencoded";
+            //req.Method = "POST";
+
+            //byte[] bytes = Encoding.UTF8.GetBytes(string.Format("key={0}", FirewindEnvironment.Key));
+            //req.ContentLength = bytes.Length;
+
+            //Stream os = req.GetRequestStream();
+            //os.Write(bytes, 0, bytes.Length); //Push it out there
+            //os.Close();
+
+            //WebResponse resp = req.GetResponse();
+            //if (resp == null)
+            //    return true;
+
+            //StreamReader sr = new StreamReader(resp.GetResponseStream());
+            //string result = sr.ReadToEnd().Trim();
+            //if (result == "not_authed" || result == "expired")
+            //    return false;
+
+            //return true;
         //    bool HasHead = false;
 
         //    if (Look.Length < 1)

@@ -69,22 +69,10 @@ namespace Firewind.HabboHotel.Catalogs
             this.Text2 = Text2;
             this.TextDetails = TextDetails;
             this.TextTeaser = TextTeaser;
-
-            if (Layout == "trophies") // Order descending!
+            foreach (CatalogItem Item in CataItems.Values)
             {
-                foreach (var item in Items.OrderByDescending(t => t.Value.Name))
-                {
-                    if (item.Value.PageID == Id)
-                        Items.Add(item.Value.Id, item.Value);
-                }
-            }
-            else
-            {
-                foreach (CatalogItem Item in CataItems.Values)
-                {
-                    if (Item.PageID == Id)
-                        Items.Add(Item.Id, Item);
-                }
+                if (Item.PageID == Id)
+                    Items.Add(Item.Id, Item);
             }
         }
 

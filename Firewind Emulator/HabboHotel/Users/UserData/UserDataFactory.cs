@@ -142,16 +142,6 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dbClient.setQuery("SELECT * FROM user_quests WHERE user_id = " + userID + "");
                 dQuests = dbClient.getTable();
 
-                if (FirewindEnvironment.groupsEnabled)
-                {
-                    dbClient.setQuery("SELECT groups_memberships.*, group.* FROM groups_memberships " +
-                                        "LEFT JOIN group " +
-                                        "ON groups_memberships.groupid = group.id " +
-                                        "WHERE groups_memberships.userid = " + userID + "");
-
-                    dGroups = dbClient.getTable();
-                }
-
                 //dbClient.setQuery("SELECT item_id, song_id FROM user_items_songs WHERE user_id = " + userID);
                 //dSongs = dbClient.getTable();
 
@@ -542,15 +532,6 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dbClient.setQuery("SELECT * FROM user_quests WHERE user_id = " + userID + "");
                 dQuests = dbClient.getTable();
                 **/
-                if (FirewindEnvironment.groupsEnabled)
-                {
-                    dbClient.setQuery("SELECT groups_memberships.*, group.* FROM groups_memberships " +
-                                        "LEFT JOIN group " +
-                                        "ON groups_memberships.groupid = group.id " +
-                                        "WHERE groups_memberships.userid = " + userID);
-
-                    dGroups = dbClient.getTable();
-                }
             }
 
             Dictionary<string, UserAchievement> achievements = new Dictionary<string, UserAchievement>();
