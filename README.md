@@ -1,4 +1,4 @@
 Firewind
 ========
 
-Educational project - message IDs removed
+Educational project
