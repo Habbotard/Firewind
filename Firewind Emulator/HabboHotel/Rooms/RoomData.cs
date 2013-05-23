@@ -30,7 +30,6 @@ namespace Firewind.HabboHotel.Rooms
         internal bool AllowWalkthrough;
         internal bool AllowRightsOverride;
         internal bool Hidewall;
-        private RoomIcon myIcon;
         internal RoomEvent Event;
         internal string Wallpaper;
         internal string Floor;
@@ -41,14 +40,6 @@ namespace Firewind.HabboHotel.Rooms
         internal string Badge;
         internal int GroupID;
         internal Group Group;
-
-        internal RoomIcon Icon
-        {
-            get
-            {
-                return myIcon;
-            }
-        }
 
         internal int TagCount
         {
@@ -95,7 +86,6 @@ namespace Firewind.HabboHotel.Rooms
             //this.Event = null;
             this.Badge = "";
             this.AllowRightsOverride = false;
-            this.myIcon = new RoomIcon(1, 1, new Dictionary<int, int>());
 
             mModel = FirewindEnvironment.GetGame().GetRoomManager().GetModel(ModelName, pId);
         }
@@ -166,38 +156,6 @@ namespace Firewind.HabboHotel.Rooms
             this.WallThickness = Convert.ToInt32(Row["wallthickness"]);
             //this.Event = null;
 
-            Dictionary<int, int> IconItems = new Dictionary<int,int>();
-
-            if (!string.IsNullOrEmpty(Row["icon_items"].ToString()))
-            {
-                foreach (string Bit in Row["icon_items"].ToString().Split('|'))
-                {
-                    if (string.IsNullOrEmpty(Bit))
-                        continue;
-
-                    string[] tBit = Bit.Replace('.', ',').Split(',');
-
-                    int a = 0;
-                    int b = 0;
-
-                    int.TryParse(tBit[0], out a);
-                    if (tBit.Length > 1)
-                        int.TryParse(tBit[1], out b);
-
-                    try
-                    {
-                        if (!IconItems.ContainsKey(a))
-                            IconItems.Add(a, b);
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.LogException("Exception: " + e.ToString() + "[" + Bit + "]");
-                    }
-                }
-            }
-
-            this.myIcon = new RoomIcon((int)Row["icon_bg"], (int)Row["icon_fg"], IconItems);
-
             foreach (string Tag in Row["tags"].ToString().Split(','))
             {
                 this.Tags.Add(Tag);
@@ -226,7 +184,6 @@ namespace Firewind.HabboHotel.Rooms
             this.AllowPetsEating = Room.AllowPetsEating;
             this.AllowWalkthrough = Room.AllowWalkthrough;
             this.Hidewall = Room.Hidewall;
-            this.myIcon = Room.Icon;
             this.Password = Room.Password;
             this.Event = Room.Event;
             this.Wallpaper = Room.Wallpaper;
@@ -286,40 +243,6 @@ namespace Firewind.HabboHotel.Rooms
             this.Landscape = (string)Row["landscape"];
             this.FloorThickness = (int)Row["floorthickness"];
             //this.Event = null;
-
-            Dictionary<int, int> IconItems = new Dictionary<int, int>();
-
-            if (!string.IsNullOrEmpty(Row["icon_items"].ToString()))
-            {
-                foreach (string Bit in Row["icon_items"].ToString().Split('|'))
-                {
-                    if (string.IsNullOrEmpty(Bit))
-                        continue;
-
-                    string[] tBit = Bit.Replace('.', ',').Split(',');
-
-                    int a = 0;
-                    int b = 0;
-
-                    
-                    if (tBit.Length > 1)
-                        int.TryParse(tBit[1], out b);
-                    else
-                        int.TryParse(tBit[0], out a);
-
-                    try
-                    {
-                        if (!IconItems.ContainsKey(a))
-                            IconItems.Add(a, b);
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.LogException("Exception: " + e.ToString() + "[" + Bit + "]");
-                    }
-                }
-            }
-
-            this.myIcon = new RoomIcon((int)Row["icon_bg"], (int)Row["icon_fg"], IconItems);
 
             foreach (string Tag in Row["tags"].ToString().Split(','))
             {

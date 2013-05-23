@@ -234,7 +234,6 @@
     <Compile Include="HabboHotel\Rooms\Room.cs" />
     <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Events\RoomEvent.cs" />
-    <Compile Include="HabboHotel\Rooms\RoomIcon.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\IRoomItemData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\RoomItemHandling.cs" />
     <Compile Include="HabboHotel\Rooms\RoomIvokedItems\RoomAlert.cs" />

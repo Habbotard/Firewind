@@ -65,7 +65,6 @@ namespace Firewind.HabboHotel.Rooms
 
         private int IdleTime; //byte
 
-        internal RoomIcon myIcon;
         internal TeamManager teambanzai;
         internal TeamManager teamfreeze;
 
@@ -227,19 +226,6 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal RoomIcon Icon
-        {
-            get
-            {
-                return myIcon;
-            }
-
-            set
-            {
-                myIcon = value;
-            }
-        }
-
         internal Int32 UserCount
         {
             get
@@ -296,12 +282,12 @@ namespace Firewind.HabboHotel.Rooms
         {
             Initialize(Data.Id, Data.Name, Data.Description, Data.Owner, Data.OwnerId, Data.Category, Data.State,
             Data.UsersMax, Data.ModelName, Data.Score, Data.Tags, Data.AllowPets, Data.AllowPetsEating,
-            Data.AllowWalkthrough, Data.Hidewall, Data.Icon, Data.Password, Data.Wallpaper, Data.Floor, Data.Landscape, Data, Data.AllowRightsOverride, Data.WallThickness, Data.FloorThickness, Data.Group);
+            Data.AllowWalkthrough, Data.Hidewall, Data.Password, Data.Wallpaper, Data.Floor, Data.Landscape, Data, Data.AllowRightsOverride, Data.WallThickness, Data.FloorThickness, Data.Group);
         }
 
         private void Initialize(UInt32 Id, string Name, string Description, string Owner, int OwnerId, int Category,
             int State, int UsersMax, string ModelName, int Score, List<string> pTags, bool AllowPets,
-            bool AllowPetsEating, bool AllowWalkthrough, bool Hidewall, RoomIcon Icon, string Password, string Wallpaper, string Floor,
+            bool AllowPetsEating, bool AllowWalkthrough, bool Hidewall, string Password, string Wallpaper, string Floor,
             string Landscape, RoomData RoomData, bool RightOverride, int walltickness, int floorthickness, Group group)
         {
 
@@ -331,8 +317,6 @@ namespace Firewind.HabboHotel.Rooms
             this.AllowWalkthrough = AllowWalkthrough;
             this.Hidewall = Hidewall;
             
-            
-            this.myIcon = Icon;
             this.Password = Password;
             this.Bans = new Dictionary<UInt32, double>();
             this.Wallpaper = Wallpaper;
@@ -1019,7 +1003,6 @@ namespace Firewind.HabboHotel.Rooms
                 ActiveTrades.Clear();
 
                 //Tags = null;
-                //myIcon = null;
                 //OnUserSays = null;
                 //rnd = null;
                 //UsersWithRights = null;

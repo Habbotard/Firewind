@@ -1119,97 +1119,6 @@ namespace Firewind.Messages
             }
         }
 
-        internal void SaveRoomIcon()
-        {
-            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
-
-            if (Room == null || !Room.CheckRights(Session, true))
-            {
-                return;
-            }//that is icon =D
-
-            int Junk = Request.ReadInt32(); // always 3
-
-            Dictionary<int, int> Items = new Dictionary<int, int>();
-
-            int Background = Request.ReadInt32();
-            int TopLayer = Request.ReadInt32();
-            int AmountOfItems = Request.ReadInt32();
-
-            for (int i = 0; i < AmountOfItems; i++)
-            {
-                int Pos = Request.ReadInt32();
-                int Item = Request.ReadInt32();
-
-                if (Pos < 0 || Pos > 10)
-                {
-                    return;
-                }
-
-                if (Item < 1 || Item > 27)
-                {
-                    return;
-                }
-
-                if (Items.ContainsKey(Pos))
-                {
-                    return;
-                }
-
-                Items.Add(Pos, Item);
-            }
-
-            if (Background < 1 || Background > 24)
-            {
-                return;
-            }
-
-            if (TopLayer < 0 || TopLayer > 11)
-            {
-                return;
-            }
-
-            StringBuilder FormattedItems = new StringBuilder();
-            int j = 0;
-
-            foreach (KeyValuePair<int, int> Item in Items)
-            {
-                if (j > 0)
-                {
-                    FormattedItems.Append("|");
-                }
-
-                FormattedItems.Append(Item.Key + "," + Item.Value);
-
-                j++;
-            }
-
-            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            {
-                dbClient.setQuery("UPDATE rooms SET icon_bg = " + Background + ", icon_fg = " + TopLayer + ", icon_items = @item WHERE id = " + Room.RoomId + "");
-                dbClient.addParameter("item", FormattedItems.ToString());
-                dbClient.runQuery();
-            }
-
-            Room.Icon = new RoomIcon(Background, TopLayer, Items);
-
-            Response.Init(457);
-            Response.AppendUInt(Room.RoomId);
-            Response.AppendBoolean(true);
-            SendResponse();
-
-            Response.Init(456);
-            Response.AppendUInt(Room.RoomId);
-            SendResponse();
-
-            RoomData Data = Room.RoomData;
-
-            Response.Init(454);
-            Response.AppendBoolean(false);
-            Data.Serialize(Response, false);
-            SendResponse();
-        }
-
         internal void SaveRoomSettings()
         {
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
@@ -1621,7 +1530,7 @@ namespace Firewind.Messages
                     dbClient.runFastQuery("UPDATE users SET home_room = '0' WHERE home_room = " + RoomId);
                 }
 
-                if (Session.GetHabbo().Rank > 5 && Session.GetHabbo().Username != data.Owner)
+                if (Session.GetHabbo().Username != data.Owner)
                 {
                     FirewindEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, data.Name, "Room deletion", string.Format("Deleted room ID {0}", data.Id));
                 }
@@ -3132,14 +3041,6 @@ namespace Firewind.Messages
             Room.GetRoomItemHandler().RemoveFurniture(Session, Exchange.Id);
 
             Response.Init(Outgoing.UpdateInventary);
-            SendResponse();
-        }
-
-        internal void EnterInfobus()
-        {
-            // AQThe Infobus is currently closed.
-            Response.Init(81);
-            Response.AppendStringWithBreak(LanguageLocale.GetValue("user.enterinfobus"));
             SendResponse();
         }
 

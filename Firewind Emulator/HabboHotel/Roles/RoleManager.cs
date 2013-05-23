@@ -10,13 +10,13 @@ namespace Firewind.HabboHotel.Roles
     {
         //private Dictionary<uint, Role> Roles;
         private Dictionary<string, uint> Rights;
-        private Dictionary<string, string> SubRights;
+        private Dictionary<string, string> SubscriptionRights;
 
         internal RoleManager()
         {
             //Roles = new Dictionary<uint,Role>();
             Rights = new Dictionary<string, uint>();
-            SubRights = new Dictionary<string, string>();
+            SubscriptionRights = new Dictionary<string, string>();
         }
 
         //internal void LoadRoles(DatabaseClient dbClient)
@@ -56,7 +56,7 @@ namespace Firewind.HabboHotel.Roles
             {
                 foreach (DataRow Row in SubData.Rows)
                 {
-                    SubRights.Add((string)Row["fuse"], (string)Row["sub"]);
+                    SubscriptionRights.Add((string)Row["fuse"], (string)Row["sub"]);
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace Firewind.HabboHotel.Roles
 
         internal bool SubHasRight(string Sub, string Fuse)
         {
-            if (this.SubRights.ContainsKey(Fuse) && this.SubRights[Fuse] == Sub)
+            if (this.SubscriptionRights.ContainsKey(Fuse) && this.SubscriptionRights[Fuse] == Sub)
             {
                 return true;
             }
@@ -134,7 +134,7 @@ namespace Firewind.HabboHotel.Roles
         {
             List<string> UserRights = new List<string>();
 
-                foreach (KeyValuePair<string, string> Data in SubRights)
+                foreach (KeyValuePair<string, string> Data in SubscriptionRights)
                 {
                     if (Data.Value == SubId)
                     {
