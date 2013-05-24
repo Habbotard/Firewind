@@ -334,7 +334,7 @@
     <Compile Include="Messages\Requests\Groups.cs" />
     <Compile Include="Messages\Requests\Handshake.cs" />
     <Compile Include="Messages\Requests\Help.cs" />
-    <Compile Include="Messages\Requests\Horse.cs" />
+    <Compile Include="Messages\Requests\Bots.cs" />
     <Compile Include="Messages\Requests\Messenger.cs" />
     <Compile Include="Messages\Requests\Navigator.cs" />
     <Compile Include="Messages\Requests\Quests.cs" />
