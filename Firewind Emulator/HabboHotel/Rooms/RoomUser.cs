@@ -364,7 +364,7 @@ namespace Firewind.HabboHotel.Rooms
                         bool result;
                         using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                         {
-                            dbClient.setQuery("SELECT id FROM users WHERE (hpo = '1' OR hpo = '1' OR hds = '1' OR hmg = '1' OR hmb = '1') AND username = @name");
+                            dbClient.setQuery("SELECT id FROM users WHERE (hpo = '1' OR hpo = '1' OR hds = '1' OR hmg = '1' OR hmb = '1' OR ele = '1' OR lar = '1') AND username = @name");
                             dbClient.addParameter("name", Session.GetHabbo().Username);
                             result = dbClient.findsResult();
                             string command = parsedCommand[0].Substring(1);
