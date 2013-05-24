@@ -508,11 +508,6 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.GetRoomSettings();
         }
 
-        internal static void SaveRoomIcon(GameClientMessageHandler handler)
-        {
-            handler.SaveRoomIcon();
-        }
-
         internal static void SaveRoomSettings(GameClientMessageHandler handler)
         {
             handler.SaveRoomSettings();
@@ -766,11 +761,6 @@ namespace Firewind.Messages.StaticMessageHandlers
         internal static void RedeemExchangeFurni(GameClientMessageHandler handler)
         {
             handler.RedeemExchangeFurni();
-        }
-
-        internal static void EnterInfobus(GameClientMessageHandler handler)
-        {
-            handler.EnterInfobus();
         }
 
         internal static void KickBot(GameClientMessageHandler handler)

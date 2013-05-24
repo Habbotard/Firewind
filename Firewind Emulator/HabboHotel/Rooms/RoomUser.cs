@@ -349,7 +349,7 @@ namespace Firewind.HabboHotel.Rooms
 
                             if (handler.WasExecuted())
                             {
-                                Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
+                                //Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
                                 if (Session.GetHabbo().Rank > 5)
                                 {
                                     FirewindEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));

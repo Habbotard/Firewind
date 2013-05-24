@@ -1,0 +1,24 @@
+#1
+Something with supersave?
+#2
+:chooser
+:furni
+#4
+Always have access to game center?
+Some color in SnowWarUI?
+:crashme
+:ss/:qss/:gd/:csmm
+
+#5
+modify_link_region UI control becomes visible?
+Room moderation rights (in all rooms):
+	:pickall available
+	:ejectall available
+	Pick up and move furniture
+	++++ (a lot of shit)
+
+	
+	
+
+#7
+Use 'staff picks' feature

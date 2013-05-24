@@ -234,7 +234,6 @@
     <Compile Include="HabboHotel\Rooms\Room.cs" />
     <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Events\RoomEvent.cs" />
-    <Compile Include="HabboHotel\Rooms\RoomIcon.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\IRoomItemData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\RoomItemHandling.cs" />
     <Compile Include="HabboHotel\Rooms\RoomIvokedItems\RoomAlert.cs" />
@@ -335,7 +334,7 @@
     <Compile Include="Messages\Requests\Groups.cs" />
     <Compile Include="Messages\Requests\Handshake.cs" />
     <Compile Include="Messages\Requests\Help.cs" />
-    <Compile Include="Messages\Requests\Horse.cs" />
+    <Compile Include="Messages\Requests\Bots.cs" />
     <Compile Include="Messages\Requests\Messenger.cs" />
     <Compile Include="Messages\Requests\Navigator.cs" />
     <Compile Include="Messages\Requests\Quests.cs" />
