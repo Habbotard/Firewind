@@ -99,18 +99,18 @@ namespace Firewind.HabboHotel.Rooms
             this.Badge = (string)Row["badge"];
             this.OwnerId = 0;
 
-            //DataRow groupRow;
-            //using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            //{
-            //    dbClient.setQuery("SELECT id FROM users WHERE username = '" + this.Owner + "'");
-            //    int result = dbClient.getInteger();
-            //    if(result > 0)
-            //        this.OwnerId = result;
+            DataRow groupRow;
+            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            {
+                dbClient.setQuery("SELECT id FROM users WHERE username = '" + this.Owner + "'");
+                int result = dbClient.getInteger();
+                if(result > 0)
+                    this.OwnerId = result;
 
             //    dbClient.setQuery("SELECT * FROM guild WHERE rooms_id = @id");
             //    dbClient.addParameter("id", Id);
             //    groupRow = dbClient.getRow();
-            //}
+            }
 
             //if(groupRow != null)
             //    Group = new Group(groupRow, new DataTable());
