@@ -74,14 +74,6 @@ namespace HabboEvents
 		public static int DeleteFriend = 3045;
 		public static int LoadProfile = 1412;
 		public static int OpenInventory = 2710;
-		public static int PetInventary = 3127;
-		public static int PlacePet = 461;
-		public static int PickupPet = 2378;
-		public static int RespetPet = 112;
-		public static int AddSaddleToPet = 243;
-		public static int RemoveSaddle = 809;
-		public static int MountOnPet = 296;
-		public static int PetInfo = 303;
 		public static int ApplySpace = 155;
 		public static int AddFloorItem = 1861;
 		public static int MoveOrRotate = 1688;
@@ -185,6 +177,14 @@ namespace HabboEvents
         public static int GetSoundSettings = 3995;
 
         // Pets
+        public static int GetPetInventory = 3127;
+        public static int PlacePet = 461;
+        public static int PickupPet = 2378;
+        public static int RespetPet = 112;
+        public static int AddSaddleToPet = 243;
+        public static int RemoveSaddle = 809;
+        public static int MountOnPet = 296;
+        public static int PetInfo = 303;
         public static int GetPetCommands = 2687;
 
         // Catalog
@@ -197,5 +197,9 @@ namespace HabboEvents
         public static int CheckPetName = 926;
         public static int PurchaseCatalogItem = 1581;
         public static int PurchaseFromCatalogAsGift = 1574;
+
+        // Bots
+        public static int GetBotInventory = 1642;
+        public static int PlaceBot 829;
     }
 }
