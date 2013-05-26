@@ -992,5 +992,15 @@ namespace Firewind.Messages.StaticMessageHandlers
         {
             handler.GetSoundSettings();
         }
+
+        internal static void GetBotInventory(GameClientMessageHandler handler)
+        {
+            handler.GetBotInventory();
+        }
+
+        internal static void PlaceBot(GameClientMessageHandler handler)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

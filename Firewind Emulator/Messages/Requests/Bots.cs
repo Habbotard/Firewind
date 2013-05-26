@@ -371,5 +371,20 @@ namespace Firewind.Messages
 
             }
         }
+
+        internal void GetBotInventory()
+        {
+
+        }
+
+        internal void PlaceBot()
+        {
+            // int, int, int
+            int botID = Request.ReadInt32();
+            int x = Request.ReadInt32();
+            int y = Request.ReadInt32();
+
+
+        }
     }
 }

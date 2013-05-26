@@ -184,7 +184,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GetWardrobe, new StaticRequestHandler(SharedPacketLib.GetWardrobe));
             handlers.Add(Incoming.SaveWardrobe, new StaticRequestHandler(SharedPacketLib.SaveWardrobe));
             handlers.Add(Incoming.OpenInventory, new StaticRequestHandler(SharedPacketLib.GetInventory));
-            handlers.Add(Incoming.PetInventary, new StaticRequestHandler(SharedPacketLib.GetPetsInventory));
+            handlers.Add(Incoming.GetPetInventory, new StaticRequestHandler(SharedPacketLib.GetPetsInventory));
             handlers.Add(2340, new StaticRequestHandler(SharedPacketLib.Stream));
             handlers.Add(2011, new StaticRequestHandler(SharedPacketLib.SendStream));
             handlers.Add(1591, new StaticRequestHandler(SharedPacketLib.StreamLike));
@@ -222,7 +222,11 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.GetBadgePointLimits, new StaticRequestHandler(SharedPacketLib.GetBadgePointLimits));
             handlers.Add(Incoming.GetSoundSettings, new StaticRequestHandler(SharedPacketLib.GetSoundSettings));
 
+            // Bots/pets
             handlers.Add(Incoming.GetPetCommands, new StaticRequestHandler(SharedPacketLib.GetPetCommands));
+            handlers.Add(Incoming.GetBotInventory, new StaticRequestHandler(SharedPacketLib.GetBotInventory));
+            handlers.Add(Incoming.PlaceBot, new StaticRequestHandler(SharedPacketLib.PlaceBot));
+
             Logging.WriteLine("Logged " + handlers.Count + " packet handler(s)!");
         }
         #endregion

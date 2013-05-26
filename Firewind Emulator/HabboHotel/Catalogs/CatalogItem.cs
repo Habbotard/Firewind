@@ -152,8 +152,9 @@ namespace Firewind.HabboHotel.Catalogs
 
                     if (GetBaseItem(i).Type == 'b') // b for bot!
                     {
-                        // bartender = hr-9534-39.hd-600-1.ch-819-92.lg-3058-64.sh-3064-110.wa-2005
-                        // generic   = hr-3020-34.hd-3091-2.ch-225-92.lg-3058-100.sh-3089-1338.ca-3084-78-108.wa-2005
+                        // bot_bartender - bartender                = hr-9534-39.hd-600-1.ch-819-92.lg-3058-64.sh-3064-110.wa-2005                   - F
+                        // bot_generic -   generic                  = hr-3020-34.hd-3091-2.ch-225-92.lg-3058-100.sh-3089-1338.ca-3084-78-108.wa-2005 - M
+                        // spybot -        rentable_bot_visitor_log = hd-3096-1.sh-3064-90.lg-3166-79.hr-3251-34-56.ch-3076-78-73                    - F (replicated from image) 
                         Message.AppendString("hd-180-0"); // default bot figure
                         continue;
                     }
