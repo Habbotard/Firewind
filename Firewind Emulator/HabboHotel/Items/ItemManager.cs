@@ -38,7 +38,6 @@ namespace Firewind.HabboHotel.Items
                 bool allowRecycle;
                 bool allowTrade;
                 bool allowMarketplace;
-                bool allowGift;
                 bool allowInventoryStack;
                 InteractionType interactionType;
                 int cycleCount;
@@ -61,13 +60,12 @@ namespace Firewind.HabboHotel.Items
                         allowRecycle = Convert.ToInt32(dRow["allow_recycle"]) == 1;
                         allowTrade = Convert.ToInt32(dRow["allow_trade"]) == 1;
                         allowMarketplace = Convert.ToInt32(dRow["allow_marketplace_sell"]) == 1;
-                        allowGift = Convert.ToInt32(dRow["allow_gift"]) == 1;
                         allowInventoryStack = Convert.ToInt32(dRow["allow_inventory_stack"]) == 1;
                         interactionType = InterractionTypes.GetTypeFromString((string)dRow["interaction_type"]);
                         cycleCount = (int)dRow["interaction_modes_count"];
                         vendingIDS = (string)dRow["vending_ids"];
 
-                        Item item = new Item(id, spriteID, itemName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, cycleCount, vendingIDS);
+                        Item item = new Item(id, spriteID, itemName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowInventoryStack, interactionType, cycleCount, vendingIDS);
                         Items.Add(id, item);
                     }
                     catch (Exception e)

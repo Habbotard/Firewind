@@ -42,8 +42,6 @@ namespace HabboEvents
         public static int BroadcastMessage = 3802;
         public static int GiftError = 2748;
         public static int UpdateInventary = 3164;
-        public static int SerializePurchaseInformation = 2069;
-        public static int SendPurchaseAlert = 135;
         public static int NavigatorPacket = 2375;
         public static int PublicCategories = 1458;
         public static int EffectsInventary = 2968;
@@ -216,5 +214,8 @@ namespace HabboEvents
 
         // Catalog
         public static int NotEnoughBalance = 3269;
+        public static int PurchaseError = 277;
+        public static int PurchaseOK = 2069;
+        public static int UnseenItems = 135;
     }
 }

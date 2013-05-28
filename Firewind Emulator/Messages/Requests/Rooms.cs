@@ -2618,7 +2618,7 @@ namespace Firewind.Messages
                 //Logging.WriteLine("Hallo, new BaseItem: " + Present.GetBaseItem().Name);
                 if (!Room.GetRoomItemHandler().SetFloorItem(Session, Present, Present.GetX, Present.GetY, Present.Rot, true, false, true))
                 {
-                    Session.SendNotif("Ha ocurrido un error al crear tu regalo!");
+                    Session.SendNotif("Ha ocurrido un error al crear tu regalo!"); // spanish, what a suprise
                     return;
                 }
                 /*Response.Init(219);
@@ -2642,7 +2642,7 @@ namespace Firewind.Messages
                 {
                     dbClient.runFastQuery("DELETE FROM user_presents WHERE item_id = " + Present.Id);
                 }
-                Session.GetMessageHandler().GetResponse().Init(Outgoing.SendPurchaseAlert);
+                Session.GetMessageHandler().GetResponse().Init(Outgoing.UnseenItems);
                 Session.GetMessageHandler().GetResponse().AppendInt32(1); // items
                 int Type = 2;
                 if (BaseItem.Type.ToString().ToLower().Equals("s"))

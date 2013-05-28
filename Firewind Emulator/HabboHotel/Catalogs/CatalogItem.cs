@@ -18,13 +18,13 @@ namespace Firewind.HabboHotel.Catalogs
         internal readonly int Amount;
         internal readonly int PageID;
         internal readonly int CrystalCost;
-        internal readonly int OudeCredits;
         internal readonly uint songID;
         internal readonly bool IsLimited;
         internal int LimitedSelled;
         internal readonly int LimitedStack;
         internal readonly bool HaveOffer;
         internal byte MinimumClubLevel;
+        internal bool AllowGift;
 
         internal CatalogItem(DataRow Row)
         {
@@ -50,14 +50,13 @@ namespace Firewind.HabboHotel.Catalogs
             this.PixelsCost = (int)Row["cost_pixels"];
             this.Amount = (int)Row["amount"];
             this.CrystalCost = (int)Row["cost_points"];
-            //this.OudeCredits = (int)Row["cost_oude_belcredits"];
-            this.OudeCredits = 0;
             this.songID = Convert.ToUInt32(Row["song_id"]);
             this.LimitedSelled = (int)Row["limited_sells"];
             this.LimitedStack = (int)Row["limited_stack"];
             this.IsLimited = (this.LimitedStack > 0);
             this.HaveOffer = ((int)Row["offer_active"] == 1);
             this.MinimumClubLevel = 0;
+            this.AllowGift = Convert.ToInt32(Row["allow_gift"]) == 1;
             //this.songID = 0;
         }
 
@@ -143,24 +142,24 @@ namespace Firewind.HabboHotel.Catalogs
                     Message.AppendInt32(PixelsCost);
                     Message.AppendInt32(0); // ID of currency (0 = pixel)
                 }
-                Message.AppendBoolean(true); // AllowBuy
+                Message.AppendBoolean(!(IsLimited && LimitedSelled >= LimitedStack)); // AllowBuy
                 Message.AppendInt32(Items.Count); // items on pack
                 // and serialize it
                 foreach (uint i in Items)
                 {
                     Message.AppendString(GetBaseItem(i).Type.ToString());
+                    Message.AppendInt32(GetBaseItem(i).SpriteId);
 
-                    if (GetBaseItem(i).Type == 'b') // b for bot!
+                    if (GetBaseItem(i).Type == 'r') // b for bot!
                     {
                         // bot_bartender - bartender                = hr-9534-39.hd-600-1.ch-819-92.lg-3058-64.sh-3064-110.wa-2005                   - F
                         // bot_generic -   generic                  = hr-3020-34.hd-3091-2.ch-225-92.lg-3058-100.sh-3089-1338.ca-3084-78-108.wa-2005 - M
                         // spybot -        rentable_bot_visitor_log = hd-3096-1.sh-3064-90.lg-3166-79.hr-3251-34-56.ch-3076-78-73                    - F (replicated from image) 
-                        Message.AppendString("hd-180-0"); // default bot figure
-                        continue;
+                        Message.AppendString("hr-3020-34.hd-3091-2.ch-225-92.lg-3058-100.sh-3089-1338.ca-3084-78-108.wa-2005"); // default bot figure
+                        //continue;
                     }
-                    Message.AppendInt32(GetBaseItem(i).SpriteId);
                     // extradata
-                    if (Name.Contains("wallpaper_single") || Name.Contains("floor_single") || Name.Contains("landscape_single"))
+                    else if (Name.Contains("wallpaper_single") || Name.Contains("floor_single") || Name.Contains("landscape_single"))
                     {
                         string[] Analyze = Name.Split('_');
                         Message.AppendString(Analyze[2]);

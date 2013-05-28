@@ -305,7 +305,7 @@ namespace Firewind.HabboHotel.Rooms
                     }
                 }
             }
-            ServerMessage message = new ServerMessage(Outgoing.SendPurchaseAlert);
+            ServerMessage message = new ServerMessage(Outgoing.UnseenItems);
             message.AppendInt32(1);
             int i = 1;
             foreach (UserItem item2 in offeredItems)
@@ -322,7 +322,7 @@ namespace Firewind.HabboHotel.Rooms
                 message.AppendInt32(Convert.ToInt32(item2.Id));
             }
             this.GetTradeUser(this.twoId).GetClient().SendMessage(message);
-            ServerMessage message2 = new ServerMessage(Outgoing.SendPurchaseAlert);
+            ServerMessage message2 = new ServerMessage(Outgoing.UnseenItems);
             message2.AppendInt32(1);
             i = 1;
             foreach (UserItem item2 in list2)

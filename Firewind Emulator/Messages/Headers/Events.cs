@@ -200,6 +200,6 @@ namespace HabboEvents
 
         // Bots
         public static int GetBotInventory = 1642;
-        public static int PlaceBot 829;
+        public static int PlaceBot = 829;
     }
 }

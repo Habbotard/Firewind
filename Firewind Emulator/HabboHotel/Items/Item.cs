@@ -24,7 +24,6 @@ namespace Firewind.HabboHotel.Items
         internal bool AllowRecycle;
         internal bool AllowTrade;
         internal bool AllowMarketplaceSell;
-        internal bool AllowGift;
         internal bool AllowInventoryStack;
 
         internal InteractionType InteractionType;
@@ -43,7 +42,7 @@ namespace Firewind.HabboHotel.Items
             }
         }
 
-        internal Item(UInt32 Id, int Sprite, string Name, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat, bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int Modes, string VendingIds)
+        internal Item(UInt32 Id, int Sprite, string Name, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat, bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowInventoryStack, InteractionType InteractionType, int Modes, string VendingIds)
         {
             this.Id = Id;
             this.SpriteId = Sprite;
@@ -58,7 +57,6 @@ namespace Firewind.HabboHotel.Items
             this.AllowRecycle = AllowRecycle;
             this.AllowTrade = AllowTrade;
             this.AllowMarketplaceSell = AllowMarketplaceSell;
-            this.AllowGift = AllowGift;
             this.AllowInventoryStack = AllowInventoryStack;
             this.InteractionType = InteractionType;
             this.Modes = Modes;

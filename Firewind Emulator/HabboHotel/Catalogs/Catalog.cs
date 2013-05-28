@@ -214,103 +214,82 @@ namespace Firewind.HabboHotel.Catalogs
                 return;
             if (Page == null || !Page.Enabled || !Page.Visible || Session == null || Session.GetHabbo() == null)
             {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError)); 
                 return;
             }
             if (Page.ClubOnly && !Session.GetHabbo().GetSubscriptionManager().HasSubscription("habbo_club") && !Session.GetHabbo().GetSubscriptionManager().HasSubscription("habbo_vip"))
             {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                 return;
             }
             if (Page.MinRank > Session.GetHabbo().Rank)
             {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                 return;
             }
             CatalogItem Item = Page.GetItem(ItemId);
 
             if (Item == null) // TODO: Check item minimum club rank
             {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
+                return;
+            }
+            if (!Item.HaveOffer && buyAmount > 1) // Check if somebody is bulk-buying when not allowed
+            {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
+                return;
+            }
+            if (Item.IsLimited && Item.LimitedStack <= Item.LimitedSelled)
+            {
+                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                 return;
             }
 
-            if (Item.Name.Contains("HABBO_CLUB_VIP") || Item.Name.StartsWith("DEAL_HC_") || Item.Name.Equals("deal_vip_1_year_and_badge"))
+            uint GiftUserId = 0;
+            //int giftWrappingCost = 0;
+            if (IsGift)
             {
-                if (Item.CreditsCost > Session.GetHabbo().Credits)
+                if(!Item.AllowGift)
+                {
+                    Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                     return;
-
-                int Months = 0;
-                int Days = 0;
-                if (Item.Name.Contains("HABBO_CLUB_VIP_"))
-                {
-                    if (Item.Name.Contains("_DAY"))
-                    {
-                        Days = int.Parse(Item.Name.Split('_')[3]);
-                    }
-                    else if (Item.Name.Contains("_MONTH"))
-                    {
-                        Months = int.Parse(Item.Name.Split('_')[3]);
-                        Days = 31 * Months;
-                    }
                 }
-                else if (Item.Name.Equals("deal_vip_1_year_and_badge"))
+                if(Item.Items.Count > 1 || Item.Amount > 1) // Gifts can only have 1 item?
                 {
-                    Months = 12;
-                    Days = 31 * Months;
-                }
-                else if (Item.Name.Equals("HABBO_CLUB_VIP_5_YEAR"))
-                {
-                    Months = 5 * 12;
-                    Days = 31 * Months;
-                }
-                else if(Item.Name.StartsWith("DEAL_HC_"))
-                {
-                    Months = int.Parse(Item.Name.Split('_')[2]);
-                    Days = 31 * Months;
-
-                    if (Item.CreditsCost > 0)
-                    {
-                        Session.GetHabbo().Credits -= Item.CreditsCost;
-                        Session.GetHabbo().UpdateCreditsBalance();
-                    }
-
-                    Session.GetHabbo().GetSubscriptionManager().AddOrExtendSubscription("habbo_club", Days * 24 * 3600);
-                    Session.GetHabbo().SerializeClub();
+                    Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                     return;
                 }
 
-                if (Item.CreditsCost > 0)
-                {
-                    Session.GetHabbo().Credits -= Item.CreditsCost;
-                    Session.GetHabbo().UpdateCreditsBalance();
-                }
-
-                Session.GetHabbo().GetSubscriptionManager().AddOrExtendSubscription("habbo_vip", Days * 24 * 3600);
-                Session.GetHabbo().SerializeClub();
-
-                return;
-            }
-
-            if (Item.IsLimited)
-            {
-                finalAmount = 1;
-                buyAmount = 1;
-                if (Item.LimitedStack <= Item.LimitedSelled)
-                    return;
-                Item.LimitedSelled++;
+                DataRow dRow;
                 using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                 {
-                    dbClient.runFastQuery("UPDATE catalog_items SET limited_sells = " + Item.LimitedSelled + " WHERE id = " + Item.Id);
-                }
-                Page.InitMsg(); // update page!
+                    dbClient.setQuery("SELECT id FROM users WHERE username = @gift_user");
+                    dbClient.addParameter("gift_user", GiftUser);
 
-                // send update
-                //Session.SendMessage(Page.GetMessage);
+
+                    dRow = dbClient.getRow();
+                }
+
+                if (dRow == null)
+                {
+                    Session.GetMessageHandler().GetResponse().Init(Outgoing.GiftError);
+                    Session.GetMessageHandler().GetResponse().AppendString(GiftUser);
+                    Session.GetMessageHandler().SendResponse();
+
+                    return;
+                }
+
+                GiftUserId = Convert.ToUInt32(dRow[0]);
+
+                if (GiftUserId == 0)
+                {
+                    Session.GetMessageHandler().GetResponse().Init(Outgoing.GiftError);
+                    Session.GetMessageHandler().GetResponse().AppendString(GiftUser);
+                    Session.GetMessageHandler().SendResponse();
+
+                    return;
+                }
             }
-            else if (IsGift & buyAmount > 1)
-            {
-                finalAmount = 1;
-                buyAmount = 1;
-                Session.SendNotif("Lo sentimos, pero tu regalo solo puede contener un item, por lo que solo has comprado uno");
-            }
-            uint GiftUserId = 0;
 
             Boolean CreditsError = false;
             Boolean PixelError = false;
@@ -333,11 +312,10 @@ namespace Firewind.HabboHotel.Catalogs
 
             if (CreditsError || PixelError)
             {
-                /*Session.GetMessageHandler().GetResponse().Init(68);
-                Session.GetMessageHandler().GetResponse().AppendBoolean(CreditsError);
-                Session.GetMessageHandler().GetResponse().AppendBoolean(PixelError);
-                Session.GetMessageHandler().SendResponse();*/
-
+                ServerMessage message = new ServerMessage(Outgoing.NotEnoughBalance);
+                message.AppendBoolean(CreditsError);
+                message.AppendBoolean(PixelError);
+                Session.SendMessage(message);
                 return;
             }
 
@@ -348,6 +326,7 @@ namespace Firewind.HabboHotel.Catalogs
                 if (Session.GetHabbo().VipPoints < cost)
                 {
                     Session.SendNotif("You can't afford that item!");
+                    Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                     return;
                 }
 
@@ -361,31 +340,6 @@ namespace Firewind.HabboHotel.Catalogs
   
             }
 
-
-            if ((Item.OudeCredits * finalAmount) > 0)
-            {
-                int oudeCredits = 0;
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    dbClient.setQuery("SELECT belcredits FROM users WHERE id = " + Session.GetHabbo().Id);
-                    oudeCredits = dbClient.getInteger();
-                }
-
-                if (Item.OudeCredits > oudeCredits)
-                {
-                    Session.SendNotif(LanguageLocale.GetValue("catalog.oudebelcreditserror") + Item.OudeCredits);
-                    return;
-                }
-
-                oudeCredits = oudeCredits - (Item.OudeCredits * finalAmount);
-                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                {
-                    dbClient.runFastQuery("UPDATE users SET belcredits = " + oudeCredits + " WHERE id = " + Session.GetHabbo().Id);
-                }
-
-                Session.SendNotif(LanguageLocale.GetValue("catalog.oudebelcreditsok") + oudeCredits);
-            }
-
             if (Item.CreditsCost > 0 && !IsGift)
             {
                 Session.GetHabbo().Credits -= (Item.CreditsCost * finalAmount);
@@ -397,60 +351,67 @@ namespace Firewind.HabboHotel.Catalogs
                 Session.GetHabbo().ActivityPoints -= (Item.PixelsCost * finalAmount);
                 Session.GetHabbo().UpdateActivityPointsBalance(true);
             }
+
+            // Item is purchased, now do post-proccessing
+            if (Item.IsLimited)
+            {
+                Item.LimitedSelled++;
+                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                {
+                    dbClient.runFastQuery("UPDATE catalog_items SET limited_sells = " + Item.LimitedSelled + " WHERE id = " + Item.Id);
+                }
+                Page.InitMsg(); // update page!
+
+                // send update
+                Session.SendMessage(Page.GetMessage);
+            }
+
             foreach (uint i in Item.Items)
             {
                 //Logging.WriteLine(Item.GetBaseItem().ItemId);
                 //Logging.WriteLine(Item.GetBaseItem().InteractionType.ToLower());
                 // Extra Data is _NOT_ filtered at this point and MUST BE VERIFIED BELOW:
-                if (IsGift)
+                if (Item.GetBaseItem(i).Type == 'h') // Subscription
                 {
-                    if (!Item.GetBaseItem(i).AllowGift)
+                    int Months = 0;
+                    int Days = 0;
+                    if (Item.Name.Contains("HABBO_CLUB_VIP_"))
                     {
+                        if (Item.Name.Contains("_DAY"))
+                        {
+                            Days = int.Parse(Item.Name.Split('_')[3]);
+                        }
+                        else if (Item.Name.Contains("_MONTH"))
+                        {
+                            Months = int.Parse(Item.Name.Split('_')[3]);
+                            Days = 31 * Months;
+                        }
+                    }
+                    else if (Item.Name.Equals("deal_vip_1_year_and_badge"))
+                    {
+                        Months = 12;
+                        Days = 31 * Months;
+                    }
+                    else if (Item.Name.Equals("HABBO_CLUB_VIP_5_YEAR"))
+                    {
+                        Months = 5 * 12;
+                        Days = 31 * Months;
+                    }
+                    else if (Item.Name.StartsWith("DEAL_HC_"))
+                    {
+                        Months = int.Parse(Item.Name.Split('_')[2]);
+                        Days = 31 * Months;
+
+                        Session.GetHabbo().GetSubscriptionManager().AddOrExtendSubscription("habbo_club", Days * 24 * 3600);
+                        Session.GetHabbo().SerializeClub();
                         return;
                     }
 
-                    DataRow dRow;
-                    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                    {
-                        dbClient.setQuery("SELECT id FROM users WHERE username = @gift_user");
-                        dbClient.addParameter("gift_user", GiftUser);
-
-
-                        dRow = dbClient.getRow();
-                    }
-
-                    if (dRow == null)
-                    {
-                        Session.GetMessageHandler().GetResponse().Init(Outgoing.GiftError);
-                        Session.GetMessageHandler().GetResponse().AppendString(GiftUser);
-                        Session.GetMessageHandler().SendResponse();
-
-                        return;
-                    }
-
-                    GiftUserId = Convert.ToUInt32(dRow[0]);
-
-                    if (GiftUserId == 0)
-                    {
-                        Session.GetMessageHandler().GetResponse().Init(Outgoing.GiftError);
-                        Session.GetMessageHandler().GetResponse().AppendString(GiftUser);
-                        Session.GetMessageHandler().SendResponse();
-
-                        return;
-                    }
-
-                    if (Item.CreditsCost > 0 && IsGift)
-                    {
-                        Session.GetHabbo().Credits -= (Item.CreditsCost * finalAmount);
-                        Session.GetHabbo().UpdateCreditsBalance();
-                    }
-
-                    if (Item.PixelsCost > 0 && IsGift)
-                    {
-                        Session.GetHabbo().ActivityPoints -= (Item.PixelsCost * finalAmount);
-                        Session.GetHabbo().UpdateActivityPointsBalance(true);
-                    }
+                    Session.GetHabbo().GetSubscriptionManager().AddOrExtendSubscription("habbo_vip", Days * 24 * 3600);
+                    Session.GetHabbo().SerializeClub();
+                    return;
                 }
+
 
 
                 if (IsGift && Item.GetBaseItem(i).Type == 'e')
@@ -473,20 +434,6 @@ namespace Firewind.HabboHotel.Catalogs
                     case InteractionType.pet:
                         try
                         {
-
-                            //uint count = 0;
-                            //using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-                            //{
-                            //    dbClient.setQuery("SELECT COUNT(*) FROM user_pets WHERE user_id = " + Session.GetHabbo().Id);
-                            //    count = uint.Parse(dbClient.getString());
-                            //}
-
-                            //if (count > 5)
-                            //{
-                            //    Session.SendNotif(LanguageLocale.GetValue("catalog.pets.maxpets"));
-                            //    return;
-                            //}
-
                             string[] Bits = extraParameter.Split('\n');
                             string PetName = Bits[0];
                             string Race = Bits[1];
@@ -495,18 +442,25 @@ namespace Firewind.HabboHotel.Catalogs
                             int.Parse(Race); // to trigger any possible errors
 
                             if (!CheckPetName(PetName))
+                            {
+                                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                                 return;
+                            }
 
                             //if (Race.Length != 1)
                             //    return;
 
                             if (Color.Length != 6)
+                            {
+                                Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                                 return;
+                            }
                         }
                         catch (Exception e)
                         {
                             Logging.WriteLine(e.ToString());
                             Logging.HandleException(e, "Catalog.HandlePurchase");
+                            Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
                             return;
                         }
 
@@ -554,34 +508,11 @@ namespace Firewind.HabboHotel.Catalogs
                         break;
                 }
 
+                //Session.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventary);
+                //Session.GetMessageHandler().SendResponse();
 
-                Session.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventary);
-                Session.GetMessageHandler().SendResponse();
-
-                Session.GetMessageHandler().GetResponse().Init(Outgoing.SerializePurchaseInformation); // PurchaseOKMessageEvent
-                Session.GetMessageHandler().GetResponse().AppendUInt(Item.GetBaseItem(i).ItemId); // offerID
-                Session.GetMessageHandler().GetResponse().AppendString(Item.GetBaseItem(i).Name);  // localizationId
-                Session.GetMessageHandler().GetResponse().AppendInt32(Item.CreditsCost); // priceInCredits
-                Session.GetMessageHandler().GetResponse().AppendInt32(Item.PixelsCost); // priceInActivityPoints
-                Session.GetMessageHandler().GetResponse().AppendInt32(0); // activityPointType
-                Session.GetMessageHandler().GetResponse().AppendBoolean(true); // unknown
-                Session.GetMessageHandler().GetResponse().AppendInt32(1); // products count
-                Session.GetMessageHandler().GetResponse().AppendString(Item.GetBaseItem(i).Type.ToString().ToLower()); // productType [i,s,e,b]
-                Session.GetMessageHandler().GetResponse().AppendInt32(Item.GetBaseItem(i).SpriteId); // furniClassId
-                Session.GetMessageHandler().GetResponse().AppendString(""); // extraParam
-                Session.GetMessageHandler().GetResponse().AppendInt32(1); // productCount
-                Session.GetMessageHandler().GetResponse().AppendInt32(0); // expiration
-                Session.GetMessageHandler().GetResponse().AppendBoolean(Item.IsLimited);
-
-                if (Item.IsLimited)
-                {
-                    Session.GetMessageHandler().GetResponse().AppendInt32(Item.LimitedStack); // uniqueLimitedItemSeriesSize
-                    Session.GetMessageHandler().GetResponse().AppendInt32(Item.LimitedStack - Item.LimitedSelled); // uniqueLimitedItemsLeft
-                }
-
-                Session.GetMessageHandler().GetResponse().AppendInt32(0); // clubLevel
-                Session.GetMessageHandler().GetResponse().AppendBoolean(false); // unknown
-
+                Session.GetMessageHandler().GetResponse().Init(Outgoing.PurchaseOK); // PurchaseOKMessageEvent
+                Item.Serialize(Session.GetMessageHandler().GetResponse());
                 Session.GetMessageHandler().SendResponse();
 
                 if (IsGift)
@@ -592,6 +523,8 @@ namespace Firewind.HabboHotel.Catalogs
                     if (Present == null)
                     {
                         Logging.LogDebug(string.Format("Somebody tried to purchase a present with invalid sprite ID: {0}", GiftSpriteId));
+                        Session.SendMessage(new ServerMessage(Outgoing.PurchaseError));
+                        return;
                     }
 
                     MapStuffData giftData = new MapStuffData();
@@ -606,8 +539,6 @@ namespace Firewind.HabboHotel.Catalogs
                     giftData.Data.Add("EXTRA_PARAM", "test");
                     giftData.Data.Add("state", "1");
 
-                    //Logging.WriteLine((uint)GiftSpriteId +"   -    "  +FirewindEnvironment.giftInt);
-                    //Logging.WriteLine("Resultado regalo: " + FirewindEnvironment.GetGame().GetItemManager().GetItem((uint)GiftSpriteId - FirewindEnvironment.giftInt));
                     using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
                     {
                         dbClient.setQuery("INSERT INTO items (base_id) VALUES (" + Present.ItemId + ")");
@@ -625,7 +556,6 @@ namespace Firewind.HabboHotel.Catalogs
                         }
 
                         dbClient.setQuery("INSERT INTO user_presents (item_id,base_id,amount,extra_data) VALUES (" + itemID + "," + Item.GetBaseItem(i).ItemId + "," + Item.Amount + ",@extra_data)");
-                        dbClient.addParameter("gift_message", "!" + GiftMessage);
                         dbClient.addParameter("extra_data", itemData.ToString());
                         dbClient.runQuery();
                     }
@@ -637,7 +567,7 @@ namespace Firewind.HabboHotel.Catalogs
                         Receiver.SendNotif(LanguageLocale.GetValue("catalog.gift.received") + Session.GetHabbo().Username);
                         UserItem u = Receiver.GetHabbo().GetInventoryComponent().AddNewItem(itemID, Present.ItemId, giftData, GiftColor * 1000 + GiftLazo, false, false, 0);
                         Receiver.GetHabbo().GetInventoryComponent().SendFloorInventoryUpdate();
-                        Receiver.GetMessageHandler().GetResponse().Init(Outgoing.SendPurchaseAlert);
+                        Receiver.GetMessageHandler().GetResponse().Init(Outgoing.UnseenItems);
                         Receiver.GetMessageHandler().GetResponse().AppendInt32(1); // items
                         Receiver.GetMessageHandler().GetResponse().AppendInt32(1); // type (gift) == s
                         Receiver.GetMessageHandler().GetResponse().AppendInt32(1);
@@ -652,8 +582,7 @@ namespace Firewind.HabboHotel.Catalogs
                 }
                 else
                 {
-                    Session.GetMessageHandler().GetResponse().Init(Outgoing.SendPurchaseAlert);
-                    Session.GetMessageHandler().GetResponse().AppendInt32(1); // items
+                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), itemData.ToString(), Item.songID);
                     int Type = 2;
                     if (Item.GetBaseItem(i).Type.ToString().ToLower().Equals("s"))
                     {
@@ -662,12 +591,17 @@ namespace Firewind.HabboHotel.Catalogs
                         else
                             Type = 1;
                     }
+
+                    Session.GetMessageHandler().GetResponse().Init(Outgoing.UnseenItems);
+                    Session.GetMessageHandler().GetResponse().AppendInt32(1); // items
                     Session.GetMessageHandler().GetResponse().AppendInt32(Type);
-                    List<UserItem> items = DeliverItems(Session, Item.GetBaseItem(i), (buyAmount * Item.Amount), itemData.ToString(), Item.songID);
+
                     Session.GetMessageHandler().GetResponse().AppendInt32(items.Count);
                     foreach (UserItem u in items)
                         Session.GetMessageHandler().GetResponse().AppendUInt(u.Id);
+
                     Session.GetMessageHandler().SendResponse();
+
                     //Logging.WriteLine("Purchased " + items.Count);
                     Session.GetHabbo().GetInventoryComponent().UpdateItems(false);
 
@@ -798,6 +732,10 @@ namespace Firewind.HabboHotel.Catalogs
                     {
                         Session.GetHabbo().GetAvatarEffectsInventoryComponent().AddEffect(Item.SpriteId, 3600);
                     }
+
+                    return result;
+
+                case "r": // Rentable bot
 
                     return result;
 
