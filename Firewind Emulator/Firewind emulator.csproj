@@ -246,6 +246,12 @@
     <Compile Include="HabboHotel\Rooms\Items\Data\StringIntData.cs" />
     <Compile Include="HabboHotel\Rooms\Trade.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\RoomAI.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\OfficialBot.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\Pet.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\RoomUnit.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\RoomUser.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\RentableBot.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\ConditionHandler.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\ConfigurationData.cs" />
     <Compile Include="HabboHotel\Rooms\Wired\CurrentType.cs" />
