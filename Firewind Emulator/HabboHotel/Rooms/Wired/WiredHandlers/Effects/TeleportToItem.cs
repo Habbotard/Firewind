@@ -15,7 +15,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 {
     class TeleportToItem : IWiredTrigger, IWiredCycleable, IWiredEffect
     {
-        private Gamemap gamemap;
+        private GameMap gamemap;
         private WiredHandler handler;
 
         private List<RoomItem> items;
@@ -26,7 +26,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
         private uint itemID;
         private bool disposed;
 
-        public TeleportToItem(Gamemap gamemap, WiredHandler handler, List<RoomItem> items, int delay, uint itemID)
+        public TeleportToItem(GameMap gamemap, WiredHandler handler, List<RoomItem> items, int delay, uint itemID)
         {
             this.gamemap = gamemap;
             this.handler = handler;

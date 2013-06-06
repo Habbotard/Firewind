@@ -264,7 +264,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                     user.SqState = 0;
                 }
 
-                room.GetGameMap().GameMap[item.GetX, item.GetY] = 0;
+                room.GetGameMap().Map[item.GetX, item.GetY] = 0;
             }
         }
 
@@ -278,7 +278,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                     user.SqState = 1;
                 }
 
-                room.GetGameMap().GameMap[item.GetX, item.GetY] = 1;
+                room.GetGameMap().Map[item.GetX, item.GetY] = 1;
             }
         }
 

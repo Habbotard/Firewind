@@ -244,6 +244,7 @@ namespace Firewind.HabboHotel.Rooms.Units
             Message.AppendInt32(X);
             Message.AppendInt32(Y);
             Message.AppendString(TextHandling.GetString(Z));
+            Message.AppendInt32(0); // ???
             Message.AppendInt32(GetTypeID());
 
             // Rest is up to the derived classes

@@ -490,11 +490,11 @@ namespace Firewind.HabboHotel.Rooms
             mMessage.AppendString(TextHandling.GetString(NextZ));
 
             room.GetGameMap().UpdateUnitMovement(new Point(unit.X, unit.Y), new Point(pNextCoord.X, pNextCoord.Y), unit);
-            room.GetGameMap().GameMap[unit.X, unit.Y] = 1;
+            room.GetGameMap().Map[unit.X, unit.Y] = 1;
             unit.X = pNextCoord.X;
             unit.Y = pNextCoord.Y;
             unit.Z = NextZ;
-            room.GetGameMap().GameMap[unit.X, unit.Y] = 0;
+            room.GetGameMap().Map[unit.X, unit.Y] = 0;
 
             return mMessage;
         }
@@ -597,7 +597,7 @@ namespace Firewind.HabboHotel.Rooms
             bool NeedsReAdd = false;
             if (!newItem)
                 NeedsReAdd = room.GetGameMap().RemoveFromMap(Item);
-            Dictionary<int, ThreeDCoord> AffectedTiles = Gamemap.GetAffectedTiles(Item.GetBaseItem().Length, Item.GetBaseItem().Width, newX, newY, newRot);
+            Dictionary<int, ThreeDCoord> AffectedTiles = GameMap.GetAffectedTiles(Item.GetBaseItem().Length, Item.GetBaseItem().Width, newX, newY, newRot);
 
             if (!room.GetGameMap().ValidTile(newX, newY) || room.GetGameMap().SquareHasUsers(newX, newY) && !Item.GetBaseItem().IsSeat)
             {
@@ -889,7 +889,7 @@ namespace Firewind.HabboHotel.Rooms
         internal bool SetFloorItem(RoomItem Item, int newX, int newY, Double newZ)
         {
             room.GetGameMap().RemoveFromMap(Item);
-            Item.SetState(newX, newY, newZ, Gamemap.GetAffectedTiles(Item.GetBaseItem().Length, Item.GetBaseItem().Width, newX, newY, Item.Rot));
+            Item.SetState(newX, newY, newZ, GameMap.GetAffectedTiles(Item.GetBaseItem().Length, Item.GetBaseItem().Width, newX, newY, Item.Rot));
 
             UpdateItem(Item);
             room.GetGameMap().AddItemToMap(Item);

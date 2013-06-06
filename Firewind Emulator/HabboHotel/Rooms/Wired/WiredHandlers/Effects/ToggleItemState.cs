@@ -13,7 +13,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
     class ToggleItemState: IWiredTrigger, IWiredCycleable, IWiredEffect
     {
         private RoomItem item;
-        private Gamemap gamemap;
+        private GameMap gamemap;
         private WiredHandler handler;
 
         private List<RoomItem> items;
@@ -23,7 +23,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 
         private bool disposed;
 
-        public ToggleItemState(Gamemap gamemap, WiredHandler handler, List<RoomItem> items, int delay, RoomItem Item)
+        public ToggleItemState(GameMap gamemap, WiredHandler handler, List<RoomItem> items, int delay, RoomItem Item)
         {
             this.item = Item;
             this.gamemap = gamemap;

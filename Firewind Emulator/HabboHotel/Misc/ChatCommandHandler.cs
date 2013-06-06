@@ -120,7 +120,7 @@ namespace Firewind.HabboHotel.Misc
             {
                 
                 Point squareInfront = CoordinationUtil.GetPointInFront(roomuser.Coordinate, roomuser.RotBody);
-                List<RoomUser> users = room.GetGameMap().GetRoomUsers(squareInfront);
+                List<RoomUnit> units = room.GetGameMap().GetRoomUsers(squareInfront);
 
                 Point squareInFrontOfUserInFront = CoordinationUtil.GetPointInFront(squareInfront, roomuser.RotBody); //Yo dawg, we heard yo like coordinates, so we put a coordinate inside yo coordinate
                 if (room.GetGameMap().CanWalk(squareInFrontOfUserInFront.X, squareInFrontOfUserInFront.Y, false) == false)
@@ -128,9 +128,9 @@ namespace Firewind.HabboHotel.Misc
                     return;
                 }
 
-                foreach (RoomUser user in users)
+                foreach (RoomUnit unit in units)
                 {
-                    user.MoveTo(squareInFrontOfUserInFront);
+                    unit.MoveTo(squareInFrontOfUserInFront);
                 }
             }
             else
@@ -184,11 +184,11 @@ namespace Firewind.HabboHotel.Misc
             {
                 Point squareInFront = CoordinationUtil.GetPointInFront(roomuser.Coordinate, roomuser.RotBody);
                 Point squareInFrontInFront = CoordinationUtil.GetPointBehind(squareInFront, CoordinationUtil.RotationIverse(roomuser.RotBody));
-                List<RoomUser> users = room.GetGameMap().GetRoomUsers(squareInFrontInFront);
+                List<RoomUnit> units = room.GetGameMap().GetRoomUsers(squareInFrontInFront);
 
-                foreach (RoomUser user in users)
+                foreach (RoomUnit unit in units)
                 {
-                    user.MoveTo(squareInFront);
+                    unit.MoveTo(squareInFront);
                 }
             }
             else
@@ -517,7 +517,7 @@ namespace Firewind.HabboHotel.Misc
                 return;
             }
 
-            Session.SendNotif("X: " + TargetRoomUser.X + " - Y: " + TargetRoomUser.Y + " - Z: " + TargetRoomUser.Z + " - Rot: " + TargetRoomUser.RotBody + ", sqState: " + TargetRoom.GetGameMap().GameMap[TargetRoomUser.X, TargetRoomUser.Y].ToString());
+            Session.SendNotif("X: " + TargetRoomUser.X + " - Y: " + TargetRoomUser.Y + " - Z: " + TargetRoomUser.Z + " - Rot: " + TargetRoomUser.RotBody + ", sqState: " + TargetRoom.GetGameMap().Map[TargetRoomUser.X, TargetRoomUser.Y].ToString());
         }
 
         internal void coins()

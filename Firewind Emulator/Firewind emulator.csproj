@@ -222,7 +222,7 @@
     <Compile Include="HabboHotel\Rooms\ChatMessage.cs" />
     <Compile Include="HabboHotel\Rooms\CoordItemSearch.cs" />
     <Compile Include="HabboHotel\Rooms\DynamicRoomModel.cs" />
-    <Compile Include="HabboHotel\Rooms\Gamemap.cs" />
+    <Compile Include="HabboHotel\Rooms\GameMap.cs" />
     <Compile Include="HabboHotel\Rooms\Games\BattleBanzai.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Game.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Soccer.cs" />

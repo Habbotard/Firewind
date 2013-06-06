@@ -82,7 +82,7 @@ namespace Firewind.HabboHotel.Rooms
         internal DateTime lastTimerReset;
 
         private GameManager game;
-        private Gamemap gamemap;
+        private GameMap gamemap;
         private RoomItemHandling roomItemHandling;
         private RoomUnitManager roomUserManager;
         private Soccer soccer;
@@ -111,7 +111,7 @@ namespace Firewind.HabboHotel.Rooms
         private ChatMessageManager chatMessageManager;
         private Queue chatMessageQueue;
 
-        internal Gamemap GetGameMap()
+        internal GameMap GetGameMap()
         {
             return gamemap;
         }
@@ -346,7 +346,7 @@ namespace Firewind.HabboHotel.Rooms
             this.WallThickness = walltickness;
             this.FloorThickness = floorthickness;
 
-            this.gamemap = new Gamemap(this);
+            this.gamemap = new GameMap(this);
             this.roomItemHandling = new RoomItemHandling(this);
             this.roomUserManager = new RoomUnitManager(this);
             this.wiredHandler = new WiredHandler(this);

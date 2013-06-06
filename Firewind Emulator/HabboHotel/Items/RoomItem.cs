@@ -424,7 +424,7 @@ namespace Firewind.HabboHotel.Items
             
             mIsWallItem = (GetBaseItem().Type.ToString().ToLower() == "i");
             mIsFloorItem = (GetBaseItem().Type.ToString().ToLower() == "s");
-            mAffectedPoints = Gamemap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
+            mAffectedPoints = GameMap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
         }
 
         internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int extra, WallCoordinate wallCoord, Room pRoom)

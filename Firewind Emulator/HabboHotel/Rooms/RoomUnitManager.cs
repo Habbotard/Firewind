@@ -284,8 +284,8 @@ namespace Firewind.HabboHotel.Rooms
         {
             try
             {
-                KeyValuePair<int, RoomUser> userPair = (KeyValuePair<int, RoomUser>)sender;
-                RoomUser user = userPair.Value;
+                KeyValuePair<int, RoomUnit> userPair = (KeyValuePair<int, RoomUnit>)sender;
+                RoomUser user = userPair.Value as RoomUser;
 
                 if (user == null || user.GetClient() == null || user.GetClient().GetHabbo() == null)
                     return;
@@ -573,7 +573,7 @@ namespace Firewind.HabboHotel.Rooms
         {
             UnitList.Remove(user.VirtualID);
 
-            room.GetGameMap().GameMap[user.X, user.Y] = user.SqState;
+            room.GetGameMap().Map[user.X, user.Y] = user.SqState;
             room.GetGameMap().RemoveUnitFromMap(user, new Point(user.X, user.Y));
             ServerMessage LeaveMessage = new ServerMessage(Outgoing.UserLeftRoom);
             LeaveMessage.AppendString(user.VirtualID + String.Empty);
@@ -1084,7 +1084,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal void TurnHeads(int X, int Y, uint SenderId)
+        internal void TurnHeads(int X, int Y, int SenderId)
         {
             foreach (RoomUser user in UnitList.Values)
             {
@@ -1183,8 +1183,8 @@ namespace Firewind.HabboHotel.Rooms
                 if (User.IsWalking && !User.Freezed)
                 {
                     
-                    Gamemap map = room.GetGameMap();
-                    SquarePoint Point = DreamPathfinder.GetNextStep(User.X, User.Y, User.GoalX, User.GoalY, map.GameMap, map.ItemHeightMap, 
+                    GameMap map = room.GetGameMap();
+                    SquarePoint Point = DreamPathfinder.GetNextStep(User.X, User.Y, User.GoalX, User.GoalY, map.Map, map.ItemHeightMap, 
                         map.Model.MapSizeX, map.Model.MapSizeY, User.AllowOverride, map.DiagonalEnabled);
 
                     if (Point.X == User.X && Point.Y == User.Y) //No path found, or reached goal (:
@@ -1263,8 +1263,8 @@ namespace Firewind.HabboHotel.Rooms
                         UpdateUserEffect(User, User.SetX, User.SetY);
                         updated = true;
 
-                        room.GetGameMap().GameMap[User.X, User.Y] = User.SqState; // REstore the old one
-                        User.SqState = room.GetGameMap().GameMap[User.SetX, User.SetY];//Backup the new one
+                        room.GetGameMap().Map[User.X, User.Y] = User.SqState; // REstore the old one
+                        User.SqState = room.GetGameMap().Map[User.SetX, User.SetY];//Backup the new one
                         if (User.IsSitting == true)
                             User.IsLaying = false;
 
@@ -1305,7 +1305,7 @@ namespace Firewind.HabboHotel.Rooms
                         //}
 
                         if (!room.AllowWalkthrough)
-                            room.GetGameMap().GameMap[nextX, nextY] = 0;
+                            room.GetGameMap().Map[nextX, nextY] = 0;
                     }
                     //if (!User.isMounted)
                         User.UpdateNeeded = true;

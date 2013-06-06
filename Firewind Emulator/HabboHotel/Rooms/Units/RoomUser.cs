@@ -1,10 +1,15 @@
-﻿using Firewind.HabboHotel.GameClients;
+﻿using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.Core;
+using Firewind.HabboHotel.ChatMessageStorage;
+using Firewind.HabboHotel.GameClients;
+using Firewind.HabboHotel.Misc;
 using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Users;
 using Firewind.Messages;
 using HabboEvents;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +48,7 @@ namespace Firewind.HabboHotel.Rooms.Units
         public int FreezeLives;
         public bool IsTrading;
         public bool moonwalkEnabled;
+        private int FloodCount;
 
         internal override int GetTypeID()
         {
@@ -53,8 +59,14 @@ namespace Firewind.HabboHotel.Rooms.Units
         public RoomUser(int virtualID, GameClient client, Room room) : base(virtualID, room)
         {
             // Base constructor already called
-            this.ID = client.GetHabbo().Id;
             this.Client = client;
+
+            Habbo habbo = client.GetHabbo();
+            this.ID = habbo.Id;
+            this.Name = habbo.Username;
+            this.Figure = habbo.Look;
+            this.Motto = habbo.Motto;
+
         }
 
         internal override void Serialize(Messages.ServerMessage Message)
@@ -108,6 +120,315 @@ namespace Firewind.HabboHotel.Rooms.Units
             Message.AppendInt32(Item);
             GetRoom().SendMessage(Message);
         }
+
+        internal void Chat(GameClient Session, string Message, bool Shout)
+        {
+
+            if (Session != null)
+            {
+                if (Session.GetHabbo().Rank < 5)
+                {
+                    if (GetRoom().RoomMuted)
+                        return;
+                }
+            }
+
+            Unidle();
+
+                Users.Habbo clientUser = GetClient().GetHabbo();
+                if (clientUser.Muted)
+                {
+                    GetClient().SendNotif("You are muted.");
+                    return;
+                }
+
+                if (Message.StartsWith(":") && Session != null)
+                {
+                    string[] parsedCommand = Message.Split(' ');
+                    if (ChatCommandRegister.IsChatCommand(parsedCommand[0].ToLower().Substring(1)))
+                    {
+                        try
+                        {
+                            ChatCommandHandler handler = new ChatCommandHandler(Message.Split(' '), Session);
+
+                            if (handler.WasExecuted())
+                            {
+                                //Logging.LogMessage(string.Format("User {0} issued command {1}", GetUsername(), Message));
+                                if (Session.GetHabbo().Rank > 5)
+                                {
+                                    FirewindEnvironment.GetGame().GetModerationTool().LogStaffEntry(Session.GetHabbo().Username, string.Empty, "Chat command", string.Format("Issued chat command {0}", Message));
+                                }
+                                return;
+                            }
+                        }
+                        catch (Exception x) { Logging.LogException("In-game command error: " + x.ToString()); }
+                    }
+                    if (FirewindEnvironment.IsHabin)
+                    {
+                        bool result;
+                        using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                        {
+                            dbClient.setQuery("SELECT id FROM users WHERE (hpo = '1' OR hpo = '1' OR hds = '1' OR hmg = '1' OR hmb = '1' OR ele = '1' OR lar = '1') AND username = @name");
+                            dbClient.addParameter("name", Session.GetHabbo().Username);
+                            result = dbClient.findsResult();
+                            string command = parsedCommand[0].Substring(1);
+                            // Fuck this command system, we make our own!
+                            switch (command)
+                            {
+                                case "relationship":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    dbClient.setQuery("SELECT sender_id FROM users_relationships WHERE (recipent_id = @myid OR sender_id = @myid) AND accepted = '0'");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    if (dbClient.findsResult())
+                                    {
+                                        Session.SendMOTD("Du har allerede spurt om et forhold med denne personen, vennligst vent på et svar.");
+                                        return;
+                                    }
+                                    dbClient.setQuery("SELECT id FROM users WHERE username = @name");
+                                    dbClient.addParameter("name", parsedCommand[1]);
+                                    int id = dbClient.getInteger();
+
+                                    dbClient.setQuery("INSERT IGNORE INTO users_relationships(sender_id,recipent_id) VALUES(@myid,@hisid)");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    dbClient.addParameter("hisid", id);
+                                    dbClient.runQuery();
+
+                                    Session.SendMOTD("Du har sendt en forespørsel til " + parsedCommand[1]);
+                                    return;
+
+                                case "mystatus":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    if (false)
+                                    {
+                                        Session.SendMOTD("Du er i et forhold med {0}, vil du avslutte forholdet skriv :remove {0}");
+                                        return;
+                                    }
+                                    StringBuilder statusMessage = new StringBuilder();
+                                    statusMessage.AppendLine("Du har følgende forespørsler:");
+                                    dbClient.setQuery("SELECT sender_id FROM users_relationships WHERE accepted = '0' AND recipent_id = @myid LIMIT 6");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    DataTable table = dbClient.getTable();
+                                    foreach (DataRow row in table.Rows)
+                                    {
+                                        statusMessage.AppendLine(FirewindEnvironment.getHabboForId(Convert.ToInt32(row[0])).Username);
+                                    }
+                                    statusMessage.AppendLine("Du kan maks ha 6 forespørsler på en gang.");
+                                    statusMessage.AppendLine("Skriv :accept navn for å akseptere en forespørsel.");
+                                    Session.SendMOTD(statusMessage.ToString());
+                                    return;
+
+                                case "accept":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    dbClient.setQuery("SELECT sender_id FROM users_relationships WHERE (recipent_id = @myid OR sender_id = @myid) AND accepted = '1'");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    if (dbClient.findsResult())
+                                    {
+                                        Session.SendMOTD("Du er allerede i et forhold!");
+                                        return;
+                                    }
+                                    dbClient.setQuery("UPDATE users_relationships SET accepted = '1' WHERE sender_id = @sid AND recipent_id = @myid LIMIT 1");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    dbClient.addParameter("sid", FirewindEnvironment.getHabboForName(parsedCommand[1]).Id);
+                                    dbClient.runQuery();
+                                    Session.SendMOTD("Du er nå i et forhold med " + parsedCommand[1]);
+                                    return;
+
+                                case "decline":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    dbClient.setQuery("DELETE FROM users_relationships WHERE sender_id = @sid AND recipent_id = @myid AND accepted = '0' LIMIT 1");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    dbClient.addParameter("sid", FirewindEnvironment.getHabboForName(parsedCommand[1]).Id);
+                                    dbClient.runQuery();
+                                    Session.SendMOTD("Du har avslått " + parsedCommand[1]);
+                                    return;
+
+                                case "declineall":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    dbClient.setQuery("DELETE FROM users_relationships WHERE recipent_id = @myid AND accepted = '0' LIMIT 1");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    dbClient.runQuery();
+                                    Session.SendMOTD("Du har avslått alle.");
+                                    return;
+
+                                case "status":
+                                    int userID = FirewindEnvironment.getHabboForName(parsedCommand[1]).Id;
+                                    dbClient.setQuery("SELECT sender_id,recipent_id FROM users_relationships WHERE (recipent_id = @userid OR sender_id = @userid) AND accepted = '1' LIMIT 1");
+                                    dbClient.addParameter("userid", userID);
+                                    DataRow resultRow = dbClient.getRow();
+
+                                    if (resultRow == null)
+                                        Session.SendMOTD(parsedCommand[1] + " er singel.");
+                                    else
+                                    {
+                                        bool isSender = Convert.ToUInt32(resultRow[0]) == userID;
+                                        Session.SendMOTD(parsedCommand[1] + " er i et forhold med " + (isSender ? FirewindEnvironment.getHabboForId(Convert.ToInt32(resultRow[1])).Username : FirewindEnvironment.getHabboForId(Convert.ToInt32(resultRow[0])).Username));
+                                    }
+                                    return;
+
+                                case "removerelationship":
+                                    if (!result)
+                                    {
+                                        Session.SendMOTD("Du må være medlem av Mafia eller Police for å ha kommandoene til forhold.");
+                                        break;
+                                    }
+                                    dbClient.setQuery("DELETE FROM users_relationships WHERE accepted = '1' AND (recipent_id = @myid OR sender_id = @myid) LIMIT 1");
+                                    dbClient.addParameter("myid", Session.GetHabbo().Id);
+                                    dbClient.runQuery();
+                                    Session.SendMOTD("Du er ikke lenger i noen forhold.");
+                                    return;
+                            }
+                        }
+                    }
+                }
+
+
+                uint rank = 1;
+                Message = LanguageLocale.FilterSwearwords(Message);
+                if (Session != null && Session.GetHabbo() != null)
+                    rank = Session.GetHabbo().Rank;
+                TimeSpan SinceLastMessage = DateTime.Now - clientUser.spamFloodTime;
+                if (SinceLastMessage.TotalSeconds > clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
+                {
+                    FloodCount = 0;
+                    clientUser.spamProtectionBol = false;
+                    clientUser.spamProtectionAbuse = 0;
+                }
+                else
+                {
+                    if (SinceLastMessage.TotalSeconds > 4)
+                        FloodCount = 0;
+                }
+
+                if (SinceLastMessage.TotalSeconds < clientUser.spamProtectionTime && clientUser.spamProtectionBol == true)
+                {
+                    ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
+                    int timeToWait = clientUser.spamProtectionTime - SinceLastMessage.Seconds;
+                    Packet.AppendInt32(timeToWait); //Blocked for X sec
+                    GetClient().SendMessage(Packet);
+
+                    if (FirewindEnvironment.spamBans == true)
+                    {
+                        clientUser.spamProtectionAbuse++;
+                        GameClient toBan;
+                        toBan = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(Session.GetHabbo().Username);
+                        if (clientUser.spamProtectionAbuse >= FirewindEnvironment.spamBans_limit)
+                        {
+                            FirewindEnvironment.GetGame().GetBanManager().BanUser(toBan, "SPAM*ABUSE", 800, LanguageLocale.GetValue("flood.banmessage"), false);
+                        }
+                        else
+                        {
+                            toBan.SendNotif(LanguageLocale.GetValue("flood.pleasewait").Replace("%secs%", Convert.ToString(timeToWait)));
+                        }
+                    }
+                    return;
+                }
+
+                if (SinceLastMessage.TotalSeconds < 4 && FloodCount > 5 && rank < 5)
+                {
+                    ServerMessage Packet = new ServerMessage(Outgoing.FloodFilter);
+                    clientUser.spamProtectionCount += 1;
+                    if (clientUser.spamProtectionCount % 2 == 0)
+                    {
+                        clientUser.spamProtectionTime = (10 * clientUser.spamProtectionCount);
+                    }
+                    else
+                    {
+                        clientUser.spamProtectionTime = 10 * (clientUser.spamProtectionCount - 1);
+                    }
+                    clientUser.spamProtectionBol = true;
+                    Packet.AppendInt32(clientUser.spamProtectionTime - SinceLastMessage.Seconds); //Blocked for X sec
+                    GetClient().SendMessage(Packet);
+                    return;
+                }
+
+                clientUser.spamFloodTime = DateTime.Now;
+                FloodCount++;
+
+                FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.SOCIAL_CHAT);
+
+                GetClient().GetHabbo().GetChatMessageManager().AddMessage(ChatMessageFactory.CreateMessage(Message, this.GetClient(), this.GetRoom()));
+
+            InvokedChatMessage message = new InvokedChatMessage(this, Message, Shout);
+            GetRoom().QueueChatMessage(message);
+        }
+
+        internal void OnChat(InvokedChatMessage message)
+        {
+            string Message = message.message;
+
+            if (GetRoom() != null && !GetRoom().AllowsShous(this, Message))
+                return;
+
+            int ChatHeader = Outgoing.Talk;
+
+            if (message.shout)
+            {
+                ChatHeader = Outgoing.Shout;
+            }
+
+            string Site = "";
+
+            ServerMessage ChatMessage = new ServerMessage(ChatHeader);
+            ChatMessage.AppendInt32(VirtualID);
+
+            //if (Message.Contains("http://") || Message.Contains("www."))
+            //{
+            //    string[] Split = Message.Split(' ');
+
+            //    foreach (string Msg in Split)
+            //    {
+            //        if (Msg.StartsWith("http://") || Msg.StartsWith("www."))
+            //        {
+            //            Site = Msg;
+            //        }
+            //    }
+
+            //    Message = Message.Replace(Site, "{0}");
+            //}
+
+            ChatMessage.AppendString(Message);
+
+            if (!string.IsNullOrEmpty(Site))
+            {
+                ChatMessage.AppendBoolean(false);
+                ChatMessage.AppendBoolean(true);
+                ChatMessage.AppendString(Site.Replace("http://", string.Empty));
+                ChatMessage.AppendString(Site);
+            }
+
+            ChatMessage.AppendInt32(0);
+            ChatMessage.AppendInt32(0);
+            ChatMessage.AppendInt32(-1);
+
+            GetRoom().GetRoomUserManager().TurnHeads(X, Y, ID);
+            GetRoom().SendMessage(ChatMessage);
+
+                GetRoom().OnUserSay(this, Message, message.shout);
+                //LogMessage(Message);
+
+            message.Dispose();
+        }
+
         internal void Unidle()
         {
             this.IdleTime = 0;

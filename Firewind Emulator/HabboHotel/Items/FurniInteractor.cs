@@ -166,7 +166,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             if (User == null)
                 return false;
 
-            if (Gamemap.TilesTouching(Item.GetX, Item.GetY, User.X, User.Y))
+            if (GameMap.TilesTouching(Item.GetX, Item.GetY, User.X, User.Y))
             {
                 if (Item.data.GetData() != "-1")
                 {
@@ -410,7 +410,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                     return false;
                 }
 
-                if (!Gamemap.TilesTouching(User.X, User.Y, Item.GetX, Item.GetY))
+                if (!GameMap.TilesTouching(User.X, User.Y, Item.GetX, Item.GetY))
                 {
                     User.MoveTo(Item.SquareInFront);
                     return false;

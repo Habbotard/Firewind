@@ -420,7 +420,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private void HandleUserFreeze(Point point)
         {
-            RoomUser user = room.GetGameMap().GetRoomUsers(point).FirstOrDefault(); ;
+            RoomUser user = room.GetGameMap().GetRoomUsers(point).FirstOrDefault() as RoomUser;
 
             if (user != null)
             {

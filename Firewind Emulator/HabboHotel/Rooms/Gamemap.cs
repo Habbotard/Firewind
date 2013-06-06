@@ -15,7 +15,7 @@ using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms
 {
-    class Gamemap
+    class GameMap
     {
         private Room room;
 
@@ -68,7 +68,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal byte[,] GameMap
+        internal byte[,] Map
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        public Gamemap(Room room)
+        public GameMap(Room room)
         {
             this.room = room;
             this.DiagonalEnabled = true;
@@ -116,7 +116,7 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void TeleportToItem(RoomUser user, RoomItem item)
         {
-            GameMap[user.X, user.Y] = user.SqState;
+            Map[user.X, user.Y] = user.SqState;
             UpdateUnitMovement(new Point(user.Coordinate.X, user.Coordinate.Y), new Point(item.Coordinate.X, item.Coordinate.Y), user);
             user.X = item.GetX;
             user.Y = item.GetY;
@@ -124,8 +124,8 @@ namespace Firewind.HabboHotel.Rooms
             if (user.IsFlying)
                 user.Z += 4 + 0.5 * Math.Sin(0.7 * user.FlyCounter);
 
-            user.SqState = GameMap[item.GetX, item.GetY];
-            GameMap[user.X, user.Y] = 1;
+            user.SqState = Map[item.GetX, item.GetY];
+            Map[user.X, user.Y] = 1;
             user.RotBody = item.Rot;
             user.RotHead = item.Rot;
 
@@ -153,12 +153,12 @@ namespace Firewind.HabboHotel.Rooms
             return (GetRoomUsers(coord).Count > 0);
         }
 
-        internal List<RoomUser> GetRoomUsers(Point coord)
+        internal List<RoomUnit> GetRoomUsers(Point coord)
         {
             if (_unitMap.ContainsKey(coord))
-                return (List<RoomUser>)_unitMap[coord];
+                return (List<RoomUnit>)_unitMap[coord];
             else
-                return new List<RoomUser>();
+                return new List<RoomUnit>();
         }
 
         internal Point getRandomWalkableSquare()
