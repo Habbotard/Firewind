@@ -4,6 +4,7 @@ using Firewind.HabboHotel.Items;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
 using System;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 {
@@ -33,9 +34,10 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
             currentGameCount = 0;
         }
 
-        public bool Handle(RoomUser user, Team team, RoomItem item)
+        public bool Handle(RoomUnit unit, Team team, RoomItem item)
         {
-            if (team != Team.none && maxCountPerGame > currentGameCount)
+            RoomUser user = unit as RoomUser;
+            if (user != null && team != Team.none && maxCountPerGame > currentGameCount)
             {
                 currentGameCount++;
                 gameManager.AddPointToTeam(team, scoreToGive, user);

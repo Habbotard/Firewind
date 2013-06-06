@@ -14,9 +14,9 @@ namespace Firewind.HabboHotel.Users.Messenger
 {
     class HabboMessenger
     {
-        private uint UserId;
-        public Dictionary<uint, MessengerRequest> requests;
-        private Dictionary<uint, MessengerBuddy> friends;
+        private int UserId;
+        public Dictionary<int, MessengerRequest> requests;
+        private Dictionary<int, MessengerBuddy> friends;
 
         internal bool AppearOffline;
 
@@ -28,17 +28,17 @@ namespace Firewind.HabboHotel.Users.Messenger
             }
         }
 
-        internal HabboMessenger(uint UserId)
+        internal HabboMessenger(int UserId)
         {
-            this.requests = new Dictionary<uint, MessengerRequest>();
-            this.friends = new Dictionary<uint, MessengerBuddy>();
+            this.requests = new Dictionary<int, MessengerRequest>();
+            this.friends = new Dictionary<int, MessengerBuddy>();
             this.UserId = UserId;
         }
 
-        internal void Init(Dictionary<uint, MessengerBuddy> friends, Dictionary<uint, MessengerRequest> requests)
+        internal void Init(Dictionary<int, MessengerBuddy> friends, Dictionary<int, MessengerRequest> requests)
         {
-            this.requests = new Dictionary<uint, MessengerRequest>(requests);
-            this.friends = new Dictionary<uint, MessengerBuddy>(friends);
+            this.requests = new Dictionary<int, MessengerRequest>(requests);
+            this.friends = new Dictionary<int, MessengerBuddy>(friends);
         }
 
         internal void ClearRequests()
@@ -46,7 +46,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             requests.Clear();
         }
 
-        internal MessengerRequest GetRequest(uint senderID)
+        internal MessengerRequest GetRequest(int senderID)
         {
             if (requests.ContainsKey(senderID))
                 return requests[senderID];
@@ -81,7 +81,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             }
         }
 
-        internal void UpdateFriend(uint userid, GameClient client, bool notification)
+        internal void UpdateFriend(int userid, GameClient client, bool notification)
         {
             if (friends.ContainsKey(userid))
             {
@@ -106,7 +106,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             ClearRequests();
         }
 
-        internal void HandleRequest(uint sender)
+        internal void HandleRequest(int sender)
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -116,7 +116,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             requests.Remove(sender);
         }
 
-        internal void CreateFriendship(uint friendID)
+        internal void CreateFriendship(int friendID)
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -131,7 +131,7 @@ namespace Firewind.HabboHotel.Users.Messenger
                 User.GetHabbo().GetMessenger().OnNewFriendship(UserId);
         }
 
-        internal void DestroyFriendship(uint friendID)
+        internal void DestroyFriendship(int friendID)
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -146,7 +146,7 @@ namespace Firewind.HabboHotel.Users.Messenger
                 User.GetHabbo().GetMessenger().OnDestroyFriendship(UserId);
         }
 
-        internal void OnNewFriendship(uint friendID)
+        internal void OnNewFriendship(int friendID)
         {
             GameClient friend = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(friendID);
 
@@ -175,7 +175,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             GetClient().SendMessage(SerializeUpdate(newFriend));
         }
 
-        internal bool RequestExists(uint requestID)
+        internal bool RequestExists(int requestID)
         {
             if (requests.ContainsKey(requestID))
                 return true;
@@ -190,12 +190,12 @@ namespace Firewind.HabboHotel.Users.Messenger
 
         }
 
-        internal bool FriendshipExists(uint friendID)
+        internal bool FriendshipExists(int friendID)
         {
             return friends.ContainsKey(friendID);
         }
 
-        internal void OnDestroyFriendship(uint Friend)
+        internal void OnDestroyFriendship(int Friend)
         {
             friends.Remove(Friend);
 
@@ -203,13 +203,13 @@ namespace Firewind.HabboHotel.Users.Messenger
             GetClient().GetMessageHandler().GetResponse().AppendInt32(0);
             GetClient().GetMessageHandler().GetResponse().AppendInt32(1);
             GetClient().GetMessageHandler().GetResponse().AppendInt32(-1);
-            GetClient().GetMessageHandler().GetResponse().AppendUInt(Friend);
+            GetClient().GetMessageHandler().GetResponse().AppendInt32(Friend);
             GetClient().GetMessageHandler().SendResponse();
         }
 
         internal bool RequestBuddy(string UserQuery)
         {
-            uint userID;
+            int userID;
             bool hasFQDisabled;
 
             GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUsername(UserQuery);
@@ -227,7 +227,7 @@ namespace Firewind.HabboHotel.Users.Messenger
                 if (Row == null)
                     return false;
 
-                userID = Convert.ToUInt32(Row["id"]);
+                userID = Convert.ToInt32(Row["id"]);
                 hasFQDisabled = FirewindEnvironment.EnumToBool(Row["block_newfriends"].ToString());
             }
             else
@@ -245,7 +245,7 @@ namespace Firewind.HabboHotel.Users.Messenger
                 return true;
             }
 
-            uint ToId = userID;
+            int ToId = userID;
 
             if (RequestExists(ToId))
             {
@@ -275,13 +275,13 @@ namespace Firewind.HabboHotel.Users.Messenger
             return true;
         }
 
-        internal void OnNewRequest(uint friendID)
+        internal void OnNewRequest(int friendID)
         {
             if (!requests.ContainsKey(friendID))
                 requests.Add(friendID, new MessengerRequest(UserId, friendID, FirewindEnvironment.GetGame().GetClientManager().GetNameById(friendID)));
         }
 
-        internal void SendInstantMessage(UInt32 ToId, string Message)
+        internal void SendInstantMessage(int ToId, string Message)
         {
             if (!FriendshipExists(ToId))
             {
@@ -314,16 +314,16 @@ namespace Firewind.HabboHotel.Users.Messenger
             Client.GetHabbo().GetMessenger().DeliverInstantMessage(Message, UserId);
         }
 
-        internal void DeliverInstantMessage(string message, uint convoID)
+        internal void DeliverInstantMessage(string message, int convoID)
         {
             ServerMessage InstantMessage = new ServerMessage(Outgoing.InstantChat);
-            InstantMessage.AppendUInt(convoID);
+            InstantMessage.AppendInt32(convoID);
             InstantMessage.AppendString(message);
             InstantMessage.AppendString(FirewindEnvironment.GetUnixTimestamp() + string.Empty);
             GetClient().SendMessage(InstantMessage);
         }
 
-        internal void DeliverInstantMessageError(int ErrorId, UInt32 ConversationId)
+        internal void DeliverInstantMessageError(int ErrorId, int ConversationId)
         {
             /*
 3                =     Your friend is muted and cannot reply.
@@ -335,7 +335,7 @@ namespace Firewind.HabboHotel.Users.Messenger
 
             ServerMessage reply = new ServerMessage(Outgoing.InstantChatError);
             reply.AppendInt32(ErrorId);
-            reply.AppendUInt(ConversationId);
+            reply.AppendInt32(ConversationId);
             GetClient().SendMessage(reply);
         }
 

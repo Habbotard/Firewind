@@ -1,15 +1,16 @@
 ﻿using Firewind.HabboHotel.Items;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers
 {
-    struct UserWalksFurniValue
+    struct UnitWalksFurniValue
     {
-        internal readonly RoomUser user;
+        internal readonly RoomUnit unit;
         internal readonly RoomItem item;
 
-        public UserWalksFurniValue(RoomUser user, RoomItem item)
+        public UnitWalksFurniValue(RoomUnit unit, RoomItem item)
         {
-            this.user = user;
+            this.unit = unit;
             this.item = item;
         }
     }

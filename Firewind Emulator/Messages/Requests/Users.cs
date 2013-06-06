@@ -7,6 +7,7 @@ using Firewind.HabboHotel.Users.Badges;
 using Database_Manager.Database.Session_Details.Interfaces;
 using HabboEvents;
 using Firewind.Core;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.Messages
 {
@@ -15,7 +16,7 @@ namespace Firewind.Messages
         internal void GetUserInfo()
         {
             GetResponse().Init(Outgoing.HabboInfomation);
-            GetResponse().AppendUInt(Session.GetHabbo().Id);
+            GetResponse().AppendInt32(Session.GetHabbo().Id);
             GetResponse().AppendString(Session.GetHabbo().Username);
             GetResponse().AppendString(Session.GetHabbo().Look);
             GetResponse().AppendString(Session.GetHabbo().Gender.ToUpper());
@@ -156,7 +157,7 @@ namespace Firewind.Messages
             FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.PROFILE_BADGE);
 
             ServerMessage Message = new ServerMessage(Outgoing.UpdateBadges);
-            Message.AppendUInt(Session.GetHabbo().Id);
+            Message.AppendInt32(Session.GetHabbo().Id);
             Message.AppendInt32(Session.GetHabbo().GetBadgeComponent().EquippedCount);
 
             foreach (Badge Badge in Session.GetHabbo().GetBadgeComponent().BadgeList.Values)
@@ -255,7 +256,7 @@ namespace Firewind.Messages
                  * if (IsMe)
                     UserId = (int)Session.GetHabbo().Id;*/
 
-                Habbo Data = FirewindEnvironment.getHabboForId((uint)UserId);
+                Habbo Data = FirewindEnvironment.getHabboForId(UserId);
                 if (Data == null)
                 {
                     Logging.WriteLine("can't get data por profile with userid = " + UserId);
@@ -263,7 +264,7 @@ namespace Firewind.Messages
                 }
 
                 Response.Init(Outgoing.ProfileInformation);
-                Response.AppendUInt(Data.Id);
+                Response.AppendInt32(Data.Id);
                 Response.AppendString(Data.Username);
                 Response.AppendString(Data.Look);
                 Response.AppendString(Data.Motto);
@@ -349,7 +350,7 @@ namespace Firewind.Messages
                 }
 
                 ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
-                RoomUpdate.AppendInt32(User.VirtualId);
+                RoomUpdate.AppendInt32(User.VirtualID);
                 RoomUpdate.AppendString(Session.GetHabbo().Look);
                 RoomUpdate.AppendString(Session.GetHabbo().Gender.ToLower());
                 RoomUpdate.AppendString(Session.GetHabbo().Motto);
@@ -401,7 +402,7 @@ namespace Firewind.Messages
                 }
 
                 ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
-                RoomUpdate.AppendInt32(User.VirtualId);
+                RoomUpdate.AppendInt32(User.VirtualID);
                 RoomUpdate.AppendString(Session.GetHabbo().Look);
                 RoomUpdate.AppendString(Session.GetHabbo().Gender.ToLower());
                 RoomUpdate.AppendString(Session.GetHabbo().Motto);

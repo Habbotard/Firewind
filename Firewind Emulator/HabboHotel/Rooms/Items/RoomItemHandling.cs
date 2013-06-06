@@ -16,6 +16,7 @@ using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Rooms.Wired;
 using Firewind.Util;
 using HabboEvents;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms
@@ -33,7 +34,7 @@ namespace Firewind.HabboHotel.Rooms
 
         internal QueuedDictionary<uint, RoomItem> mRollers;
         private List<uint> rollerItemsMoved;
-        private List<uint> rollerUsersMoved;
+        private List<int> rollerUnitsMoved;
         private List<ServerMessage> rollerMessages;
 
         private bool mGotRollers;
@@ -71,7 +72,7 @@ namespace Firewind.HabboHotel.Rooms
             this.mRollerSpeed = 4;
 
             rollerItemsMoved = new List<uint>();
-            rollerUsersMoved = new List<uint>();
+            rollerUnitsMoved = new List<int>();
             rollerMessages = new List<ServerMessage>();
         }
 
@@ -127,7 +128,7 @@ namespace Firewind.HabboHotel.Rooms
             }
 
             room.GetGameMap().GenerateMaps();
-            room.GetRoomUserManager().UpdateUserStatusses();
+            room.GetRoomUserManager().UpdateUserStatuses();
 
             if (room.GotWired())
             {
@@ -346,7 +347,7 @@ namespace Firewind.HabboHotel.Rooms
             //Logging.WriteLine("removed?? = " + mFloorItems.ContainsKey(Item.Id));
             RemoveItem(Item);
 
-            room.GetRoomUserManager().UpdateUserStatusses();
+            room.GetRoomUserManager().UpdateUserStatuses();
 
             if (WiredHandler.TypeIsWire(Item.GetBaseItem().InteractionType))
             {
@@ -363,7 +364,7 @@ namespace Firewind.HabboHotel.Rooms
                 if (mRoolerCycle >= mRollerSpeed || mRollerSpeed == 0)
                 {
                     rollerItemsMoved.Clear();
-                    rollerUsersMoved.Clear();
+                    rollerUnitsMoved.Clear();
                     rollerMessages.Clear();
 
                     List<RoomItem> ItemsOnRoller;
@@ -374,9 +375,9 @@ namespace Firewind.HabboHotel.Rooms
                         Point NextCoord = Item.SquareInFront;
 
                         ItemsOnRoller = room.GetGameMap().GetRoomItemForSquare(Item.GetX, Item.GetY, Item.GetZ);
-                        RoomUser UserOnRoller = room.GetRoomUserManager().GetUserForSquare(Item.GetX, Item.GetY);
+                        RoomUnit UnitOnRoller = room.GetRoomUserManager().GetUnitForSquare(Item.GetX, Item.GetY);
 
-                        if (ItemsOnRoller.Count > 0 || UserOnRoller != null)
+                        if (ItemsOnRoller.Count > 0 || UnitOnRoller != null)
                         {
                             ItemsOnNext = room.GetGameMap().GetCoordinatedItems(NextCoord);
 
@@ -409,26 +410,26 @@ namespace Firewind.HabboHotel.Rooms
                                 NextRollerZ = NextRollerZ + room.GetGameMap().GetHeightForSquareFromData(NextCoord);
                             NextZ = NextRollerZ;
                             bool rItemsOnNext = (ItemCount > 0);
-                            if (room.GetRoomUserManager().GetUserForSquare(NextCoord.X, NextCoord.Y) != null)
+                            if (room.GetRoomUserManager().GetUnitForSquare(NextCoord.X, NextCoord.Y) != null)
                                 rItemsOnNext = true;
 
                             foreach (RoomItem tItem in ItemsOnRoller)
                             {
                                 double AddZ = tItem.GetZ - Item.TotalHeight;
                                 if (!rollerItemsMoved.Contains(tItem.Id) && room.GetGameMap().CanRollItemHere(NextCoord.X, NextCoord.Y)
-                                    && NextRollerClear && Item.GetZ < tItem.GetZ && room.GetRoomUserManager().GetUserForSquare(NextCoord.X, NextCoord.Y) == null)
+                                    && NextRollerClear && Item.GetZ < tItem.GetZ && room.GetRoomUserManager().GetUnitForSquare(NextCoord.X, NextCoord.Y) == null)
                                 {
                                     rollerMessages.Add(UpdateItemOnRoller(tItem, NextCoord, Item.Id, NextRollerZ + AddZ));
                                     rollerItemsMoved.Add(tItem.Id);
                                 }
                             }
 
-                            if (UserOnRoller != null && !UserOnRoller.IsWalking && NextRollerClear && !rItemsOnNext && room.GetGameMap().CanRollItemHere(NextCoord.X, NextCoord.Y) && room.GetGameMap().GetFloorStatus(NextCoord) != 0)
+                            if (UnitOnRoller != null && !UnitOnRoller.IsWalking && NextRollerClear && !rItemsOnNext && room.GetGameMap().CanRollItemHere(NextCoord.X, NextCoord.Y) && room.GetGameMap().GetFloorStatus(NextCoord) != 0)
                             {
-                                if (!rollerUsersMoved.Contains(UserOnRoller.HabboId))
+                                if (!rollerUnitsMoved.Contains(UnitOnRoller.ID))
                                 {
-                                    rollerMessages.Add(UpdateUserOnRoller(UserOnRoller, NextCoord, Item.Id, NextZ));
-                                    rollerUsersMoved.Add(UserOnRoller.HabboId);
+                                    rollerMessages.Add(UpdateUnitOnRoller(UnitOnRoller, NextCoord, Item.Id, NextZ));
+                                    rollerUnitsMoved.Add(UnitOnRoller.ID);
                                 }
                             }
                         }
@@ -471,12 +472,12 @@ namespace Firewind.HabboHotel.Rooms
             return mMessage;
         }
 
-        internal ServerMessage UpdateUserOnRoller(RoomUser pUser, Point pNextCoord, uint pRollerID, Double NextZ)
+        internal ServerMessage UpdateUnitOnRoller(RoomUnit unit, Point pNextCoord, uint pRollerID, Double NextZ)
         {
             ServerMessage mMessage = new ServerMessage(0);
             mMessage.Init(Outgoing.ObjectOnRoller); // Cf
-            mMessage.AppendInt32(pUser.X);
-            mMessage.AppendInt32(pUser.Y);
+            mMessage.AppendInt32(unit.X);
+            mMessage.AppendInt32(unit.Y);
 
             mMessage.AppendInt32(pNextCoord.X);
             mMessage.AppendInt32(pNextCoord.Y);
@@ -484,16 +485,16 @@ namespace Firewind.HabboHotel.Rooms
             mMessage.AppendInt32(0);
             mMessage.AppendUInt(pRollerID);
             mMessage.AppendInt32(2);
-            mMessage.AppendInt32(pUser.VirtualId);
-            mMessage.AppendString(TextHandling.GetString(pUser.Z));
+            mMessage.AppendInt32(unit.VirtualID);
+            mMessage.AppendString(TextHandling.GetString(unit.Z));
             mMessage.AppendString(TextHandling.GetString(NextZ));
 
-            room.GetGameMap().UpdateUserMovement(new Point(pUser.X, pUser.Y), new Point(pNextCoord.X, pNextCoord.Y), pUser);
-            room.GetGameMap().GameMap[pUser.X, pUser.Y] = 1;
-            pUser.X = pNextCoord.X;
-            pUser.Y = pNextCoord.Y;
-            pUser.Z = NextZ;
-            room.GetGameMap().GameMap[pUser.X, pUser.Y] = 0;
+            room.GetGameMap().UpdateUnitMovement(new Point(unit.X, unit.Y), new Point(pNextCoord.X, pNextCoord.Y), unit);
+            room.GetGameMap().GameMap[unit.X, unit.Y] = 1;
+            unit.X = pNextCoord.X;
+            unit.Y = pNextCoord.Y;
+            unit.Z = NextZ;
+            room.GetGameMap().GameMap[unit.X, unit.Y] = 0;
 
             return mMessage;
         }
@@ -561,7 +562,7 @@ namespace Firewind.HabboHotel.Rooms
                         }
                     }
 
-                    room.GetRoomUserManager().AppendPetsUpdateString(dbClient);
+                    //room.GetRoomUserManager().AppendPetsUpdateString(dbClient);
 
                     mAddedItems.Clear();
                     mRemovedItems.Clear();
@@ -854,7 +855,7 @@ namespace Firewind.HabboHotel.Rooms
                 updateRoomUserStatuses = true;
 
             if (updateRoomUserStatuses)
-                room.GetRoomUserManager().UpdateUserStatusses();
+                room.GetRoomUserManager().UpdateUserStatuses();
 
             return true;
         }

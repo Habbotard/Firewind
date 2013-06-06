@@ -9,6 +9,7 @@ using Firewind.HabboHotel.Pathfinding;
 using Firewind.Messages;
 using HabboEvents;
 using Firewind.Core;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms.Games
@@ -69,17 +70,17 @@ namespace Firewind.HabboHotel.Rooms.Games
             room.GetGameManager().StopGame();
             Team winners = room.GetGameManager().getWinningTeam();
 
-            foreach (RoomUser user in room.GetRoomUserManager().UserList.Values)
+            foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
             {
                 user.FreezeLives = 0;
-                if (user.team == winners)
+                if (user.Team == winners)
                 {
                     user.Unidle();
 
-                    user.DanceId = 0;
+                    user.DanceID = 0;
 
                     ServerMessage Message = new ServerMessage(Outgoing.Action);
-                    Message.AppendInt32(user.VirtualId);
+                    Message.AppendInt32(user.VirtualID);
                     Message.AppendInt32(1);
                     room.SendMessage(Message);
                 }
@@ -102,7 +103,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                     user.Freezed = false;
                     user.FreezeCounter = 0;
                     
-                    //user.ApplyEffect((int)user.team + 39);
+                    //user.ApplyEffect((int)user.Team + 39);
                     ActivateShield(user);
                 }
             }
@@ -116,7 +117,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                     user.shieldActive = false;
                     user.shieldCounter = 10;
                     
-                    user.ApplyEffect((int)user.team + 39);
+                    user.ApplyEffect((int)user.Team + 39);
                 }
             }
         }
@@ -137,7 +138,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         internal void OnUserWalk(RoomUser user)
         {
-            if (!gameStarted || user.team == Team.none)
+            if (!gameStarted || user.Team == Team.none)
                 return;
 
             if (user.X == user.GoalX && user.GoalY == user.Y && user.throwBallAtGoal)
@@ -151,7 +152,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                             item.interactionCountHelper = 1;
                             ((StringData)item.data).Data = "1000";
                             item.UpdateState();
-                            item.InteractingUser = user.userID;
+                            item.InteractingUser = user.ID;
                             item.freezePowerUp = user.banzaiPowerUp;
                             item.ReqUpdate(4, true);
 
@@ -186,9 +187,9 @@ namespace Firewind.HabboHotel.Rooms.Games
         {
             room.GetGameManager().Reset();
 
-            foreach (RoomUser user in room.GetRoomUserManager().UserList.Values)
+            foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
             {
-                if (user.IsBot || user.team == Team.none || user.GetClient() == null)
+                if (user.Team == Team.none || user.GetClient() == null)
                     continue;
 
                 user.banzaiPowerUp = FreezePowerUp.None;
@@ -196,11 +197,11 @@ namespace Firewind.HabboHotel.Rooms.Games
                 user.shieldActive = false;
                 user.shieldCounter = 11;
 
-                room.GetGameManager().AddPointToTeam(user.team, 40, null);
+                room.GetGameManager().AddPointToTeam(user.Team, 40, null);
 
                 ServerMessage message = new ServerMessage();
                 message.Init(Outgoing.UpdateFreezeLives);
-                message.AppendInt32(user.InternalRoomID);
+                message.AppendInt32(user.VirtualID);
                 message.AppendInt32(user.FreezeLives);
 
                 user.GetClient().SendMessage(message);
@@ -209,7 +210,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private static void RemoveUserFromTeam(RoomUser user)
         {
-            user.team = Team.none;
+            user.Team = Team.none;
             user.ApplyEffect(-1);
         }
 
@@ -224,7 +225,7 @@ namespace Firewind.HabboHotel.Rooms.Games
             return null;
         }
 
-        internal void onFreezeTiles(RoomItem item, FreezePowerUp powerUp, uint userID)
+        internal void onFreezeTiles(RoomItem item, FreezePowerUp powerUp, int userID)
         {
             RoomUser user = room.GetRoomUserManager().GetRoomUserByHabbo(userID);
             if (user == null)
@@ -262,7 +263,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private static void ActivateShield(RoomUser user)
         {
-            user.ApplyEffect((int)user.team + 48);
+            user.ApplyEffect((int)user.Team + 48);
             user.shieldActive = true;
             user.shieldCounter = 0;
         }
@@ -364,12 +365,12 @@ namespace Firewind.HabboHotel.Rooms.Games
                         if (user.FreezeLives < 3)
                         {
                             user.FreezeLives++;
-                            room.GetGameManager().AddPointToTeam(user.team, 10, user);
+                            room.GetGameManager().AddPointToTeam(user.Team, 10, user);
                         }
 
                         ServerMessage message = new ServerMessage();
                         message.Init(Outgoing.UpdateFreezeLives);
-                        message.AppendInt32(user.InternalRoomID);
+                        message.AppendInt32(user.VirtualID);
                         message.AppendInt32(user.FreezeLives);
 
                         user.GetClient().SendMessage(message);
@@ -431,13 +432,13 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private void FreezeUser(RoomUser user)
         {
-            if (user.IsBot || user.shieldActive || user.team == Team.none)
+            if (user.shieldActive || user.Team == Team.none)
                 return;
 
             if (user.Freezed)
             {
                 user.Freezed = false;
-                user.ApplyEffect((int)user.team + 39);
+                user.ApplyEffect((int)user.Team + 39);
                 return;
             }
             user.Freezed = true;
@@ -449,15 +450,15 @@ namespace Firewind.HabboHotel.Rooms.Games
             {
                 ServerMessage message2 = new ServerMessage();
                 message2.Init(Outgoing.UpdateFreezeLives);
-                message2.AppendInt32(user.InternalRoomID);
+                message2.AppendInt32(user.VirtualID);
                 message2.AppendInt32(user.FreezeLives);
                 user.GetClient().SendMessage(message2);
 
                 user.ApplyEffect(-1);
-                room.GetGameManager().AddPointToTeam(user.team, -20, user);
+                room.GetGameManager().AddPointToTeam(user.Team, -20, user);
                 TeamManager t = room.GetTeamManagerForFreeze();
                 t.OnUserLeave(user);      
-                user.team = Team.none;
+                user.Team = Team.none;
                 if (exitTeleport != null)
                     room.GetGameMap().TeleportToItem(user, exitTeleport);
                 
@@ -477,12 +478,12 @@ namespace Firewind.HabboHotel.Rooms.Games
                 return;
             }
 
-            room.GetGameManager().AddPointToTeam(user.team, -10, user);
+            room.GetGameManager().AddPointToTeam(user.Team, -10, user);
             user.ApplyEffect(12);
 
             ServerMessage message = new ServerMessage();
             message.Init(Outgoing.UpdateFreezeLives);
-            message.AppendInt32(user.InternalRoomID);
+            message.AppendInt32(user.VirtualID);
             message.AppendInt32(user.FreezeLives);
 
             user.GetClient().SendMessage(message);
@@ -490,7 +491,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private static void ExitGame(RoomUser user)
         {
-            user.team = Team.none;
+            user.Team = Team.none;
         }
 
         private List<RoomItem> GetVerticalItems(int x, int y, int length)

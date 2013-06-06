@@ -221,7 +221,7 @@ namespace Firewind.HabboHotel.GameClients
                 foreach (Ranking r in Ranking.getCompetitionForInfo("hlatCompetitions"))
                 {
                     i++;
-                    setRanking.AppendUInt(r.UserId);
+                    setRanking.AppendInt32(r.UserId);
                     Habbo data = FirewindEnvironment.getHabboForId(r.UserId);
                     setRanking.AppendString((data != null) ? data.Username : "Desconocido");
                     setRanking.AppendString((data != null) ? data.Look : "sh-907-96.hd-3096-3.he-3082-91.lg-3018-81.ch-660-95.hr-9534-34");

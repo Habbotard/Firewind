@@ -9,21 +9,21 @@ namespace Firewind.HabboHotel.Users.Competitions
 {
     public class Ranking
     {
-        public uint UserId;
+        public int UserId;
         public RankingType Type;
         public string Information;
         public int RoomId;
         public int Score;
-        public static Dictionary<uint, Ranking> getRanking;
+        public static Dictionary<int, Ranking> getRanking;
         public static void initRankings(IQueryAdapter dbClient)
         {
             dbClient.setQuery("SELECT * FROM user_rankings ORDER BY score ASC");
             DataTable table = dbClient.getTable();
-            getRanking = new Dictionary<uint, Ranking>();
+            getRanking = new Dictionary<int, Ranking>();
             foreach (DataRow row in table.Rows)
             {
                 Ranking r = new Ranking();
-                r.UserId = Convert.ToUInt32(row["userid"]);
+                r.UserId = Convert.ToInt32(row["userid"]);
                 string type = (string)row["type"];
                 if (type == "competitions")
                     r.Type = RankingType.COMPETITIONS;
@@ -64,7 +64,7 @@ namespace Firewind.HabboHotel.Users.Competitions
             return result;
         }
 
-        public static void AddScoreToUserId(int tScore, uint UserId, RankingType t)
+        public static void AddScoreToUserId(int tScore, int UserId, RankingType t)
         {
             if (!getRanking.ContainsKey(UserId))
                 AddUserToRanking(UserId, t);
@@ -74,7 +74,7 @@ namespace Firewind.HabboHotel.Users.Competitions
             }
         }
 
-        public static void AddUserToRanking(uint UserId, RankingType t, string Information = "hlatCompetitions", int RoomId = 0)
+        public static void AddUserToRanking(int UserId, RankingType t, string Information = "hlatCompetitions", int RoomId = 0)
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {

@@ -24,7 +24,7 @@ namespace Firewind.HabboHotel.Users
     {
 
 
-        internal UInt32 Id;
+        internal int Id;
 
         internal string Username;
         internal string RealName;
@@ -63,7 +63,7 @@ namespace Firewind.HabboHotel.Users
         internal UInt32 TeleporterId;
 
         internal ArrayList FavoriteRooms;
-        internal List<UInt32> MutedUsers;
+        internal List<int> MutedUsers;
         internal List<string> Tags;
         internal Dictionary<string, UserAchievement> Achievements;
         internal List<uint> RatedRooms;
@@ -138,7 +138,7 @@ namespace Firewind.HabboHotel.Users
             }
         }
 
-        internal Habbo(UInt32 Id, string Username, string RealName,
+        internal Habbo(int Id, string Username, string RealName,
             uint Rank, string Motto, string Look, string Gender, Int32 Credits, Int32 VipPoints,
             Int32 ActivityPoints, Double LastActivityPointsUpdate, bool Muted,
             UInt32 HomeRoom, Int32 Respect, Int32 DailyRespectPoints, Int32 DailyPetRespectPoints,
@@ -164,7 +164,7 @@ namespace Firewind.HabboHotel.Users
             this.CurrentRoomId = 0;
             this.HomeRoom = HomeRoom;
             this.FavoriteRooms = new ArrayList();
-            this.MutedUsers = new List<uint>();
+            this.MutedUsers = new List<int>();
             this.Tags = new List<string>();
             this.Achievements = new Dictionary<string, UserAchievement>();
             this.RatedRooms = new List<uint>();
@@ -289,7 +289,7 @@ namespace Firewind.HabboHotel.Users
             }
         }
 
-        internal void LoadMutedUsers(List<uint> usersMuted)
+        internal void LoadMutedUsers(List<int> usersMuted)
         {
             this.MutedUsers = usersMuted;
         }

@@ -147,7 +147,7 @@ namespace Firewind.HabboHotel.Catalogs
             return Message;
         }
 
-        internal static ServerMessage SerializeOwnOffers(uint HabboId)
+        internal static ServerMessage SerializeOwnOffers(int HabboId)
         {
             int Profits = 0;
             DataTable Data;

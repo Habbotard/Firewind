@@ -42,7 +42,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             //DataTable dSongs;
             DataTable dGroups = null;
 
-            UInt32 userID;
+            int userID;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -73,7 +73,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 }
 
 
-                userID = Convert.ToUInt32(dUserInfo["id"]);
+                userID = Convert.ToInt32(dUserInfo["id"]);
                 if (FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null)
                 {
                     errorCode = 2;
@@ -185,12 +185,12 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
 
-            List<uint> ignores = new List<uint>();
+            List<int> ignores = new List<int>();
 
-            uint ignoredUserID;
+            int ignoredUserID;
             foreach (DataRow dRow in dIgnores.Rows)
             {
-                ignoredUserID = Convert.ToUInt32(dRow["ignore_id"]);
+                ignoredUserID = Convert.ToInt32(dRow["ignore_id"]);
                 ignores.Add(ignoredUserID);
             }
 
@@ -300,18 +300,18 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
 
-            Dictionary<uint, MessengerBuddy> friends = new Dictionary<uint, MessengerBuddy>();
+            Dictionary<int, MessengerBuddy> friends = new Dictionary<int, MessengerBuddy>();
 
             string username = (string)dUserInfo["username"];
 
-            UInt32 friendID;
+            int friendID;
             string friendName;
             string friendLook;
             string friendMotto;
             string friendLastOnline;
             foreach (DataRow dRow in dFriends.Rows)
             {
-                friendID = Convert.ToUInt32(dRow["id"]);
+                friendID = Convert.ToInt32(dRow["id"]);
                 friendName = (string)dRow["username"];
                 friendLook = (string)dRow["look"];
                 friendMotto = (string)dRow["motto"];
@@ -328,15 +328,15 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                     friends.Add(friendID, new MessengerBuddy(friendID, friendName, friendLook, friendMotto, friendLastOnline));
             }
 
-            Dictionary<uint, MessengerRequest> requests = new Dictionary<uint, MessengerRequest>();
+            Dictionary<int, MessengerRequest> requests = new Dictionary<int, MessengerRequest>();
 
-            uint receiverID;
-            uint senderID;
+            int receiverID;
+            int senderID;
             string requestUsername;
             foreach (DataRow dRow in dRequests.Rows)
             {
-                receiverID = Convert.ToUInt32(dRow["sender"]);
-                senderID = Convert.ToUInt32(dRow["receiver"]);
+                receiverID = Convert.ToInt32(dRow["sender"]);
+                senderID = Convert.ToInt32(dRow["receiver"]);
 
                 requestUsername = (string)dRow["username"];
 
@@ -440,7 +440,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             //DataTable dSongs;
             DataTable dGroups = null;
 
-            UInt32 userID;
+            int userID;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -458,7 +458,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 }
 
 
-                userID = Convert.ToUInt32(dUserInfo["id"]);
+                userID = Convert.ToInt32(dUserInfo["id"]);
                 if (FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null)
                 {
                     errorCode = 2;
@@ -561,7 +561,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
             **/
 
-            List<uint> ignores = new List<uint>();
+            List<int> ignores = new List<int>();
             /**
             uint ignoredUserID;
             foreach (DataRow dRow in dIgnores.Rows)
@@ -639,7 +639,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
             **/
-            Dictionary<uint, MessengerBuddy> friends = new Dictionary<uint, MessengerBuddy>();
+            Dictionary<int, MessengerBuddy> friends = new Dictionary<int, MessengerBuddy>();
 
             string username = (string)dUserInfo["username"];
             /**
@@ -665,7 +665,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                     friends.Add(friendID, new MessengerBuddy(friendID, friendName, friendLook, friendMotto, friendLastOnline));
             }
             **/
-            Dictionary<uint, MessengerRequest> requests = new Dictionary<uint, MessengerRequest>();
+            Dictionary<int, MessengerRequest> requests = new Dictionary<int, MessengerRequest>();
             /**
             uint receiverID;
             uint senderID;

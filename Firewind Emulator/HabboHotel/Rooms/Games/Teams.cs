@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using Firewind.HabboHotel.Items;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms.Games
@@ -50,13 +51,13 @@ namespace Firewind.HabboHotel.Rooms.Games
         public void AddUser(RoomUser user)
         {
             //Logging.WriteLine("Add user to team!  (" + Game + ")");
-            if (user.team.Equals(Team.blue))
+            if (user.Team.Equals(Team.blue))
                 this.BlueTeam.Add(user);
-            else if (user.team.Equals(Team.red))
+            else if (user.Team.Equals(Team.red))
                 this.RedTeam.Add(user);
-            else if (user.team.Equals(Team.yellow))
+            else if (user.Team.Equals(Team.yellow))
                 this.YellowTeam.Add(user);
-            else if (user.team.Equals(Team.green))
+            else if (user.Team.Equals(Team.green))
                 this.GreenTeam.Add(user);
 
             switch (Game.ToLower())
@@ -123,13 +124,13 @@ namespace Firewind.HabboHotel.Rooms.Games
         public void OnUserLeave(RoomUser user)
         {
             //Logging.WriteLine("remove user from team! (" + Game + ")");
-            if (user.team.Equals(Team.blue))
+            if (user.Team.Equals(Team.blue))
                 this.BlueTeam.Remove(user);
-            else if (user.team.Equals(Team.red))
+            else if (user.Team.Equals(Team.red))
                 this.RedTeam.Remove(user);
-            else if (user.team.Equals(Team.yellow))
+            else if (user.Team.Equals(Team.yellow))
                 this.YellowTeam.Remove(user);
-            else if (user.team.Equals(Team.green))
+            else if (user.Team.Equals(Team.green))
                 this.GreenTeam.Remove(user);
 
             switch (Game.ToLower())

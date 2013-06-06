@@ -31,7 +31,7 @@ namespace Firewind.HabboHotel.Users.Inventory
         private ArrayList mRemovedItems;
         private GameClient mClient;
 
-        internal uint UserId;
+        internal int UserId;
         internal int ItemCount
         {
             get
@@ -40,7 +40,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             }
         }
 
-        internal InventoryComponent(uint UserId, GameClient Client, UserData UserData)
+        internal InventoryComponent(int UserId, GameClient Client, UserData UserData)
         {
             this.mClient = Client;
             this.UserId = UserId;

@@ -299,8 +299,8 @@ namespace Firewind
             return true;
         }
 
-        private static Dictionary<uint, Habbo> usersCached = new Dictionary<uint, Habbo>();
-        internal static Habbo getHabboForId(uint UserId)
+        private static Dictionary<int, Habbo> usersCached = new Dictionary<int, Habbo>();
+        internal static Habbo getHabboForId(int UserId)
         {
             try
             {
@@ -347,7 +347,7 @@ namespace Firewind
                     int id = dbClient.getInteger();
                     if (id > 0)
                     {
-                        return getHabboForId((uint)id);
+                        return getHabboForId(id);
                     }
                 }
                 return null;

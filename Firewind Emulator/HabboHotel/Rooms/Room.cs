@@ -23,6 +23,7 @@ using Firewind.HabboHotel.Groups;
 using HabboEvents;
 using Firewind.HabboHotel.Groups.Types;
 using Firewind.HabboHotel.Misc;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -68,9 +69,9 @@ namespace Firewind.HabboHotel.Rooms
         internal TeamManager teambanzai;
         internal TeamManager teamfreeze;
 
-        internal List<uint> UsersWithRights;
+        internal List<int> UsersWithRights;
         internal bool EveryoneGotRights;
-        private Dictionary<UInt32, Double> Bans;
+        private Dictionary<int, Double> Bans;
         internal bool guideBotIsCalled;
 
         internal RoomEvent Event;
@@ -83,7 +84,7 @@ namespace Firewind.HabboHotel.Rooms
         private GameManager game;
         private Gamemap gamemap;
         private RoomItemHandling roomItemHandling;
-        private RoomUserManager roomUserManager;
+        private RoomUnitManager roomUserManager;
         private Soccer soccer;
         private BattleBanzai banzai;
         private Freeze freeze;
@@ -120,7 +121,7 @@ namespace Firewind.HabboHotel.Rooms
             return roomItemHandling;
         }
 
-        internal RoomUserManager GetRoomUserManager()
+        internal RoomUnitManager GetRoomUserManager()
         {
             return roomUserManager;
         }
@@ -318,7 +319,7 @@ namespace Firewind.HabboHotel.Rooms
             this.Hidewall = Hidewall;
             
             this.Password = Password;
-            this.Bans = new Dictionary<UInt32, double>();
+            this.Bans = new Dictionary<int, double>();
             this.Wallpaper = Wallpaper;
             this.Floor = Floor;
             this.Landscape = Landscape;
@@ -347,7 +348,7 @@ namespace Firewind.HabboHotel.Rooms
 
             this.gamemap = new Gamemap(this);
             this.roomItemHandling = new RoomItemHandling(this);
-            this.roomUserManager = new RoomUserManager(this);
+            this.roomUserManager = new RoomUnitManager(this);
             this.wiredHandler = new WiredHandler(this);
 
             this.Group = group;
@@ -376,15 +377,15 @@ namespace Firewind.HabboHotel.Rooms
             return !cycled;
         }
 
-        private void LoadBots()
-        {
-            List<RoomBot> bots = FirewindEnvironment.GetGame().GetBotManager().GetBotsForRoom(this.RoomId);
-            foreach (RoomBot bot in bots)
-            {
-                RoomUser NewUser = DeployBot(bot);
-                NewUser.SetPos(bot.X, bot.Y, bot.Z);
-            }
-        }
+        //private void LoadBots()
+        //{
+        //    List<RoomBot> bots = FirewindEnvironment.GetGame().GetBotManager().GetBotsForRoom(this.RoomId);
+        //    foreach (RoomBot bot in bots)
+        //    {
+        //        RoomUser NewUser = DeployBot(bot);
+        //        NewUser.SetPos(bot.X, bot.Y, bot.Z);
+        //    }
+        //}
 
         internal void ClearTags()
         {
@@ -398,40 +399,40 @@ namespace Firewind.HabboHotel.Rooms
             Tags.AddRange(tags);
         }
 
-        internal void InitBots()
-        {
-            List<RoomBot> Bots = FirewindEnvironment.GetGame().GetBotManager().GetBotsForRoom(RoomId);
+        //internal void InitBots()
+        //{
+        //    List<RoomBot> Bots = FirewindEnvironment.GetGame().GetBotManager().GetBotsForRoom(RoomId);
 
-            foreach (RoomBot Bot in Bots)
-            {
-                DeployBot(Bot);
-            }
-        }
+        //    foreach (RoomBot Bot in Bots)
+        //    {
+        //        DeployBot(Bot);
+        //    }
+        //}
 
-        internal void InitPets()
-        {
-            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            {
-                dbClient.setQuery("SELECT id, user_id, room_id, name, type, race, color, expirience, energy, nutrition, respect, createstamp, x, y, z, have_saddle FROM user_pets WHERE room_id = " + RoomId);
-                DataTable Data = dbClient.getTable();
+        //internal void InitPets()
+        //{
+        //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+        //    {
+        //        dbClient.setQuery("SELECT id, user_id, room_id, name, type, race, color, expirience, energy, nutrition, respect, createstamp, x, y, z, have_saddle FROM user_pets WHERE room_id = " + RoomId);
+        //        DataTable Data = dbClient.getTable();
 
-                if (Data == null)
-                    return;
+        //        if (Data == null)
+        //            return;
 
-                foreach (DataRow Row in Data.Rows)
-                {
-                    Pet Pet = Catalog.GeneratePetFromRow(Row);
-                    List<RandomSpeech> RndSpeechList = new List<RandomSpeech>();
-                    List<BotResponse> BotResponse = new List<RoomBots.BotResponse>();
-                    roomUserManager.DeployBot(new RoomBot(Pet.PetId, RoomId, AIType.Pet, "freeroam", Pet.Name, "", Pet.Look, Pet.X, Pet.Y, (int)Pet.Z, 0, 0, 0, 0, 0, ref RndSpeechList, ref BotResponse), Pet);
-                }
-            }
-        }
+        //        foreach (DataRow Row in Data.Rows)
+        //        {
+        //            Pet Pet = Catalog.GeneratePetFromRow(Row);
+        //            List<RandomSpeech> RndSpeechList = new List<RandomSpeech>();
+        //            List<BotResponse> BotResponse = new List<RoomBots.BotResponse>();
+        //            //roomUserManager.DeployBot(new RoomBot(Pet.PetId, RoomId, AIType.Pet, "freeroam", Pet.Name, "", Pet.Look, Pet.X, Pet.Y, (int)Pet.Z, 0, 0, 0, 0, 0, ref RndSpeechList, ref BotResponse), Pet);
+        //        }
+        //    }
+        //}
 
-        internal RoomUser DeployBot(RoomBot Bot)
-        {
-            return roomUserManager.DeployBot(Bot, null);
-        }
+        //internal RoomUser DeployBot(RoomBot Bot)
+        //{
+        //    return roomUserManager.DeployBot(Bot, null);
+        //}
 
         internal void QueueChatMessage(InvokedChatMessage message)
         {
@@ -484,10 +485,8 @@ namespace Firewind.HabboHotel.Rooms
 
 
                         List<RoomUser> roomUsersToRemove = new List<RoomUser>();
-                        foreach (RoomUser RoomUser in roomUserManager.UserList.Values)
+                        foreach (RoomUser RoomUser in roomUserManager.UnitList.Values)
                         {
-                            if (RoomUser.IsBot)
-                                continue;
                             if (RoomUser.GetClient().GetHabbo().Rank >= kick.minrank)
                                 continue;
                             if (kick.allert.Length > 0)
@@ -517,10 +516,8 @@ namespace Firewind.HabboHotel.Rooms
                     {
                         RoomAlert alert = (RoomAlert)roomAlerts.Dequeue();
 
-                        foreach (RoomUser user in roomUserManager.UserList.Values)
+                        foreach (RoomUser user in roomUserManager.UnitList.Values)
                         {
-                            if (user.IsBot)
-                                continue;
                             if (user.GetClient().GetHabbo().Rank >= alert.minrank)
                                 continue;
 
@@ -542,11 +539,11 @@ namespace Firewind.HabboHotel.Rooms
                     {
                         string badge = (string)roomBadge.Dequeue();
 
-                        foreach (RoomUser user in roomUserManager.UserList.Values)
+                        foreach (RoomUser user in roomUserManager.UnitList.Values)
                         {
                             try
                             {
-                                if (!user.IsBot && user.GetClient() != null && user.GetClient().GetHabbo() != null)
+                                if (user.GetClient() != null && user.GetClient().GetHabbo() != null)
                                     user.GetClient().GetHabbo().GetBadgeComponent().GiveBadge(badge, true);
                             }
                             catch //(Exception e)
@@ -579,9 +576,9 @@ namespace Firewind.HabboHotel.Rooms
         {
             List<RoomUser> ToRemove = new List<RoomUser>();
 
-            foreach (RoomUser user in roomUserManager.UserList.Values)
+            foreach (RoomUser user in roomUserManager.UnitList.Values)
             {
-                if (!user.IsBot && user.GetClient().GetHabbo().Rank < 2)
+                if (user.GetClient().GetHabbo().Rank < 2)
                     ToRemove.Add(user);
             }
 
@@ -596,16 +593,16 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void OnUserSay(RoomUser User, string Message, bool Shout)
         {
-            foreach (RoomUser user in roomUserManager.UserList.Values)
-            {
-                if (!user.IsBot)
-                    continue;
+            //foreach (RoomUser user in roomUserManager.UnitList.Values)
+            //{
+            //    if (!user.IsBot)
+            //        continue;
 
-                if (Shout)
-                    user.BotAI.OnUserShout(User, Message);
-                else
-                    user.BotAI.OnUserSay(User, Message);
-            }
+            //    if (Shout)
+            //        user.BotAI.OnUserShout(User, Message);
+            //    else
+            //        user.BotAI.OnUserSay(User, Message);
+            //}
 
 
         }
@@ -636,7 +633,7 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void LoadRights()
         {
-            this.UsersWithRights = new List<uint>();
+            this.UsersWithRights = new List<int>();
 
             DataTable Data = new DataTable();
 
@@ -651,7 +648,7 @@ namespace Firewind.HabboHotel.Rooms
 
             foreach (DataRow Row in Data.Rows)
             {
-                this.UsersWithRights.Add(Convert.ToUInt32(Row["user_id"]));
+                this.UsersWithRights.Add(Convert.ToInt32(Row["user_id"]));
             }
         }
 
@@ -779,7 +776,7 @@ namespace Firewind.HabboHotel.Rooms
                     if (wiredHandler != null)
                         wiredHandler.OnCycle();
                     
-                    roomUserManager.UserList.OnCycle();
+                    roomUserManager.UnitList.OnCycle();
                     WorkRoomAlertQueue();
                     WorkRoomBadgeQueue();
                     WorkRoomKickQueue();
@@ -821,10 +818,8 @@ namespace Firewind.HabboHotel.Rooms
             {
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    foreach (RoomUser user in roomUserManager.UserList.Values)
+                    foreach (RoomUser user in roomUserManager.UnitList.Values)
                     {
-                        if (user.IsBot || user.IsPet)
-                            continue;
                         user.GetClient().SendNotif("Unhandled exception in room: " + e.ToString());
                         try
                         {
@@ -911,11 +906,8 @@ namespace Firewind.HabboHotel.Rooms
                 }
 
                 byte[] encodedPackets = totalBytes.ToArray();
-                foreach (RoomUser user in roomUserManager.UserList.Values)
+                foreach (RoomUser user in roomUserManager.UnitList.Values)
                 {
-                    if (user.IsBot)
-                        continue;
-
                     GameClient UsersClient = user.GetClient();
                     if (UsersClient == null || UsersClient.GetConnection() == null)
                         continue;
@@ -935,11 +927,8 @@ namespace Firewind.HabboHotel.Rooms
             {
                 byte[] PacketData = Message.GetBytes();
 
-                foreach (RoomUser user in roomUserManager.UserList.Values)
+                foreach (RoomUser user in roomUserManager.UnitList.Values)
                 {
-                    if (user.IsBot)
-                        continue;
-
                     GameClient UsersClient = user.GetClient();
                     if (UsersClient == null)
                         continue;
@@ -987,7 +976,7 @@ namespace Firewind.HabboHotel.Rooms
                 WorkRoomServerMessageThread();
                 tagCount = 0;
                 Tags.Clear();
-                roomUserManager.UserList.Clear();
+                roomUserManager.UnitList.Clear();
                 UsersWithRights.Clear();
                 Bans.Clear();
 
@@ -1073,23 +1062,23 @@ namespace Firewind.HabboHotel.Rooms
         #endregion
 
         #region Room Bans
-        internal Boolean UserIsBanned(uint pId)
+        internal Boolean UserIsBanned(int pId)
         {
             return Bans.ContainsKey(pId);
         }
 
-        internal void RemoveBan(uint pId)
+        internal void RemoveBan(int pId)
         {
             Bans.Remove(pId);
         }
 
-        internal void AddBan(uint pId)
+        internal void AddBan(int pId)
         {
             if (!Bans.ContainsKey(pId))
                 Bans.Add(pId, FirewindEnvironment.GetUnixTimestamp());
         }
 
-        internal Boolean HasBanExpired(uint pId)
+        internal Boolean HasBanExpired(int pId)
         {
             if (!UserIsBanned(pId))
                 return true;
@@ -1106,13 +1095,10 @@ namespace Firewind.HabboHotel.Rooms
         #region Trading
         internal bool HasActiveTrade(RoomUser User)
         {
-            if (User.IsBot)
-                return false;
-
             return HasActiveTrade(User.GetClient().GetHabbo().Id);
         }
 
-        internal bool HasActiveTrade(uint UserId)
+        internal bool HasActiveTrade(int UserId)
         {
             foreach (Trade Trade in ActiveTrades.ToArray())
                 if (Trade.ContainsUser(UserId))
@@ -1121,7 +1107,7 @@ namespace Firewind.HabboHotel.Rooms
             return false;
         }
 
-        internal Trade GetUserTrade(uint UserId)
+        internal Trade GetUserTrade(int UserId)
         {
             foreach (Trade Trade in ActiveTrades.ToArray())
             {
@@ -1136,13 +1122,13 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void TryStartTrade(RoomUser UserOne, RoomUser UserTwo)
         {
-            if (UserOne == null || UserTwo == null || UserOne.IsBot || UserTwo.IsBot || UserOne.IsTrading || UserTwo.IsTrading || HasActiveTrade(UserOne) || HasActiveTrade(UserTwo))
+            if (UserOne == null || UserTwo == null || UserOne.IsTrading || UserTwo.IsTrading || HasActiveTrade(UserOne) || HasActiveTrade(UserTwo))
                 return;
 
             ActiveTrades.Add(new Trade(UserOne.GetClient().GetHabbo().Id, UserTwo.GetClient().GetHabbo().Id, RoomId));
         }
 
-        internal void TryStopTrade(uint UserId)
+        internal void TryStopTrade(int UserId)
         {
             Trade Trade = GetUserTrade(UserId);
 
@@ -1251,33 +1237,8 @@ namespace Firewind.HabboHotel.Rooms
         {
             RoomData data = FirewindEnvironment.GetGame().GetRoomManager().GenerateRoomData(this.RoomId);
             InitializeFromRoomData(data);
-            InitBots();
-            InitPets();
-        }
-
-        internal void RequestReload()
-        {
-            //GetRoomUserManager().RequestRoomReload();
-            //Removed due to concurrency issues
-        }
-
-        internal void onReload()
-        {
-            List<RoomUser> users = GetRoomUserManager().GetRoomUsers();
-
-            Hashtable usersByUsername = GetRoomUserManager().usersByUsername.Clone() as Hashtable;
-            Hashtable usersByUserID = GetRoomUserManager().usersByUsername.Clone() as Hashtable;
-
-            int primaryCounter = 0;
-            int secondaryCounter = 0;
-            GetRoomUserManager().backupCounters(ref primaryCounter, ref secondaryCounter);
-
-            FlushSettings();
-            ReloadSettings();
-            GetRoomUserManager().UpdateUserStats(users, usersByUsername, usersByUserID, primaryCounter, secondaryCounter);
-
-            UpdateFurniture();
-            GetGameMap().GenerateMaps();
+            //InitBots();
+            //InitPets();
         }
 
         internal void UpdateFurniture()
@@ -1306,25 +1267,6 @@ namespace Firewind.HabboHotel.Rooms
             wallItems = null;
 
             SendMessage(messages);
-        }
-
-        internal void SendLeaveMessageForBots()
-        {
-            onCycleDoneDelegate function = new onCycleDoneDelegate(BotLeaveMessage);
-            roomUserManager.UserList.QueueDelegate(function);
-        }
-
-        private void BotLeaveMessage()
-        {
-            foreach (RoomUser user in roomUserManager.UserList.Values)
-            {
-                if (user.IsBot || user.IsPet)
-                {
-                    ServerMessage LeaveMessage = new ServerMessage(29);
-                    LeaveMessage.AppendRawInt32(user.VirtualId);
-                    SendMessage(LeaveMessage);
-                }
-            }
         }
     }
 }

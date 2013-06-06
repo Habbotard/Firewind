@@ -24,9 +24,9 @@ namespace Firewind.HabboHotel.Support
 
         internal TicketStatus Status;
 
-        internal UInt32 SenderId;
-        internal UInt32 ReportedId;
-        internal UInt32 ModeratorId;
+        internal int SenderId;
+        internal int ReportedId;
+        internal int ModeratorId;
 
         internal String Message;
 
@@ -71,7 +71,7 @@ namespace Firewind.HabboHotel.Support
             }
         }
 
-        internal SupportTicket(UInt32 Id, int Score, int Type, UInt32 SenderId, UInt32 ReportedId, String Message, UInt32 RoomId, String RoomName, Double Timestamp)
+        internal SupportTicket(UInt32 Id, int Score, int Type, int SenderId, int ReportedId, String Message, UInt32 RoomId, String RoomName, Double Timestamp)
         {
             this.Id = Id;
             this.Score = Score;
@@ -90,7 +90,7 @@ namespace Firewind.HabboHotel.Support
             this.ModName = FirewindEnvironment.GetGame().GetClientManager().GetNameById(ModeratorId);
         }
 
-        internal SupportTicket(UInt32 Id, int Score, int Type, UInt32 SenderId, UInt32 ReportedId, String Message, UInt32 RoomId, String RoomName, Double Timestamp, object senderName, object reportedName, object modName)
+        internal SupportTicket(UInt32 Id, int Score, int Type, int SenderId, int ReportedId, String Message, UInt32 RoomId, String RoomName, Double Timestamp, object senderName, object reportedName, object modName)
         {
             this.Id = Id;
             this.Score = Score;
@@ -120,7 +120,7 @@ namespace Firewind.HabboHotel.Support
                 this.ModName = (string)modName;
         }
 
-        internal void Pick(UInt32 pModeratorId, Boolean UpdateInDb)
+        internal void Pick(int pModeratorId, Boolean UpdateInDb)
         {
             this.Status = TicketStatus.PICKED;
             this.ModeratorId = pModeratorId;
@@ -246,11 +246,11 @@ namespace Firewind.HabboHotel.Support
             message.AppendInt32(11); // Fix para que empieze a contar desde 0 el ticket
             // message.AppendInt32((int)Timestamp); // -->> timestamp
             message.AppendInt32(Score); // priority
-            message.AppendUInt(SenderId); // sender id
+            message.AppendInt32(SenderId); // sender id
             message.AppendString(SenderName); // sender name
-            message.AppendUInt(ReportedId); // reported id
+            message.AppendInt32(ReportedId); // reported id
             message.AppendString(ReportedName); // reported name
-            message.AppendUInt((Status == TicketStatus.PICKED) ? ModeratorId : 0); // mod id
+            message.AppendInt32((Status == TicketStatus.PICKED) ? ModeratorId : 0); // mod id
             message.AppendString(ModName); // mod name
             message.AppendString(this.Message); // issue message
             message.AppendUInt(RoomId); // roomid

@@ -8,7 +8,7 @@ namespace Firewind.HabboHotel.Users.Authenticator
     {
         internal static Habbo GenerateHabbo(DataRow dRow, DataTable group)
         {
-            uint id = Convert.ToUInt32(dRow["id"]);
+            int id = Convert.ToInt32(dRow["id"]);
             string username = (string)dRow["username"];
             string realname = (string)dRow["real_name"];
             uint rank = Convert.ToUInt32(dRow["rank"]);

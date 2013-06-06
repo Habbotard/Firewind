@@ -9,6 +9,7 @@ using Firewind.Messages;
 using enclosuretest;
 using System.Drawing;
 using HabboEvents;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms.Games
@@ -56,14 +57,14 @@ namespace Firewind.HabboHotel.Rooms.Games
             pucks.Remove(itemID);
         }
 
-        internal void OnUserWalk(RoomUser User)
+        internal void OnUserWalk(RoomUser user)
         {
-            if (User == null)
+            if (user == null)
                 return;
             foreach (RoomItem item in pucks.Values)
             {
-                int differenceX = User.X - item.GetX;
-                int differenceY = User.Y - item.GetY;
+                int differenceX = user.X - item.GetX;
+                int differenceY = user.Y - item.GetY;
 
                 if (differenceX <= 1 && differenceX >= -1 && differenceY <= 1 && differenceY >= -1)
                 {
@@ -73,22 +74,22 @@ namespace Firewind.HabboHotel.Rooms.Games
                     NewX = NewX + item.GetX;
                     NewY = NewY + item.GetY;
 
-                    if (item.interactingBallUser == User.userID && room.GetGameMap().ValidTile(NewX, NewY))
+                    if (item.interactingBallUser == user.ID && room.GetGameMap().ValidTile(NewX, NewY))
                     {
                         item.interactingBallUser = 0;
 
-                        MovePuck(item, User.GetClient(), User.Coordinate, item.Coordinate, 6, User.team);
+                        MovePuck(item, user.GetClient(), user.Coordinate, item.Coordinate, 6, user.Team);
                     }
                     else if (room.GetGameMap().ValidTile(NewX, NewY))
                     {
-                        MovePuck(item, User.GetClient(), NewX, NewY, User.team);
+                        MovePuck(item, user.GetClient(), NewX, NewY, user.Team);
                     }
                 }
             }
 
             if (banzaiStarted)
             {
-                HandleBanzaiTiles(User.Coordinate, User.team, User);
+                HandleBanzaiTiles(user.Coordinate, user.Team, user);
             }
         }
 
@@ -170,7 +171,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         if (user.CurrentEffect == 35)
                         {
                             ServerMessage Action = new ServerMessage(Outgoing.Action);
-                            Action.AppendInt32(user.VirtualId);
+                            Action.AppendInt32(user.VirtualID);
                             Action.AppendInt32(1);
                             winnersmessage.Add(Action);
                         }
@@ -180,7 +181,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         if (user.CurrentEffect == 33)
                         {
                             ServerMessage Action = new ServerMessage(Outgoing.Action);
-                            Action.AppendInt32(user.VirtualId);
+                            Action.AppendInt32(user.VirtualID);
                             Action.AppendInt32(1);
                             winnersmessage.Add(Action);
                         }
@@ -190,7 +191,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         if (user.CurrentEffect == 34)
                         {
                             ServerMessage Action = new ServerMessage(Outgoing.Action);
-                            Action.AppendInt32(user.VirtualId);
+                            Action.AppendInt32(user.VirtualID);
                             Action.AppendInt32(1);
                             winnersmessage.Add(Action);
                         }
@@ -200,7 +201,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         if (user.CurrentEffect == 36)
                         {
                             ServerMessage Action = new ServerMessage(Outgoing.Action);
-                            Action.AppendInt32(user.VirtualId);
+                            Action.AppendInt32(user.VirtualID);
                             Action.AppendInt32(1);
                             winnersmessage.Add(Action);
                         }

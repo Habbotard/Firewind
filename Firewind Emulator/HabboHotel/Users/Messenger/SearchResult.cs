@@ -9,13 +9,13 @@ namespace Firewind.HabboHotel.Users.Messenger
 {
     struct SearchResult
     {
-        internal uint userID;
+        internal int userID;
         internal string username;
         internal string motto;
         internal string look;
         internal string last_online;
 
-        public SearchResult(uint userID, string username, string motto, string look, string last_online)
+        public SearchResult(int userID, string username, string motto, string look, string last_online)
         {
             this.userID = userID;
             this.username = username;
@@ -26,7 +26,7 @@ namespace Firewind.HabboHotel.Users.Messenger
 
         internal void Searialize(ServerMessage reply)
         {
-            reply.AppendUInt(userID);
+            reply.AppendInt32(userID);
             reply.AppendString(username);
             reply.AppendString(motto);
 

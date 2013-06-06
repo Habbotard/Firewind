@@ -1,4 +1,5 @@
-﻿namespace Firewind.HabboHotel.Rooms
+﻿using Firewind.HabboHotel.Rooms.Units;
+namespace Firewind.HabboHotel.Rooms
 {
     struct InvokedChatMessage
     {

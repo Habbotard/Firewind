@@ -10,6 +10,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Pathfinding;
 using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Rooms.Wired;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms
@@ -32,7 +33,7 @@ namespace Firewind.HabboHotel.Rooms
         //3 = ice skates
         private double[,] mItemHeightMap;
         internal bool DiagonalEnabled;
-        private Hashtable userMap;
+        private Hashtable _unitMap;
 
         internal DynamicRoomModel Model
         {
@@ -96,32 +97,32 @@ namespace Firewind.HabboHotel.Rooms
 
             this.mGameMap = new byte[Model.MapSizeX, Model.MapSizeY];
             this.mItemHeightMap = new double[Model.MapSizeX, Model.MapSizeY];
-            userMap = new Hashtable();
+            _unitMap = new Hashtable();
         }
 
-        internal void AddUserToMap(RoomUser user, Point coord)
+        internal void AddUnitToMap(RoomUnit unit, Point coord)
         {
-            if (userMap.ContainsKey(coord))
+            if (_unitMap.ContainsKey(coord))
             {
-                ((List<RoomUser>)userMap[coord]).Add(user);
+                ((List<RoomUnit>)_unitMap[coord]).Add(unit);
             }
             else
             {
-                List<RoomUser> users = new List<RoomUser>();
-                users.Add(user);
-                userMap.Add(coord, users);
+                List<RoomUnit> units = new List<RoomUnit>();
+                units.Add(unit);
+                _unitMap.Add(coord, units);
             }
         }
 
         internal void TeleportToItem(RoomUser user, RoomItem item)
         {
             GameMap[user.X, user.Y] = user.SqState;
-            UpdateUserMovement(new Point(user.Coordinate.X, user.Coordinate.Y), new Point(item.Coordinate.X, item.Coordinate.Y), user);
+            UpdateUnitMovement(new Point(user.Coordinate.X, user.Coordinate.Y), new Point(item.Coordinate.X, item.Coordinate.Y), user);
             user.X = item.GetX;
             user.Y = item.GetY;
             user.Z = item.GetZ;
-            if (user.isFlying)
-                user.Z += 4 + 0.5 * Math.Sin(0.7 * user.flyk);
+            if (user.IsFlying)
+                user.Z += 4 + 0.5 * Math.Sin(0.7 * user.FlyCounter);
 
             user.SqState = GameMap[item.GetX, item.GetY];
             GameMap[user.X, user.Y] = 1;
@@ -135,16 +136,16 @@ namespace Firewind.HabboHotel.Rooms
             user.UpdateNeeded = true;
         }
 
-        internal void UpdateUserMovement(Point oldCoord, Point newCoord, RoomUser user)
+        internal void UpdateUnitMovement(Point oldCoord, Point newCoord, RoomUnit unit)
         {
-            RemoveUserFromMap(user, oldCoord);
-            AddUserToMap(user, newCoord);
+            RemoveUnitFromMap(unit, oldCoord);
+            AddUnitToMap(unit, newCoord);
         }
 
-        internal void RemoveUserFromMap(RoomUser user, Point coord)
+        internal void RemoveUnitFromMap(RoomUnit unit, Point coord)
         {
-            if (userMap.ContainsKey(coord))
-                ((List<RoomUser>)userMap[coord]).Remove(user);
+            if (_unitMap.ContainsKey(coord))
+                ((List<RoomUnit>)_unitMap[coord]).Remove(unit);
         }
 
         internal bool MapGotUser(Point coord)
@@ -154,8 +155,8 @@ namespace Firewind.HabboHotel.Rooms
 
         internal List<RoomUser> GetRoomUsers(Point coord)
         {
-            if (userMap.ContainsKey(coord))
-                return (List<RoomUser>)userMap[coord];
+            if (_unitMap.ContainsKey(coord))
+                return (List<RoomUser>)_unitMap[coord];
             else
                 return new List<RoomUser>();
         }
@@ -413,7 +414,7 @@ namespace Firewind.HabboHotel.Rooms
 
             if (!room.AllowWalkthrough)
             {
-                foreach (RoomUser user in room.GetRoomUserManager().UserList.Values)
+                foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
                 {
                     user.SqState = mGameMap[user.X, user.Y];
                     mGameMap[user.X, user.Y] = 0;
@@ -835,7 +836,7 @@ namespace Firewind.HabboHotel.Rooms
                 return true;
             if (Override)
                 return true;
-            if (room.GetRoomUserManager().GetUserForSquare(X, Y) != null)
+            if (room.GetRoomUserManager().GetUnitForSquare(X, Y) != null)
                 return false;
 
             return true;
@@ -1119,7 +1120,7 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void Destroy()
         {
-            userMap.Clear();
+            _unitMap.Clear();
             mDynamicModel.Destroy();
             mCoordinatedItems.Clear();
 
@@ -1127,7 +1128,7 @@ namespace Firewind.HabboHotel.Rooms
             Array.Clear(mUserItemEffect, 0, mUserItemEffect.Length);
             Array.Clear(mItemHeightMap, 0, mItemHeightMap.Length);
 
-            userMap = null;
+            _unitMap = null;
             mGameMap = null;
             mUserItemEffect = null;
             mItemHeightMap = null;

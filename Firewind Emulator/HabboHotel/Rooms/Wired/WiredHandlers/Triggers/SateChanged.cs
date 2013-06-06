@@ -75,7 +75,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers
 
         private void onTrigger(ItemTriggeredArgs e)
         {
-            handler.RequestStackHandle(item.Coordinate, e.TriggeringItem, e.TriggeringUser, Games.Team.none);
+            handler.RequestStackHandle(item.Coordinate, e.TriggeringItem, e.TriggeringUnit, Games.Team.none);
             handler.OnEvent(item.Id);
         }
 

@@ -2,6 +2,7 @@
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
 {

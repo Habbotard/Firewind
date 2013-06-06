@@ -1,6 +1,7 @@
 ﻿using System;
 using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms.Games;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -18,12 +19,12 @@ namespace Firewind.HabboHotel.Rooms
 
     public class ItemTriggeredArgs : EventArgs
     {
-        internal readonly RoomUser TriggeringUser;
+        internal readonly RoomUnit TriggeringUnit;
         internal readonly RoomItem TriggeringItem;
 
-        public ItemTriggeredArgs(RoomUser user, RoomItem item)
+        public ItemTriggeredArgs(RoomUnit unit, RoomItem item)
         {
-            this.TriggeringUser = user;
+            this.TriggeringUnit = unit;
             this.TriggeringItem = item;
         }
     }
@@ -42,13 +43,13 @@ namespace Firewind.HabboHotel.Rooms
         }
     }
 
-    public class UserWalksOnArgs : EventArgs
+    public class UnitWalksOnArgs : EventArgs
     {
-        internal readonly RoomUser user;
+        internal readonly RoomUnit user;
 
-        public UserWalksOnArgs(RoomUser user)
+        public UnitWalksOnArgs(RoomUnit unit)
         {
-            this.user = user;
+            this.user = unit;
         }
     }
 }

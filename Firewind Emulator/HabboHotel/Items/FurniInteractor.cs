@@ -9,6 +9,7 @@ using Firewind.HabboHotel.Rooms.Games;
 using System.Drawing;
 using Firewind.Messages;
 using HabboEvents;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Items.Interactors
@@ -312,7 +313,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
             if (Item.InteractingUser == 0)
             {
-                Item.InteractingUser = User.HabboId;
+                Item.InteractingUser = User.ID;
 
                 User.CanWalk = false;
 
@@ -1018,7 +1019,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             user.GoalX = Item.GetX;
             user.GoalY = Item.GetY;
 
-            if (user.team != Team.none)
+            if (user.Team != Team.none)
                 user.throwBallAtGoal = true;
 
             //Logging.WriteLine(Request.ToString());
@@ -1815,7 +1816,7 @@ namespace Firewind.HabboHotel.Items.Interactors
             Session.GetMessageHandler().SendResponse();
 
             ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
-            RoomUpdate.AppendInt32(User.VirtualId);
+            RoomUpdate.AppendInt32(User.VirtualID);
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Motto);

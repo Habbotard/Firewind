@@ -18,6 +18,7 @@ using System.Drawing;
 using Firewind.Util;
 using HabboEvents;
 using Firewind.Collections;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Misc
 {
@@ -79,11 +80,11 @@ namespace Firewind.HabboHotel.Misc
             int UserId = 0;
             if (int.TryParse(Params[1], out UserId))
             {
-                Habbo data = FirewindEnvironment.getHabboForId((uint)UserId);
+                Habbo data = FirewindEnvironment.getHabboForId(UserId);
                 if (data != null)
                 {
                     int Score = int.Parse(Params[2]);
-                    Ranking.AddScoreToUserId(Score, (uint)data.Id, RankingType.COMPETITIONS);
+                    Ranking.AddScoreToUserId(Score, data.Id, RankingType.COMPETITIONS);
                 }
                 else
                 {
@@ -96,7 +97,7 @@ namespace Firewind.HabboHotel.Misc
                 if (data != null)
                 {
                     int Score = int.Parse(Params[2]);
-                    Ranking.AddScoreToUserId(Score, (uint)data.Id, RankingType.COMPETITIONS);
+                    Ranking.AddScoreToUserId(Score, data.Id, RankingType.COMPETITIONS);
                 }
                 else
                 {
@@ -284,7 +285,7 @@ namespace Firewind.HabboHotel.Misc
                     }
 
                     ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
-                    RoomUpdate.AppendInt32(User.VirtualId);
+                    RoomUpdate.AppendInt32(User.VirtualID);
                     RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
                     RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
                     RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Motto);
@@ -674,17 +675,17 @@ namespace Firewind.HabboHotel.Misc
 
             try
             {
-                if (TargetRoomUser.acostadoBol == true)
+                if (TargetRoomUser.IsLaying == true)
                 {
-                    TargetRoomUser.acostadoBol = false;
+                    TargetRoomUser.IsLaying = false;
                     TargetRoomUser.RemoveStatus("lay");
                 }
-                if (!TargetRoomUser.Statusses.ContainsKey("sit"))
+                if (!TargetRoomUser.Statuses.ContainsKey("sit"))
                 {
                     if ((TargetRoomUser.RotBody % 2) == 0)
                     {
                         TargetRoomUser.AddStatus("sit", Convert.ToString(TargetRoom.GetGameMap().Model.SqFloorHeight[TargetRoomUser.X, TargetRoomUser.Y] + 0.55).Replace(",", "."));
-                        TargetRoomUser.sentadoBol = true;
+                        TargetRoomUser.IsSitting = true;
                         TargetRoomUser.UpdateNeeded = true;
                     }
                     else
@@ -718,18 +719,18 @@ namespace Firewind.HabboHotel.Misc
 
             try
             {
-                if (TargetRoomUser.sentadoBol == true)
+                if (TargetRoomUser.IsSitting == true)
                 {
-                    TargetRoomUser.sentadoBol = false;
+                    TargetRoomUser.IsSitting = false;
                     TargetRoomUser.RemoveStatus("sit");
                 }
 
-                if (!TargetRoomUser.Statusses.ContainsKey("lay"))
+                if (!TargetRoomUser.Statuses.ContainsKey("lay"))
                 {
                     if ((TargetRoomUser.RotBody % 2) == 0)
                     {
                         TargetRoomUser.AddStatus("lay", Convert.ToString(TargetRoom.GetGameMap().Model.SqFloorHeight[TargetRoomUser.X, TargetRoomUser.Y] + 0.55).Replace(",", "."));
-                        TargetRoomUser.acostadoBol = true;
+                        TargetRoomUser.IsLaying = true;
                         TargetRoomUser.UpdateNeeded = true;
                     }
                     else
@@ -1300,7 +1301,7 @@ namespace Firewind.HabboHotel.Misc
             }
 
             ServerMessage RoomUpdate = new ServerMessage(266);
-            RoomUpdate.AppendInt32(User.VirtualId);
+            RoomUpdate.AppendInt32(User.VirtualID);
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
             RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Motto);
@@ -1547,7 +1548,7 @@ namespace Firewind.HabboHotel.Misc
             if (TargetRoomUser == null)
                 return;
 
-            TargetRoomUser.isFlying = true;
+            TargetRoomUser.IsFlying = true;
             TargetRoomUser.AllowOverride = true;
         }
 
@@ -1607,7 +1608,7 @@ namespace Firewind.HabboHotel.Misc
                     foreach (RoomUser user in roomUsers)
                     {
                         ServerMessage RoomUpdate = new ServerMessage(Outgoing.UpdateUserInformation);
-                        RoomUpdate.AppendInt32(user.VirtualId);
+                        RoomUpdate.AppendInt32(user.VirtualID);
                         RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Look);
                         RoomUpdate.AppendStringWithBreak(Session.GetHabbo().Gender.ToLower());
                         RoomUpdate.AppendStringWithBreak(user.GetClient().GetHabbo().Motto);
@@ -1628,18 +1629,18 @@ namespace Firewind.HabboHotel.Misc
                     List<RoomUser> roomUsers = currentRoom.GetRoomUserManager().GetRoomUsers();
                     foreach (RoomUser user in roomUsers)
                     {
-                        if (user.sentadoBol == true)
+                        if (user.IsSitting == true)
                         {
-                            user.sentadoBol = false;
+                            user.IsSitting = false;
                             user.RemoveStatus("sit");
                         }
 
-                        if (!user.Statusses.ContainsKey("lay"))
+                        if (!user.Statuses.ContainsKey("lay"))
                         {
                             if ((user.RotBody % 2) == 0)
                             {
                                 user.AddStatus("lay", Convert.ToString(currentRoom.GetGameMap().Model.SqFloorHeight[user.X, user.Y] + 0.55).Replace(",", "."));
-                                user.acostadoBol = true;
+                                user.IsLaying = true;
                                 user.UpdateNeeded = true;
                             }
                         }
@@ -1685,16 +1686,16 @@ namespace Firewind.HabboHotel.Misc
                     List<RoomUser> roomUsers = currentRoom.GetRoomUserManager().GetRoomUsers();
                     foreach (RoomUser user in roomUsers)
                     {
-                        user.DanceId = 0;
+                        user.DanceID = 0;
                         ServerMessage message = new ServerMessage(Outgoing.Action);
-                        message.AppendInt32(user.VirtualId);
+                        message.AppendInt32(user.VirtualID);
                         message.AppendInt32(ActionId);
                         currentRoom.SendMessage(message);
                         if (ActionId == 5)
                         {
                             user.IsAsleep = true;
                             ServerMessage message2 = new ServerMessage(Outgoing.IdleStatus);
-                            message2.AppendInt32(user.VirtualId);
+                            message2.AppendInt32(user.VirtualID);
                             message2.AppendBoolean(user.IsAsleep);
                             currentRoom.SendMessage(message2);
                         }
@@ -1716,9 +1717,9 @@ namespace Firewind.HabboHotel.Misc
                         List<RoomUser> roomUsers = currentRoom.GetRoomUserManager().GetRoomUsers();
                         foreach (RoomUser user in roomUsers)
                         {
-                            user.DanceId = result;
+                            user.DanceID = result;
                             ServerMessage message = new ServerMessage(Outgoing.Dance);
-                            message.AppendInt32(user.VirtualId);
+                            message.AppendInt32(user.VirtualID);
                             message.AppendInt32(result);
                             currentRoom.SendMessage(message);
                         }

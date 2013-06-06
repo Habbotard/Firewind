@@ -22,14 +22,14 @@ namespace Firewind.HabboHotel.Users.Messenger
                 dTable = dbClient.getTable();
             }
 
-            uint userID;
+            int userID;
             string username;
             string motto;
             string look;
             string last_online;
             foreach (DataRow dRow in dTable.Rows)
             {
-                userID = Convert.ToUInt32(dRow[0]);
+                userID = Convert.ToInt32(dRow[0]);
                 username = (string)dRow[1];
                 motto = (string)dRow[2];
                 look = (string)dRow[3];

@@ -29,7 +29,7 @@ namespace Firewind.HabboHotel.Groups.Types
             get
             {
                 if (_owner == null)
-                    _owner = FirewindEnvironment.getHabboForId((uint)OwnerID);
+                    _owner = FirewindEnvironment.getHabboForId(OwnerID);
                 return _owner.Username;
             }
         }
@@ -77,7 +77,7 @@ namespace Firewind.HabboHotel.Groups.Types
         }
 
         public List<int> PendingMembers { get; set; }
-        public List<uint> Members { get; set; }
+        public List<int> Members { get; set; }
 
         public int Type { get; set; }
         public int RightsType { get; set; }
@@ -96,11 +96,11 @@ namespace Firewind.HabboHotel.Groups.Types
             this.Type = (int)Data["type"];
             this.RightsType = (int)Data["rights_type"];
 
-            this.Members = new List<uint>();
+            this.Members = new List<int>();
 
             foreach (DataRow Member in Members.Rows)
             {
-                this.Members.Add((uint)Member["user_id"]);
+                this.Members.Add((int)Member["user_id"]);
             }
         }
 

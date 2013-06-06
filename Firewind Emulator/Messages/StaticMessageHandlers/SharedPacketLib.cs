@@ -278,11 +278,6 @@ namespace Firewind.Messages.StaticMessageHandlers
             handler.ModBanUser();
         }
 
-        internal static void CallGuideBot(GameClientMessageHandler handler)
-        {
-            handler.CallGuideBot();
-        }
-
         internal static void InitMessenger(GameClientMessageHandler handler)
         {
             handler.InitMessenger();
@@ -765,42 +760,42 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void KickBot(GameClientMessageHandler handler)
         {
-            handler.KickBot();
+            //handler.KickBot();
         }
 
         internal static void PlacePet(GameClientMessageHandler handler)
         {
-            handler.PlacePet();
+            //handler.PlacePet();
         }
 
         internal static void GetPetInfo(GameClientMessageHandler handler)
         {
-            handler.GetPetInfo();
+           // handler.GetPetInfo();
         }
 
         internal static void PickUpPet(GameClientMessageHandler handler)
         {
-            handler.PickUpPet();
+            //handler.PickUpPet();
         }
 
         internal static void RespectPet(GameClientMessageHandler handler)
         {
-            handler.RespectPet();
+            //handler.RespectPet();
         }
 
         internal static void AddSaddle(GameClientMessageHandler handler)
         {
-            handler.AddSaddle();
+            //handler.AddSaddle();
         }
 
         internal static void RemoveSaddle(GameClientMessageHandler handler)
         {
-            handler.RemoveSaddle();
+            //handler.RemoveSaddle();
         }
 
         internal static void Ride(GameClientMessageHandler handler)
         {
-            handler.MountPet();
+            //handler.MountPet();
         }
 
         internal static void SetLookTransfer(GameClientMessageHandler handler)
@@ -810,7 +805,7 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void GetPetCommands(GameClientMessageHandler handler)
         {
-            handler.GetPetCommands();
+            //handler.GetPetCommands();
         }
 
         internal static void PetRaces(GameClientMessageHandler handler)
@@ -995,7 +990,7 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void GetBotInventory(GameClientMessageHandler handler)
         {
-            handler.GetBotInventory();
+            //handler.GetBotInventory();
         }
 
         internal static void PlaceBot(GameClientMessageHandler handler)

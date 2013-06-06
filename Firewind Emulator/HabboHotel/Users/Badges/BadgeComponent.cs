@@ -13,7 +13,7 @@ namespace Firewind.HabboHotel.Users.Badges
     {
         //private List<Badge> Badges;
         private Hashtable Badges;
-        private UInt32 UserId;
+        private int UserId;
 
         internal int Count
         {
@@ -51,7 +51,7 @@ namespace Firewind.HabboHotel.Users.Badges
             }
         }
 
-        internal BadgeComponent(uint userId, UserData data)
+        internal BadgeComponent(int userId, UserData data)
         {
             this.Badges = new Hashtable();
             foreach (Badge badge in data.badges)

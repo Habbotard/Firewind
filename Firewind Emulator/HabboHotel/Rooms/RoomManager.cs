@@ -177,8 +177,8 @@ namespace Firewind.HabboHotel.Rooms
             }
 
 
-            Room.InitBots();
-            Room.InitPets();
+            //Room.InitBots();
+            //Room.InitPets();
 
             //Logging.WriteLine("[RoomMgr] Loaded room: \"" + Room.Name + "\" (ID: " + Id + ")");
 

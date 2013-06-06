@@ -37,7 +37,7 @@ namespace Firewind.HabboHotel
         private PixelManager PixelManager;
         private AchievementManager AchievementManager;
         private ModerationTool ModerationTool;
-        private BotManager BotManager;
+        //private BotManager BotManager;
         //private Task StatisticsThread;
         //private Task ConsoleTitleTask;
         private InventoryGlobal globalInventory;
@@ -114,10 +114,10 @@ namespace Firewind.HabboHotel
             return ModerationTool;
         }
 
-        internal BotManager GetBotManager()
-        {
-            return BotManager;
-        }
+        //internal BotManager GetBotManager()
+        //{
+        //    return BotManager;
+        //}
 
         internal InventoryGlobal GetInventory()
         {
@@ -162,7 +162,7 @@ namespace Firewind.HabboHotel
                 PixelManager = new PixelManager();
                 
                 ModerationTool = new ModerationTool();
-                BotManager = new BotManager();
+                //BotManager = new BotManager();
                 questManager = new QuestManager();
                 //soundMachineManager = new SoundMachineManager();
 
@@ -232,10 +232,10 @@ namespace Firewind.HabboHotel
                 TimeUsed = DateTime.Now - Start;
                 Logging.WriteLine("Moderation tool -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
 
-                Start = DateTime.Now;
-                BotManager.LoadBots(dbClient);
-                TimeUsed = DateTime.Now - Start;
-                Logging.WriteLine("Bot manager manager -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
+                //Start = DateTime.Now;
+                //BotManager.LoadBots(dbClient);
+                //TimeUsed = DateTime.Now - Start;
+                //Logging.WriteLine("Bot manager manager -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
 
                 Start = DateTime.Now;
                 PetRace.Init(dbClient);

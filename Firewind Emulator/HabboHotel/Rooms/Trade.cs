@@ -7,6 +7,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.Messages;
 using HabboEvents;
 using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms
 {
@@ -16,10 +17,10 @@ namespace Firewind.HabboHotel.Rooms
         private int TradeStage;
         private UInt32 RoomId;
 
-        private UInt32 oneId;
-        private UInt32 twoId;
+        private int oneId;
+        private int twoId;
 
-        internal Trade(UInt32 UserOneId, UInt32 UserTwoId, UInt32 RoomId)
+        internal Trade(int UserOneId, int UserTwoId, UInt32 RoomId)
         {
             this.oneId = UserOneId;
             this.twoId = UserTwoId;
@@ -32,7 +33,7 @@ namespace Firewind.HabboHotel.Rooms
 
             foreach (TradeUser User in Users)
             {
-                if (!User.GetRoomUser().Statusses.ContainsKey("trd"))
+                if (!User.GetRoomUser().Statuses.ContainsKey("trd"))
                 {
                     User.GetRoomUser().AddStatus("trd", "");
                     User.GetRoomUser().UpdateNeeded = true;
@@ -40,9 +41,9 @@ namespace Firewind.HabboHotel.Rooms
             }
 
             ServerMessage Message = new ServerMessage(Outgoing.TradeStart);
-            Message.AppendUInt(UserOneId);
+            Message.AppendInt32(UserOneId);
             Message.AppendInt32(1); // ready
-            Message.AppendUInt(UserTwoId);
+            Message.AppendInt32(UserTwoId);
             Message.AppendInt32(1); // ready
             SendMessageToUsers(Message);
         }
@@ -63,7 +64,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal bool ContainsUser(UInt32 Id)
+        internal bool ContainsUser(int Id)
         {
             for (int i = 0; i < Users.Length; i++)
             {
@@ -76,7 +77,7 @@ namespace Firewind.HabboHotel.Rooms
             return false;
         }
 
-        internal TradeUser GetTradeUser(UInt32 Id)
+        internal TradeUser GetTradeUser(int Id)
         {
             for (int i = 0; i < Users.Length; i++)
             {
@@ -89,7 +90,7 @@ namespace Firewind.HabboHotel.Rooms
             return null;
         }
 
-        internal void OfferItem(UInt32 UserId, UserItem Item)
+        internal void OfferItem(int UserId, UserItem Item)
         {
             TradeUser User = GetTradeUser(UserId);
 
@@ -107,7 +108,7 @@ namespace Firewind.HabboHotel.Rooms
             UpdateTradeWindow();
         }
 
-        internal void TakeBackItem(UInt32 UserId, UserItem Item)
+        internal void TakeBackItem(int UserId, UserItem Item)
         {
             TradeUser User = GetTradeUser(UserId);
 
@@ -125,7 +126,7 @@ namespace Firewind.HabboHotel.Rooms
             UpdateTradeWindow();
         }
 
-        internal void Accept(UInt32 UserId)
+        internal void Accept(int UserId)
         {
             TradeUser User = GetTradeUser(UserId);
 
@@ -137,7 +138,7 @@ namespace Firewind.HabboHotel.Rooms
             User.HasAccepted = true;
 
             ServerMessage Message = new ServerMessage(Outgoing.TradeAcceptUpdate);
-            Message.AppendUInt(UserId);
+            Message.AppendInt32(UserId);
             Message.AppendInt32(1);
             SendMessageToUsers(Message);
 
@@ -149,7 +150,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal void Unaccept(UInt32 UserId)
+        internal void Unaccept(int UserId)
         {
             TradeUser User = GetTradeUser(UserId);
 
@@ -161,12 +162,12 @@ namespace Firewind.HabboHotel.Rooms
             User.HasAccepted = false;
 
             ServerMessage Message = new ServerMessage(Outgoing.TradeAcceptUpdate);
-            Message.AppendUInt(UserId);
+            Message.AppendInt32(UserId);
             Message.AppendInt32(0);
             SendMessageToUsers(Message);
         }
 
-        internal void CompleteTrade(UInt32 UserId)
+        internal void CompleteTrade(int UserId)
         {
             TradeUser User = GetTradeUser(UserId);
 
@@ -178,7 +179,7 @@ namespace Firewind.HabboHotel.Rooms
             User.HasAccepted = true;
 
             ServerMessage Message = new ServerMessage(Outgoing.TradeAcceptUpdate);
-            Message.AppendUInt(UserId);
+            Message.AppendInt32(UserId);
             Message.AppendInt32(1);
             SendMessageToUsers(Message);
 
@@ -224,7 +225,7 @@ namespace Firewind.HabboHotel.Rooms
 
                 lock (User.OfferedItems)
                 {
-                    Message.AppendUInt(User.UserId);
+                    Message.AppendInt32(User.UserId);
                     Message.AppendInt32(User.OfferedItems.Count);
 
                     foreach (UserItem Item in User.OfferedItems)
@@ -361,7 +362,7 @@ namespace Firewind.HabboHotel.Rooms
             GetRoom().ActiveTrades.Remove(this);
         }
 
-        internal void CloseTrade(UInt32 UserId)
+        internal void CloseTrade(int UserId)
         {
             for (int i = 0; i < Users.Length; i++)
             {
@@ -376,7 +377,7 @@ namespace Firewind.HabboHotel.Rooms
             }
 
             ServerMessage Message = new ServerMessage(Outgoing.TradeClose);
-            Message.AppendUInt(UserId);
+            Message.AppendInt32(UserId);
             SendMessageToUsers(Message);
         }
 
@@ -403,7 +404,7 @@ namespace Firewind.HabboHotel.Rooms
 
     class TradeUser
     {
-        internal UInt32 UserId;
+        internal int UserId;
         private UInt32 RoomId;
         private bool Accepted;
 
@@ -422,7 +423,7 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal TradeUser(UInt32 UserId, UInt32 RoomId)
+        internal TradeUser(int UserId, uint RoomId)
         {
             this.UserId = UserId;
             this.RoomId = RoomId;

@@ -6,6 +6,7 @@ using System.Collections;
 using Firewind.HabboHotel.Items;
 using System.Drawing;
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired
 {
@@ -86,7 +87,7 @@ namespace Firewind.HabboHotel.Rooms.Wired
             }
         }
 
-        internal bool AllowsHandling(Point coordinate, RoomUser user)
+        internal bool AllowsHandling(Point coordinate, RoomUnit unit)
         {
             if (!roomMatrix.ContainsKey(coordinate))
                 return true;
@@ -94,7 +95,7 @@ namespace Firewind.HabboHotel.Rooms.Wired
             List<IWiredCondition> conditions = (List<IWiredCondition>)roomMatrix[coordinate];
             foreach (IWiredCondition condition in conditions)
             {
-                if (!condition.AllowsExecution(user))
+                if (!condition.AllowsExecution(unit))
                     return false;
             }
 

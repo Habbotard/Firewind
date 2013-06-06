@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Firewind.HabboHotel.Rooms.Units
 {
-    class Pet : RoomAI
+    class PetBot : RoomAI
     {
         internal int Type;
         internal int OwnerID;
@@ -20,6 +20,11 @@ namespace Firewind.HabboHotel.Rooms.Units
         {
             // "PET" - 2
             return 2;
+        }
+
+                public PetBot(int virtualID, Room room)
+            : base(virtualID, room)
+        {
         }
 
         internal override void Serialize(Messages.ServerMessage Message)
@@ -41,41 +46,6 @@ namespace Firewind.HabboHotel.Rooms.Units
 
             Message.AppendInt32(0); // something to do with monster plants?
             Message.AppendString(""); // something to do with monster plants?
-        }
-
-        internal override void OnSelfEnterRoom()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnSelfLeaveRoom(bool Kicked)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserEnterRoom(RoomUser User)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserLeaveRoom(GameClients.GameClient Client)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserSay(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserShout(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnCycle()
-        {
-            throw new NotImplementedException();
         }
     }
 }

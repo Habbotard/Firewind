@@ -8,7 +8,7 @@ namespace Firewind.HabboHotel.Users.Messenger
     class MessengerBuddy
     {
         #region Fields
-        private readonly uint UserId;
+        private readonly int UserId;
         private readonly string mUsername;
         private readonly string mLook;
         private readonly string mMotto;
@@ -19,7 +19,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         #endregion
 
         #region Return values
-        internal uint Id
+        internal int Id
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         #endregion
 
         #region Constructor
-        internal MessengerBuddy(uint UserId, string pUsername, string pLook, string pMotto, string pLastOnline)
+        internal MessengerBuddy(int UserId, string pUsername, string pLook, string pMotto, string pLastOnline)
         {
             this.UserId = UserId;
             this.mUsername = pUsername;

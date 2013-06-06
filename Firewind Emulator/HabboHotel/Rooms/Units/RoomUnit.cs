@@ -71,13 +71,9 @@ namespace Firewind.HabboHotel.Rooms.Units
 
         internal Dictionary<string, string> Statuses;
 
-        internal RoomUnit()
+        internal RoomUnit(int virtualID, Room room)
         {
-        }
-
-        internal RoomUnit(int roomID, int virtualID, Room room)
-        {
-            this.RoomID = roomID;
+            this.RoomID = (int)room.RoomId;
             this.VirtualID = virtualID;
             this.X = 0;
             this.Y = 0;
@@ -86,7 +82,7 @@ namespace Firewind.HabboHotel.Rooms.Units
             this.RotBody = 0;
             this.UpdateNeeded = true;
             this.Statuses = new Dictionary<string, string>();
-            this.mRoom = room;
+            this._room = room;
 
             this.AllowOverride = false;
             this.CanWalk = true;
@@ -97,7 +93,7 @@ namespace Firewind.HabboHotel.Rooms.Units
         internal void Dispose()
         {
             Statuses.Clear();
-            mRoom = null;
+            _room = null;
         }
 
         internal void Chat(GameClient Session, string Message, bool Shout)
@@ -138,7 +134,7 @@ namespace Firewind.HabboHotel.Rooms.Units
 
             if (TeleportEnabled)
             {
-                GetRoom().SendMessage(GetRoom().GetRoomItemHandler().UpdateUserOnRoller(this, new Point(pX, pY), 0, GetRoom().GetGameMap().SqAbsoluteHeight(GoalX, GoalY)));
+                GetRoom().SendMessage(GetRoom().GetRoomItemHandler().UpdateUnitOnRoller(this, new Point(pX, pY), 0, GetRoom().GetGameMap().SqAbsoluteHeight(GoalX, GoalY)));
                 GetRoom().GetRoomUserManager().UpdateUserStatus(this, false);
                 return;
             }
@@ -295,12 +291,12 @@ namespace Firewind.HabboHotel.Rooms.Units
             Message.AppendString(Status);
         }
 
-        private Room mRoom;
-        private Room GetRoom()
+        private Room _room;
+        internal Room GetRoom()
         {
-            if (mRoom == null)
-                mRoom = FirewindEnvironment.GetGame().GetRoomManager().GetRoom((uint)RoomID);
-            return mRoom;
+            if (_room == null)
+                _room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom((uint)RoomID);
+            return _room;
         }
     }
 }
