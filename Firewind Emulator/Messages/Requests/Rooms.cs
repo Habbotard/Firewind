@@ -881,7 +881,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), false);
+            User.Chat(FirewindEnvironment.FilterInjectionChars(Request.ReadString()), false);
         }
 
         internal void Shout()
@@ -902,7 +902,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), true);
+            User.Chat(FirewindEnvironment.FilterInjectionChars(Request.ReadString()), true);
         }
 
         internal void Whisper()

@@ -990,12 +990,12 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void GetBotInventory(GameClientMessageHandler handler)
         {
-            //handler.GetBotInventory();
+            handler.GetBotInventory();
         }
 
         internal static void PlaceBot(GameClientMessageHandler handler)
         {
-            throw new NotImplementedException();
+            handler.PlaceBot();
         }
     }
 }

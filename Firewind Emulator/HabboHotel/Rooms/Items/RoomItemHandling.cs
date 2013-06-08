@@ -664,7 +664,7 @@ namespace Firewind.HabboHotel.Rooms
                 {
                     foreach (ThreeDCoord Tile in AffectedTiles.Values)
                     {
-                        if (room.GetGameMap().GetRoomUsers(new Point(Tile.X, Tile.Y)).Count > 0)
+                        if (room.GetGameMap().GetRoomUnits(new Point(Tile.X, Tile.Y)).Count > 0)
                         {
                             if (NeedsReAdd)
                             {

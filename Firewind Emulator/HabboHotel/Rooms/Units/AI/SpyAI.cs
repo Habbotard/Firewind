@@ -8,6 +8,11 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 {
     class SpyAI : AIBase
     {
+        internal SpyAI(RoomAI unit)
+            : base(unit)
+        {
+        }
+
         internal override void OnSelfEnterRoom()
         {
             throw new NotImplementedException();

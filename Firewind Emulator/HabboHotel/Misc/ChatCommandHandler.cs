@@ -120,7 +120,7 @@ namespace Firewind.HabboHotel.Misc
             {
                 
                 Point squareInfront = CoordinationUtil.GetPointInFront(roomuser.Coordinate, roomuser.RotBody);
-                List<RoomUnit> units = room.GetGameMap().GetRoomUsers(squareInfront);
+                List<RoomUnit> units = room.GetGameMap().GetRoomUnits(squareInfront);
 
                 Point squareInFrontOfUserInFront = CoordinationUtil.GetPointInFront(squareInfront, roomuser.RotBody); //Yo dawg, we heard yo like coordinates, so we put a coordinate inside yo coordinate
                 if (room.GetGameMap().CanWalk(squareInFrontOfUserInFront.X, squareInFrontOfUserInFront.Y, false) == false)
@@ -184,7 +184,7 @@ namespace Firewind.HabboHotel.Misc
             {
                 Point squareInFront = CoordinationUtil.GetPointInFront(roomuser.Coordinate, roomuser.RotBody);
                 Point squareInFrontInFront = CoordinationUtil.GetPointBehind(squareInFront, CoordinationUtil.RotationIverse(roomuser.RotBody));
-                List<RoomUnit> units = room.GetGameMap().GetRoomUsers(squareInFrontInFront);
+                List<RoomUnit> units = room.GetGameMap().GetRoomUnits(squareInFrontInFront);
 
                 foreach (RoomUnit unit in units)
                 {

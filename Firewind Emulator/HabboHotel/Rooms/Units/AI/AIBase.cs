@@ -9,6 +9,12 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 {
     abstract class AIBase
     {
+        internal AIBase(RoomAI unit)
+        {
+            this._unit = unit;
+        }
+
+        protected RoomAI _unit;
         internal abstract void OnSelfEnterRoom();
         internal abstract void OnSelfLeaveRoom(bool Kicked);
         internal abstract void OnUserEnterRoom(RoomUser User);

@@ -259,7 +259,7 @@ namespace Firewind.HabboHotel.Rooms.Games
             InteractionType type = item.GetBaseItem().InteractionType;
             if (type == InteractionType.freezebluegate || type == InteractionType.freezegreengate || type == InteractionType.freezeredgate || type == InteractionType.freezeyellowgate)
             {
-                foreach (RoomUser user in room.GetGameMap().GetRoomUsers(new System.Drawing.Point(item.GetX, item.GetY)))
+                foreach (RoomUser user in room.GetGameMap().GetRoomUnits(new System.Drawing.Point(item.GetX, item.GetY)))
                 {
                     user.SqState = 0;
                 }
@@ -273,7 +273,7 @@ namespace Firewind.HabboHotel.Rooms.Games
             InteractionType type = item.GetBaseItem().InteractionType;
             if (type == InteractionType.freezebluegate || type == InteractionType.freezegreengate || type == InteractionType.freezeredgate || type == InteractionType.freezeyellowgate)
             {
-                foreach (RoomUser user in room.GetGameMap().GetRoomUsers(new System.Drawing.Point(item.GetX, item.GetY)))
+                foreach (RoomUser user in room.GetGameMap().GetRoomUnits(new System.Drawing.Point(item.GetX, item.GetY)))
                 {
                     user.SqState = 1;
                 }

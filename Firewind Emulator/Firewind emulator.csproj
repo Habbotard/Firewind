@@ -246,7 +246,7 @@
     <Compile Include="HabboHotel\Rooms\Items\Data\StringIntData.cs" />
     <Compile Include="HabboHotel\Rooms\Trade.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUnitManager.cs" />
-    <Compile Include="HabboHotel\Rooms\Units\AI\AI.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\AIBase.cs" />
     <Compile Include="HabboHotel\Rooms\Units\AI\BartenderAI.cs" />
     <Compile Include="HabboHotel\Rooms\Units\AI\GenericAI.cs" />
     <Compile Include="HabboHotel\Rooms\Units\AI\PetAI.cs" />

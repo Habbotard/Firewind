@@ -12,9 +12,20 @@ namespace Firewind.HabboHotel.Rooms.Units
     {
         public AIBase BaseAI;
 
-        public RoomAI(int virtualID, Room room)
+        public RoomAI(int virtualID, AIBase ai, Room room)
             : base(virtualID, room)
         {
+            this.BaseAI = ai;
+        }
+
+        public RoomAI() : base()
+        {
+        }
+
+        internal override void OnCycle()
+        {
+            base.OnCycle();
+            BaseAI.OnCycle();
         }
     }
 }

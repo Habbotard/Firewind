@@ -196,8 +196,10 @@ namespace HabboEvents
         public static int SoundSettings = 89;
         public static int WelcomeBack = 3015;
 
-        // Pets
+        // Pets/bots
         public static int PetCommands = 2603;
+
+        public static int BotInventory = 3727;
 
         // Messenger
         public static int MessengerError = 3736;

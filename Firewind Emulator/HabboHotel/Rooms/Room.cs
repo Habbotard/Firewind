@@ -467,7 +467,7 @@ namespace Firewind.HabboHotel.Rooms
                     while (chatMessageQueue.Count > 0)
                     {
                         InvokedChatMessage message = (InvokedChatMessage)chatMessageQueue.Dequeue();
-                        message.user.OnChat(message);
+                        message.unit.OnChat(message);
                     }
                 }
             }
@@ -906,8 +906,11 @@ namespace Firewind.HabboHotel.Rooms
                 }
 
                 byte[] encodedPackets = totalBytes.ToArray();
-                foreach (RoomUser user in roomUserManager.UnitList.Values)
+                foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                 {
+                    RoomUser user = unit as RoomUser;
+                    if (user == null)
+                        continue;
                     GameClient UsersClient = user.GetClient();
                     if (UsersClient == null || UsersClient.GetConnection() == null)
                         continue;

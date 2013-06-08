@@ -148,12 +148,12 @@ namespace Firewind.HabboHotel.Rooms
                 ((List<RoomUnit>)_unitMap[coord]).Remove(unit);
         }
 
-        internal bool MapGotUser(Point coord)
+        internal bool MapGotUnit(Point coord)
         {
-            return (GetRoomUsers(coord).Count > 0);
+            return (GetRoomUnits(coord).Count > 0);
         }
 
-        internal List<RoomUnit> GetRoomUsers(Point coord)
+        internal List<RoomUnit> GetRoomUnits(Point coord)
         {
             if (_unitMap.ContainsKey(coord))
                 return (List<RoomUnit>)_unitMap[coord];
@@ -682,6 +682,7 @@ namespace Firewind.HabboHotel.Rooms
                     break;
             }
         }
+
         internal bool RemoveFromMap(RoomItem item, bool handleGameItem)
         {
             if (handleGameItem)
@@ -828,8 +829,6 @@ namespace Firewind.HabboHotel.Rooms
             return true;
         }
 
-
-
         internal bool CanWalk(int X, int Y, bool Override)
         {
             if (room.AllowWalkthrough)
@@ -841,6 +840,7 @@ namespace Firewind.HabboHotel.Rooms
 
             return true;
         }
+
         internal bool AddItemToMap(RoomItem Item)
         {
             return AddItemToMap(Item, true);
@@ -963,7 +963,6 @@ namespace Firewind.HabboHotel.Rooms
                 return 0;
             }
         }
-
 
         internal bool ValidTile(int X, int Y)
         {
@@ -1100,11 +1099,10 @@ namespace Firewind.HabboHotel.Rooms
 
         internal bool SquareHasUsers(int X, int Y)
         {
-            return MapGotUser(new Point(X, Y));
+            return MapGotUnit(new Point(X, Y));
             //return (GetUserForSquare(X, Y) != null);
             //return !SquareIsOpen(X, Y, false);
         }
-
 
         internal static bool TilesTouching(int X1, int Y1, int X2, int Y2)
         {

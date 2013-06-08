@@ -16,6 +16,7 @@ using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.Authenticator;
 using Firewind.Core;
 using Firewind.HabboHotel.Achievements;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Users.UserDataManagement
@@ -38,6 +39,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             DataTable dRequests;
             DataTable dRooms;
             DataTable dPets;
+            DataTable dBots;
             DataTable dQuests;
             //DataTable dSongs;
             DataTable dGroups = null;
@@ -138,6 +140,9 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
 
                 dbClient.setQuery("SELECT * FROM user_pets WHERE user_id = " + userID + " AND room_id = 0");
                 dPets = dbClient.getTable();
+
+                dbClient.setQuery("SELECT * FROM user_bots WHERE user_id = " + userID + "");
+                dBots = dbClient.getTable();
 
                 dbClient.setQuery("SELECT * FROM user_quests WHERE user_id = " + userID + "");
                 dQuests = dbClient.getTable();
@@ -371,8 +376,22 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 pets.Add(pet.PetId, pet);
             }
 
+            Dictionary<int, RentableBot> bots = new Dictionary<int, RentableBot>();
 
+            RentableBot bot;
+            foreach (DataRow row in dBots.Rows)
+            {
+                bot = new RentableBot();
 
+                bot.OwnerID = Convert.ToInt32(row["user_id"]);
+                bot.ID = Convert.ToInt32(row["id"]);
+                bot.Name = Convert.ToString(row["name"]);
+                bot.Gender = Convert.ToChar(row["gender"]);
+                bot.Figure = Convert.ToString(row["figure"]);
+                bot.Motto = "This is my motto.";
+
+                bots.Add(bot.ID, bot);
+            }
 
             Dictionary<uint, int> quests = new Dictionary<uint, int>();
 
@@ -415,7 +434,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             dPets = null;
 
             errorCode = 0;
-            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user);
+            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user, bots);
         }
 
         internal static UserData GetUserData(int UserId)
@@ -700,6 +719,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
 
             **/
             Dictionary<uint, Pet> pets = new Dictionary<uint, Pet>();
+            Dictionary<int, RentableBot> bots = new Dictionary<int, RentableBot>();
             /**
             Pet pet;
             foreach (DataRow dRow in dPets.Rows)
@@ -752,7 +772,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             dPets = null;
 
             errorCode = 0;
-            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user);
+            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user, bots);
         }
     }
 }

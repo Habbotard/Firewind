@@ -8,6 +8,10 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 {
     class PetAI : AIBase
     {
+                internal PetAI(RoomAI unit)
+            : base(unit)
+        {
+        }
         internal override void OnSelfEnterRoom()
         {
             throw new NotImplementedException();

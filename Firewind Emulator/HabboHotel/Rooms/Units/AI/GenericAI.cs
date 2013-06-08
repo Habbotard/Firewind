@@ -8,6 +8,10 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 {
     class GenericAI : AIBase
     {
+        internal GenericAI(RoomAI unit)
+            : base(unit)
+        {
+        }
         internal override void OnSelfEnterRoom()
         {
             throw new NotImplementedException();

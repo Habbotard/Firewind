@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Firewind.HabboHotel.Pets;
+using Firewind.HabboHotel.Rooms.Units.AI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,9 +24,15 @@ namespace Firewind.HabboHotel.Rooms.Units
             return 2;
         }
 
-                public PetBot(int virtualID, Room room)
-            : base(virtualID, room)
+        public PetBot(int virtualID, Pet petData, Room room)
+            : base(virtualID, new PetAI(null), room)
         {
+            this.Type = (int)petData.Type;
+            this.OwnerID = petData.OwnerId;
+            this.OwnerName = petData.OwnerName;
+            this.RarityLevel = 0;
+            this.HaveSaddle = false;
+            this.IsMounted = false;
         }
 
         internal override void Serialize(Messages.ServerMessage Message)

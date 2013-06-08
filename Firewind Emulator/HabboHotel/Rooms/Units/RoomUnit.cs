@@ -71,10 +71,15 @@ namespace Firewind.HabboHotel.Rooms.Units
 
         internal Dictionary<string, string> Statuses;
 
-        internal RoomUnit(int virtualID, Room room)
+        internal RoomUnit(int virtualID, Room room) : this()
         {
             this.RoomID = (int)room.RoomId;
             this.VirtualID = virtualID;
+            this._room = room;
+        }
+
+        public RoomUnit()
+        {
             this.X = 0;
             this.Y = 0;
             this.Z = 0;
@@ -82,7 +87,6 @@ namespace Firewind.HabboHotel.Rooms.Units
             this.RotBody = 0;
             this.UpdateNeeded = true;
             this.Statuses = new Dictionary<string, string>();
-            this._room = room;
 
             this.AllowOverride = false;
             this.CanWalk = true;
@@ -96,13 +100,49 @@ namespace Firewind.HabboHotel.Rooms.Units
             _room = null;
         }
 
-        internal void Chat(GameClient Session, string Message, bool Shout)
+        internal virtual void OnCycle()
         {
 
         }
 
-        internal void OnChat(InvokedChatMessage message)
+        internal virtual void Chat(string Message, bool Shout)
         {
+            InvokedChatMessage message = new InvokedChatMessage(this, Message, Shout);
+            GetRoom().QueueChatMessage(message);
+        }
+
+        internal virtual void OnChat(InvokedChatMessage message)
+        {
+            string Message = message.message;
+
+            int ChatHeader = Outgoing.Talk;
+
+            if (message.shout)
+                ChatHeader = Outgoing.Shout;
+
+            string Site = "";
+
+            ServerMessage ChatMessage = new ServerMessage(ChatHeader);
+
+            ChatMessage.AppendInt32(VirtualID);
+            ChatMessage.AppendString(Message);
+
+            if (!string.IsNullOrEmpty(Site))
+            {
+                ChatMessage.AppendBoolean(false);
+                ChatMessage.AppendBoolean(true);
+                ChatMessage.AppendString(Site.Replace("http://", string.Empty));
+                ChatMessage.AppendString(Site);
+            }
+
+            ChatMessage.AppendInt32(0);
+            ChatMessage.AppendInt32(0);
+            ChatMessage.AppendInt32(-1);
+
+            GetRoom().GetRoomUserManager().TurnHeads(X, Y, VirtualID);
+            GetRoom().SendMessage(ChatMessage);
+
+            message.Dispose();
         }
 
         internal void ClearMovement(bool Update)
@@ -131,6 +171,7 @@ namespace Firewind.HabboHotel.Rooms.Units
         {
             if (GetRoom().GetGameMap().SquareHasUsers(pX, pY) && !pOverride)
                 return;
+
 
             if (TeleportEnabled)
             {
@@ -244,7 +285,7 @@ namespace Firewind.HabboHotel.Rooms.Units
             Message.AppendInt32(X);
             Message.AppendInt32(Y);
             Message.AppendString(TextHandling.GetString(Z));
-            Message.AppendInt32(0); // ???
+            Message.AppendInt32(RotBody); // ???
             Message.AppendInt32(GetTypeID());
 
             // Rest is up to the derived classes

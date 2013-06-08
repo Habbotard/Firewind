@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Firewind.HabboHotel.Rooms.Units.AI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,8 @@ namespace Firewind.HabboHotel.Rooms.Units
             return 3;
         }
 
-                public OfficialBot(int virtualID, Room room)
-            : base(virtualID, room)
+        public OfficialBot(int virtualID, AIBase ai, Room room)
+            : base(virtualID, ai, room)
         {
         }
     }
