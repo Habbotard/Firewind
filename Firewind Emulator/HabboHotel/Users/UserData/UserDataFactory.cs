@@ -388,7 +388,8 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 bot.Name = Convert.ToString(row["name"]);
                 bot.Gender = Convert.ToChar(row["gender"]);
                 bot.Figure = Convert.ToString(row["figure"]);
-                bot.Motto = "This is my motto.";
+                bot.Motto = "1 week SpyBot";
+                bot.TimeLeft = 604800; // 1 week
 
                 bots.Add(bot.ID, bot);
             }

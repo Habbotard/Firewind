@@ -8,6 +8,7 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 {
     class SpyAI : AIBase
     {
+        private string _lastUsers;
         internal SpyAI(RoomAI unit)
             : base(unit)
         {
@@ -15,7 +16,7 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
 
         internal override void OnSelfEnterRoom()
         {
-            throw new NotImplementedException();
+            _unit.Chat("Hi! Next time you enter the room I'll let you know who visited while you were away..", false);
         }
 
         internal override void OnSelfLeaveRoom(bool Kicked)
@@ -33,19 +34,26 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
             throw new NotImplementedException();
         }
 
-        internal override void OnUserSay(RoomUser User, string Message)
+        internal override void OnUserChat(RoomUser user, string text, bool shout)
         {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserShout(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
+            if (!_unit.GetRoom().CheckRights(user.GetClient(), true))
+                return;
+            if (text == "yes")
+            {
+            }
         }
 
         internal override void OnCycle()
         {
             throw new NotImplementedException();
+        }
+
+        private void AddUserToList(string name)
+        {
+            if (_lastUsers.Length == 0)
+                _lastUsers = name;
+            else
+                _lastUsers += ", " + name;
         }
     }
 }

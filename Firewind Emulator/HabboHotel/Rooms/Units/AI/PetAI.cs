@@ -32,14 +32,9 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
             throw new NotImplementedException();
         }
 
-        internal override void OnUserSay(RoomUser User, string Message)
+        internal override void OnUserChat(RoomUser user, string text, bool shout)
         {
-            throw new NotImplementedException();
-        }
 
-        internal override void OnUserShout(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
         }
 
         internal override void OnCycle()

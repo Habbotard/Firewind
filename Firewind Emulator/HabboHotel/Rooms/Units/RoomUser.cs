@@ -417,7 +417,8 @@ namespace Firewind.HabboHotel.Rooms.Units
 
         internal override void OnChat(InvokedChatMessage message)
         {
-            // TODO: fire event for bots
+            GetRoom().OnUserSay(this, message.message, message.shout);
+            base.OnChat(message);
         }
 
         internal void Unidle()

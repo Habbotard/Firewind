@@ -196,6 +196,60 @@ namespace Firewind.HabboHotel.Rooms.Units
             this.CanWalk = true;
         }
 
+        internal Point SquareInFront
+        {
+            get
+            {
+                Point Sq = new Point(X, Y);
+
+                if (RotBody == 0)
+                {
+                    Sq.Y--;
+                }
+                else if (RotBody == 2)
+                {
+                    Sq.X++;
+                }
+                else if (RotBody == 4)
+                {
+                    Sq.Y++;
+                }
+                else if (RotBody == 6)
+                {
+                    Sq.X--;
+                }
+
+                return Sq;
+            }
+        }
+
+        internal Point SquareBehind
+        {
+            get
+            {
+                Point Sq = new Point(X, X);
+
+                if (RotBody == 0)
+                {
+                    Sq.Y++;
+                }
+                else if (RotBody == 2)
+                {
+                    Sq.X--;
+                }
+                else if (RotBody == 4)
+                {
+                    Sq.Y--;
+                }
+                else if (RotBody == 6)
+                {
+                    Sq.X++;
+                }
+
+                return Sq;
+            }
+        }
+
         internal void SetPos(int pX, int pY, double pZ)
         {
             this.X = pX;

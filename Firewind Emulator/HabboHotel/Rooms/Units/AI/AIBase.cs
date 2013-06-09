@@ -19,8 +19,7 @@ namespace Firewind.HabboHotel.Rooms.Units.AI
         internal abstract void OnSelfLeaveRoom(bool Kicked);
         internal abstract void OnUserEnterRoom(RoomUser User);
         internal abstract void OnUserLeaveRoom(GameClient Client);
-        internal abstract void OnUserSay(RoomUser User, string Message);
-        internal abstract void OnUserShout(RoomUser User, string Message);
+        internal abstract void OnUserChat(RoomUser user, string text, bool shout);
         internal abstract void OnCycle();
     }
 }

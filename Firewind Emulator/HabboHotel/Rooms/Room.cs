@@ -593,18 +593,14 @@ namespace Firewind.HabboHotel.Rooms
 
         internal void OnUserSay(RoomUser User, string Message, bool Shout)
         {
-            //foreach (RoomUser user in roomUserManager.UnitList.Values)
-            //{
-            //    if (!user.IsBot)
-            //        continue;
+            foreach (RoomUnit unit in roomUserManager.UnitList.Values)
+            {
+                RoomAI bot = unit as RoomAI;
+                if (bot == null)
+                    continue;
 
-            //    if (Shout)
-            //        user.BotAI.OnUserShout(User, Message);
-            //    else
-            //        user.BotAI.OnUserSay(User, Message);
-            //}
-
-
+                bot.BaseAI.OnUserChat(User, Message, Shout);
+            }
         }
 
         internal void LoadMusic()

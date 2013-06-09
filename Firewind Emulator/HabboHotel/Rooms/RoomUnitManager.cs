@@ -67,7 +67,7 @@ namespace Firewind.HabboHotel.Rooms
         {
             //this.RoomUserCounter = 0;
             this.room = room;
-            this._unitList = new QueuedDictionary<int, RoomUnit>(new EventHandler(OnUnitAdd), null, new EventHandler(onRemove), null);
+            this._unitList = new QueuedDictionary<int, RoomUnit>(new EventHandler(UnitList_onAdd), null, new EventHandler(UnitList_onRemove), null);
 
             this.usersByUserID = new Hashtable();
             this.primaryPrivateUserID = 0;
@@ -293,7 +293,7 @@ namespace Firewind.HabboHotel.Rooms
             room.SendMessage(message);
         }
 
-        private void OnUnitAdd(object sender, EventArgs args)
+        private void UnitList_onAdd(object sender, EventArgs args)
         {
             try
             {
@@ -509,7 +509,7 @@ namespace Firewind.HabboHotel.Rooms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private void onRemove(object sender, EventArgs args)
+        private void UnitList_onRemove(object sender, EventArgs args)
         {
             try
             {
