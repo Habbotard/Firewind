@@ -758,8 +758,8 @@ namespace Firewind.HabboHotel.Rooms
 
         private void onUserUpdateStatus()
         {
-            foreach (RoomUser user in UnitList.Values)
-                UpdateUserStatus(user, false);
+            foreach (RoomUnit unit in UnitList.Values)
+                UpdateUserStatus(unit, false);
         }
 
         internal void backupCounters(ref int primaryCounter, ref int secondaryCounter)

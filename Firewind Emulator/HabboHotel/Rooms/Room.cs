@@ -485,9 +485,10 @@ namespace Firewind.HabboHotel.Rooms
 
 
                         List<RoomUser> roomUsersToRemove = new List<RoomUser>();
-                        foreach (RoomUser RoomUser in roomUserManager.UnitList.Values)
+                        foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                         {
-                            if (RoomUser.GetClient().GetHabbo().Rank >= kick.minrank)
+                            RoomUser RoomUser = unit as RoomUser;
+                            if (RoomUser == null || RoomUser.GetClient().GetHabbo().Rank >= kick.minrank)
                                 continue;
                             if (kick.allert.Length > 0)
                                 RoomUser.GetClient().SendNotif(LanguageLocale.GetValue("roomkick.allert") + kick.allert);
@@ -516,9 +517,10 @@ namespace Firewind.HabboHotel.Rooms
                     {
                         RoomAlert alert = (RoomAlert)roomAlerts.Dequeue();
 
-                        foreach (RoomUser user in roomUserManager.UnitList.Values)
+                        foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                         {
-                            if (user.GetClient().GetHabbo().Rank >= alert.minrank)
+                            RoomUser user = unit as RoomUser;
+                            if (user == null || user.GetClient().GetHabbo().Rank >= alert.minrank)
                                 continue;
 
                             user.GetClient().SendNotif(alert.message, false);
@@ -539,8 +541,11 @@ namespace Firewind.HabboHotel.Rooms
                     {
                         string badge = (string)roomBadge.Dequeue();
 
-                        foreach (RoomUser user in roomUserManager.UnitList.Values)
+                        foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                         {
+                            RoomUser user = unit as RoomUser;
+                            if (unit == null)
+                                continue;
                             try
                             {
                                 if (user.GetClient() != null && user.GetClient().GetHabbo() != null)
@@ -576,9 +581,10 @@ namespace Firewind.HabboHotel.Rooms
         {
             List<RoomUser> ToRemove = new List<RoomUser>();
 
-            foreach (RoomUser user in roomUserManager.UnitList.Values)
+            foreach (RoomUnit unit in roomUserManager.UnitList.Values)
             {
-                if (user.GetClient().GetHabbo().Rank < 2)
+                RoomUser user = unit as RoomUser;
+                if (user != null && user.GetClient().GetHabbo().Rank < 2)
                     ToRemove.Add(user);
             }
 
@@ -814,8 +820,11 @@ namespace Firewind.HabboHotel.Rooms
             {
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    foreach (RoomUser user in roomUserManager.UnitList.Values)
+                    foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                     {
+                        RoomUser user = unit as RoomUser;
+                        if (user == null)
+                            continue;
                         user.GetClient().SendNotif("Unhandled exception in room: " + e.ToString());
                         try
                         {
@@ -926,8 +935,12 @@ namespace Firewind.HabboHotel.Rooms
             {
                 byte[] PacketData = Message.GetBytes();
 
-                foreach (RoomUser user in roomUserManager.UnitList.Values)
+                foreach (RoomUnit unit in roomUserManager.UnitList.Values)
                 {
+                    RoomUser user = unit as RoomUser;
+                    if (user == null)
+                        continue;
+
                     GameClient UsersClient = user.GetClient();
                     if (UsersClient == null)
                         continue;

@@ -414,10 +414,10 @@ namespace Firewind.HabboHotel.Rooms
 
             if (!room.AllowWalkthrough)
             {
-                foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
+                foreach (RoomUnit unit in room.GetRoomUserManager().UnitList.Values)
                 {
-                    user.SqState = mGameMap[user.X, user.Y];
-                    mGameMap[user.X, user.Y] = 0;
+                    unit.SqState = mGameMap[unit.X, unit.Y];
+                    mGameMap[unit.X, unit.Y] = 0;
                 }
             }
             mGameMap[Model.DoorX, Model.DoorY] = 3;

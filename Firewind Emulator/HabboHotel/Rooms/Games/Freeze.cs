@@ -70,8 +70,12 @@ namespace Firewind.HabboHotel.Rooms.Games
             room.GetGameManager().StopGame();
             Team winners = room.GetGameManager().getWinningTeam();
 
-            foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
+            foreach (RoomUnit unit in room.GetRoomUserManager().UnitList.Values)
             {
+                RoomUser user = unit as RoomUser;
+                if (user == null)
+                    continue;
+
                 user.FreezeLives = 0;
                 if (user.Team == winners)
                 {
@@ -187,9 +191,10 @@ namespace Firewind.HabboHotel.Rooms.Games
         {
             room.GetGameManager().Reset();
 
-            foreach (RoomUser user in room.GetRoomUserManager().UnitList.Values)
+            foreach (RoomUnit unit in room.GetRoomUserManager().UnitList.Values)
             {
-                if (user.Team == Team.none || user.GetClient() == null)
+                RoomUser user = unit as RoomUser;
+                if (user == null || user.Team == Team.none || user.GetClient() == null)
                     continue;
 
                 user.banzaiPowerUp = FreezePowerUp.None;
