@@ -1126,29 +1126,84 @@ namespace Firewind.HabboHotel.Items.Interactors
             }
             switch (Item.GetBaseItem().InteractionType)
             {
+                // general: (Triggerable)
+                // bool (stuffTypeSelectionEnabled)
+                // int (furniLimit)
+                // int[] (stuffIds)
+                // int (stuffTypeId)
+                // int (id)
+                // string (stringParam)
+                // int[] (intParams)
+                // int (stuffTypeSelectionCode)
+
+                // trigger:
+                // int (triggerConf)
+                // int[] (conflictingActions)
+
+                // action:
+                // int (type)
+                // int (delayInPulses)
+                // int[] (conflictingTriggers)
+
+                // condition:
+                // int (type)
+
                 #region Triggers
 
                 case InteractionType.triggerwalkonfurni:
                     {
                         ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
                         message.AppendBoolean(false); // stuffTypeSelectionEnabled
-                        message.AppendInt32(5); // furniLimit
+                        message.AppendInt32(10); // furniLimit
 
-                        message.AppendInt32(items.Count); //stuffIds
+                        message.AppendInt32(items.Count); // stuffIds
                         foreach (RoomItem item in items)
                             message.AppendUInt(item.Id);
 
                         message.AppendInt32(Item.GetBaseItem().SpriteId); // stuffTypeId
                         message.AppendUInt(Item.Id); // id
-                        message.AppendString(ExtraInfo); // stringParam
 
+                        message.AppendString(ExtraInfo); // stringParam
                         message.AppendInt32(0); // intParams
 
-                        message.AppendInt32(8); // type
+                        // 1=Perform the Effect on one random Furni whose type matches one of the picked Furnis
+                        // 2=Perform the Effect on a Furni defined by the Trigger or Condition
+                        // 0=Perform the Effect on picked Furnis
+                        message.AppendInt32(1); // stuffTypeSelectionCode
+
+                        message.AppendInt32(0); // type
                         message.AppendInt32(0); // delayInPulses
                         message.AppendInt32(0); // conflictingTriggers
-                        message.AppendInt32(0);
-                        message.AppendInt32(0);
+
+                        Session.SendMessage(message);
+                        break;
+                    }
+
+                case InteractionType.triggerwalkofffurni:
+                    {
+                        ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
+                        message.AppendBoolean(false); // stuffTypeSelectionEnabled
+                        message.AppendInt32(10); // furniLimit
+
+                        message.AppendInt32(items.Count); // stuffIds
+                        foreach (RoomItem item in items)
+                            message.AppendUInt(item.Id);
+
+                        message.AppendInt32(Item.GetBaseItem().SpriteId); // stuffTypeId
+                        message.AppendUInt(Item.Id); // id
+
+                        message.AppendString(ExtraInfo); // stringParam
+                        message.AppendInt32(0); // intParams
+
+                        // 1=Perform the Effect on one random Furni whose type matches one of the picked Furnis
+                        // 2=Perform the Effect on a Furni defined by the Trigger or Condition
+                        // 0=Perform the Effect on picked Furnis
+                        message.AppendInt32(2); // stuffTypeSelectionCode
+
+                        message.AppendInt32(0); // type
+                        message.AppendInt32(0); // delayInPulses
+                        message.AppendInt32(0); // conflictingTriggers
+
                         Session.SendMessage(message);
                         break;
                     }
@@ -1241,29 +1296,6 @@ namespace Firewind.HabboHotel.Items.Interactors
                         break;
                     }
 
-                case InteractionType.triggerwalkofffurni:
-                    {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
-                        message.AppendBoolean(false);
-                        message.AppendInt32(5);
-                        message.AppendInt32(items.Count);
-                        foreach (RoomItem item in items)
-                            message.AppendUInt(item.Id);
-                        message.AppendInt32(Item.GetBaseItem().SpriteId);
-                        message.AppendUInt(Item.Id);
-
-                        message.AppendString(ExtraInfo);
-                        message.AppendInt32(0);
-                        message.AppendInt32(8);
-                        message.AppendInt32(0);
-                        message.AppendInt32(0);
-                        message.AppendInt32(0);
-                        message.AppendInt32(0);
-
-                        Session.SendMessage(message);
-                        break;
-                    }
-
                 case InteractionType.triggeronusersay:
                     {
                         ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
@@ -1332,7 +1364,7 @@ namespace Firewind.HabboHotel.Items.Interactors
 
                 case InteractionType.triggerstatechanged:
                     {
-                        ServerMessage message = new ServerMessage(Outgoing.WiredFurniTrigger);
+                        ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
                         message.AppendBoolean(false);
                         message.AppendInt32(5);
                         message.AppendInt32(items.Count);

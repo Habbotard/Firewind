@@ -26,7 +26,7 @@ namespace Firewind.HabboHotel.Groups
             this._groupDeleteQueue = new Queue();
             //LoadGroups(dbClient);
 
-            FirewindEnvironment.GetGame().GetClientManager().OnLoggedInClient += GroupManager_OnLoggedInClient;
+            //FirewindEnvironment.GetGame().GetClientManager().OnLoggedInClient += GroupManager_OnLoggedInClient;
         }
 
         private void GroupManager_OnLoggedInClient(GameClient client)
@@ -36,7 +36,7 @@ namespace Firewind.HabboHotel.Groups
             if (user == null || user.Groups.Count == 0)
                 return;
 
-            client.GetConnection().connectionChanged += GroupManager_connectionChanged;
+            //client.GetConnection().connectionChanged += GroupManager_connectionChanged;
 
             foreach (int groupID in user.Groups)
             {

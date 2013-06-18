@@ -171,8 +171,6 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.AddSaddleToPet, new StaticRequestHandler(SharedPacketLib.AddSaddle));
             handlers.Add(Incoming.RemoveSaddle, new StaticRequestHandler(SharedPacketLib.RemoveSaddle));
             handlers.Add(Incoming.MountOnPet, new StaticRequestHandler(SharedPacketLib.Ride));
-            handlers.Add(Incoming.SaveWiredEffect, new StaticRequestHandler(SharedPacketLib.SaveWired));
-            handlers.Add(Incoming.SaveWiredTrigger, new StaticRequestHandler(SharedPacketLib.SaveWired));
             handlers.Add(Incoming.UserInformation, new StaticRequestHandler(SharedPacketLib.GetUserInfo));
             handlers.Add(Incoming.LoadProfile, new StaticRequestHandler(SharedPacketLib.LoadProfile));
             handlers.Add(Incoming.ScrGetUserInfo, new StaticRequestHandler(SharedPacketLib.ScrGetUserInfo));
@@ -207,6 +205,11 @@ namespace Firewind.Messages.StaticMessageHandlers
             // Furniture
             handlers.Add(Incoming.EnterOneWayDoor, new StaticRequestHandler(SharedPacketLib.TriggerItem));
             handlers.Add(Incoming.UseWallItem, new StaticRequestHandler(SharedPacketLib.TriggerItem));
+
+            // Wired
+            handlers.Add(Incoming.SaveWiredEffect, new StaticRequestHandler(SharedPacketLib.SaveWired));
+            handlers.Add(Incoming.SaveWiredTrigger, new StaticRequestHandler(SharedPacketLib.SaveWired));
+            handlers.Add(Incoming.UpdateCondition, new StaticRequestHandler(SharedPacketLib.SaveWiredCondition));
 
             // Groups
             handlers.Add(Incoming.StartGuildPurchase, new StaticRequestHandler(SharedPacketLib.StartGuildPurchase));

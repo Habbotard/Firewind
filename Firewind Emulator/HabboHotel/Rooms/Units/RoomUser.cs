@@ -417,6 +417,10 @@ namespace Firewind.HabboHotel.Rooms.Units
 
         internal override void OnChat(InvokedChatMessage message)
         {
+            // Check if there's any wired triggers with the message
+            if (!GetRoom().AllowsShous(this, message.message))
+                return;
+
             GetRoom().OnUserSay(this, message.message, message.shout);
             base.OnChat(message);
         }

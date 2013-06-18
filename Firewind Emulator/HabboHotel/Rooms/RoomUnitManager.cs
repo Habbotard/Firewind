@@ -829,43 +829,21 @@ namespace Firewind.HabboHotel.Rooms
                 }
 
                 DynamicRoomModel Model = room.GetGameMap().Model;
-                if (Model.SqState[unit.X, unit.Y] == SquareState.SEAT || (!isBot && user.IsSitting == true || user.IsLaying == true))
+                if (Model.SqState[unit.X, unit.Y] == SquareState.SEAT)
                 {
 
-                    if (!isBot && user.IsSitting == true)
+                    if (!unit.Statuses.ContainsKey("sit"))
                     {
-                        if (!user.Statuses.ContainsKey("sit"))
-                        {
-                            user.Statuses.Add("sit", Convert.ToString(Model.SqFloorHeight[user.X, user.Y] + 0.55).Replace(",", "."));
-                        }
-                        user.Z = Model.SqFloorHeight[user.X, user.Y];
-                        user.UpdateNeeded = true;
+                        unit.Statuses.Add("sit", "1.0");
                     }
-                    else if (!isBot && user.IsLaying == true)
-                    {
-                        if (!user.Statuses.ContainsKey("lay"))
-                        {
-                            user.Statuses.Add("lay", Convert.ToString(Model.SqFloorHeight[user.X, user.Y] + 0.55).Replace(",", "."));
-                        }
-                        user.Z = Model.SqFloorHeight[user.X, user.Y];
-                        user.UpdateNeeded = true;
-                    }
-                    else
-                    {
 
-                        if (!unit.Statuses.ContainsKey("sit"))
-                        {
-                            unit.Statuses.Add("sit", "1.0");
-                        }
+                    unit.Z = Model.SqFloorHeight[unit.X, unit.Y];
+                    if (!isBot && user.IsFlying)
+                        user.Z += 4 + (0.5 * Math.Sin(0.7 * user.FlyCounter));
+                    unit.RotHead = Model.SqSeatRot[unit.X, unit.Y];
+                    unit.RotBody = Model.SqSeatRot[unit.X, unit.Y];
 
-                        unit.Z = Model.SqFloorHeight[unit.X, unit.Y];
-                        if (!isBot && user.IsFlying)
-                            user.Z += 4 + (0.5 * Math.Sin(0.7 * user.FlyCounter));
-                        unit.RotHead = Model.SqSeatRot[unit.X, unit.Y];
-                        unit.RotBody = Model.SqSeatRot[unit.X, unit.Y];
-
-                        unit.UpdateNeeded = true;
-                    }
+                    unit.UpdateNeeded = true;
                 }
 
                 foreach (RoomItem Item in ItemsOnSquare)
@@ -1163,7 +1141,9 @@ namespace Firewind.HabboHotel.Rooms
 
                         unit.AddStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
 
-                        int newRot = Rotation.Calculate(unit.X, unit.Y, nextX, nextY, false);
+                        bool moonWalk = user == null ? false : user.moonwalkEnabled;
+
+                        int newRot = Rotation.Calculate(unit.X, unit.Y, nextX, nextY, moonWalk);
 
                         unit.RotBody = newRot;
                         unit.RotHead = newRot;
@@ -1182,7 +1162,7 @@ namespace Firewind.HabboHotel.Rooms
                         {
                             UpdateUserEffect(user, user.SetX, user.SetY);
                             if (user.IsSitting == true)
-                                user.IsLaying = false;
+                                user.IsSitting = false;
 
                             if (user.IsLaying == true)
                                 user.IsLaying = false;
