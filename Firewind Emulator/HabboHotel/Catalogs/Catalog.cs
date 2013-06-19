@@ -651,13 +651,13 @@ namespace Firewind.HabboHotel.Catalogs
                         {
                             case InteractionType.pet:
 
-                                //int petType = int.Parse(Item.Name.Substring(Item.Name.IndexOf(' ') + 4));
-                                //string[] PetData = ExtraData.Split('\n');
+                                int petType = int.Parse(Item.Name.Substring(Item.Name.IndexOf(' ') + 4));
+                                string[] PetData = ExtraData.Split('\n');
 
-                                //Pet GeneratedPet = CreatePet(Session.GetHabbo().Id, PetData[0], petType, PetData[1], PetData[2]);
+                                Pet GeneratedPet = CreatePet(Session.GetHabbo().Id, PetData[0], petType, PetData[1], PetData[2]);
 
-                                //Session.GetHabbo().GetInventoryComponent().AddPet(GeneratedPet);
-                                //result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, new StringData("0"), 0, true, false, 0));
+                                Session.GetHabbo().GetInventoryComponent().AddPet(GeneratedPet);
+                                result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, 320, new StringData("0"), 0, true, false, 0));
 
                                 break;
 

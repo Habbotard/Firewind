@@ -18,6 +18,11 @@ namespace Firewind.HabboHotel.Rooms.Units
             this.BaseAI = ai;
         }
 
+        public RoomAI(int virtualID, Room room)
+            : base(virtualID, room)
+        {
+        }
+
         public RoomAI() : base()
         {
         }

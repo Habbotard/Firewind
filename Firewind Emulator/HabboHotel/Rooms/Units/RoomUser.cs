@@ -77,7 +77,7 @@ namespace Firewind.HabboHotel.Rooms.Units
                 if (GetClient() != null)
                    GetRoom().GetRoomUserManager().RemoveUserFromRoom(GetClient(), false, false);
                 else
-                    GetRoom().GetRoomUserManager().RemoveRoomUser(this);
+                    GetRoom().GetRoomUserManager().RemoveRoomUnit(this);
             }
 
             IdleTime++;

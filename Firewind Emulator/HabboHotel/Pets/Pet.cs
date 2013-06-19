@@ -327,46 +327,46 @@ namespace Firewind.HabboHotel.Pets
             Message.AppendInt32(Level); // level
         }
 
-        //internal ServerMessage SerializeInfo()
-        //{
-        //    ServerMessage Nfo = new ServerMessage(Outgoing.PetInformation);
-        //    Nfo.AppendUInt(PetId);
-        //    Nfo.AppendString(Name);
-        //    Nfo.AppendInt32(Level);
-        //    Nfo.AppendInt32(MaxLevel);
-        //    Nfo.AppendInt32(Expirience);
-        //    Nfo.AppendInt32(ExpirienceGoal);
-        //    Nfo.AppendInt32(Energy);
-        //    Nfo.AppendInt32(MaxEnergy);
-        //    Nfo.AppendInt32(Nutrition);
-        //    Nfo.AppendInt32(MaxNutrition);
-        //    //Nfo.AppendString(Color.ToLower());
-        //    Nfo.AppendInt32(Respect);
-        //    Nfo.AppendUInt(OwnerId);
-        //    Nfo.AppendInt32(Age);
-        //    Nfo.AppendString(OwnerName);
-        //    Nfo.AppendInt32(1);
-        //    //Logging.WriteLine("have saddle: " + HaveSaddle);
+        internal ServerMessage SerializeInfo()
+        {
+            ServerMessage Nfo = new ServerMessage(Outgoing.PetInformation);
+            Nfo.AppendUInt(PetId);
+            Nfo.AppendString(Name);
+            Nfo.AppendInt32(Level);
+            Nfo.AppendInt32(MaxLevel);
+            Nfo.AppendInt32(Expirience);
+            Nfo.AppendInt32(ExpirienceGoal);
+            Nfo.AppendInt32(Energy);
+            Nfo.AppendInt32(MaxEnergy);
+            Nfo.AppendInt32(Nutrition);
+            Nfo.AppendInt32(MaxNutrition);
+            //Nfo.AppendString(Color.ToLower());
+            Nfo.AppendInt32(Respect);
+            Nfo.AppendInt32(OwnerId);
+            Nfo.AppendInt32(Age);
+            Nfo.AppendString(OwnerName);
+            Nfo.AppendInt32(1);
+            //Logging.WriteLine("have saddle: " + HaveSaddle);
 
-        //    Nfo.AppendBoolean(HaveSaddle);
+            Nfo.AppendBoolean(HaveSaddle);
 
-        //    Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUnitByVirtualId(VirtualId).isMounted);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendInt32(0);
-        //    Nfo.AppendString("");
-        //    Nfo.AppendBoolean(false);
-        //    Nfo.AppendInt32(-1);
-        //    Nfo.AppendInt32(-1);
-        //    Nfo.AppendInt32(-1);
-        //    Nfo.AppendBoolean(false);
-        //    return Nfo;
-        //}
+            Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUnitByVirtualId(VirtualId).isMounted);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendInt32(0);
+            Nfo.AppendString("");
+            Nfo.AppendBoolean(false);
+            Nfo.AppendInt32(-1);
+            Nfo.AppendInt32(-1);
+            Nfo.AppendInt32(-1);
+            Nfo.AppendBoolean(false);
+            return Nfo;
+        }
     }
 
     internal enum DatabaseUpdateState

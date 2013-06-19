@@ -280,6 +280,10 @@ namespace Firewind.HabboHotel.Rooms
             Session.GetHabbo().CurrentRoomId = room.RoomId;
             UnitList.Add(User.VirtualID, User);
         }
+        //internal void AddUnitToRoom(RoomUnit unit)
+        //{
+        //    UnitList.Add(unit.VirtualID, unit);
+        //}
 
         internal void AddBotToRoom(RoomAI unit)
         {
@@ -291,6 +295,13 @@ namespace Firewind.HabboHotel.Rooms
             message.AppendInt32(1);
             unit.Serialize(message);
             room.SendMessage(message);
+        }
+
+        internal PetBot DeployPet(Pet pet)
+        {
+            PetBot bot = new PetBot(primaryPrivateUserID++, pet, room);
+            UnitList.Add(bot.VirtualID, bot);
+            return bot;
         }
 
         private void UnitList_onAdd(object sender, EventArgs args)
@@ -435,7 +446,7 @@ namespace Firewind.HabboHotel.Rooms
                         user.IsSitting = false;
                         user.IsLaying = false;
 
-                    RemoveRoomUser(user);
+                    RemoveRoomUnit(user);
 
 
                     if (Session.GetHabbo() != null)
@@ -514,43 +525,42 @@ namespace Firewind.HabboHotel.Rooms
             try
             {
                 KeyValuePair<int, RoomUnit> removedPair = (KeyValuePair<int, RoomUnit>)sender;
-
                 RoomUnit unit = removedPair.Value;
-                //GameClient session = unit.GetClient();
 
-                //int key = removedPair.Key;
-                ////freeIDs[key] = null;
+                RoomUser user = unit as RoomUser;
 
-                //List<RoomUser> Bots = new List<RoomUser>();
+                if (user == null)
+                    return;
+                GameClient session = user.GetClient();
 
-                //foreach (RoomUser roomUser in UnitList.Values)
-                //{
-                //    if (roomUser.IsBot)
-                //        Bots.Add(roomUser);
-                //}
+                int key = removedPair.Key;
+                //freeIDs[key] = null;
 
-                //List<RoomUser> PetsToRemove = new List<RoomUser>();
-                //foreach (RoomUser Bot in Bots)
-                //{
-                //    Bot.BotAI.OnUserLeaveRoom(session);
+                // make sure to bring any pets the user might have left
+                List<PetBot> petsToRemove = new List<PetBot>();
+                foreach (RoomUnit unit2 in UnitList.Values)
+                {
+                    RoomAI bot = unit2 as RoomAI;
+                    if (bot == null)
+                        continue;
 
-                //    if (Bot.IsPet && Bot.PetData.OwnerId == unit.userID && !room.CheckRights(session, true))
-                //    {
-                //        PetsToRemove.Add(Bot);
-                //    }
-                //}
+                    bot.BaseAI.OnUserLeaveRoom(session);
 
-                //foreach (RoomUser toRemove in PetsToRemove)
-                //{
-                //    if (unit.GetClient() == null || unit.GetClient().GetHabbo() == null || unit.GetClient().GetHabbo().GetInventoryComponent() == null)
-                //        continue;
+                    PetBot pet = bot as PetBot;
+                    if (pet != null && pet.OwnerID == user.ID)
+                    {
+                        petsToRemove.Add(pet);
+                    }
+                }
 
-                //    unit.GetClient().GetHabbo().GetInventoryComponent().AddPet(toRemove.PetData);
-                //    RemoveBot(toRemove.VirtualId, false);
-                //}
+                foreach (PetBot toRemove in petsToRemove)
+                {
+                    if (user.GetClient() == null || user.GetClient().GetHabbo() == null || user.GetClient().GetHabbo().GetInventoryComponent() == null)
+                        continue;
 
-                room.GetGameMap().RemoveUnitFromMap(unit, new Point(unit.X, unit.Y));
-
+                    user.GetClient().GetHabbo().GetInventoryComponent().AddPet(toRemove.PetData);
+                    RemoveRoomUnit(toRemove);
+                }
             }
             catch (Exception e)
             {
@@ -558,14 +568,14 @@ namespace Firewind.HabboHotel.Rooms
             }
         }
 
-        internal void RemoveRoomUser(RoomUser user)
+        internal void RemoveRoomUnit(RoomUnit unit)
         {
-            UnitList.Remove(user.VirtualID);
+            UnitList.Remove(unit.VirtualID);
 
-            room.GetGameMap().Map[user.X, user.Y] = user.SqState;
-            room.GetGameMap().RemoveUnitFromMap(user, new Point(user.X, user.Y));
+            room.GetGameMap().Map[unit.X, unit.Y] = unit.SqState;
+            room.GetGameMap().RemoveUnitFromMap(unit, new Point(unit.X, unit.Y));
             ServerMessage LeaveMessage = new ServerMessage(Outgoing.UserLeftRoom);
-            LeaveMessage.AppendString(user.VirtualID + String.Empty);
+            LeaveMessage.AppendString(unit.VirtualID.ToString());
             room.SendMessage(LeaveMessage);
         }
 
@@ -1202,7 +1212,7 @@ namespace Firewind.HabboHotel.Rooms
                     client.CurrentRoomUserID = -1;
                 }
                 else
-                    RemoveRoomUser(toRemove);
+                    RemoveRoomUnit(toRemove);
             }
 
             if (userCount != userCounter)

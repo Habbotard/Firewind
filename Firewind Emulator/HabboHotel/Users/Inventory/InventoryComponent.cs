@@ -166,6 +166,7 @@ namespace Firewind.HabboHotel.Users.Inventory
 
             Pet.PlacedInRoom = false;
             Pet.RoomId = 0;
+            Pet.DBState = DatabaseUpdateState.NeedsUpdate;
 
             InventoryPets.Add(Pet.PetId, Pet);
 

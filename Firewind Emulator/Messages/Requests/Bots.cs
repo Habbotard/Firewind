@@ -41,147 +41,142 @@ namespace Firewind.Messages
         //    Room.GetRoomUserManager().RemoveBot(Bot.VirtualId, true);
         //}
 
-        //internal void PlacePet()
-        //{
-        //    Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+        internal void PlacePet()
+        {
+            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-        //    if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)) || !Room.CheckRights(Session, true))
-        //    {
-        //        return;
-        //    }
-        //    if (Room.GetRoomUserManager().GetPetCount() >= 10) // TODO: Not hardcoded message and amount + placepetfailed message
-        //    {
-        //        Session.SendNotif("You can't put down any more pets!");
-        //        return;
-        //    }
+            if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)) || !Room.CheckRights(Session, true))
+            {
+                return;
+            }
+            //if (Room.GetRoomUserManager().GetPetCount() >= 10) // TODO: Not hardcoded message and amount + placepetfailed message
+            //{
+            //    Session.SendNotif("You can't put down any more pets!");
+            //    return;
+            //}
 
-        //    uint PetId = Request.ReadUInt32();
+            uint PetId = Request.ReadUInt32();
 
-        //    Pet Pet = Session.GetHabbo().GetInventoryComponent().GetPet(PetId);
+            Pet Pet = Session.GetHabbo().GetInventoryComponent().GetPet(PetId);
 
-        //    if (Pet == null || Pet.PlacedInRoom)
-        //    {
-        //        return;
-        //    }
+            if (Pet == null || Pet.PlacedInRoom)
+            {
+                return;
+            }
 
-        //    int X = Request.ReadInt32();
-        //    int Y = Request.ReadInt32();
+            int X = Request.ReadInt32();
+            int Y = Request.ReadInt32();
 
-        //    if (!Room.GetGameMap().CanWalk(X, Y, false))
-        //    {
-        //        return;
-        //    }
+            if (!Room.GetGameMap().CanWalk(X, Y, false))
+            {
+                return;
+            }
 
-        //    //if (Room.GetRoomUserManager().PetCount >= RoomManager.MAX_PETS_PER_ROOM)
-        //    //{
-        //    //    Session.SendNotif(LanguageLocale.GetValue("user.maxpetreached"));
-        //    //    return;
-        //    //}
+            //if (Room.GetRoomUserManager().PetCount >= RoomManager.MAX_PETS_PER_ROOM)
+            //{
+            //    Session.SendNotif(LanguageLocale.GetValue("user.maxpetreached"));
+            //    return;
+            //}
 
-        //    RoomUser oldPet = Room.GetRoomUserManager().GetPet(PetId);
-        //    if (oldPet != null)
-        //        Room.GetRoomUserManager().RemoveBot(oldPet.VirtualId, false);
+            PetBot oldPet = Room.GetRoomUserManager().GetPet(PetId);
+            if (oldPet != null)
+                Room.GetRoomUserManager().RemoveRoomUnit(oldPet);
 
-        //    Pet.PlacedInRoom = true;
-        //    Pet.RoomId = Room.RoomId;
+            Pet.PlacedInRoom = true;
+            Pet.RoomId = Room.RoomId;
+            Pet.X = X;
+            Pet.Y = Y;
+            Pet.DBState = DatabaseUpdateState.NeedsUpdate;
 
-        //    List<RandomSpeech> RndSpeechList = new List<RandomSpeech>();
-        //    List<BotResponse> BotResponse = new List<BotResponse>();
-        //    RoomUser PetUser = Room.GetRoomUserManager().DeployBot(new RoomBot(Pet.PetId, Pet.RoomId, AIType.Pet, "freeroam", Pet.Name, "", Pet.Look, X, Y, 0, 0, 0, 0, 0, 0, ref RndSpeechList, ref BotResponse), Pet);
+            Session.GetHabbo().GetInventoryComponent().RunDBUpdate();
 
-        //    Session.GetHabbo().GetInventoryComponent().MovePetToRoom(Pet.PetId);
+            Session.GetHabbo().GetInventoryComponent().RemovePet(Pet.PetId);
 
-        //    if (Pet.DBState != DatabaseUpdateState.NeedsInsert)
-        //        Pet.DBState = DatabaseUpdateState.NeedsUpdate;
+            //List<RandomSpeech> RndSpeechList = new List<RandomSpeech>();
+            //List<BotResponse> BotResponse = new List<BotResponse>();
 
-        //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-        //        Room.GetRoomUserManager().SavePets(dbClient);
+            PetBot PetUser = Room.GetRoomUserManager().DeployPet(Pet);
+            Session.SendMessage(Session.GetHabbo().GetInventoryComponent().SerializePetInventory());
+        }
 
-        //    Session.SendMessage(Session.GetHabbo().GetInventoryComponent().SerializePetInventory());
-        //}
+        internal void GetPetInfo()
+        {
+            if (Session.GetHabbo() == null || Session.GetHabbo().CurrentRoom == null)
+                return;
 
-        //internal void GetPetInfo()
-        //{
-        //    if (Session.GetHabbo() == null || Session.GetHabbo().CurrentRoom == null)
-        //        return;
+            PetBot pet = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetPet(Request.ReadUInt32());
+            if (pet == null || pet.PetData == null)
+            {
+                Session.SendNotif(LanguageLocale.GetValue("user.petinfoerror"));
+                return;
+            }
 
-        //    RoomUser pet = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetPet(Request.ReadUInt32());
-        //    if (pet == null || pet.PetData == null)
-        //    {
-        //        Session.SendNotif(LanguageLocale.GetValue("user.petinfoerror"));
-        //        return;
-        //    }
+            Session.SendMessage(pet.PetData.SerializeInfo());
+        }
 
-        //    Session.SendMessage(pet.PetData.SerializeInfo());
-        //}
+        internal void PickUpPet()
+        {
+            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-        //internal void PickUpPet()
-        //{
-        //    Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+            if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().GetInventoryComponent() == null)
+                return;
 
-        //    if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().GetInventoryComponent() == null)
-        //        return;
+            if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)))
+            {
+                return;
+            }
 
-        //    if (Room == null || (!Room.AllowPets && !Room.CheckRights(Session, true)))
-        //    {
-        //        return;
-        //    }
+            uint PetId = Request.ReadUInt32();
+            PetBot pet = Room.GetRoomUserManager().GetPet(PetId);
+            if (pet == null)
+                return;
 
-        //    uint PetId = Request.ReadUInt32();
-        //    RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
-        //    if (PetUser == null)
-        //        return;
+            //if (pet.isMounted == true)
+            //{
+            //    RoomUser usuarioVinculado = Room.GetRoomUserManager().GetRoomUserByVirtualId(Convert.ToInt32(pet.mountID));
+            //    if (usuarioVinculado != null)
+            //    {
+            //        usuarioVinculado.isMounted = false;
+            //        usuarioVinculado.ApplyEffect(-1);
+            //        usuarioVinculado.MoveTo(new Point(usuarioVinculado.X + 1, usuarioVinculado.Y + 1));
+            //    }
+            //}
 
-        //    if (PetUser.isMounted == true)
-        //    {
-        //        RoomUser usuarioVinculado = Room.GetRoomUserManager().GetRoomUserByVirtualId(Convert.ToInt32(PetUser.mountID));
-        //        if (usuarioVinculado != null)
-        //        {
-        //            usuarioVinculado.isMounted = false;
-        //            usuarioVinculado.ApplyEffect(-1);
-        //            usuarioVinculado.MoveTo(new Point(usuarioVinculado.X + 1, usuarioVinculado.Y + 1));
-        //        }
-        //    }
+            if (pet.PetData.DBState != DatabaseUpdateState.NeedsInsert)
+                pet.PetData.DBState = DatabaseUpdateState.NeedsUpdate;
+            pet.PetData.RoomId = 0;
 
-        //    if (PetUser.PetData.DBState != DatabaseUpdateState.NeedsInsert)
-        //        PetUser.PetData.DBState = DatabaseUpdateState.NeedsUpdate;
-        //    PetUser.PetData.RoomId = 0;
+            Session.GetHabbo().GetInventoryComponent().AddPet(pet.PetData);
+            Session.GetHabbo().GetInventoryComponent().RunDBUpdate();
 
-        //    Session.GetHabbo().GetInventoryComponent().AddPet(PetUser.PetData);
+            Room.GetRoomUserManager().RemoveRoomUnit(pet);
+            Session.SendMessage(Session.GetHabbo().GetInventoryComponent().SerializePetInventory());
+        }
 
-        //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-        //        Room.GetRoomUserManager().SavePets(dbClient);
+        internal void RespectPet()
+        {
+            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-        //    Room.GetRoomUserManager().RemoveBot(PetUser.VirtualId, false);
-        //    Session.SendMessage(Session.GetHabbo().GetInventoryComponent().SerializePetInventory());
-        //}
+            if (Room == null || (!Room.AllowPets))
+            {
+                return;
+            }
 
-        //internal void RespectPet()
-        //{
-        //    Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+            uint PetId = Request.ReadUInt32();
+            PetBot pet = Room.GetRoomUserManager().GetPet(PetId);
 
-        //    if (Room == null || (!Room.AllowPets))
-        //    {
-        //        return;
-        //    }
+            if (pet == null)
+                return;
 
-        //    uint PetId = Request.ReadUInt32();
-        //    RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetId);
+            pet.PetData.OnRespect();
+            Session.GetHabbo().DailyPetRespectPoints--;
 
-        //    if (PetUser == null || PetUser.PetData == null)
-        //    {
-        //        return;
-        //    }
-
-        //    PetUser.PetData.OnRespect();
-        //    Session.GetHabbo().DailyPetRespectPoints--;
-
-        //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-        //    {
-        //        //dbClient.addParameter("userid", Session.GetHabbo().Id);
-        //        dbClient.runFastQuery("UPDATE users SET daily_pet_respect_points = daily_pet_respect_points - 1 WHERE id = " + Session.GetHabbo().Id);
-        //    }
-        //}
+            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            {
+                //dbClient.addParameter("userid", Session.GetHabbo().Id);
+                dbClient.runFastQuery("UPDATE users SET daily_pet_respect_points = daily_pet_respect_points - 1 WHERE id = " + Session.GetHabbo().Id);
+            }
+        }
 
         //internal void AddSaddle()
         //{
@@ -321,31 +316,31 @@ namespace Firewind.Messages
         //    }
         //}
 
-        //internal void GetPetCommands()
-        //{
-        //    uint PetID = Request.ReadUInt32();
-        //    Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
+        internal void GetPetCommands()
+        {
+            uint PetID = Request.ReadUInt32();
+            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
 
-        //    RoomUser PetUser = Room.GetRoomUserManager().GetPet(PetID);
+            PetBot pet = Room.GetRoomUserManager().GetPet(PetID);
 
-        //    if (PetUser == null || PetUser.PetData == null)
-        //        return;
+            if (pet == null)
+                return;
 
-        //    GetResponse().Init(Outgoing.PetCommands);
-        //    GetResponse().AppendUInt(PetID); // petId
+            GetResponse().Init(Outgoing.PetCommands);
+            GetResponse().AppendUInt(PetID); // petId
 
-        //    int level = PetUser.PetData.Level;
+            int level = pet.PetData.Level;
 
-        //    GetResponse().AppendInt32(18); // allCommands count
-        //    for (int i = 0; i < 18; i++)
-        //        GetResponse().AppendInt32(i);
+            GetResponse().AppendInt32(18); // allCommands count
+            for (int i = 0; i < 18; i++)
+                GetResponse().AppendInt32(i);
 
-        //    GetResponse().AppendInt32(Math.Min(level, 18)); // enabledCommands count
-        //    for (int i = 0; i < Math.Min(level, 18); i++)
-        //        GetResponse().AppendInt32(i);
+            GetResponse().AppendInt32(Math.Min(level, 18)); // enabledCommands count
+            for (int i = 0; i < Math.Min(level, 18); i++)
+                GetResponse().AppendInt32(i);
 
-        //    SendResponse();
-        //}
+            SendResponse();
+        }
 
         //internal void AnyoneRide()
         //{

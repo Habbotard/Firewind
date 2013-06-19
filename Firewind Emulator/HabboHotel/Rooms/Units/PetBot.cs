@@ -14,6 +14,7 @@ namespace Firewind.HabboHotel.Rooms.Units
         internal int OwnerID;
         internal string OwnerName;
 
+        internal Pet PetData;
         internal int RarityLevel;
         internal bool HaveSaddle;
         internal bool IsMounted;
@@ -25,14 +26,28 @@ namespace Firewind.HabboHotel.Rooms.Units
         }
 
         public PetBot(int virtualID, Pet petData, Room room)
-            : base(virtualID, new PetAI(null), room)
+            : base(virtualID, room)
         {
-            this.Type = (int)petData.Type;
-            this.OwnerID = petData.OwnerId;
-            this.OwnerName = petData.OwnerName;
+            this.PetData = petData;
             this.RarityLevel = 0;
             this.HaveSaddle = false;
             this.IsMounted = false;
+
+            // Initialize AI
+            this.BaseAI = new PetAI(this);
+
+            // Load data
+            LoadFromPetData();
+        }
+
+        private void LoadFromPetData()
+        {
+            this.X = PetData.X;
+            this.Y = PetData.Y;
+            this.Z = PetData.Z;
+            this.OwnerID = PetData.OwnerId;
+            this.OwnerName = PetData.OwnerName;
+            this.Type = (int)PetData.Type;
         }
 
         internal override void Serialize(Messages.ServerMessage Message)
