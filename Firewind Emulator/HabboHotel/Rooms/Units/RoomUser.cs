@@ -80,6 +80,9 @@ namespace Firewind.HabboHotel.Rooms.Units
                     GetRoom().GetRoomUserManager().RemoveRoomUnit(this);
             }
 
+            if (IsWalking && IsAsleep) // Unidle!
+                Unidle();
+
             IdleTime++;
             if (!IsAsleep && IdleTime >= 600)
             {
