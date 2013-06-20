@@ -221,7 +221,7 @@ namespace HabboEvents
         public static int UnseenItems = 135;
 
         // Trax/Jukebox
-        public static int JukeboxSongDisks = 2799;
+        public static int PlayList = 1211;
         public static int TraxSongInfo = 1882;
     }
 }
