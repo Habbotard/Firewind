@@ -1,4 +1,5 @@
-﻿using Database_Manager.Database.Session_Details.Interfaces;
+﻿using Database_Manager.Database;
+using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.Core;
 using Firewind.HabboHotel.ChatMessageStorage;
 using Firewind.HabboHotel.GameClients;
@@ -222,6 +223,11 @@ namespace Firewind.HabboHotel.Rooms.Units
                             // Fuck this command system, we make our own!
                             switch (command)
                             {
+                                case "dbstats":
+                                    {
+                                        Client.SendMOTD(String.Format("Active database connections: {0}", DatabaseManager.ActiveConnections));
+                                        break;
+                                    }
                                 case "relationship":
                                     if (!result)
                                     {

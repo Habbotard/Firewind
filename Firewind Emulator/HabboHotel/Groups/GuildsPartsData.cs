@@ -33,7 +33,7 @@ namespace Firewind.HabboHotel.Groups
                 foreach (DataRow row in table.Rows)
                 {
                     GuildsPartsData data;
-                    if (row["Type"].ToString() == "Base")
+                    if (row["Type"].ToString().ToLower() == "base")
                     {
                         data = new GuildsPartsData
                         {
@@ -53,7 +53,7 @@ namespace Firewind.HabboHotel.Groups
                         };
                         SymbolBadges.Add(data);
                     }
-                    else if (row["Type"].ToString() == "Color1")
+                    else if (row["Type"].ToString().ToLower() == "color")
                     {
                         data = new GuildsPartsData
                         {
@@ -62,7 +62,7 @@ namespace Firewind.HabboHotel.Groups
                         };
                         ColorBadges1.Add(data);
                     }
-                    else if (row["Type"].ToString() == "Color2")
+                    else if (row["Type"].ToString().ToLower() == "color2")
                     {
                         data = new GuildsPartsData
                         {
@@ -71,7 +71,7 @@ namespace Firewind.HabboHotel.Groups
                         };
                         ColorBadges2.Add(data);
                     }
-                    else if (row["Type"].ToString() == "Color3")
+                    else if (row["Type"].ToString().ToLower() == "color3")
                     {
                         data = new GuildsPartsData
                         {

@@ -363,7 +363,7 @@ namespace Firewind.HabboHotel.Users.Inventory
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@data,@extra)");
                             dbClient.addParameter("datatype", data.GetTypeID());
-                            dbClient.addParameter("data", data);
+                            dbClient.addParameter("data", data.ToString());
                             dbClient.addParameter("extra", extra);
                             dbClient.runQuery();
                         }
