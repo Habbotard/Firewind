@@ -1154,7 +1154,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                     {
                         ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
                         message.AppendBoolean(false); // stuffTypeSelectionEnabled
-                        message.AppendInt32(10); // furniLimit
+                        message.AppendInt32(5); // furniLimit
 
                         message.AppendInt32(items.Count); // stuffIds
                         foreach (RoomItem item in items)
@@ -1183,7 +1183,7 @@ namespace Firewind.HabboHotel.Items.Interactors
                     {
                         ServerMessage message = new ServerMessage(Outgoing.WiredEffect);
                         message.AppendBoolean(false); // stuffTypeSelectionEnabled
-                        message.AppendInt32(10); // furniLimit
+                        message.AppendInt32(5); // furniLimit
 
                         message.AppendInt32(items.Count); // stuffIds
                         foreach (RoomItem item in items)

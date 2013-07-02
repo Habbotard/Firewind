@@ -278,11 +278,11 @@ namespace Firewind.HabboHotel.Items
                     return InteractionType.triggerwalkofffurni;
                 case "wf_act_givepoints":
                     return InteractionType.actiongivescore;
-                case "actionposreset":
+                case "wf_act_posreset":
                     return InteractionType.actionposreset;
                 case "wf_act_moverotate":
                     return InteractionType.actionmoverotate;
-                case "actionresettimer":
+                case "wf_act_resettimer":
                     return InteractionType.actionresettimer;
                 case "wf_act_saymsg":
                     return InteractionType.actionshowmessage;
