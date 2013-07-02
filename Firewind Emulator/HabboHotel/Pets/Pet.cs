@@ -350,7 +350,7 @@ namespace Firewind.HabboHotel.Pets
 
             Nfo.AppendBoolean(HaveSaddle);
 
-            Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUnitByVirtualId(VirtualId).isMounted);
+            Nfo.AppendBoolean(false);// Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUnitByVirtualId(VirtualId).isMounted);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);

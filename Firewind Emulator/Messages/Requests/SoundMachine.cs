@@ -6,6 +6,7 @@ using Firewind.HabboHotel.SoundMachine;
 using Firewind.HabboHotel.SoundMachine.Composers;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Items;
+using HabboEvents;
 
 
 namespace Firewind.Messages
@@ -116,6 +117,14 @@ namespace Firewind.Messages
             RoomMusicController musicController = currentRoom.GetRoomMusicController();
 
             Session.SendMessage(JukeboxComposer.Compose(musicController.PlaylistCapacity, musicController.Playlist.Values.ToList()));
+
+            //var song = musicController.Playlist[0];
+            //ServerMessage message = new ServerMessage(Outgoing.PlayListSongAdded);
+            //message.AppendUInt(song.DiskItem.itemID);
+            //message.AppendUInt(song.SongData.Id);
+            //message.AppendString(song.SongData.Name);
+            //message.AppendString(song.SongData.Data);
+            //Session.SendMessage(message);
         }
     }
 }

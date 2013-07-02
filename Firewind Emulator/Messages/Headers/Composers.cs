@@ -191,6 +191,8 @@ namespace HabboEvents
         public static int GroupInfo = 2602;
         public static int OwnGuilds = 1463;
         public static int GroupCreated = 1327;
+        public static int GuildFurniInfo = 113;
+        public static int GuildEditInfo = 3529;
 
         // User
         public static int SoundSettings = 89;
@@ -221,7 +223,8 @@ namespace HabboEvents
         public static int UnseenItems = 135;
 
         // Trax/Jukebox
-        public static int JukeboxSongDisks = 2799;
+        public static int PlayList = 1211;
+        public static int PlayListSongAdded = 737;
         public static int TraxSongInfo = 1882;
     }
 }

@@ -16,7 +16,7 @@ namespace Firewind.HabboHotel.SoundMachine.Composers
 
         internal static ServerMessage Compose(int PlaylistCapacity, List<SongInstance> Playlist)
         {
-            ServerMessage Message = new ServerMessage(Outgoing.JukeboxSongDisks);
+            ServerMessage Message = new ServerMessage(Outgoing.PlayList);
             Message.AppendInt32(PlaylistCapacity);
             Message.AppendInt32(Playlist.Count);
 
@@ -24,6 +24,8 @@ namespace Firewind.HabboHotel.SoundMachine.Composers
             {
                 Message.AppendUInt(Song.DiskItem.itemID);
                 Message.AppendUInt(Song.SongData.Id);
+                Message.AppendString(Song.SongData.Name);
+                Message.AppendString(Song.SongData.Data);
             }
 
             return Message;

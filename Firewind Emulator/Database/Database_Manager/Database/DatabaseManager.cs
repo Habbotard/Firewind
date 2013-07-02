@@ -23,6 +23,7 @@
         private Queue connections;
 
         public static bool dbEnabled = true;
+        public static int ActiveConnections;
 
         public DatabaseManager(uint maxPoolSize, int clientAmount)
         {
@@ -69,6 +70,7 @@
 
         public IQueryAdapter getQueryreactor()
         {
+            ActiveConnections++;
             IDatabaseClient dbClient = null;
             lock (connections.SyncRoot)
             {
@@ -99,6 +101,7 @@
             {
                 connections.Enqueue(dbClient);
             }
+            ActiveConnections--;
         }
 
         public void init()
