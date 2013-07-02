@@ -140,7 +140,15 @@ namespace Firewind.HabboHotel.Rooms.Units
             ChatMessage.AppendInt32(-1);
 
             GetRoom().GetRoomUserManager().TurnHeads(X, Y, VirtualID);
-            GetRoom().SendMessage(ChatMessage);
+
+            foreach (RoomUser user in GetRoom().GetRoomUserManager().GetRoomUsers())
+            {
+                if (user.GetClient().GetHabbo().MutedUsers.Contains(ID))
+                    continue;
+
+                user.GetClient().SendMessage(ChatMessage);
+            }
+
 
             message.Dispose();
         }
