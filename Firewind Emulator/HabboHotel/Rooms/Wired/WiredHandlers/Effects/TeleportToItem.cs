@@ -8,13 +8,14 @@ using Firewind.HabboHotel.Rooms.Games;
 using System.Collections;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 {
     class TeleportToItem : IWiredTrigger, IWiredCycleable, IWiredEffect
     {
-        private Gamemap gamemap;
+        private GameMap gamemap;
         private WiredHandler handler;
 
         private List<RoomItem> items;
@@ -25,7 +26,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
         private uint itemID;
         private bool disposed;
 
-        public TeleportToItem(Gamemap gamemap, WiredHandler handler, List<RoomItem> items, int delay, uint itemID)
+        public TeleportToItem(GameMap gamemap, WiredHandler handler, List<RoomItem> items, int delay, uint itemID)
         {
             this.gamemap = gamemap;
             this.handler = handler;
@@ -50,8 +51,8 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
                         while (delayedUsers.Count > 0)
                         {
                             RoomUser user = (RoomUser)delayedUsers.Dequeue();
-                            Room room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(user.RoomId);
-                            if (room == null || room.GetRoomUserManager().GetRoomUserByHabbo(user.userID) == null)
+                            Room room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom((uint)user.RoomID);
+                            if (room == null || room.GetRoomUserManager().GetRoomUserByHabbo(user.ID) == null)
                                 continue;
 
                             TeleportUser(user);
@@ -64,13 +65,14 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
             return true;
         }
 
-        public bool Handle(RoomUser user, Team team, RoomItem item)
+        public bool Handle(RoomUnit unit, Team team, RoomItem item)
         {
+            RoomUser user = unit as RoomUser;
             if (user == null)
                 return false;
             user.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(4);
             cycles = 0;
-            if (delay == 0 && user != null)
+            if (delay == 0 )
             {
                 return TeleportUser(user);
             }
@@ -85,9 +87,10 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
             return false;
         }
 
-        private bool TeleportUser(RoomUser user)
+        private bool TeleportUser(RoomUnit unit)
         {
-            if (user == null || user.IsBot || user.IsPet || disposed)
+            RoomUser user = unit as RoomUser;
+            if (user == null || disposed)
                 return false;
 
             if (items.Count > 1)
@@ -99,7 +102,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
                     toTest = rnd.Next(0, items.Count);
                     item = items[toTest];
 
-                    if (item.Coordinate != user.Coordinate)
+                    if (item.Coordinate != unit.Coordinate)
                     {
                         gamemap.TeleportToItem(user, item);
                         user.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent().ApplyCustomEffect(0);

@@ -1,7 +1,8 @@
-﻿namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces
+﻿using Firewind.HabboHotel.Rooms.Units;
+namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces
 {
     interface IWiredCondition : IWiredTrigger
     {
-        bool AllowsExecution(RoomUser user);
+        bool AllowsExecution(RoomUnit user);
     }
 }

@@ -16,6 +16,7 @@ using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.Authenticator;
 using Firewind.Core;
 using Firewind.HabboHotel.Achievements;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Users.UserDataManagement
@@ -38,11 +39,12 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             DataTable dRequests;
             DataTable dRooms;
             DataTable dPets;
+            DataTable dBots;
             DataTable dQuests;
             //DataTable dSongs;
             DataTable dGroups = null;
 
-            UInt32 userID;
+            int userID;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -73,7 +75,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 }
 
 
-                userID = Convert.ToUInt32(dUserInfo["id"]);
+                userID = Convert.ToInt32(dUserInfo["id"]);
                 if (FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null)
                 {
                     errorCode = 2;
@@ -139,6 +141,9 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dbClient.setQuery("SELECT * FROM user_pets WHERE user_id = " + userID + " AND room_id = 0");
                 dPets = dbClient.getTable();
 
+                dbClient.setQuery("SELECT * FROM user_bots WHERE user_id = " + userID + "");
+                dBots = dbClient.getTable();
+
                 dbClient.setQuery("SELECT * FROM user_quests WHERE user_id = " + userID + "");
                 dQuests = dbClient.getTable();
 
@@ -185,12 +190,12 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
 
-            List<uint> ignores = new List<uint>();
+            List<int> ignores = new List<int>();
 
-            uint ignoredUserID;
+            int ignoredUserID;
             foreach (DataRow dRow in dIgnores.Rows)
             {
-                ignoredUserID = Convert.ToUInt32(dRow["ignore_id"]);
+                ignoredUserID = Convert.ToInt32(dRow["ignore_id"]);
                 ignores.Add(ignoredUserID);
             }
 
@@ -300,18 +305,18 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
 
-            Dictionary<uint, MessengerBuddy> friends = new Dictionary<uint, MessengerBuddy>();
+            Dictionary<int, MessengerBuddy> friends = new Dictionary<int, MessengerBuddy>();
 
             string username = (string)dUserInfo["username"];
 
-            UInt32 friendID;
+            int friendID;
             string friendName;
             string friendLook;
             string friendMotto;
             string friendLastOnline;
             foreach (DataRow dRow in dFriends.Rows)
             {
-                friendID = Convert.ToUInt32(dRow["id"]);
+                friendID = Convert.ToInt32(dRow["id"]);
                 friendName = (string)dRow["username"];
                 friendLook = (string)dRow["look"];
                 friendMotto = (string)dRow["motto"];
@@ -328,15 +333,15 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                     friends.Add(friendID, new MessengerBuddy(friendID, friendName, friendLook, friendMotto, friendLastOnline));
             }
 
-            Dictionary<uint, MessengerRequest> requests = new Dictionary<uint, MessengerRequest>();
+            Dictionary<int, MessengerRequest> requests = new Dictionary<int, MessengerRequest>();
 
-            uint receiverID;
-            uint senderID;
+            int receiverID;
+            int senderID;
             string requestUsername;
             foreach (DataRow dRow in dRequests.Rows)
             {
-                receiverID = Convert.ToUInt32(dRow["sender"]);
-                senderID = Convert.ToUInt32(dRow["receiver"]);
+                receiverID = Convert.ToInt32(dRow["sender"]);
+                senderID = Convert.ToInt32(dRow["receiver"]);
 
                 requestUsername = (string)dRow["username"];
 
@@ -371,8 +376,23 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 pets.Add(pet.PetId, pet);
             }
 
+            Dictionary<int, RentableBot> bots = new Dictionary<int, RentableBot>();
 
+            RentableBot bot;
+            foreach (DataRow row in dBots.Rows)
+            {
+                bot = new RentableBot();
 
+                bot.OwnerID = Convert.ToInt32(row["user_id"]);
+                bot.ID = Convert.ToInt32(row["id"]);
+                bot.Name = Convert.ToString(row["name"]);
+                bot.Gender = Convert.ToChar(row["gender"]);
+                bot.Figure = Convert.ToString(row["figure"]);
+                bot.Motto = "1 week SpyBot";
+                bot.TimeLeft = 604800; // 1 week
+
+                bots.Add(bot.ID, bot);
+            }
 
             Dictionary<uint, int> quests = new Dictionary<uint, int>();
 
@@ -415,7 +435,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             dPets = null;
 
             errorCode = 0;
-            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user);
+            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user, bots);
         }
 
         internal static UserData GetUserData(int UserId)
@@ -440,7 +460,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             //DataTable dSongs;
             DataTable dGroups = null;
 
-            UInt32 userID;
+            int userID;
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -458,7 +478,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 }
 
 
-                userID = Convert.ToUInt32(dUserInfo["id"]);
+                userID = Convert.ToInt32(dUserInfo["id"]);
                 if (FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null)
                 {
                     errorCode = 2;
@@ -561,7 +581,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
             **/
 
-            List<uint> ignores = new List<uint>();
+            List<int> ignores = new List<int>();
             /**
             uint ignoredUserID;
             foreach (DataRow dRow in dIgnores.Rows)
@@ -639,7 +659,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             }
 
             **/
-            Dictionary<uint, MessengerBuddy> friends = new Dictionary<uint, MessengerBuddy>();
+            Dictionary<int, MessengerBuddy> friends = new Dictionary<int, MessengerBuddy>();
 
             string username = (string)dUserInfo["username"];
             /**
@@ -665,7 +685,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                     friends.Add(friendID, new MessengerBuddy(friendID, friendName, friendLook, friendMotto, friendLastOnline));
             }
             **/
-            Dictionary<uint, MessengerRequest> requests = new Dictionary<uint, MessengerRequest>();
+            Dictionary<int, MessengerRequest> requests = new Dictionary<int, MessengerRequest>();
             /**
             uint receiverID;
             uint senderID;
@@ -700,6 +720,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
 
             **/
             Dictionary<uint, Pet> pets = new Dictionary<uint, Pet>();
+            Dictionary<int, RentableBot> bots = new Dictionary<int, RentableBot>();
             /**
             Pet pet;
             foreach (DataRow dRow in dPets.Rows)
@@ -752,7 +773,7 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
             dPets = null;
 
             errorCode = 0;
-            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user);
+            return new UserData(userID, achievements, favouritedRooms, ignores, tags, subscriptions, badges, inventory, effects, friends, requests, rooms, pets, quests, songs, user, bots);
         }
     }
 }

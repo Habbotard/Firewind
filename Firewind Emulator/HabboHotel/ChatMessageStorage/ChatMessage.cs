@@ -5,7 +5,7 @@ namespace Firewind.HabboHotel.ChatMessageStorage
 {
     class ChatMessage
     {
-        private readonly uint userID;
+        private readonly int userID;
         private readonly string username;
         internal readonly uint roomID;
         private readonly string message;
@@ -14,7 +14,7 @@ namespace Firewind.HabboHotel.ChatMessageStorage
 
         internal readonly string roomName;
 
-        public ChatMessage(uint userID, string username, uint roomID, string roomName, string message, DateTime timeSpoken)
+        public ChatMessage(int userID, string username, uint roomID, string roomName, string message, DateTime timeSpoken)
         {
             this.userID = userID;
             this.username = username;
@@ -28,7 +28,7 @@ namespace Firewind.HabboHotel.ChatMessageStorage
         {
             packet.AppendInt32(timeSpoken.Hour);
             packet.AppendInt32(timeSpoken.Minute);
-            packet.AppendUInt(userID);
+            packet.AppendInt32(userID);
             packet.AppendString(username);
             packet.AppendString(message);
         }

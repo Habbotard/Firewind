@@ -7,6 +7,7 @@ using Firewind.HabboHotel.Pathfinding;
 using Firewind.Messages;
 using System.Drawing;
 using HabboEvents;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Games
 {
@@ -61,7 +62,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                         NewY = NewY * 2;
                     }
 
-                    if (item.interactingBallUser == User.userID && item.GetRoom().GetGameMap().ValidTile(NewX, NewY))
+                    if (item.interactingBallUser == User.ID && item.GetRoom().GetGameMap().ValidTile(NewX, NewY))
                     {
                         item.interactingBallUser = 0;
                         item.interactionCountHelper = 0;
@@ -233,7 +234,7 @@ namespace Firewind.HabboHotel.Rooms.Games
 
         private void HandleFootballGameItems(Point ballItemCoord, RoomUser user)
         {
-            if (user.team == Team.none)
+            if (user.Team == Team.none)
                 return;
 
             foreach (RoomItem item in room.GetGameManager().GetItems(Team.red).Values)
@@ -242,7 +243,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                 {
                     if (tile.X == ballItemCoord.X && tile.Y == ballItemCoord.Y)
                     {
-                        room.GetGameManager().AddPointToTeam(user.team, user);
+                        room.GetGameManager().AddPointToTeam(user.Team, user);
                         return;
                     }
                 }
@@ -254,7 +255,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                 {
                     if (tile.X == ballItemCoord.X && tile.Y == ballItemCoord.Y)
                     {
-                        room.GetGameManager().AddPointToTeam(user.team, user);
+                        room.GetGameManager().AddPointToTeam(user.Team, user);
                         return;
                     }
                 }
@@ -266,7 +267,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                 {
                     if (tile.X == ballItemCoord.X && tile.Y == ballItemCoord.Y)
                     {
-                        room.GetGameManager().AddPointToTeam(user.team, user);
+                        room.GetGameManager().AddPointToTeam(user.Team, user);
                         return;
                     }
                 }
@@ -278,7 +279,7 @@ namespace Firewind.HabboHotel.Rooms.Games
                 {
                     if (tile.X == ballItemCoord.X && tile.Y == ballItemCoord.Y)
                     {
-                        room.GetGameManager().AddPointToTeam(user.team, user);
+                        room.GetGameManager().AddPointToTeam(user.Team, user);
                         return;
                     }
                 }

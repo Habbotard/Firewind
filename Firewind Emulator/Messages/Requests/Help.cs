@@ -32,7 +32,7 @@ namespace Firewind.Messages
 
                 int Junk = Request.ReadInt32();
                 int Type = Request.ReadInt32();
-                uint ReportedUser = Request.ReadUInt32();
+                int ReportedUser = Request.ReadInt32();
 
                 FirewindEnvironment.GetGame().GetModerationTool().SendNewTicket(Session, Type, ReportedUser, Message);
             }
@@ -62,7 +62,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
 
             if (FirewindEnvironment.GetGame().GetClientManager().GetNameById(UserId) != "Unknown User")
             {
@@ -81,7 +81,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            Session.SendMessage(ModerationTool.SerializeUserChatlog(Request.ReadUInt32()));
+            Session.SendMessage(ModerationTool.SerializeUserChatlog(Request.ReadInt32()));
         }
 
         internal void ModGetRoomChatlog()
@@ -186,7 +186,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
 
             Session.SendMessage(ModerationTool.SerializeRoomVisits(UserId));
         }
@@ -229,7 +229,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             String Message = Request.ReadString();
             Logging.WriteLine("UserId: " + UserId + "; Message => " + Message);
             ModerationTool.AlertUser(Session, UserId, Message, true);
@@ -242,7 +242,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             String Message = Request.ReadString();
 
             ModerationTool.AlertUser(Session, UserId, Message, false);
@@ -255,7 +255,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             String Message = Request.ReadString();
 
             ModerationTool.KickUser(Session, UserId, Message, false);
@@ -268,54 +268,11 @@ namespace Firewind.Messages
                 return;
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             String Message = Request.ReadString();
             int Length = Request.ReadInt32() * 3600;
 
             ModerationTool.BanUser(Session, UserId, Length, Message);
-        }
-
-        internal void CallGuideBot()
-        {
-            Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
-
-            if (Room == null || !Room.CheckRights(Session, true))
-            {
-                return;
-            }
-
-            if (Room.guideBotIsCalled)
-            {
-                Session.GetMessageHandler().GetResponse().Init(33);
-                Session.GetMessageHandler().GetResponse().AppendInt32(4009);
-                Session.GetMessageHandler().SendResponse();
-
-                return;
-            }
-
-            if (Session.GetHabbo().CalledGuideBot)
-            {
-                Session.GetMessageHandler().GetResponse().Init(33);
-                Session.GetMessageHandler().GetResponse().AppendInt32(4010);
-                Session.GetMessageHandler().SendResponse();
-
-                return;
-            }
-
-            RoomUser NewUser = Room.DeployBot(FirewindEnvironment.GetGame().GetBotManager().GetBot(55));
-            NewUser.SetPos(Room.GetGameMap().Model.DoorX, Room.GetGameMap().Model.DoorY, Room.GetGameMap().Model.DoorZ);
-            NewUser.UpdateNeeded = true;
-
-            RoomUser RoomOwner = Room.GetRoomUserManager().GetRoomUserByHabbo(Room.Owner);
-
-            if (RoomOwner != null)
-            {
-                NewUser.MoveTo(RoomOwner.Coordinate);
-                NewUser.SetRot(Rotation.Calculate(NewUser.X, NewUser.Y, RoomOwner.X, RoomOwner.Y), false);
-            }
-
-            
-            Session.GetHabbo().CalledGuideBot = true;
         }
 
         //internal void RegisterHelp()

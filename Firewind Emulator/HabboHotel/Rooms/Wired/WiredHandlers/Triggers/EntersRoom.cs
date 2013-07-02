@@ -7,6 +7,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms.Games;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
 {
@@ -18,7 +19,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
         private string userName;
         private RoomEventDelegate delegateFunction;
 
-        public EntersRoom(RoomItem item, WiredHandler handler, RoomUserManager roomUserManager, bool isOneUser, string userName)
+        public EntersRoom(RoomItem item, WiredHandler handler, RoomUnitManager roomUserManager, bool isOneUser, string userName)
         {
             this.item = item;
             this.handler = handler;
@@ -33,7 +34,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
         {
             RoomUser user = (RoomUser)sender;
 
-            if ((!user.IsBot && isOneUser && !string.IsNullOrEmpty(userName) && user.GetUsername() == userName) || !isOneUser)
+            if ((isOneUser && !string.IsNullOrEmpty(userName) && user.Name == userName) || !isOneUser)
             {
                 handler.OnEvent(item.Id);
                 handler.RequestStackHandle(item.Coordinate, null, user, Team.none);

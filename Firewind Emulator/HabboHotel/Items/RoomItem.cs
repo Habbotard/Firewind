@@ -12,6 +12,7 @@ using Firewind.Messages;
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using HabboEvents;
 using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Items
@@ -25,7 +26,7 @@ namespace Firewind.HabboHotel.Items
         internal UInt32 BaseItem;
         internal string Figure;
         internal string Gender;
-        internal uint interactingBallUser;
+        internal int interactingBallUser;
         internal Team team;
         internal byte interactionCountHelper;
         public byte interactionCount;
@@ -118,8 +119,8 @@ namespace Firewind.HabboHotel.Items
         }
         internal int UpdateCounter; //byte
 
-        internal UInt32 InteractingUser;
-        internal UInt32 InteractingUser2;
+        internal int InteractingUser;
+        internal int InteractingUser2;
 
         private Item mBaseItem;
         private Room mRoom;
@@ -333,10 +334,10 @@ namespace Firewind.HabboHotel.Items
             }
         }
 
-        internal void OnTrigger(RoomUser user)
+        internal void OnTrigger(RoomUnit unit)
         {
             if (itemTriggerEventHandler != null)
-                itemTriggerEventHandler(null, new ItemTriggeredArgs(user, this));
+                itemTriggerEventHandler(null, new ItemTriggeredArgs(unit, this));
         }
 
         internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int extra, int X, int Y, Double Z, int Rot, Room pRoom)
@@ -423,7 +424,7 @@ namespace Firewind.HabboHotel.Items
             
             mIsWallItem = (GetBaseItem().Type.ToString().ToLower() == "i");
             mIsFloorItem = (GetBaseItem().Type.ToString().ToLower() == "s");
-            mAffectedPoints = Gamemap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
+            mAffectedPoints = GameMap.GetAffectedTiles(GetBaseItem().Length, GetBaseItem().Width, mX, mY, Rot);
         }
 
         internal RoomItem(UInt32 Id, UInt32 RoomId, UInt32 BaseItem, IRoomItemData data, int extra, WallCoordinate wallCoord, Room pRoom)
@@ -592,7 +593,7 @@ namespace Firewind.HabboHotel.Items
                                             else
                                             {
                                                 // Let's run the teleport delegate to take futher care of this.. WHY DARIO?!
-                                                if (!User.IsBot && User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null && User.GetClient().GetMessageHandler() != null)
+                                                if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null && User.GetClient().GetMessageHandler() != null)
                                                 {
                                                     User.GetClient().GetHabbo().IsTeleporting = true;
                                                     User.GetClient().GetHabbo().TeleportingRoomID = RoomId;
@@ -1184,16 +1185,16 @@ namespace Firewind.HabboHotel.Items
             return mRoom;
         }
 
-        internal void UserWalksOnFurni(RoomUser user)
+        internal void UserWalksOnFurni(RoomUnit unit)
         {
             if (OnUserWalksOnFurni != null)
-                OnUserWalksOnFurni(this, new UserWalksOnArgs(user));
+                OnUserWalksOnFurni(this, new UnitWalksOnArgs(unit));
         }
 
-        internal void UserWalksOffFurni(RoomUser user)
+        internal void UserWalksOffFurni(RoomUnit unit)
         {
             if (OnUserWalksOffFurni != null)
-                OnUserWalksOffFurni(this, new UserWalksOnArgs(user));
+                OnUserWalksOffFurni(this, new UnitWalksOnArgs(unit));
         }
     }
 }

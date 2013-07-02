@@ -1,4 +1,5 @@
 ﻿using Firewind.HabboHotel.GameClients;
+using Firewind.HabboHotel.Rooms.Units.AI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,27 @@ namespace Firewind.HabboHotel.Rooms.Units
 {
     abstract class RoomAI : RoomUnit
     {
-        internal abstract void OnSelfEnterRoom();
-        internal abstract void OnSelfLeaveRoom(bool Kicked);
-        internal abstract void OnUserEnterRoom(RoomUser User);
-        internal abstract void OnUserLeaveRoom(GameClient Client);
-        internal abstract void OnUserSay(RoomUser User, string Message);
-        internal abstract void OnUserShout(RoomUser User, string Message);
-        internal abstract void OnCycle();
+        public AIBase BaseAI;
+
+        public RoomAI(int virtualID, AIBase ai, Room room)
+            : base(virtualID, room)
+        {
+            this.BaseAI = ai;
+        }
+
+        public RoomAI(int virtualID, Room room)
+            : base(virtualID, room)
+        {
+        }
+
+        public RoomAI() : base()
+        {
+        }
+
+        internal override void OnCycle()
+        {
+            base.OnCycle();
+            BaseAI.OnCycle();
+        }
     }
 }

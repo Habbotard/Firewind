@@ -23,6 +23,7 @@ using Firewind.HabboHotel.Rooms.Wired;
 using System.Drawing;
 using HabboEvents;
 using System.Reflection;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.Messages
@@ -376,7 +377,7 @@ namespace Firewind.Messages
             floorItems = null;
             wallItems = null;
 
-            CurrentLoadingRoom.GetRoomUserManager().AddUserToRoom(Session, false);
+            CurrentLoadingRoom.GetRoomUserManager().AddUserToRoom(Session);
 
             response.sendResponse();
             ClearRoomLoading();
@@ -512,25 +513,15 @@ namespace Firewind.Messages
         {
             QueuedServerMessage response = new QueuedServerMessage(Session.GetConnection());
 
-            List<RoomUser> UsersToDisplay = new List<RoomUser>();
-
             if (CurrentLoadingRoom == null)
                 return;
 
-            foreach (RoomUser User in CurrentLoadingRoom.GetRoomUserManager().UserList.Values)
-            {
-                if (User.IsSpectator)
-                    continue;
-
-                UsersToDisplay.Add(User);
-            }
-
             Response.Init(Outgoing.SetRoomUser);
-            Response.AppendInt32(UsersToDisplay.Count);
+            Response.AppendInt32(CurrentLoadingRoom.GetRoomUserManager().UnitList.Values.Count);
 
-            foreach (RoomUser User in UsersToDisplay)
+            foreach (RoomUnit unit in CurrentLoadingRoom.GetRoomUserManager().UnitList.Values)
             {
-                User.Serialize(Response);
+                unit.Serialize(Response);
             }
             response.appendResponse(GetResponse());
 
@@ -545,20 +536,20 @@ namespace Firewind.Messages
                 GetResponse().Init(Outgoing.FlatControllerAdded);
                 GetResponse().AppendUInt(CurrentLoadingRoom.RoomData.Id);
                 GetResponse().AppendInt32(CurrentLoadingRoom.UsersWithRights.Count);
-                foreach (uint i in CurrentLoadingRoom.UsersWithRights)
+                foreach (int i in CurrentLoadingRoom.UsersWithRights)
                 {
                     Habbo xUser = FirewindEnvironment.getHabboForId(i);
-                    GetResponse().AppendUInt(xUser.Id);
+                    GetResponse().AppendInt32(xUser.Id);
                     GetResponse().AppendString(xUser.Username);
                 }
                 response.appendResponse(GetResponse());
 
-                foreach (uint i in CurrentLoadingRoom.UsersWithRights)
+                foreach (int i in CurrentLoadingRoom.UsersWithRights)
                 {
                     Habbo xUser = FirewindEnvironment.getHabboForId(i);
                     GetResponse().Init(Outgoing.GivePowers);
                     GetResponse().AppendUInt(CurrentLoadingRoom.RoomId);
-                    GetResponse().AppendUInt(xUser.Id);
+                    GetResponse().AppendInt32(xUser.Id);
                     GetResponse().AppendString(xUser.Username);
                     response.appendResponse(GetResponse());
                 }
@@ -571,50 +562,48 @@ namespace Firewind.Messages
                 response.appendResponse(Updates);
             }
             //return;
-            foreach (RoomUser User in CurrentLoadingRoom.GetRoomUserManager().UserList.Values)
+            foreach (RoomUnit unit in CurrentLoadingRoom.GetRoomUserManager().UnitList.Values)
             {
-                if (User.IsSpectator)
+                RoomUser user = unit as RoomUser;
+                if (user == null) // not user
                     continue;
 
-                if (User.IsDancing)
+                if (user.IsDancing)
                 {
                     Response.Init(Outgoing.Dance);
-                    Response.AppendInt32(User.VirtualId);
-                    Response.AppendInt32(User.DanceId);
+                    Response.AppendInt32(user.VirtualID);
+                    Response.AppendInt32(user.DanceID);
                     response.appendResponse(GetResponse());
                 }
 
-                if (User.IsAsleep)
+                if (user.IsAsleep)
                 {
                     Response.Init(Outgoing.IdleStatus);
-                    Response.AppendInt32(User.VirtualId);
+                    Response.AppendInt32(user.VirtualID);
                     Response.AppendBoolean(true);
                     response.appendResponse(GetResponse());
                 }
 
-                if (User.CarryItemID > 0 && User.CarryTimer > 0)
+                if (user.CarryItemID > 0 && user.CarryTimer > 0)
                 {
                     Response.Init(Outgoing.ApplyCarryItem);
-                    Response.AppendInt32(User.VirtualId);
-                    Response.AppendInt32(User.CarryTimer);
+                    Response.AppendInt32(user.VirtualID);
+                    Response.AppendInt32(user.CarryTimer);
                     response.appendResponse(GetResponse());
                 }
 
-                if (!User.IsBot)
-                {
                     try
                     {
-                        if (User.GetClient() != null && User.GetClient().GetHabbo() != null && User.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent() != null && User.CurrentEffect >= 1)
+                        if (user.GetClient() != null && user.GetClient().GetHabbo() != null && user.GetClient().GetHabbo().GetAvatarEffectsInventoryComponent() != null && user.CurrentEffect >= 1)
                         {
                             Response.Init(Outgoing.ApplyEffects);
-                            Response.AppendInt32(User.VirtualId);
-                            Response.AppendInt32(User.CurrentEffect);
+                            Response.AppendInt32(user.VirtualID);
+                            Response.AppendInt32(user.CurrentEffect);
                             Response.AppendInt32(0);
                             response.appendResponse(GetResponse());
                         }
                     }
                     catch (Exception e) { Logging.HandleException(e, "Rooms.SendRoomData3"); }
-                }
             }
 
             response.sendResponse();
@@ -892,7 +881,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), false);
+            User.Chat(FirewindEnvironment.FilterInjectionChars(Request.ReadString()), false);
         }
 
         internal void Shout()
@@ -913,7 +902,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            User.Chat(Session, FirewindEnvironment.FilterInjectionChars(Request.ReadString()), true);
+            User.Chat(FirewindEnvironment.FilterInjectionChars(Request.ReadString()), true);
         }
 
         internal void Whisper()
@@ -963,7 +952,7 @@ namespace Firewind.Messages
 
             ServerMessage TellMsg = new ServerMessage();
             TellMsg.Init(Outgoing.Whisp);
-            TellMsg.AppendInt32(User.VirtualId);
+            TellMsg.AppendInt32(User.VirtualID);
             TellMsg.AppendStringWithBreak(Message);
             TellMsg.AppendInt32(0);
             TellMsg.AppendInt32(0);
@@ -973,21 +962,18 @@ namespace Firewind.Messages
             User.Unidle();
 
             RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByHabbo(ToUser);
-            if (ToUser == User.GetUsername() || User2 == null)
+            if (ToUser == User.Name || User2 == null)
                 return;
 
-            if (!User2.IsBot)
-            {
-                if (!User2.GetClient().GetHabbo().MutedUsers.Contains(Session.GetHabbo().Id))
-                    User2.GetClient().SendMessage(TellMsg);
-            }
+            if (!User2.GetClient().GetHabbo().MutedUsers.Contains(Session.GetHabbo().Id))
+                User2.GetClient().SendMessage(TellMsg);
 
             List<RoomUser> ToNotify = Room.GetRoomUserManager().GetRoomUserByRank(6);
             if (ToNotify.Count > 0)
             {
                 TellMsg = new ServerMessage();
                 TellMsg.Init(Outgoing.Whisp);
-                TellMsg.AppendInt32(User.VirtualId);
+                TellMsg.AppendInt32(User.VirtualID);
                 TellMsg.AppendStringWithBreak(LanguageLocale.GetValue("moderation.whisper") + ToUser + ": " + Message);
                 TellMsg.AppendInt32(0);
                 TellMsg.AppendInt32(0);
@@ -995,7 +981,7 @@ namespace Firewind.Messages
 
 
                 foreach (RoomUser user in ToNotify)
-                    if (user.HabboId != User2.HabboId && user.HabboId != User.HabboId)
+                    if (user.ID != User2.ID && user.ID != User.ID)
                         user.GetClient().SendMessage(TellMsg);
 
             }
@@ -1109,10 +1095,10 @@ namespace Firewind.Messages
                 GetResponse().AppendUInt(Room.RoomData.Id); // flatId
                 GetResponse().AppendInt32(Room.UsersWithRights.Count); // controllers count
 
-                foreach (uint userID in Room.UsersWithRights) // FlatControllerData
+                foreach (int userID in Room.UsersWithRights) // FlatControllerData
                 {
                     Habbo user = FirewindEnvironment.getHabboForId(userID);
-                    GetResponse().AppendUInt(user.Id); // userId
+                    GetResponse().AppendInt32(user.Id); // userId
                     GetResponse().AppendStringWithBreak(user.Username); // userName
                 }
                 SendResponse();
@@ -1281,7 +1267,7 @@ namespace Firewind.Messages
 
         internal void GiveRights()
         {
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
 
             Room Room = FirewindEnvironment.GetGame().GetRoomManager().GetRoom(Session.GetHabbo().CurrentRoomId);
             if (Room == null)
@@ -1289,7 +1275,7 @@ namespace Firewind.Messages
 
             RoomUser RoomUser = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
-            if (Room == null || !Room.CheckRights(Session, true) || RoomUser == null || RoomUser.IsBot)
+            if (Room == null || !Room.CheckRights(Session, true) || RoomUser == null)
             {
                 return;
             }
@@ -1309,14 +1295,14 @@ namespace Firewind.Messages
 
             Response.Init(Outgoing.GivePowers);
             Response.AppendUInt(Room.RoomId);
-            Response.AppendUInt(UserId);
+            Response.AppendInt32(UserId);
             Response.AppendStringWithBreak(RoomUser.GetClient().GetHabbo().Username);
             SendResponse();
 
             //RoomUser.AddStatus("flatcrtl 1", "");
             //RoomUser.UpdateNeeded = true;
 
-            if (RoomUser != null && !RoomUser.IsBot)
+            if (RoomUser != null)
             {
                 Response.Init(Outgoing.RoomRightsLevel);
                 Response.AppendInt32(1);
@@ -1344,13 +1330,13 @@ namespace Firewind.Messages
                     DeleteParams.Append(" OR ");
                 }
 
-                uint UserId = Request.ReadUInt32();
+                int UserId = Request.ReadInt32();
                 Room.UsersWithRights.Remove(UserId);
                 DeleteParams.Append("room_id = '" + Room.RoomId + "' AND user_id = '" + UserId + "'");
 
                 RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
-                if (User != null && !User.IsBot)
+                if (User != null)
                 {
                     Response.Init(Outgoing.RoomRightsLevel);
                     Response.AppendInt32(0);
@@ -1360,7 +1346,7 @@ namespace Firewind.Messages
                 // GhntX]hqu@U
                 Response.Init(Outgoing.RemovePowers);
                 Response.AppendUInt(Room.RoomId);
-                Response.AppendUInt(UserId);
+                Response.AppendInt32(UserId);
                 SendResponse();
 
                 //User.AddStatus("flatcrtl", "");
@@ -1382,11 +1368,11 @@ namespace Firewind.Messages
                 return;
             }
 
-            foreach (uint UserId in Room.UsersWithRights)
+            foreach (int UserId in Room.UsersWithRights)
             {
                 RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
-                if (User != null && !User.IsBot)
+                if (User != null)
                 {
                     Response.Init(Outgoing.RoomRightsLevel);
                     Response.AppendInt32(0);
@@ -1396,7 +1382,7 @@ namespace Firewind.Messages
                 // GhntX]hqu@U
                 Response.Init(Outgoing.RemovePowers);
                 Response.AppendUInt(Room.RoomId);
-                Response.AppendUInt(UserId);
+                Response.AppendInt32(UserId);
                 SendResponse();
 
                 //User.AddStatus("flatcrtl 0", "");
@@ -1424,10 +1410,10 @@ namespace Firewind.Messages
                 return; // insufficient permissions
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
-            if (User == null || User.IsBot)
+            if (User == null)
             {
                 return;
             }
@@ -1450,10 +1436,10 @@ namespace Firewind.Messages
                 return; // insufficient permissions
             }
 
-            uint UserId = Request.ReadUInt32();
+            int UserId = Request.ReadInt32();
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
 
-            if (User == null || User.IsBot)
+            if (User == null)
             {
                 return;
             }
@@ -1594,7 +1580,7 @@ namespace Firewind.Messages
             }
 
             ServerMessage Message = new ServerMessage(Outgoing.TypingStatus);
-            Message.AppendInt32(User.VirtualId);
+            Message.AppendInt32(User.VirtualID);
             Message.AppendInt32(1);
             Room.SendMessage(Message);
         }
@@ -1616,7 +1602,7 @@ namespace Firewind.Messages
             }
 
             ServerMessage Message = new ServerMessage(Outgoing.TypingStatus);
-            Message.AppendInt32(User.VirtualId);
+            Message.AppendInt32(User.VirtualID);
             Message.AppendInt32(0);
             Room.SendMessage(Message);
         }
@@ -1787,10 +1773,10 @@ namespace Firewind.Messages
 
             User.Unidle();
             int Action = Request.ReadInt32();
-            User.DanceId = 0;
+            User.DanceID = 0;
 
             ServerMessage Message = new ServerMessage(Outgoing.Action);
-            Message.AppendInt32(User.VirtualId);
+            Message.AppendInt32(User.VirtualID);
             Message.AppendInt32(Action);
             Room.SendMessage(Message);
             //Logging.WriteLine(Action);
@@ -1799,7 +1785,7 @@ namespace Firewind.Messages
                 User.IsAsleep = true;
 
                 ServerMessage FallAsleep = new ServerMessage(Outgoing.IdleStatus);
-                FallAsleep.AppendInt32(User.VirtualId);
+                FallAsleep.AppendInt32(User.VirtualID);
                 FallAsleep.AppendBoolean(User.IsAsleep);
                 Room.SendMessage(FallAsleep);
             }
@@ -1838,15 +1824,15 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadInt32());
 
-            if (User == null || User.IsBot)
+            if (User == null)
             {
                 return;
             }
 
             Response.Init(Outgoing.GetUserTags);
-            Response.AppendUInt(User.GetClient().GetHabbo().Id);
+            Response.AppendInt32(User.GetClient().GetHabbo().Id);
             Response.AppendInt32(User.GetClient().GetHabbo().Tags.Count);
 
             foreach (string Tag in User.GetClient().GetHabbo().Tags)
@@ -1866,9 +1852,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadInt32());
 
-            if (User == null || User.IsBot)
+            if (User == null)
                 return;
             if (User.GetClient() == null)
                 return;
@@ -1876,7 +1862,7 @@ namespace Firewind.Messages
             // CdjUzYZJIACH_RespectEarned1JACH_EmailVerification1E^jUzYZH
 
             Response.Init(Outgoing.GetUserBadges);
-            Response.AppendUInt(User.GetClient().GetHabbo().Id);
+            Response.AppendInt32(User.GetClient().GetHabbo().Id);
             Response.AppendInt32(User.GetClient().GetHabbo().GetBadgeComponent().EquippedCount);
 
             foreach (Badge Badge in User.GetClient().GetHabbo().GetBadgeComponent().BadgeList.Values)
@@ -1967,10 +1953,10 @@ namespace Firewind.Messages
                 User.CarryItem(0);
             }
 
-            User.DanceId = DanceId;
+            User.DanceID = DanceId;
 
             ServerMessage DanceMessage = new ServerMessage(Outgoing.Dance);
-            DanceMessage.AppendInt32(User.VirtualId);
+            DanceMessage.AppendInt32(User.VirtualID);
             DanceMessage.AppendInt32(DanceId);
             Room.SendMessage(DanceMessage);
 
@@ -2255,27 +2241,27 @@ namespace Firewind.Messages
                 return;
             }
 
-            //if (Item.wiredHandler != null)
-            //{
-            //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            //    {
-            //        Item.wiredHandler.DeleteFromDatabase(dbClient);
-            //        Item.wiredHandler.Dispose();
-            //        Room.GetWiredHandler().RemoveFurniture(Item);
-            //    }
-            //    Item.wiredHandler = null;
-            //}
+            if (Item.wiredHandler != null)
+            {
+                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                {
+                    //Item.wiredHandler.DeleteFromDatabase(dbClient);
+                    Item.wiredHandler.Dispose();
+                    Room.GetWiredHandler().RemoveFurniture(Item);
+                }
+                Item.wiredHandler = null;
+            }
 
-            //if (Item.wiredCondition != null)
-            //{
-            //    using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
-            //    {
-            //        Item.wiredCondition.DeleteFromDatabase(dbClient);
-            //        Item.wiredCondition.Dispose();
-            //        Room.GetWiredHandler().conditionHandler.ClearTile(Item.Coordinate);
-            //    }
-            //    Item.wiredCondition = null;
-            //}
+            if (Item.wiredCondition != null)
+            {
+                using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+                {
+                    //Item.wiredCondition.DeleteFromDatabase(dbClient);
+                    Item.wiredCondition.Dispose();
+                    Room.GetWiredHandler().conditionHandler.ClearTile(Item.Coordinate);
+                }
+                Item.wiredCondition = null;
+            }
 
             int x = Request.ReadInt32();
             int y = Request.ReadInt32();
@@ -2400,7 +2386,7 @@ namespace Firewind.Messages
 
             int request = Request.ReadInt32();
             if(Item.Interactor.OnTrigger(Session, Item, request, hasRights))
-                Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
+                Item.OnTrigger((RoomUnit)Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
             Room.GetRoomItemHandler().UpdateItem(Item);
 
             if (Room.GotWired() && !WiredUtillity.TypeIsWired(Item.GetBaseItem().InteractionType))
@@ -2468,7 +2454,7 @@ namespace Firewind.Messages
             }
 
             Item.Interactor.OnTrigger(Session, Item, -1, hasRights);
-            Item.OnTrigger(Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
+            Item.OnTrigger((RoomUnit)Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id));
         }
 
         internal void OpenPostit()
@@ -2780,7 +2766,7 @@ namespace Firewind.Messages
             }
 
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
-            RoomUser User2 = Room.GetRoomUserManager().GetRoomUserByVirtualId(Request.ReadInt32());
+            RoomUser User2 = Room.GetRoomUserManager().GetRoomUnitByVirtualId(Request.ReadInt32()) as RoomUser;
 
             if (User2 == null || User2.GetClient() == null || User2.GetClient().GetHabbo() == null)
                 return;
@@ -2920,9 +2906,9 @@ namespace Firewind.Messages
                 return;
             }
 
-            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
+            RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadInt32());
             
-            if (User == null || User.GetClient().GetHabbo().Id == Session.GetHabbo().Id || User.IsBot)
+            if (User == null || User.GetClient().GetHabbo().Id == Session.GetHabbo().Id )
             {
                 return;
             }
@@ -2943,7 +2929,7 @@ namespace Firewind.Messages
 
             // FxkqUzYP_
             ServerMessage Message = new ServerMessage(Outgoing.GiveRespect);
-            Message.AppendUInt(User.GetClient().GetHabbo().Id);
+            Message.AppendInt32(User.GetClient().GetHabbo().Id);
             Message.AppendInt32(User.GetClient().GetHabbo().Respect);
             Room.SendMessage(Message);
         }
@@ -3056,7 +3042,7 @@ namespace Firewind.Messages
             if (User == null)
                 return;
 
-            RoomUser toGive = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadUInt32());
+            RoomUser toGive = Room.GetRoomUserManager().GetRoomUserByHabbo(Request.ReadInt32());
             if (toGive == null)
                 return;
 
@@ -3144,8 +3130,9 @@ namespace Firewind.Messages
 
         internal void SaveWiredConditions()
         {
+            // id, resolveIntParams, resolveStringParam, getStuffIds, resolveStuffSelectionType
             uint itemID = Request.ReadUInt32();
-            WiredSaver.HandleConditionSave(itemID, Session.GetHabbo().CurrentRoom, Request);
+            WiredSaver.HandleConditionSave(Session,itemID, Session.GetHabbo().CurrentRoom, Request);
         }
 
         #region Unused

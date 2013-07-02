@@ -16,20 +16,19 @@ namespace Firewind.HabboHotel.Groups.Types
         private RoomData _room;
         private string _color1;
         private string _color2;
-
+        
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string BadgeCode { get; set; }
         public string DateCreated { get; set; }
-
+        public string BadgeCode;
         public int OwnerID { get; set; }
         public string OwnerName 
         {
             get
             {
                 if (_owner == null)
-                    _owner = FirewindEnvironment.getHabboForId((uint)OwnerID);
+                    _owner = FirewindEnvironment.getHabboForId(OwnerID);
                 return _owner.Username;
             }
         }
@@ -44,6 +43,19 @@ namespace Firewind.HabboHotel.Groups.Types
             }
         }
 
+
+        public List<Tuple<int, int, int>> BadgeData 
+        {
+            get
+            {
+                return BadgeData;
+            }
+            set
+            {
+                BadgeCode = GenerateBadgeImage(value);
+                BadgeData = value;
+            }
+        }
         public int ColorID1 { get; set; }
         public int ColorID2 { get; set; }
 
@@ -77,7 +89,7 @@ namespace Firewind.HabboHotel.Groups.Types
         }
 
         public List<int> PendingMembers { get; set; }
-        public List<uint> Members { get; set; }
+        public List<int> Members { get; set; }
 
         public int Type { get; set; }
         public int RightsType { get; set; }
@@ -87,7 +99,6 @@ namespace Firewind.HabboHotel.Groups.Types
             this.ID = (int)Data["id"];
             this.Name = (string)Data["name"];
             this.Description = (string)Data["description"];
-            this.BadgeCode = (string)Data["badge"];
             this.DateCreated = (string)Data["date_created"];
             this.OwnerID = Convert.ToInt32(Data["users_id"]);
             this.RoomID = (int)Data["rooms_id"];
@@ -96,11 +107,23 @@ namespace Firewind.HabboHotel.Groups.Types
             this.Type = (int)Data["type"];
             this.RightsType = (int)Data["rights_type"];
 
-            this.Members = new List<uint>();
+            // Parse badge data
+            string[] rawData = Data["badge_data"].ToString().Split((char)1);
+            List<Tuple<int, int, int>> badgeData = new List<Tuple<int,int,int>>();
+            for (int i = 0; i < rawData.Length; i++)
+            {
+                int value1 = int.Parse(rawData[i++]);
+                int value2 = int.Parse(rawData[i++]);
+                int value3 = int.Parse(rawData[i++]);
+                badgeData.Add(new Tuple<int, int, int>(value1, value2, value3));
+            }
+
+            this.BadgeData = badgeData;
+            this.Members = new List<int>();
 
             foreach (DataRow Member in Members.Rows)
             {
-                this.Members.Add((uint)Member["user_id"]);
+                this.Members.Add((int)Member["user_id"]);
             }
         }
 

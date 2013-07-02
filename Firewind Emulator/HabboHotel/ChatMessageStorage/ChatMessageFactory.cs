@@ -9,7 +9,7 @@ namespace Firewind.HabboHotel.ChatMessageStorage
     {
         internal static ChatMessage CreateMessage(string message, GameClient user, Room room)
         {
-            uint userID = user.GetHabbo().Id;
+            int userID = user.GetHabbo().Id;
             string username = user.GetHabbo().Username;
             uint roomID = room.RoomId;
             string roomName = room.Name;

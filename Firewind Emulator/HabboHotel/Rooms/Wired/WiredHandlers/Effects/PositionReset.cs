@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
 using System;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 {
@@ -43,7 +44,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
             return true;
         }
 
-        public bool Handle(RoomUser user, Team team, RoomItem item)
+        public bool Handle(RoomUnit unit, Team team, RoomItem item)
         {
             cycles = 0;
             if (delay == 0)

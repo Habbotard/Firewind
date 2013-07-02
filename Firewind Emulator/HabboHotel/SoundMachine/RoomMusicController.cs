@@ -5,6 +5,7 @@ using System.Text;
 using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.SoundMachine.Composers;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.SoundMachine
@@ -289,7 +290,7 @@ namespace Firewind.HabboHotel.SoundMachine
 
         internal void OnNewUserEnter(RoomUser user)
         {
-            if (user.IsBot || user.GetClient() == null || mSong == null)
+            if (user.GetClient() == null || mSong == null)
                 return;
 
             user.GetClient().SendMessage(JukeboxComposer.ComposePlayingComposer(mSong.SongData.Id, mSongQueuePosition, SongSyncTimestamp));

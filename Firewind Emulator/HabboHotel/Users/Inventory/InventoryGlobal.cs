@@ -41,7 +41,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             //}
         }
 
-        internal static InventoryComponent GetInventory(uint UserId, GameClient Client, UserData data)
+        internal static InventoryComponent GetInventory(int UserId, GameClient Client, UserData data)
         {
             return new InventoryComponent(UserId, Client, data);
             //InventoryComponent component;

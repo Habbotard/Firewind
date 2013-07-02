@@ -278,11 +278,11 @@ namespace Firewind.HabboHotel.Items
                     return InteractionType.triggerwalkofffurni;
                 case "wf_act_givepoints":
                     return InteractionType.actiongivescore;
-                case "actionposreset":
+                case "wf_act_posreset":
                     return InteractionType.actionposreset;
                 case "wf_act_moverotate":
                     return InteractionType.actionmoverotate;
-                case "actionresettimer":
+                case "wf_act_resettimer":
                     return InteractionType.actionresettimer;
                 case "wf_act_saymsg":
                     return InteractionType.actionshowmessage;
@@ -338,6 +338,10 @@ namespace Firewind.HabboHotel.Items
                     return InteractionType.gift;
                 case "mannequin":
                     return InteractionType.mannequin;
+                case "guilddoor":
+                    return InteractionType.guilddoor;
+                case "guildgeneric":
+                    return InteractionType.guildgeneric;
                 //case "":
                 //case "default":
                 //    return InteractionType.none;
@@ -817,6 +821,10 @@ namespace Firewind.HabboHotel.Items
                     return "gift";
                 case InteractionType.mannequin:
                     return "mannequin";
+                                    case InteractionType.guilddoor:
+                    return "guilddoor";
+                                                        case InteractionType.guildgeneric:
+                    return "guildgeneric";
                 default:
                     {
                         Logging.LogException("Unknown interaction type in to string code: " + pType);

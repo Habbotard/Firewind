@@ -6,6 +6,7 @@ using Firewind.Collections;
 using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms;
 using System.Drawing;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Rooms

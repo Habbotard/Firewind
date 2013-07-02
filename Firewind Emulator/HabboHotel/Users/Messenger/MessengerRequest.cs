@@ -9,8 +9,8 @@ namespace Firewind.HabboHotel.Users.Messenger
     {
         //private UInt32 xRequestId;
 
-        private UInt32 ToUser;
-        private UInt32 FromUser;
+        private int ToUser;
+        private int FromUser;
         private string mUsername;
 
         //internal UInt32 RequestId
@@ -21,7 +21,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         //    }
         //}
 
-        internal UInt32 To
+        internal int To
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Firewind.HabboHotel.Users.Messenger
             }
         }
 
-        internal UInt32 From
+        internal int From
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         //    }
         //}
 
-        internal MessengerRequest(UInt32 ToUser, UInt32 FromUser, string pUsername)
+        internal MessengerRequest(int ToUser, int FromUser, string pUsername)
         {
             //this.xRequestId = RequestId;
             this.ToUser = ToUser;  //Me
@@ -57,7 +57,7 @@ namespace Firewind.HabboHotel.Users.Messenger
         {
             // BDhqu@UMeth0d1322033860
 
-            Request.AppendUInt(FromUser);
+            Request.AppendInt32(FromUser);
             Request.AppendString(mUsername);
             Habbo user = FirewindEnvironment.getHabboForName(mUsername);
             Request.AppendString((user != null) ? user.Look : "");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Firewind.HabboHotel.Rooms.Units.AI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,45 +9,34 @@ namespace Firewind.HabboHotel.Rooms.Units
 {
     class RentableBot : RoomAI
     {
+        internal int OwnerID;
+        internal char Gender;
+        internal int TimeLeft;
+
         internal override int GetTypeID()
         {
             // "RENTABLE_BOT" - 4
             return 4;
         }
 
-        internal override void OnSelfEnterRoom()
+        public RentableBot(int virtualID, Room room, AIBase ai, int ownerID, char gender, int timeLeft)
+            : base(virtualID, ai, room)
         {
-            throw new NotImplementedException();
+            this.OwnerID = ownerID;
+            this.Gender = gender;
+            this.TimeLeft = timeLeft;
         }
 
-        internal override void OnSelfLeaveRoom(bool Kicked)
+        public RentableBot() : base()
         {
-            throw new NotImplementedException();
+
         }
 
-        internal override void OnUserEnterRoom(RoomUser User)
+        internal override void Serialize(Messages.ServerMessage Message)
         {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserLeaveRoom(GameClients.GameClient Client)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserSay(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnUserShout(RoomUser User, string Message)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void OnCycle()
-        {
-            throw new NotImplementedException();
+            base.Serialize(Message);
+            Message.AppendString(Gender.ToString());
+            Message.AppendInt32(TimeLeft);
         }
     }
 }

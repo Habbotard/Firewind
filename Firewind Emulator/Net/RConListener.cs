@@ -149,7 +149,7 @@ namespace Firewind.Net
                         }
                         else
                         {
-                            Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(uint.Parse(param));
+                            Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(int.Parse(param));
 
                             if (Client == null)
                             {
@@ -173,7 +173,7 @@ namespace Firewind.Net
                     }
                 case "signout":
                     {
-                        GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(uint.Parse(param));
+                        GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(int.Parse(param));
                         if (client == null)
                             return;
 

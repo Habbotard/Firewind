@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
 using Firewind.HabboHotel.Items;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
 {
@@ -24,7 +25,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
             this.item = item;
         }
 
-        public bool AllowsExecution(RoomUser user)
+        public bool AllowsExecution(RoomUnit unit)
         {
             if (room.lastTimerReset == null)
                 return false;

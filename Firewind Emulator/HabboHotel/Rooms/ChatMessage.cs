@@ -1,21 +1,22 @@
-﻿namespace Firewind.HabboHotel.Rooms
+﻿using Firewind.HabboHotel.Rooms.Units;
+namespace Firewind.HabboHotel.Rooms
 {
     struct InvokedChatMessage
     {
-        internal RoomUser user;
+        internal RoomUnit unit;
         internal string message;
         internal bool shout;
 
-        public InvokedChatMessage(RoomUser user, string message, bool shout)
+        public InvokedChatMessage(RoomUnit unit, string message, bool shout)
         {
-            this.user = user;
+            this.unit = unit;
             this.message = message;
             this.shout = shout;
         }
 
         internal void Dispose()
         {
-            user = null;
+            unit = null;
             message = null;
         }
     }

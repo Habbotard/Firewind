@@ -222,7 +222,7 @@
     <Compile Include="HabboHotel\Rooms\ChatMessage.cs" />
     <Compile Include="HabboHotel\Rooms\CoordItemSearch.cs" />
     <Compile Include="HabboHotel\Rooms\DynamicRoomModel.cs" />
-    <Compile Include="HabboHotel\Rooms\Gamemap.cs" />
+    <Compile Include="HabboHotel\Rooms\GameMap.cs" />
     <Compile Include="HabboHotel\Rooms\Games\BattleBanzai.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Game.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Soccer.cs" />
@@ -245,10 +245,15 @@
     <Compile Include="HabboHotel\Rooms\Items\Data\StringArrayStuffData.cs" />
     <Compile Include="HabboHotel\Rooms\Items\Data\StringIntData.cs" />
     <Compile Include="HabboHotel\Rooms\Trade.cs" />
-    <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomUnitManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\AIBase.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\BartenderAI.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\GenericAI.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\PetAI.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\AI\SpyAI.cs" />
     <Compile Include="HabboHotel\Rooms\Units\RoomAI.cs" />
     <Compile Include="HabboHotel\Rooms\Units\OfficialBot.cs" />
-    <Compile Include="HabboHotel\Rooms\Units\Pet.cs" />
+    <Compile Include="HabboHotel\Rooms\Units\PetBot.cs" />
     <Compile Include="HabboHotel\Rooms\Units\RoomUnit.cs" />
     <Compile Include="HabboHotel\Rooms\Units\RoomUser.cs" />
     <Compile Include="HabboHotel\Rooms\Units\RentableBot.cs" />
@@ -411,6 +416,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

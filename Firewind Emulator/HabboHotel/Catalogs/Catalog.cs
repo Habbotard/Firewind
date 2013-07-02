@@ -245,7 +245,7 @@ namespace Firewind.HabboHotel.Catalogs
                 return;
             }
 
-            uint GiftUserId = 0;
+            int GiftUserId = 0;
             //int giftWrappingCost = 0;
             if (IsGift)
             {
@@ -279,7 +279,7 @@ namespace Firewind.HabboHotel.Catalogs
                     return;
                 }
 
-                GiftUserId = Convert.ToUInt32(dRow[0]);
+                GiftUserId = Convert.ToInt32(dRow[0]);
 
                 if (GiftUserId == 0)
                 {
@@ -651,7 +651,6 @@ namespace Firewind.HabboHotel.Catalogs
                         {
                             case InteractionType.pet:
 
-                                //int petType = int.Parse(Item.InteractionType.ToString().Replace("pet", ""));
                                 int petType = int.Parse(Item.Name.Substring(Item.Name.IndexOf(' ') + 4));
                                 string[] PetData = ExtraData.Split('\n');
 
@@ -746,7 +745,7 @@ namespace Firewind.HabboHotel.Catalogs
             }
         }
 
-        internal static Pet CreatePet(uint UserId, string Name, int Type, string Race, string Color)
+        internal static Pet CreatePet(int UserId, string Name, int Type, string Race, string Color)
         {
             Pet pet = new Pet(404, UserId, 0, Name, (uint)Type, Race, Color, 0, 100, 100, 0, FirewindEnvironment.GetUnixTimestamp(), 0, 0, 0.0, false);
             pet.DBState = DatabaseUpdateState.NeedsUpdate;
@@ -769,7 +768,7 @@ namespace Firewind.HabboHotel.Catalogs
                 return null;
             }
 
-            return new Pet(Convert.ToUInt32(Row["id"]), Convert.ToUInt32(Row["user_id"]), Convert.ToUInt32(Row["room_id"]), (string)Row["name"], Convert.ToUInt32(Row["type"]), (string)Row["race"], (string)Row["color"], (int)Row["expirience"], (int)Row["energy"], (int)Row["nutrition"], (int)Row["respect"], (double)Row["createstamp"], (int)Row["x"], (int)Row["y"], (double)Row["z"], (Convert.ToInt32(Row["have_saddle"])==1));
+            return new Pet(Convert.ToUInt32(Row["id"]), Convert.ToInt32(Row["user_id"]), Convert.ToUInt32(Row["room_id"]), (string)Row["name"], Convert.ToUInt32(Row["type"]), (string)Row["race"], (string)Row["color"], (int)Row["expirience"], (int)Row["energy"], (int)Row["nutrition"], (int)Row["respect"], (double)Row["createstamp"], (int)Row["x"], (int)Row["y"], (double)Row["z"], (Convert.ToInt32(Row["have_saddle"])==1));
         }
 
         //internal Pet GeneratePetFromRow(DataRow Row, uint PetID)

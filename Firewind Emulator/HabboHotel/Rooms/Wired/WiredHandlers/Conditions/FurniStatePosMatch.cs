@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Firewind.HabboHotel.Items;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
 {
@@ -22,7 +23,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions
             this.isDisposed = false;
         }
 
-        public bool AllowsExecution(RoomUser user)
+        public bool AllowsExecution(RoomUnit unit)
         {
             foreach (RoomItem item in items)
             {

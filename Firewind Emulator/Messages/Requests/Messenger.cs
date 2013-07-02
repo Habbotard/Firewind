@@ -45,7 +45,7 @@ namespace Firewind.Messages
 
             for (int i = 0; i < Requests; i++)
             {
-                Session.GetHabbo().GetMessenger().DestroyFriendship(Request.ReadUInt32());
+                Session.GetHabbo().GetMessenger().DestroyFriendship(Request.ReadInt32());
             }
         }
 
@@ -70,7 +70,7 @@ namespace Firewind.Messages
 
             for (int i = 0; i < Amount; i++)
             {
-                uint RequestId = Request.ReadUInt32();
+                int RequestId = Request.ReadInt32();
 
                 MessengerRequest massRequest = Session.GetHabbo().GetMessenger().GetRequest(RequestId);
 
@@ -108,7 +108,7 @@ namespace Firewind.Messages
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        uint sender = Request.ReadUInt32();
+                        int sender = Request.ReadInt32();
                         this.Session.GetHabbo().GetMessenger().HandleRequest(sender);
                     }
                 }
@@ -133,7 +133,7 @@ namespace Firewind.Messages
             if (FirewindEnvironment.SystemMute)
                 return;
             //if the user we are sending an IM to is on IRC, get the IRC client / connection and send the data there instead of here. Then gtfo.
-            uint userId = Request.ReadUInt32();
+            int userId = Request.ReadInt32();
             string message = FirewindEnvironment.FilterInjectionChars(Request.ReadString());
 
             if (Session.GetHabbo().GetMessenger() == null)
@@ -146,7 +146,7 @@ namespace Firewind.Messages
 
         internal void FollowBuddy()
         {
-            uint BuddyId = Request.ReadUInt32();
+            int BuddyId = Request.ReadInt32();
 
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(BuddyId);
 
@@ -183,20 +183,20 @@ namespace Firewind.Messages
         {
             int count = Request.ReadInt32();
 
-            List<UInt32> UserIds = new List<uint>();
+            List<int> UserIds = new List<int>();
 
             for (int i = 0; i < count; i++)
             {
-                UserIds.Add(Request.ReadUInt32());
+                UserIds.Add(Request.ReadInt32());
             }
 
             string message = FirewindEnvironment.FilterInjectionChars(Request.ReadString(), true);
 
             ServerMessage Message = new ServerMessage(Outgoing.InstantInvite);
-            Message.AppendUInt(Session.GetHabbo().Id);
+            Message.AppendInt32(Session.GetHabbo().Id);
             Message.AppendString(message);
 
-            foreach (UInt32 Id in UserIds)
+            foreach (int Id in UserIds)
             {
                 if (!Session.GetHabbo().GetMessenger().FriendshipExists(Id))
                     continue;

@@ -67,7 +67,7 @@ namespace Firewind.HabboHotel.GameClients
             }
         }
 
-        internal GameClient GetClientByUserID(uint userID)
+        internal GameClient GetClientByUserID(int userID)
         {
             if (userIDRegister.ContainsKey(userID))
                 return (GameClient)userIDRegister[userID];
@@ -96,7 +96,7 @@ namespace Firewind.HabboHotel.GameClients
             }
         }
 
-        internal string GetNameById(uint Id)
+        internal string GetNameById(int Id)
         {
             GameClient client = GetClientByUserID(Id);
 
@@ -114,9 +114,9 @@ namespace Firewind.HabboHotel.GameClients
             return username;
         }
 
-        internal IEnumerable<GameClient> GetClientsById(Dictionary<uint, MessengerBuddy>.KeyCollection users)
+        internal IEnumerable<GameClient> GetClientsById(Dictionary<int, MessengerBuddy>.KeyCollection users)
         {
-            foreach (uint id in users)
+            foreach (int id in users)
             {
                 GameClient client = GetClientByUserID(id);
                 if (client != null)
@@ -401,7 +401,7 @@ namespace Firewind.HabboHotel.GameClients
                             }
                             catch
                             {
-                                Logging.LogCriticalException("Failed to send ping packet, possible fack up!");
+                                //Logging.LogCriticalException("Failed to send ping packet, possible fack up!");
                                 //ToDisconnect.Add(Client);
                                 lock (timedOutConnections.SyncRoot)
                                 {
@@ -823,14 +823,14 @@ namespace Firewind.HabboHotel.GameClients
             }
         }
 
-        internal void LogClonesOut(uint UserID)
+        internal void LogClonesOut(int UserID)
         {
             GameClient client = GetClientByUserID(UserID);
             if (client != null)
                 client.Disconnect();
         }
 
-        internal void RegisterClient(GameClient client, uint userID, string username)
+        internal void RegisterClient(GameClient client, int userID, string username)
         {
             if (usernameRegister.ContainsKey(username.ToLower()))
                 usernameRegister[username.ToLower()] = client;
@@ -853,7 +853,7 @@ namespace Firewind.HabboHotel.GameClients
             }
         }
 
-        internal void UnregisterClient(uint userid, string username)
+        internal void UnregisterClient(int userid, string username)
         {
             userIDRegister.Remove(userid);
             usernameRegister.Remove(username.ToLower());

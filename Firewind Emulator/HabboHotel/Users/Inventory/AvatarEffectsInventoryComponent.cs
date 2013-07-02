@@ -8,6 +8,7 @@ using Firewind.Messages;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using Database_Manager.Database.Session_Details.Interfaces;
 using HabboEvents;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Users.Inventory
 {
@@ -15,7 +16,7 @@ namespace Firewind.HabboHotel.Users.Inventory
     {
         private ArrayList Effects;
         private int EffectCount;
-        private uint UserId;
+        private int UserId;
         internal int CurrentEffect;
         private GameClient mClient;
 
@@ -29,7 +30,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             }
         }
 
-        internal AvatarEffectsInventoryComponent(uint UserId, GameClient pClient, UserData data)
+        internal AvatarEffectsInventoryComponent(int UserId, GameClient pClient, UserData data)
         {
             _removeQueue = new Queue();
             this.mClient = pClient;
@@ -131,7 +132,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             CurrentEffect = EffectId;
 
             ServerMessage Message = new ServerMessage(Outgoing.ApplyEffects);
-            Message.AppendInt32(User.VirtualId);
+            Message.AppendInt32(User.VirtualID);
             Message.AppendInt32(EffectId);
             Message.AppendInt32(0);
             Room.SendMessage(Message);
@@ -161,7 +162,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             CurrentEffect = EffectId;
 
             ServerMessage Message = new ServerMessage(Outgoing.ApplyEffects);
-            Message.AppendInt32(User.VirtualId);
+            Message.AppendInt32(User.VirtualID);
             Message.AppendInt32(EffectId);
             Message.AppendInt32(0);
             Room.SendMessage(Message);

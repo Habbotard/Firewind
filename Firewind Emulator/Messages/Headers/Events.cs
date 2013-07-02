@@ -166,6 +166,9 @@ namespace HabboEvents
         public static int StartGuildPurchase = 1137;
         public static int GetGuildInfo = 1660;
         public static int CreateGuild = 2282;
+        public static int GetGuilds = 1557;
+        public static int GetGuildFurniInfo = 3015;
+        public static int GetGuildManageInfo = 1811;
 
         // Engine
         public static int EventLog = 2087;
@@ -201,5 +204,12 @@ namespace HabboEvents
         // Bots
         public static int GetBotInventory = 1642;
         public static int PlaceBot = 829;
+
+        // Wired
+        public static int UpdateCondition = 2013;
+
+        // Trax/jukebox
+        public static int GetSoundMachinePlayList = 2520;
+        public static int GetSongInfo = 772;
     }
 }

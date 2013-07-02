@@ -51,8 +51,8 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
                     {
                         while (requestQueue.Count > 0)
                         {
-                            UserWalksFurniValue obj = (UserWalksFurniValue)requestQueue.Dequeue();
-                            handler.RequestStackHandle(item.Coordinate, obj.item, obj.user, Games.Team.none);
+                            UnitWalksFurniValue obj = (UnitWalksFurniValue)requestQueue.Dequeue();
+                            handler.RequestStackHandle(item.Coordinate, obj.item, obj.unit, Games.Team.none);
                         }
                     }
                     handler.OnEvent(item.Id);
@@ -66,11 +66,11 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Triggers
             }
         }
 
-        private void targetItem_OnUserWalksOffFurni(object sender, UserWalksOnArgs e)
+        private void targetItem_OnUserWalksOffFurni(object sender, UnitWalksOnArgs e)
         {
             if (requiredCycles > 0)
             {
-                UserWalksFurniValue obj = new UserWalksFurniValue(e.user, (RoomItem)sender);
+                UnitWalksFurniValue obj = new UnitWalksFurniValue(e.user, (RoomItem)sender);
                 lock (requestQueue.SyncRoot)
                 {
                     requestQueue.Enqueue(obj);

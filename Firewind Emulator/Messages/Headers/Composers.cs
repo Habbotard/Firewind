@@ -191,13 +191,17 @@ namespace HabboEvents
         public static int GroupInfo = 2602;
         public static int OwnGuilds = 1463;
         public static int GroupCreated = 1327;
+        public static int GuildFurniInfo = 113;
+        public static int GuildEditInfo = 3529;
 
         // User
         public static int SoundSettings = 89;
         public static int WelcomeBack = 3015;
 
-        // Pets
+        // Pets/bots
         public static int PetCommands = 2603;
+
+        public static int BotInventory = 3727;
 
         // Messenger
         public static int MessengerError = 3736;
@@ -217,5 +221,10 @@ namespace HabboEvents
         public static int PurchaseError = 277;
         public static int PurchaseOK = 2069;
         public static int UnseenItems = 135;
+
+        // Trax/Jukebox
+        public static int PlayList = 1211;
+        public static int PlayListSongAdded = 737;
+        public static int TraxSongInfo = 1882;
     }
 }

@@ -242,7 +242,7 @@ namespace Firewind.HabboHotel.Support
             //}
         }
 
-        internal void SendNewTicket(GameClient Session, int Category, uint ReportedUser, String Message)
+        internal void SendNewTicket(GameClient Session, int Category, int ReportedUser, String Message)
         {
             if (Session.GetHabbo().CurrentRoomId <= 0)
             {
@@ -273,7 +273,7 @@ namespace Firewind.HabboHotel.Support
             SendTicketToModerators(Ticket);
         }
 
-        internal void SerializeOpenTickets(ref QueuedServerMessage serverMessages, uint userID)
+        internal void SerializeOpenTickets(ref QueuedServerMessage serverMessages, int userID)
         {
             foreach (SupportTicket ticket in Tickets)
             {
@@ -382,7 +382,7 @@ namespace Firewind.HabboHotel.Support
             SendTicketToModerators(Ticket);
         }
 
-        internal Boolean UsersHasPendingTicket(UInt32 Id)
+        internal Boolean UsersHasPendingTicket(int Id)
         {
             foreach (SupportTicket Ticket in Tickets)
             {
@@ -394,7 +394,7 @@ namespace Firewind.HabboHotel.Support
             return false;
         }
 
-        internal void DeletePendingTicketForUser(UInt32 Id)
+        internal void DeletePendingTicketForUser(int Id)
         {
             foreach (SupportTicket Ticket in Tickets)
             {
@@ -469,7 +469,7 @@ namespace Firewind.HabboHotel.Support
             if (KickUsers)
             {
                 onCycleDoneDelegate kick = new onCycleDoneDelegate(Room.onRoomKick);
-                Room.GetRoomUserManager().UserList.QueueDelegate(kick);
+                Room.GetRoomUserManager().UnitList.QueueDelegate(kick);
             }
         }
 
@@ -553,7 +553,7 @@ namespace Firewind.HabboHotel.Support
 
         #region User Moderation
 
-        internal static void KickUser(GameClient ModSession, uint UserId, String Message, Boolean Soft)
+        internal static void KickUser(GameClient ModSession, int UserId, String Message, Boolean Soft)
         {
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
 
@@ -589,7 +589,7 @@ namespace Firewind.HabboHotel.Support
             }
         }
 
-        internal static void AlertUser(GameClient ModSession, uint UserId, String Message, Boolean Caution)
+        internal static void AlertUser(GameClient ModSession, int UserId, String Message, Boolean Caution)
         {
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
 
@@ -615,7 +615,7 @@ namespace Firewind.HabboHotel.Support
             }
         }
 
-        internal static void BanUser(GameClient ModSession, uint UserId, int Length, String Message)
+        internal static void BanUser(GameClient ModSession, int UserId, int Length, String Message)
         {
             GameClient Client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
 
@@ -639,7 +639,7 @@ namespace Firewind.HabboHotel.Support
 
         #region User Info
 
-        internal static ServerMessage SerializeUserInfo(uint UserId)
+        internal static ServerMessage SerializeUserInfo(int UserId)
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -670,7 +670,7 @@ namespace Firewind.HabboHotel.Support
                     Message.AppendInt32(0);
                 }
 
-                Message.AppendBoolean(FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(Convert.ToUInt32(User["id"])) != null);
+                Message.AppendBoolean(FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(Convert.ToInt32(User["id"])) != null);
 
                 if (Info != null)
                 {
@@ -694,7 +694,7 @@ namespace Firewind.HabboHotel.Support
             }
         }
 
-        internal static ServerMessage SerializeRoomVisits(UInt32 UserId)
+        internal static ServerMessage SerializeRoomVisits(int UserId)
         {
             //using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
@@ -702,7 +702,7 @@ namespace Firewind.HabboHotel.Support
                 //DataTable Data = dbClient.getTable();
 
                 ServerMessage Message = new ServerMessage(Outgoing.RoomVisits);
-                Message.AppendUInt(UserId);
+                Message.AppendInt32(UserId);
                 Message.AppendString(FirewindEnvironment.GetGame().GetClientManager().GetNameById(UserId));
 
                 //if (Data != null)
@@ -733,14 +733,14 @@ namespace Firewind.HabboHotel.Support
 
         #region Chatlogs
 
-        internal static ServerMessage SerializeUserChatlog(UInt32 UserId)
+        internal static ServerMessage SerializeUserChatlog(int UserId)
         {
             GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
 
             if (client == null || client.GetHabbo() == null)
             {
                 ServerMessage Message = new ServerMessage(Outgoing.UserChatlog);
-                Message.AppendUInt(UserId);
+                Message.AppendInt32(UserId);
                 Message.AppendString("User not online");
                 Message.AppendInt32(0);
 
@@ -752,7 +752,7 @@ namespace Firewind.HabboHotel.Support
                 Dictionary<int, List<ChatMessage>> messages = manager.GetSortedMessages();
 
                 ServerMessage Message = new ServerMessage(Outgoing.UserChatlog);
-                Message.AppendUInt(UserId);
+                Message.AppendInt32(UserId);
                 Message.AppendString(client.GetHabbo().Username);
                 Message.AppendInt32(messages.Count);
                 foreach (KeyValuePair<int, List<ChatMessage>> valuePair in messages)
@@ -844,8 +844,8 @@ namespace Firewind.HabboHotel.Support
 
             ServerMessage Message = new ServerMessage(Outgoing.IssueChatlog);
             Message.AppendUInt(Ticket.TicketId);
-            Message.AppendUInt(Ticket.SenderId);
-            Message.AppendUInt(Ticket.ReportedId);
+            Message.AppendInt32(Ticket.SenderId);
+            Message.AppendInt32(Ticket.ReportedId);
             Message.AppendUInt(RoomData.Id); //maybe?
             Message.AppendBoolean(false); // is public
             Message.AppendUInt(RoomData.Id);

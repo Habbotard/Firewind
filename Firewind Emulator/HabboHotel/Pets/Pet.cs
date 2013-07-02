@@ -9,7 +9,7 @@ namespace Firewind.HabboHotel.Pets
     class Pet
     {
         internal uint PetId;
-        internal uint OwnerId;
+        internal int OwnerId;
         internal int VirtualId;
 
         internal uint Type;
@@ -167,7 +167,7 @@ namespace Firewind.HabboHotel.Pets
 
         internal bool HaveSaddle;
 
-        internal Pet(uint PetId, uint OwnerId, uint RoomId, string Name, uint Type, string Race, string Color, int Expirience, int Energy, int Nutrition, int Respect, double CreationStamp, int X, int Y, double Z, bool havesaddle)
+        internal Pet(uint PetId, int OwnerId, uint RoomId, string Name, uint Type, string Race, string Color, int Expirience, int Energy, int Nutrition, int Respect, double CreationStamp, int X, int Y, double Z, bool havesaddle)
         {
             this.PetId = PetId;
             this.OwnerId = OwnerId;
@@ -200,7 +200,7 @@ namespace Firewind.HabboHotel.Pets
 
             Message = new ServerMessage(Outgoing.PetRespectNotification);
 
-            Message.AppendUInt(OwnerId); // petOwnerId
+            Message.AppendInt32(OwnerId); // petOwnerId
             Message.AppendInt32(1); // respect
             SerializeInventory(Message);
             //Message.AppendUInt(PetId); // id
@@ -342,7 +342,7 @@ namespace Firewind.HabboHotel.Pets
             Nfo.AppendInt32(MaxNutrition);
             //Nfo.AppendString(Color.ToLower());
             Nfo.AppendInt32(Respect);
-            Nfo.AppendUInt(OwnerId);
+            Nfo.AppendInt32(OwnerId);
             Nfo.AppendInt32(Age);
             Nfo.AppendString(OwnerName);
             Nfo.AppendInt32(1);
@@ -350,7 +350,7 @@ namespace Firewind.HabboHotel.Pets
 
             Nfo.AppendBoolean(HaveSaddle);
 
-            Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUserByVirtualId(VirtualId).isMounted);
+            Nfo.AppendBoolean(false);// Nfo.AppendBoolean(FirewindEnvironment.GetGame().GetRoomManager().GetRoom(RoomId).GetRoomUserManager().GetRoomUnitByVirtualId(VirtualId).isMounted);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);
             Nfo.AppendInt32(0);

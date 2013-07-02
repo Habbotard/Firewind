@@ -10,7 +10,7 @@ namespace Firewind.HabboHotel.Users.Subscriptions
 {
     class SubscriptionManager
     {
-        private uint UserId;
+        private int UserId;
         private Dictionary<string, Subscription> Subscriptions;
 
         internal List<string> SubList
@@ -28,7 +28,7 @@ namespace Firewind.HabboHotel.Users.Subscriptions
             }
         }
 
-        internal SubscriptionManager(uint userID, UserData userData)
+        internal SubscriptionManager(int userID, UserData userData)
         {
             this.UserId = userID;
             Subscriptions = userData.subscriptions;

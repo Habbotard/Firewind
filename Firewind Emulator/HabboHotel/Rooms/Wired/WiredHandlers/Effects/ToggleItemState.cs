@@ -6,13 +6,14 @@ using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Data;
 using System;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 {
     class ToggleItemState: IWiredTrigger, IWiredCycleable, IWiredEffect
     {
         private RoomItem item;
-        private Gamemap gamemap;
+        private GameMap gamemap;
         private WiredHandler handler;
 
         private List<RoomItem> items;
@@ -22,7 +23,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
 
         private bool disposed;
 
-        public ToggleItemState(Gamemap gamemap, WiredHandler handler, List<RoomItem> items, int delay, RoomItem Item)
+        public ToggleItemState(GameMap gamemap, WiredHandler handler, List<RoomItem> items, int delay, RoomItem Item)
         {
             this.item = Item;
             this.gamemap = gamemap;
@@ -48,8 +49,8 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
                     {
                         while (delayedTriggeringUsers.Count > 0)
                         {
-                            RoomUser user = (RoomUser)delayedTriggeringUsers.Dequeue();
-                            ToggleItems(user);
+                            RoomUnit unit = (RoomUnit)delayedTriggeringUsers.Dequeue();
+                            ToggleItems(unit);
                         }
                     }
                 }
@@ -59,29 +60,30 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
             return true;
         }
 
-        public bool Handle(RoomUser user, Team team, RoomItem i)
+        public bool Handle(RoomUnit unit, Team team, RoomItem i)
         {
             if (disposed)
                 return false;
             cycles = 0;
-            if (delay == 0 && user != null)
+            if (delay == 0 && unit != null)
             {
-                return ToggleItems(user);
+                return ToggleItems(unit);
             }
             else
             {
                 lock (delayedTriggeringUsers.SyncRoot)
                 {
-                    delayedTriggeringUsers.Enqueue(user);
+                    delayedTriggeringUsers.Enqueue(unit);
                 }
                 handler.RequestCycle(this);
             }
             return false;
         }
 
-        private bool ToggleItems(RoomUser user)
+        private bool ToggleItems(RoomUnit unit)
         {
-            if (disposed)
+            RoomUser user = unit as RoomUser;
+            if (disposed || user == null)
                 return false;
             handler.OnEvent(item.Id);
             bool itemTriggered = false;
@@ -91,7 +93,7 @@ namespace Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Effects
                 if (i == null)
                     continue;
                 //Logging.WriteLine("do it!");
-                if (user != null && user.GetClient() != null)
+                if (unit != null && user.GetClient() != null)
                     i.Interactor.OnTrigger(user.GetClient(), i, 0, true);
                 else
                     i.Interactor.OnTrigger(null, i, 0, true);

@@ -11,6 +11,7 @@ using System.Threading;
 using System;
 using HabboEvents;
 using System.Threading.Tasks;
+using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Wired
 {
@@ -194,10 +195,10 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
             room.SendMessage(message);
 
-            //Task.Run(
-            //    async delegate
-            //    {
-            //        await Task.Delay(0);
+            Task.Run(
+                async delegate
+                {
+                    await Task.Delay(0);
                     message = new ServerMessage(Outgoing.ObjectDataUpdate);
                     message.AppendString(itemID.ToString());
                     message.AppendInt32(0); // datatype
@@ -206,16 +207,16 @@ namespace Firewind.HabboHotel.Rooms.Wired
                     //item.data.AppendToMessage(message);
                     //Console.WriteLine("OnEvent {0}, 0", itemID);
                     room.SendMessage(message);
-            //    }
-            //);
+                }
+            );
         }
         #endregion
 
         #region Requests
-        internal void RequestStackHandle(Point coordinate, RoomItem item, RoomUser user, Team team)
+        internal void RequestStackHandle(Point coordinate, RoomItem item, RoomUnit unit, Team team)
         {
             List<RoomItem> items = null;
-            if (actionStacks.ContainsKey(coordinate) && conditionHandler.AllowsHandling(coordinate, user))
+            if (actionStacks.ContainsKey(coordinate) && conditionHandler.AllowsHandling(coordinate, unit))
             {
                 bool hasRandomEffectAddon = false;
                 items = (List<RoomItem>)actionStacks[coordinate];
@@ -237,13 +238,13 @@ namespace Firewind.HabboHotel.Rooms.Wired
 
                 if (hasRandomEffectAddon)
                 {
-                    availableEffects[FirewindEnvironment.GetRandomNumber(0, availableEffects.Count - 1)].Handle(user, team, item);
+                    availableEffects[FirewindEnvironment.GetRandomNumber(0, availableEffects.Count - 1)].Handle(unit, team, item);
                 }
                 else
                 {
                     foreach (IWiredEffect effect in availableEffects)
                     {
-                        effect.Handle(user, team, item);
+                        effect.Handle(unit, team, item);
                     }
                 }
 

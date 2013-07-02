@@ -16,6 +16,7 @@ using Firewind.HabboHotel.Users.UserDataManagement;
 using Firewind.Util;
 using HabboEvents;
 using Firewind.HabboHotel.Rooms;
+using Firewind.HabboHotel.Rooms.Units;
 
 
 namespace Firewind.HabboHotel.Users.Inventory
@@ -27,11 +28,12 @@ namespace Firewind.HabboHotel.Users.Inventory
         private Hashtable discs;
 
         private SafeDictionary<UInt32, Pet> InventoryPets;
+        private SafeDictionary<int, RentableBot> InventoryBots;
         private Hashtable mAddedItems;
         private ArrayList mRemovedItems;
         private GameClient mClient;
 
-        internal uint UserId;
+        internal int UserId;
         internal int ItemCount
         {
             get
@@ -40,7 +42,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             }
         }
 
-        internal InventoryComponent(uint UserId, GameClient Client, UserData UserData)
+        internal InventoryComponent(int UserId, GameClient Client, UserData UserData)
         {
             this.mClient = Client;
             this.UserId = UserId;
@@ -59,6 +61,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             }
 
             this.InventoryPets = new SafeDictionary<UInt32, Pet>(UserData.pets);
+            this.InventoryBots = new SafeDictionary<int, RentableBot>(UserData.bots);
             this.mAddedItems = new Hashtable();
             this.mRemovedItems = new ArrayList();
             this.isUpdated = false;
@@ -163,6 +166,7 @@ namespace Firewind.HabboHotel.Users.Inventory
 
             Pet.PlacedInRoom = false;
             Pet.RoomId = 0;
+            Pet.DBState = DatabaseUpdateState.NeedsUpdate;
 
             InventoryPets.Add(Pet.PetId, Pet);
 
@@ -244,6 +248,7 @@ namespace Firewind.HabboHotel.Users.Inventory
                         catch
                         {
                             Logging.LogException(string.Format("Error in furni data! Item ID: \"{0}\" and data: \"{1}\"", id, extradata.Replace(Convert.ToChar(1).ToString(), "[1]")));
+                            data = new StringData(extradata);
                         }
                     }
 
@@ -358,7 +363,7 @@ namespace Firewind.HabboHotel.Users.Inventory
                         {
                             dbClient.setQuery("INSERT INTO items_extradata VALUES (" + Id + ",@datatype,@data,@extra)");
                             dbClient.addParameter("datatype", data.GetTypeID());
-                            dbClient.addParameter("data", data);
+                            dbClient.addParameter("data", data.ToString());
                             dbClient.addParameter("extra", extra);
                             dbClient.runQuery();
                         }
@@ -521,6 +526,19 @@ namespace Firewind.HabboHotel.Users.Inventory
             return Message;
         }
 
+        internal void SerializeBotInventory(ServerMessage message)
+        {
+            message.AppendInt32(InventoryBots.Count);
+
+            foreach (RentableBot bot in InventoryBots.Values)
+            {
+                message.AppendInt32(bot.ID); // id
+                message.AppendString(bot.Name); // name
+                message.AppendString(bot.Gender.ToString()); // gender
+                message.AppendString(bot.Figure); // figure
+            }
+        }
+
         private GameClient GetClient()
         {
             return FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
@@ -636,6 +654,15 @@ namespace Firewind.HabboHotel.Users.Inventory
             List<Pet> toReturn = new List<Pet>();
             foreach (Pet pet in InventoryPets.Values)
                 toReturn.Add(pet);
+
+            return toReturn;
+        }
+
+        internal List<RentableBot> GetBots()
+        {
+            List<RentableBot> toReturn = new List<RentableBot>();
+            foreach (RentableBot bot in InventoryBots.Values)
+                toReturn.Add(bot);
 
             return toReturn;
         }
