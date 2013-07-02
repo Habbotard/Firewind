@@ -190,18 +190,13 @@ namespace Firewind.Net
                     {
                         //String extradata = data.Split(Convert.ToChar(1))[2];
 
-                        ServerMessage HotelAlert = new ServerMessage(810);
-                        HotelAlert.AppendUInt(1);
-                        HotelAlert.AppendString(LanguageLocale.GetValue("hotelallert.notice") + "\r\n" + 
-                        param + "\r\n");
+                        ServerMessage notif = new ServerMessage(Outgoing.MOTDNotification);
 
-                        /*if (extradata.Contains("://"))
-                        {
-                            Logging.WriteLine("TEST");
-                            HotelAlert.AppendString(extradata);
-                        }*/
+                        notif.AppendInt32(2);
+                        notif.AppendString(LanguageLocale.GetValue("hotelallert.notice"));
+                        notif.AppendString(param);
 
-                        FirewindEnvironment.GetGame().GetClientManager().QueueBroadcaseMessage(HotelAlert);
+                        FirewindEnvironment.GetGame().GetClientManager().QueueBroadcaseMessage(notif);
                         break;
                     }
                 case "useralert":
