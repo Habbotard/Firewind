@@ -67,7 +67,7 @@ namespace Firewind.Messages
             int X = Request.ReadInt32();
             int Y = Request.ReadInt32();
 
-            if (!Room.GetGameMap().CanWalk(X, Y, false))
+            if (!Room.GetGameMap().CanWalk(X, Y))
             {
                 return;
             }
@@ -388,7 +388,7 @@ namespace Firewind.Messages
                 return;
 
             // Check placement
-            if (!room.GetGameMap().itemCanBePlacedHere(x, y) || !room.GetGameMap().CanWalk(x,y,false))
+            if (!room.GetGameMap().itemCanBePlacedHere(x, y) || !room.GetGameMap().CanWalk(x,y))
                 return;
 
             List<RentableBot> bots = Session.GetHabbo().GetInventoryComponent().GetBots();

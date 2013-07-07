@@ -63,7 +63,7 @@ namespace ConsoleWriter
         private static void WriteFileContent(string message, string location)
         {
             FileStream fStream = new FileStream(location, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 4096, true);
-            byte[] bytes = ASCIIEncoding.ASCII.GetBytes(Environment.NewLine + message);
+            byte[] bytes = Encoding.UTF8.GetBytes(Environment.NewLine + message);
 
             IAsyncResult asyncResult = fStream.BeginWrite(
                 bytes, 0, bytes.Length,
@@ -217,7 +217,7 @@ namespace ConsoleWriter
                 //}
 
                 FileStream errWriter = new System.IO.FileStream(path, System.IO.FileMode.Append, System.IO.FileAccess.Write);
-                byte[] Msg = ASCIIEncoding.ASCII.GetBytes(Environment.NewLine + content);
+                byte[] Msg = Encoding.UTF8.GetBytes(Environment.NewLine + content);
                 errWriter.Write(Msg, 0, Msg.Length);
                 errWriter.Dispose();
 

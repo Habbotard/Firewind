@@ -123,7 +123,7 @@ namespace Firewind.HabboHotel.Misc
                 List<RoomUnit> units = room.GetGameMap().GetRoomUnits(squareInfront);
 
                 Point squareInFrontOfUserInFront = CoordinationUtil.GetPointInFront(squareInfront, roomuser.RotBody); //Yo dawg, we heard yo like coordinates, so we put a coordinate inside yo coordinate
-                if (room.GetGameMap().CanWalk(squareInFrontOfUserInFront.X, squareInFrontOfUserInFront.Y, false) == false)
+                if (room.GetGameMap().CanWalk(squareInFrontOfUserInFront.X, squareInFrontOfUserInFront.Y) == false)
                 {
                     return;
                 }
@@ -997,7 +997,7 @@ namespace Firewind.HabboHotel.Misc
             Dump.Append(Session.GetHabbo().CurrentRoom.GetGameMap().GenerateMapDump());
 
             FileStream errWriter = new System.IO.FileStream(@"Logs\mapdumps.txt", System.IO.FileMode.Append, System.IO.FileAccess.Write);
-            byte[] Msg = ASCIIEncoding.ASCII.GetBytes(Dump.ToString() + "\r\n\r\n");
+            byte[] Msg = Encoding.UTF8.GetBytes(Dump.ToString() + "\r\n\r\n");
             errWriter.Write(Msg, 0, Msg.Length);
             errWriter.Dispose();
         }

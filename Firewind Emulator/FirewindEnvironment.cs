@@ -29,7 +29,6 @@ namespace Firewind
         internal static DateTime ServerStarted;
         private static DatabaseManager manager;
         internal static bool SystemMute;
-        internal static bool useSSO;
         internal static bool isLive;
         internal static string PrettyVersion;
         internal static bool diagPackets = false;
@@ -37,9 +36,6 @@ namespace Firewind
         internal static RConListener MusSystem;
         internal static CultureInfo cultureInfo;
         public static uint friendRequestLimit = 300;
-
-        // veggy needs his special features
-        internal static bool IsHabin;
 
         // Multi Tasking (configurations.ini)
         internal static bool SeparatedTasksInMainLoops = false;
@@ -75,8 +71,7 @@ namespace Firewind
             Logging.WriteLine("");
 
             Logging.WriteLine("     Go to the GitHub repo for bug reporting/contributions!");
-            cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
-            IsDebugging = IsDebugging ? System.Diagnostics.Debugger.IsAttached : false;
+            IsDebugging = IsDebugging && System.Diagnostics.Debugger.IsAttached;
 
             try
             {
@@ -125,15 +120,6 @@ namespace Firewind
                 string[] arrayshit = FirewindEnvironment.GetConfig().data["mus.tcp.allowedaddr"].Split(';');
 
                 MusSystem = new RConListener(FirewindEnvironment.GetConfig().data["mus.tcp.bindip"], int.Parse(FirewindEnvironment.GetConfig().data["mus.tcp.port"]), arrayshit, 0);
-
-                useSSO = true;
-                if (Configuration.data.ContainsKey("auth.ssodisabled"))
-                {
-                    if (Configuration.data["auth.ssodisabled"] == "false")
-                    {
-                        useSSO = false;
-                    }
-                }
 
                 if (Configuration.data.ContainsKey("spambans.enabled"))
                 {
@@ -207,17 +193,6 @@ namespace Firewind
                 Console.ReadKey();
                 Environment.Exit(1);
             }
-
-            // Check if this is habin or not
-            try
-            {
-                using (IQueryAdapter dbClient = manager.getQueryreactor())
-                {
-                    dbClient.setQuery("SELECT column_name FROM information_schema.columns WHERE table_schema = '" + FirewindEnvironment.GetConfig().data["db.name"] + "' AND table_name = 'users' AND column_name = 'hpo'");
-                    IsHabin = dbClient.findsResult();
-                }
-            }
-            catch { }
         }
 
 
@@ -230,12 +205,7 @@ namespace Firewind
 
         internal static string BoolToEnum(bool Bool)
         {
-            if (Bool)
-            {
-                return "1";
-            }
-
-            return "0";
+            return Bool ? "1" : "0";
         }
 
         internal static int GetRandomNumber(int Min, int Max)
@@ -479,7 +449,7 @@ namespace Firewind
             AppendTimeStampWithComment(ref builder, MessaMessage, "Hotel pre-warning");
 
             Game.StopGameLoop();
-            Console.Write("Game loop stopped");
+            Console.WriteLine("Game loop stopped");
 
             DateTime ConnectionClose = DateTime.Now;
             Console.WriteLine("Server shutting down...");

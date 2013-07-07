@@ -481,8 +481,8 @@ namespace Firewind.Core
                             Logging.WriteLine("");
 
                             Logging.WriteLine("Writing dumpfile...");
-                            FileStream errWriter = new System.IO.FileStream(@"Logs\dump" + now.ToString().Replace(':', '.').Replace(" ", string.Empty).Replace("\\", ".") + ".txt", System.IO.FileMode.Append, System.IO.FileAccess.Write);
-                            byte[] Msg = ASCIIEncoding.ASCII.GetBytes(builder.ToString());
+                            FileStream errWriter = new FileStream(@"Logs\dump" + now.ToString().Replace(':', '.').Replace(" ", string.Empty).Replace("\\", ".") + ".txt", FileMode.Append, FileAccess.Write);
+                            byte[] Msg = Encoding.UTF8.GetBytes(builder.ToString());
                             errWriter.Write(Msg, 0, Msg.Length);
                             errWriter.Dispose();
                             Logging.WriteLine("Done!");

@@ -48,18 +48,9 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
 
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                if (FirewindEnvironment.useSSO)
-                {
-                    dbClient.setQuery("SELECT * " +
-                                        "FROM users " +
-                                        "WHERE auth_ticket = @sso ");
-                }
-                else
-                {
-                    dbClient.setQuery("SELECT * " +
-                                        "FROM users " +
-                                        "WHERE auth_ticket = @sso ");
-                }
+                dbClient.setQuery("SELECT * " +
+                                  "FROM users " +
+                                  "WHERE auth_ticket = @sso ");
 
                 dbClient.addParameter("sso", sessionTicket);
                 //dbClient.addParameter("ipaddress", ip);
@@ -82,12 +73,14 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                     return null;
                 }
 
-                string creditsTimestamp = (string)dUserInfo["lastdailycredits"];
+                string creditsTimestamp = (string) dUserInfo["lastdailycredits"];
                 string todayTimestamp = DateTime.Today.ToString("MM/dd");
                 if (creditsTimestamp != todayTimestamp)
                 {
-                    dbClient.runFastQuery("UPDATE users SET credits = credits + 3000, daily_respect_points = 3, lastdailycredits = '" + todayTimestamp + "' WHERE id = " + userID);
-                    dUserInfo["credits"] = (int)dUserInfo["credits"] + 3000;
+                    dbClient.runFastQuery(
+                        "UPDATE users SET credits = credits + 3000, daily_respect_points = 3, lastdailycredits = '" +
+                        todayTimestamp + "' WHERE id = " + userID);
+                    dUserInfo["credits"] = (int) dUserInfo["credits"] + 3000;
                 }
 
                 dbClient.setQuery("SELECT * FROM user_achievement WHERE userid = " + userID);
@@ -115,27 +108,28 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                 dEffects = dbClient.getTable();
 
                 dbClient.setQuery("SELECT users.id,users.username,users.motto,users.look,users.last_online " +
-                                        "FROM users " +
-                                        "JOIN messenger_friendships " +
-                                        "ON users.id = messenger_friendships.sender " +
-                                        "WHERE messenger_friendships.receiver = " + userID + " " +
-                                        "UNION ALL " +
-                                        "SELECT users.id,users.username,users.motto,users.look,users.last_online " +
-                                        "FROM users " +
-                                        "JOIN messenger_friendships " +
-                                        "ON users.id = messenger_friendships.receiver " +
-                                        "WHERE messenger_friendships.sender = " + userID);
+                                  "FROM users " +
+                                  "JOIN messenger_friendships " +
+                                  "ON users.id = messenger_friendships.sender " +
+                                  "WHERE messenger_friendships.receiver = " + userID + " " +
+                                  "UNION ALL " +
+                                  "SELECT users.id,users.username,users.motto,users.look,users.last_online " +
+                                  "FROM users " +
+                                  "JOIN messenger_friendships " +
+                                  "ON users.id = messenger_friendships.receiver " +
+                                  "WHERE messenger_friendships.sender = " + userID);
                 dFriends = dbClient.getTable();
 
                 dbClient.setQuery("SELECT messenger_requests.sender,messenger_requests.receiver,users.username " +
-                                        "FROM users " +
-                                        "JOIN messenger_requests " +
-                                        "ON users.id = messenger_requests.sender " +
-                                        "WHERE messenger_requests.receiver = " + userID);
+                                  "FROM users " +
+                                  "JOIN messenger_requests " +
+                                  "ON users.id = messenger_requests.sender " +
+                                  "WHERE messenger_requests.receiver = " + userID);
                 dRequests = dbClient.getTable();
 
-                dbClient.setQuery("SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE owner = @name");
-                dbClient.addParameter("name", (string)dUserInfo["username"]);
+                dbClient.setQuery(
+                    "SELECT rooms.*, room_active.active_users FROM rooms LEFT JOIN room_active ON (room_active.roomid = rooms.id) WHERE owner = @name");
+                dbClient.addParameter("name", (string) dUserInfo["username"]);
                 dRooms = dbClient.getTable();
 
                 dbClient.setQuery("SELECT * FROM user_pets WHERE user_id = " + userID + " AND room_id = 0");
@@ -157,8 +151,9 @@ namespace Firewind.HabboHotel.Users.UserDataManagement
                                        "DELETE FROM user_tickets WHERE userid = " + userID + ";");*/
 
                 dbClient.setQuery("UPDATE users SET ip_last = @ip WHERE id = " + userID + "; " +
-                                      "UPDATE user_info SET login_timestamp = '" + FirewindEnvironment.GetUnixTimestamp() + "' WHERE user_id = " + userID + " ; " +
-                                      "");
+                                  "UPDATE user_info SET login_timestamp = '" + FirewindEnvironment.GetUnixTimestamp() +
+                                  "' WHERE user_id = " + userID + " ; " +
+                                  "");
                 dbClient.addParameter("ip", ip);
                 dbClient.runQuery();
 

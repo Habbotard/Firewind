@@ -55,7 +55,7 @@ namespace Firewind.HabboHotel.Items
                         length = (int)dRow["length"];
                         height = Convert.ToDouble(dRow["stack_height"]);
                         allowStack = Convert.ToInt32(dRow["can_stack"]) == 1;
-                        allowWalk = Convert.ToInt32(dRow["is_walkable"]) == 1;
+                        allowWalk = Convert.ToInt32(dRow["can_walk"]) == 1;
                         allowSit = Convert.ToInt32(dRow["can_sit"]) == 1;
                         allowRecycle = Convert.ToInt32(dRow["allow_recycle"]) == 1;
                         allowTrade = Convert.ToInt32(dRow["allow_trade"]) == 1;
