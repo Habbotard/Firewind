@@ -72,7 +72,7 @@ namespace Firewind.HabboHotel.Items
             Message.AppendUInt(Id);
             Message.AppendInt32(GetBaseItem().SpriteId);
 
-            if (GetBaseItem().Name.Contains("a2"))
+            if (GetBaseItem().Name.Contains("floor"))
             {
                 Message.AppendInt32(3);
             }

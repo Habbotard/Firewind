@@ -281,6 +281,10 @@ namespace Firewind.HabboHotel.Rooms
             {
                 mGameMap[x, y] = 2;
             }
+            else if (Model.SqState[x, y] == SquareState.POOL)
+            {
+                mUserItemEffect[x, y] = 6;
+            }
         }
 
         internal void updateMapForItem(RoomItem item)
@@ -379,25 +383,7 @@ namespace Firewind.HabboHotel.Rooms
                 {
                     for (int chr = 0; chr < Model.MapSizeX; chr++)
                     {
-                        mGameMap[chr, line] = 0;
-                        mUserItemEffect[chr, line] = 0;
-
-                        if (chr == Model.DoorX && line == Model.DoorY)
-                        {
-                            mGameMap[chr, line] = 3;
-                        }
-                        else if (Model.SqState[chr, line] == SquareState.OPEN)
-                        {
-                            mGameMap[chr, line] = 1;
-                        }
-                        else if (Model.SqState[chr, line] == SquareState.SEAT)
-                        {
-                            mGameMap[chr, line] = 2;
-                        }
-                        else if (Model.SqState[chr, line] == SquareState.POOL)
-                        {
-                            mUserItemEffect[chr, line] = 6;
-                        }
+                        SetDefaultValue(chr, line);
                     }
                 }
             }
@@ -488,12 +474,12 @@ namespace Firewind.HabboHotel.Rooms
                         if (mGameMap[Coord.X, Coord.Y] != 3)
                             mGameMap[Coord.X, Coord.Y] = 1;
                     }
-                    else if (Item.GetZ <= (Model.SqFloorHeight[Item.GetX, Item.GetY] + 0.1) && Item.GetBaseItem().InteractionType == Firewind.HabboHotel.Items.InteractionType.gate && ((StringData)Item.data).Data == "1") // If this item is a gate, open, and on the floor, allow users to walk here.
+                    else if (Item.GetZ <= (Model.SqFloorHeight[Item.GetX, Item.GetY] + 0.1) && Item.GetBaseItem().InteractionType == InteractionType.gate && ((StringData)Item.data).Data == "1") // If this item is a gate, open, and on the floor, allow users to walk here.
                     {
                         if (mGameMap[Coord.X, Coord.Y] != 3)
                             mGameMap[Coord.X, Coord.Y] = 1;
                     }
-                    else if (Item.GetBaseItem().IsSeat || Item.GetBaseItem().InteractionType == Firewind.HabboHotel.Items.InteractionType.bed)
+                    else if (Item.GetBaseItem().IsSeat || Item.GetBaseItem().InteractionType == InteractionType.bed)
                     {
                         mGameMap[Coord.X, Coord.Y] = 3;
                     }
@@ -717,7 +703,6 @@ namespace Firewind.HabboHotel.Rooms
                     continue;
 
                 List<RoomItem> _items = (List<RoomItem>)items[coord];
-
                 foreach (RoomItem _item in _items)
                 {
                     ConstructMapForItem(_item, coord);
@@ -725,7 +710,6 @@ namespace Firewind.HabboHotel.Rooms
             }
 
             items.Clear();
-            items = null;
             return isRemoved;
         }
 
@@ -829,7 +813,7 @@ namespace Firewind.HabboHotel.Rooms
             return true;
         }
 
-        internal bool CanWalk(int X, int Y, bool Override)
+        internal bool CanWalk(int X, int Y, bool Override = false)
         {
             if (room.AllowWalkthrough)
                 return true;

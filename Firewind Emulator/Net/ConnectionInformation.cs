@@ -424,7 +424,7 @@ namespace ConnectionManager
             try
             {
                 FileStream errWriter = new System.IO.FileStream("packetlog.txt", System.IO.FileMode.Append, System.IO.FileAccess.Write);
-                byte[] Msg = ASCIIEncoding.ASCII.GetBytes(Environment.NewLine + message);
+                byte[] Msg = Encoding.UTF8.GetBytes(Environment.NewLine + message);
                 errWriter.Write(Msg, 0, Msg.Length);
                 errWriter.Dispose();
             }

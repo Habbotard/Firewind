@@ -304,7 +304,7 @@ namespace Helpers
                 System.IO.FileStream Writer = new System.IO.FileStream(fileName, System.IO.FileMode.Append, System.IO.FileAccess.Write);
                 while (!Writer.CanWrite)
                     Thread.Sleep(1);
-                byte[] Msg = System.Text.ASCIIEncoding.ASCII.GetBytes(text + "\r\n\r\n");
+                byte[] Msg = Encoding.UTF8.GetBytes(text + "\r\n\r\n");
                 Writer.Write(Msg, 0, Msg.Length);
                 Writer.Close();
             }
