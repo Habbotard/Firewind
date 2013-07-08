@@ -13,8 +13,8 @@ using System.Linq;
 using Firewind.Collections;
 using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.HabboHotel.Users.UserDataManagement;
+using Firewind.Messages.Headers;
 using Firewind.Util;
-using HabboEvents;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Rooms.Units;
 
@@ -83,7 +83,7 @@ namespace Firewind.HabboHotel.Users.Inventory
             InventoryPets.Clear();
             isUpdated = true;
 
-            mClient.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventary);
+            mClient.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventory);
             GetClient().GetMessageHandler().SendResponse();
         }
 
@@ -310,7 +310,7 @@ namespace Firewind.HabboHotel.Users.Inventory
                 return;
             if (mClient.GetMessageHandler().GetResponse() == null)
                 return;
-            mClient.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventary);
+            mClient.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventory);
             mClient.GetMessageHandler().SendResponse();
         }
 

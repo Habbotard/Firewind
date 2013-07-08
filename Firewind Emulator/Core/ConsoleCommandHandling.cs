@@ -10,7 +10,7 @@ using System.Runtime;
 using ConnectionManager;
 using Firewind.HabboHotel.Rooms;
 using Database_Manager.Database;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.Core
 {

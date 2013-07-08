@@ -9,7 +9,7 @@ using Firewind.HabboHotel.Pets;
 using Firewind.HabboHotel.Users.Inventory;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms;
 
 
@@ -508,7 +508,7 @@ namespace Firewind.HabboHotel.Catalogs
                         break;
                 }
 
-                //Session.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventary);
+                //Session.GetMessageHandler().GetResponse().Init(Outgoing.UpdateInventory);
                 //Session.GetMessageHandler().SendResponse();
 
                 Session.GetMessageHandler().GetResponse().Init(Outgoing.PurchaseOK); // PurchaseOKMessageEvent

@@ -3,7 +3,7 @@ using Firewind.HabboHotel.GameClients;
 using Firewind.HabboHotel.Items;
 using Firewind.Messages;
 using System.Collections;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.SoundMachine.Composers
 {

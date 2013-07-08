@@ -8,6 +8,7 @@ using Firewind.HabboHotel.Pets;
 using Firewind.Messages;
 using Database_Manager.Database;
 using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.Messages.Headers;
 using Firewind.Messages.StaticMessageHandlers;
 using Firewind.Messages.ClientMessages;
 using Firewind.Net;
@@ -15,8 +16,6 @@ using System.Globalization;
 using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using System.Data;
-
-using HabboEvents;
 using System.Reflection;
 namespace Firewind
 {

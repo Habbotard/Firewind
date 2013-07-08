@@ -5,7 +5,7 @@ using Firewind.HabboHotel.GameClients;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Users.Messenger;
 using Firewind.HabboHotel.Pathfinding;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.Core;
 
 namespace Firewind.Messages

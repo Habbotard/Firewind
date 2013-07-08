@@ -6,7 +6,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.Core;
 using Firewind.HabboHotel.Pets;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.Messages
 {

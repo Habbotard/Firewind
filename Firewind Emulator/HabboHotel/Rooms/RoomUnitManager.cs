@@ -15,10 +15,10 @@ using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Users.Inventory;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.Messages.Headers;
 using Firewind.Util;
 using System.Diagnostics;
 using Firewind.HabboHotel.Groups;
-using HabboEvents;
 using Firewind.HabboHotel.Rooms.Units;
 using Firewind.HabboHotel.Rooms.Units.AI;
 
@@ -291,10 +291,11 @@ namespace Firewind.HabboHotel.Rooms
             unit.BaseAI = new BartenderAI(unit);
             UnitList.Add(unit.VirtualID, unit);
 
-            ServerMessage message = new ServerMessage(Outgoing.PlaceBot);
-            message.AppendInt32(1);
-            unit.Serialize(message);
-            room.SendMessage(message);
+            //ServerMessage message = new ServerMessage(Outgoing.PlaceBot);
+            //message.AppendInt32(1);
+            //unit.Serialize(message);
+            //room.SendMessage(message);
+            //TODO
         }
 
         internal PetBot DeployPet(Pet pet)

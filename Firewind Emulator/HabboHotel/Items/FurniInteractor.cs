@@ -8,7 +8,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Rooms.Games;
 using System.Drawing;
 using Firewind.Messages;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms.Units;
 
 

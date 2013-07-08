@@ -11,7 +11,7 @@ using Firewind.Messages;
 using Firewind.Core;
 
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using System.Threading.Tasks;
 
 namespace Firewind.Net

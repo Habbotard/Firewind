@@ -5,7 +5,7 @@ using Firewind.HabboHotel.Pathfinding;
 using System;
 using System.Threading;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.Messages
 {
@@ -32,7 +32,7 @@ namespace Firewind.Messages
                 return;
             }
 
-            GetResponse().Init(Outgoing.FavsUpdate);
+            GetResponse().Init(Outgoing.FavsUpdateMessageComposer);
             GetResponse().AppendUInt(Id);
             GetResponse().AppendBoolean(true);
             SendResponse();
@@ -56,7 +56,7 @@ namespace Firewind.Messages
 
             Session.GetHabbo().FavoriteRooms.Remove(Id);
 
-            GetResponse().Init(Outgoing.FavsUpdate);
+            GetResponse().Init(Outgoing.FavsUpdateMessageComposer);
             GetResponse().AppendUInt(Id);
             GetResponse().AppendBoolean(false);
             SendResponse();

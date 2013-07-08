@@ -6,7 +6,7 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Pathfinding;
 using Firewind.Messages;
 using System.Drawing;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Rooms.Games

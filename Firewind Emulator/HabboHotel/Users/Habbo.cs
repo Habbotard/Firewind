@@ -15,7 +15,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using Firewind.HabboHotel.Groups;
 using System.Collections;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Groups.Types;
 
 namespace Firewind.HabboHotel.Users
@@ -342,7 +342,7 @@ namespace Firewind.HabboHotel.Users
 
             Client.SendMessage(club);
 
-            ServerMessage fuserights = new ServerMessage(Outgoing.Fuserights);
+            ServerMessage fuserights = new ServerMessage(Outgoing.UserRights);
             if (GetSubscriptionManager().HasSubscription("habbo_vip")) // VIP 
                 fuserights.AppendInt32(2);
             else if (GetSubscriptionManager().HasSubscription("habbo_club")) // HC

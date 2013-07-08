@@ -9,7 +9,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Conditions;
 using Firewind.HabboHotel.GameClients;
 using System;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Rooms.Wired
 {

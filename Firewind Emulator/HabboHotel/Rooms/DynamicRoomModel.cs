@@ -5,7 +5,7 @@ using System.Text;
 using Firewind.HabboHotel.Rooms;
 using Firewind.Messages;
 using Firewind.Core;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Rooms
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
-using HabboEvents;
 using Firewind.Core;
+using Firewind.Messages.Headers;
 
 namespace Firewind.Messages.StaticMessageHandlers
 {
@@ -42,9 +42,9 @@ namespace Firewind.Messages.StaticMessageHandlers
         #region Register
         internal static void RegisterPacketLibary()
         {
-            handlers.Add(Incoming.CheckReleaseMessageEvent, new StaticRequestHandler(SharedPacketLib.CheckHabboRelease));
+            handlers.Add(Incoming.VersionCheck, new StaticRequestHandler(SharedPacketLib.CheckHabboRelease));
             handlers.Add(Incoming.InitCrypto, new StaticRequestHandler(SharedPacketLib.InitCrypto));
-            handlers.Add(Incoming.SecretKey, new StaticRequestHandler(SharedPacketLib.SecretKey));
+            handlers.Add(Incoming.GenerateSecretKey, new StaticRequestHandler(SharedPacketLib.SecretKey));
             handlers.Add(Incoming.ClientVars, new StaticRequestHandler(SharedPacketLib.setVars));
             handlers.Add(Incoming.UniqueMachineID, new StaticRequestHandler(SharedPacketLib.setUniqueId));
             handlers.Add(Incoming.PrepareCampaing, new StaticRequestHandler(SharedPacketLib.PrepareCampaing));
@@ -73,7 +73,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.IssueChatlog, new StaticRequestHandler(SharedPacketLib.ModGetTicketChatlog));
             handlers.Add(Incoming.GetRoomVisits, new StaticRequestHandler(SharedPacketLib.ModGetRoomVisits));
             handlers.Add(Incoming.ToolForThisRoom, new StaticRequestHandler(SharedPacketLib.ModGetRoomTool));
-            handlers.Add(Incoming.PerformRoomAction, new StaticRequestHandler(SharedPacketLib.ModPerformRoomAction));
+            //TODO handlers.Add(Incoming.PerformRoomAction, new StaticRequestHandler(SharedPacketLib.ModPerformRoomAction));
             handlers.Add(Incoming.SendUserMessage, new StaticRequestHandler(SharedPacketLib.ModSendUserCaution));
             handlers.Add(Incoming.SendMessageByTemplate, new StaticRequestHandler(SharedPacketLib.ModSendUserMessage));
             handlers.Add(Incoming.ModActionKickUser, new StaticRequestHandler(SharedPacketLib.ModKickUser));
@@ -171,7 +171,7 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.AddSaddleToPet, new StaticRequestHandler(SharedPacketLib.AddSaddle));
             handlers.Add(Incoming.RemoveSaddle, new StaticRequestHandler(SharedPacketLib.RemoveSaddle));
             handlers.Add(Incoming.MountOnPet, new StaticRequestHandler(SharedPacketLib.Ride));
-            handlers.Add(Incoming.UserInformation, new StaticRequestHandler(SharedPacketLib.GetUserInfo));
+            handlers.Add(Incoming.InfoRetrieve, new StaticRequestHandler(SharedPacketLib.GetUserInfo));
             handlers.Add(Incoming.LoadProfile, new StaticRequestHandler(SharedPacketLib.LoadProfile));
             handlers.Add(Incoming.ScrGetUserInfo, new StaticRequestHandler(SharedPacketLib.ScrGetUserInfo));
             handlers.Add(Incoming.BadgesInventary, new StaticRequestHandler(SharedPacketLib.GetBadges));

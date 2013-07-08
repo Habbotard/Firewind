@@ -7,12 +7,11 @@ using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using Firewind.HabboHotel.Users.Competitions;
 using Firewind.Messages;
+using Firewind.Messages.Headers;
 using Firewind.Net;
 using Firewind.Util;
 using ConnectionManager;
 using System.Drawing;
-
-using HabboEvents;
 using System.Threading;
 using System.Threading.Tasks;
 using Firewind.HabboHotel.Rooms;
@@ -164,7 +163,7 @@ namespace Firewind.HabboHotel.GameClients
 
                 QueuedServerMessage response = new QueuedServerMessage(Connection);
 
-                ServerMessage UniqueId = new ServerMessage(Outgoing.UniqueID);
+                ServerMessage UniqueId = new ServerMessage(Outgoing.UniqueMachineID);
                 UniqueId.AppendString(this.MachineId);
                 response.appendResponse(UniqueId);
 
@@ -178,7 +177,7 @@ namespace Firewind.HabboHotel.GameClients
 
                 loginProgress++;
 
-                ServerMessage FavouriteRooms = new ServerMessage(Outgoing.FavouriteRooms);
+                ServerMessage FavouriteRooms = new ServerMessage(Outgoing.FavouriteRoomsMessageComposer);
                 FavouriteRooms.AppendInt32(30); // max rooms
                 FavouriteRooms.AppendInt32(userData.user.FavoriteRooms.Count);
                 foreach (uint Id in userData.user.FavoriteRooms.ToArray())
@@ -189,7 +188,7 @@ namespace Firewind.HabboHotel.GameClients
 
                 loginProgress++;
 
-                ServerMessage fuserights = new ServerMessage(Outgoing.Fuserights);
+                ServerMessage fuserights = new ServerMessage(Outgoing.UserRights);
                 if (GetHabbo().GetSubscriptionManager().HasSubscription("habbo_vip")) // VIP 
                     fuserights.AppendInt32(2);
                 else if (GetHabbo().GetSubscriptionManager().HasSubscription("habbo_club")) // HC
@@ -206,10 +205,10 @@ namespace Firewind.HabboHotel.GameClients
                 bools1.AppendBoolean(false);
                 response.appendResponse(bools1);
 
-                ServerMessage bools2 = new ServerMessage(Outgoing.InfoFeedEnable);
-                bools2.AppendBoolean(false);
-                response.appendResponse(bools2);
-
+                //ServerMessage bools2 = new ServerMessage(Outgoing.InfoFeedEnable);
+                //bools2.AppendBoolean(false);
+                //response.appendResponse(bools2);
+                //TODO
                 loginProgress++;
 
                 ServerMessage setRanking = new ServerMessage(Outgoing.SerializeCompetitionWinners);

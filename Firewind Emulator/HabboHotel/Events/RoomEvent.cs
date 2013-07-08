@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Firewind.HabboHotel.GameClients;
 using Firewind.Messages;
 using System.Collections;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Rooms
 {

@@ -7,7 +7,7 @@ using System;
 using Firewind.Collections;
 using Firewind.HabboHotel.Pathfinding;
 using Firewind.Messages;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.Core;
 using Firewind.HabboHotel.Rooms.Units;
 

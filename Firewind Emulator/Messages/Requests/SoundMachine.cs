@@ -6,7 +6,6 @@ using Firewind.HabboHotel.SoundMachine;
 using Firewind.HabboHotel.SoundMachine.Composers;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Items;
-using HabboEvents;
 
 
 namespace Firewind.Messages
