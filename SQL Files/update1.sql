@@ -1,1 +1,0 @@
-UPDATE items_base SET interaction_type = 'pet' WHERE interaction_type LIKE 'pet%';

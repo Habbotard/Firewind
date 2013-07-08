@@ -1,0 +1,1 @@
+ALTER TABLE catalog_items ADD allow_gift tinyint(1) NOT NULL DEFAULT 1;
