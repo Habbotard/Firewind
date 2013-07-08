@@ -7,7 +7,7 @@ using Firewind.HabboHotel.Misc;
 using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Users;
 using Firewind.Messages;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using System;
 using System.Collections.Generic;
 using System.Data;

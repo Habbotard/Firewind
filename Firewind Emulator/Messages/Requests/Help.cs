@@ -4,7 +4,7 @@ using Firewind.HabboHotel.RoomBots;
 using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Support;
 using Firewind.Core;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.Messages
 {

@@ -7,7 +7,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.Messages;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms.Units;
 
 namespace Firewind.HabboHotel.Users.Inventory

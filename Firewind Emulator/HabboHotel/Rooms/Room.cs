@@ -20,7 +20,7 @@ using Firewind.HabboHotel.Rooms.Wired;
 using Firewind.HabboHotel.SoundMachine;
 using System.Drawing;
 using Firewind.HabboHotel.Groups;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Groups.Types;
 using Firewind.HabboHotel.Misc;
 using Firewind.HabboHotel.Rooms.Units;

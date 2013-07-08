@@ -21,7 +21,7 @@ using Firewind.HabboHotel.Groups;
 using System.Collections;
 using Firewind.HabboHotel.Rooms.Wired;
 using System.Drawing;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using System.Reflection;
 using Firewind.HabboHotel.Rooms.Units;
 
@@ -139,7 +139,7 @@ namespace Firewind.Messages
                         if (room.UserCount == 0)
                         {
                             // Aww nobody in da room!
-                            Response.Init(Outgoing.DoorBellNoPerson);
+                            Response.Init(Outgoing.InvalidDoorBell);
                             SendResponse();
                             //response.appendResponse(GetResponse());
                         }
@@ -319,7 +319,7 @@ namespace Firewind.Messages
                 SendResponse();
             }
 
-            Response.Init(Outgoing.ScoreMeter);
+            Response.Init(Outgoing.RoomScore);
             Response.AppendInt32(room.Score);
             Response.AppendBoolean(!(Session.GetHabbo().RatedRooms.Contains(room.Id) || CurrentLoadingRoom.CheckRights(Session, true)));
             SendResponse();
@@ -701,7 +701,7 @@ namespace Firewind.Messages
                         if (room.UserCount == 0)
                         {
                             // Aww nobody in da room!
-                            Response.Init(Outgoing.DoorBellNoPerson);
+                            Response.Init(Outgoing.InvalidDoorBell);
                             SendResponse();
                             //response.appendResponse(GetResponse());
                         }
@@ -829,7 +829,7 @@ namespace Firewind.Messages
                     response.appendResponse(GetResponse());
                 }
 
-                Response.Init(Outgoing.ScoreMeter);
+                Response.Init(Outgoing.RoomScore);
                 Response.AppendInt32(Room.Score);
                 Response.AppendBoolean(!(Session.GetHabbo().RatedRooms.Contains(Room.RoomId) || Room.CheckRights(Session, true)));
                 response.appendResponse(GetResponse());
@@ -974,7 +974,7 @@ namespace Firewind.Messages
                 TellMsg = new ServerMessage();
                 TellMsg.Init(Outgoing.Whisp);
                 TellMsg.AppendInt32(User.VirtualID);
-                TellMsg.AppendStringWithBreak(LanguageLocale.GetValue("moderation.whisper") + ToUser + ": " + Message);
+                TellMsg.AppendStringWithBreak(LanguageLocale.GetValue("moderation.whisper") + " " + ToUser + ": " + Message);
                 TellMsg.AppendInt32(0);
                 TellMsg.AppendInt32(0);
                 TellMsg.AppendInt32(-1);
@@ -1918,7 +1918,7 @@ namespace Firewind.Messages
 
             Session.GetHabbo().RatedRooms.Add(Room.RoomId);
 
-            Response.Init(Outgoing.RateRoom);
+            Response.Init(Outgoing.RoomScore);
             Response.AppendInt32(Room.Score);
             SendResponseWithOwnerParam();
         }
@@ -3026,7 +3026,7 @@ namespace Firewind.Messages
 
             Room.GetRoomItemHandler().RemoveFurniture(Session, Exchange.Id);
 
-            Response.Init(Outgoing.UpdateInventary);
+            Response.Init(Outgoing.UpdateInventory);
             SendResponse();
         }
 

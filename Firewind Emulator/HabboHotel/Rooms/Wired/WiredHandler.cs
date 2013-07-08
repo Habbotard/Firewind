@@ -5,11 +5,11 @@ using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Rooms.Games;
 using Firewind.HabboHotel.Rooms.Wired.WiredHandlers.Interfaces;
 using Firewind.Messages;
+using Firewind.Messages.Headers;
 using WiredSolver;
 using System.Windows.Forms;
 using System.Threading;
 using System;
-using HabboEvents;
 using System.Threading.Tasks;
 using Firewind.HabboHotel.Rooms.Units;
 

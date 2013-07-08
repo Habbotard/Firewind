@@ -10,8 +10,7 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using System.Threading;
 using Firewind.HabboHotel.Users.Messenger;
 using System.Threading.Tasks;
-
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.Messages.ClientMessages;
 namespace Firewind.HabboHotel.GameClients
 {

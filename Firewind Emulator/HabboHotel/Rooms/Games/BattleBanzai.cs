@@ -6,9 +6,9 @@ using Firewind.HabboHotel.GameClients;
 using Firewind.HabboHotel.Items;
 using Firewind.HabboHotel.Pathfinding;
 using Firewind.Messages;
+using Firewind.Messages.Headers;
 using enclosuretest;
 using System.Drawing;
-using HabboEvents;
 using Firewind.HabboHotel.Rooms.Units;
 
 

@@ -2,7 +2,7 @@
 
 using Firewind.HabboHotel.Rooms;
 using Firewind.Messages;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Pets
 {
@@ -193,12 +193,7 @@ namespace Firewind.HabboHotel.Pets
         {
             Respect++;
 
-            ServerMessage Message = new ServerMessage(Outgoing.RespectPet);
-            Message.AppendInt32(VirtualId); // userId
-            Message.AppendInt32(Respect); // respectTotal
-            //Room.SendMessage(Message);
-
-            Message = new ServerMessage(Outgoing.PetRespectNotification);
+            ServerMessage Message = new ServerMessage(Outgoing.PetRespectNotification);
 
             Message.AppendInt32(OwnerId); // petOwnerId
             Message.AppendInt32(1); // respect

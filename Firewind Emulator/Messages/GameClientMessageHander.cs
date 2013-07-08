@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Firewind.Messages.StaticMessageHandlers;
-using HabboEvents;
 
 namespace Firewind.Messages
 {

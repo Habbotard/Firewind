@@ -6,7 +6,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.Badges;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Database_Manager;
 using Firewind.Messages;
 using Firewind.HabboHotel.GameClients;

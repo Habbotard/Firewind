@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using Firewind.Messages;
 using Firewind.HabboHotel.GameClients;
-using HabboEvents;
+using Firewind.Messages.Headers;
+
 namespace Firewind.HabboHotel.Achievements.Composer
 {
     class AchievementListComposer

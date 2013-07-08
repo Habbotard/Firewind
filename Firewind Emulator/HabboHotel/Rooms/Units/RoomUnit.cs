@@ -13,7 +13,7 @@ using Firewind.HabboHotel.Rooms.Games;
 using Firewind.Messages;
 using System.Drawing;
 using Firewind.Core;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using System.Data;
 using Database_Manager.Database.Session_Details.Interfaces;
 

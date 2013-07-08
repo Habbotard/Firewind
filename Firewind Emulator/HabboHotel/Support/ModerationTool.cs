@@ -10,7 +10,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Rooms.RoomIvokedItems;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Support
 {

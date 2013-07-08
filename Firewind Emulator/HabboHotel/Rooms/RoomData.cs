@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using Firewind.Core;
 using Firewind.Messages;
-using HabboEvents;
 using Firewind.HabboHotel.GameClients;
 using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.HabboHotel.Groups.Types;

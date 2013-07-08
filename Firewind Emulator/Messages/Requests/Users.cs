@@ -5,7 +5,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.Badges;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.Core;
 using Firewind.HabboHotel.Rooms.Units;
 
@@ -15,7 +15,7 @@ namespace Firewind.Messages
     {
         internal void GetUserInfo()
         {
-            GetResponse().Init(Outgoing.HabboInfomation);
+            GetResponse().Init(Outgoing.UserObject);
             GetResponse().AppendInt32(Session.GetHabbo().Id);
             GetResponse().AppendString(Session.GetHabbo().Username);
             GetResponse().AppendString(Session.GetHabbo().Look);
@@ -156,7 +156,7 @@ namespace Firewind.Messages
 
             FirewindEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, HabboHotel.Quests.QuestType.PROFILE_BADGE);
 
-            ServerMessage Message = new ServerMessage(Outgoing.UpdateBadges);
+            ServerMessage Message = new ServerMessage(Outgoing.GetUserBadges);
             Message.AppendInt32(Session.GetHabbo().Id);
             Message.AppendInt32(Session.GetHabbo().GetBadgeComponent().EquippedCount);
 

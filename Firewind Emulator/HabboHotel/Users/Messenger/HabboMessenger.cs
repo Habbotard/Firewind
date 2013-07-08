@@ -8,7 +8,7 @@ using Firewind.HabboHotel.Rooms;
 using Firewind.Messages;
 using Firewind.HabboHotel.Users.Messenger;
 using Database_Manager.Database.Session_Details.Interfaces;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Users.Messenger
 {
@@ -341,7 +341,7 @@ namespace Firewind.HabboHotel.Users.Messenger
 
         internal ServerMessage SerializeFriends()
         {
-            ServerMessage reply = new ServerMessage(Outgoing.InitFriends);
+            ServerMessage reply = new ServerMessage(Outgoing.MessengerInit);
             reply.AppendInt32((GetClient().GetHabbo().GetSubscriptionManager().HasSubscription("habbo_vip") ? 1100 : 300));
             reply.AppendInt32(300);
             reply.AppendInt32(800);

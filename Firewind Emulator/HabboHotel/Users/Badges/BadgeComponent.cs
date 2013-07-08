@@ -5,7 +5,7 @@ using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using System.Collections;
-using HabboEvents;
+using Firewind.Messages.Headers;
 
 namespace Firewind.HabboHotel.Users.Badges
 {

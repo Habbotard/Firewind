@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Firewind.Messages;
-using HabboEvents;
+using Firewind.Messages.Headers;
+
 namespace Firewind.HabboHotel.Achievements.Composer
 {
     class AchievementUnlockedComposer

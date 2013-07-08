@@ -15,8 +15,8 @@ using Firewind.HabboHotel.Users.Competitions;
 using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System.Drawing;
+using Firewind.Messages.Headers;
 using Firewind.Util;
-using HabboEvents;
 using Firewind.Collections;
 using Firewind.HabboHotel.Rooms.Units;
 

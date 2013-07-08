@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Firewind.Core;
-using HabboEvents;
+using Firewind.Messages.Headers;
+
 namespace Firewind.Messages
 {
     partial class GameClientMessageHandler
@@ -20,7 +21,7 @@ namespace Firewind.Messages
         internal void InitCrypto()
         {
             Session.TimePingedReceived = DateTime.Now;
-            Response.Init(Outgoing.SendBannerMessageComposer);
+            Response.Init(Outgoing.SendBanner);
             Response.AppendString("nocryptonotoken");
             Response.AppendBoolean(false);
             SendResponse();
@@ -29,7 +30,7 @@ namespace Firewind.Messages
         internal void InitSecretKey()
         {
             Session.TimePingedReceived = DateTime.Now;
-            Response.Init(Outgoing.SecretKeyComposer);
+            Response.Init(Outgoing.SecretKey);
             Response.AppendString("nocryptonokey");
             SendResponse();
         }

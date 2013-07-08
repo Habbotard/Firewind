@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Database_Manager.Database.Session_Details.Interfaces;
 using System;
-using HabboEvents;
+using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms;
 using System.Collections.Generic;
 using Firewind.HabboHotel.Groups;
