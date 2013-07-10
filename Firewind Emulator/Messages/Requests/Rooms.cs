@@ -180,7 +180,7 @@ namespace Firewind.Messages
             }
             Session.GetHabbo().LoadingChecksPassed = true;
 
-            if (room.RoomData.Badge != null && room.RoomData.Badge != "")
+            if (room.RoomData.Badge != null && room.RoomData.Badge != "" && !Session.GetHabbo().GetBadgeComponent().HasBadge(room.RoomData.Badge))
             {
                 Session.GetHabbo().GetBadgeComponent().GiveBadge(room.RoomData.Badge, true);
                 Session.SendNotif(LanguageLocale.GetValue("user.badgereceived"));
@@ -495,7 +495,7 @@ namespace Firewind.Messages
                 return;
 
             Room room = CurrentLoadingRoom;
-            if (room.RoomData.Badge != null && room.RoomData.Badge != "")
+            if (room.RoomData.Badge != null && room.RoomData.Badge != "" && !Session.GetHabbo().GetBadgeComponent().HasBadge(room.RoomData.Badge))
             {
                 Session.GetHabbo().GetBadgeComponent().GiveBadge(room.RoomData.Badge, true);
                 Session.SendNotif(LanguageLocale.GetValue("user.badgereceived"));
@@ -742,7 +742,7 @@ namespace Firewind.Messages
             }
             Session.GetHabbo().LoadingChecksPassed = true;
 
-            if (room.RoomData.Badge != null && room.RoomData.Badge != "")
+            if (room.RoomData.Badge != null && room.RoomData.Badge != "" && !Session.GetHabbo().GetBadgeComponent().HasBadge(room.RoomData.Badge))
             {
                 Session.GetHabbo().GetBadgeComponent().GiveBadge(room.RoomData.Badge, true);
                 Session.SendNotif(LanguageLocale.GetValue("user.badgereceived"));
