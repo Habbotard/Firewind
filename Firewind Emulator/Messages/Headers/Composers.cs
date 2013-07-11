@@ -208,12 +208,6 @@ public static int GetUserBadges = 65;
         public static int GiftError = 2748;
         public static int GivePowers = 212;
         public static int GiveRespect = 899;
-        public static int GroupCreated = 1327;
-        public static int GroupInfo = 2602;
-        public static int GuildEditInfo = 3529;
-        public static int GuildEditorData = 1725;
-        public static int GuildFurniInfo = 113;
-        public static int HabboGroupJoinFailed = 2407;
         public static int HasControllerRights = 103;
         public static int HasOwnerRights = 3002;
         public static int HeightMap = 2644;
@@ -271,7 +265,6 @@ public static int GetUserBadges = 65;
         public static int OpenShop = 846;
         public static int OpenShopPage = 3032;
         public static int OutOfRoom = 450;
-        public static int OwnGuilds = 1463;
         public static int ParkBusDoor = 2860;
         public static int PetAddedToInventory = 3947;
         public static int PetCommands = 2603;
@@ -386,5 +379,13 @@ public static int GetUserBadges = 65;
         public static int WiredFurniTrigger = 1153;
         public static int YouArePlayingGame = 527;
         public static int YouAreSpectator = 1474;
+
+        public static int GroupCreated = 1327;
+        public static int HabboGroupDetails = 2602;
+        public static int GuildEditInfo = 3529;
+        public static int GuildEditorData = 1725;
+        public static int GuildFurniInfo = 113;
+        public static int HabboGroupJoinFailed = 2407;
+        public static int HabboGroupsWhereMember = 1463;
     }
 }

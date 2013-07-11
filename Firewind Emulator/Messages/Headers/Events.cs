@@ -204,10 +204,6 @@
         public static int GetFriends = 1615;
         public static int GetFurnitureAliases = 2242;
         public static int GetGuestRoom = 798;
-        public static int GetGuildFurniInfo = 3015;
-        public static int GetGuildInfo = 1660;
-        public static int GetGuildManageInfo = 1811;
-        public static int GetGuilds = 1557;
         public static int GetHabboClubExtendOffer = 3403; // old 3035 // Club Extend Discount;
         public static int GetHabboGroupBadges = 2709;
         public static int GetLandingQuest = 2504; // landing page quest;
@@ -371,5 +367,10 @@
         public static int UserChatlog = 3799;
         public static int VersionCheck = 4000;
         public static int Whisp = 3059;
+
+        public static int GetGuildFurniInfo = 3015;
+        public static int GetGuildInfo = 1660;
+        public static int GetGuildManageInfo = 1811;
+        public static int GetHabboGroupsWhereMember = 1557;
     }
 }

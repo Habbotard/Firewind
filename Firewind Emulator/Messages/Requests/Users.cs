@@ -8,6 +8,8 @@ using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.Messages.Headers;
 using Firewind.Core;
 using Firewind.HabboHotel.Rooms.Units;
+using Firewind.HabboHotel.Groups.Types;
+using System.Collections.Generic;
 
 namespace Firewind.Messages
 {
@@ -248,50 +250,47 @@ namespace Firewind.Messages
 
         internal void LoadProfile()
         {
-            try
+            int userID = Request.ReadInt32();
+            bool unused = Request.ReadBoolean(); // Always true
+
+            Habbo Data;
+            Data = userID == Session.GetHabbo().Id ? Session.GetHabbo() : FirewindEnvironment.getHabboForId(userID);
+            if (Data == null)
+                return;
+
+            // Get the info we need
+            List<Group> groups = FirewindEnvironment.GetGame().GetGroupManager().GetMemberships(userID);
+            bool isOnline = FirewindEnvironment.GetGame().GetClientManager().GetClientByUserID(userID) != null;
+
+            Response.Init(Outgoing.ProfileInformation);
+
+            Response.AppendInt32(Data.Id);
+            Response.AppendString(Data.Username);
+            Response.AppendString(Data.Look);
+            Response.AppendString(Data.Motto);
+            Response.AppendString("12/12/12"); // created
+            Response.AppendInt32(Data.AchievementPoints); // Achievement Points
+            Response.AppendInt32(Data.GetMessenger().myFriends); //friends
+
+            Response.AppendBoolean(userID != Session.GetHabbo().Id && Data.GetMessenger().FriendshipExists(Session.GetHabbo().Id)); // is friend
+            Response.AppendBoolean(Data.GetMessenger().requests.ContainsKey(Session.GetHabbo().Id)); // firend request sent
+            Response.AppendBoolean(isOnline); // is online
+
+            Response.AppendInt32(groups.Count); // group count
+            foreach (Group group in groups)
             {
-                int UserId = Request.ReadInt32();
-                Boolean IsMe = Request.ReadBoolean();
-                /* don't know
-                 * if (IsMe)
-                    UserId = (int)Session.GetHabbo().Id;*/
-
-                Habbo Data = FirewindEnvironment.getHabboForId(UserId);
-                if (Data == null)
-                {
-                    Logging.WriteLine("can't get data por profile with userid = " + UserId);
-                    return;
-                }
-
-                Response.Init(Outgoing.ProfileInformation);
-                Response.AppendInt32(Data.Id);
-                Response.AppendString(Data.Username);
-                Response.AppendString(Data.Look);
-                Response.AppendString(Data.Motto);
-                Response.AppendString("12/12/12"); // created
-                Response.AppendInt32(Data.AchievementPoints); // Achievement Points
-                Response.AppendInt32(0); //friends
-                //Response.AppendString(String.Empty);
-                Response.AppendBoolean(Data.Id != Session.GetHabbo().Id); // is me maybe?
-                Response.AppendInt32(0); // group count
-                Response.AppendString("");
-                Response.AppendInt32(-1);
-                Response.AppendBoolean(true); // show it
-                /* group:
-                 * int(Id)
-                 * string(Name)
-                 * String(Badge)
-                 * String(FirstColor)
-                 * String(SecondColor)
-                 * Boolean(Fav)
-                 */
-                // and achiv points after dat if groups or sth???
-                SendResponse();
+                Response.AppendInt32(group.ID);
+                Response.AppendString(group.Name);
+                Response.AppendString(group.BadgeCode);
+                Response.AppendString(group.Color1);
+                Response.AppendString(group.Color2);
+                Response.AppendBoolean(Data.FavouriteGroup == group.ID);
             }
-            catch (Exception e)
-            {
 
-            }
+            Response.AppendInt32(-1); // last online
+            Response.AppendBoolean(true); // show it
+
+            SendResponse();
         }
 
         internal void ChangeLook()

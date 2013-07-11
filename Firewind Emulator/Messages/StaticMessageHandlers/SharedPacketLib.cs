@@ -965,7 +965,22 @@ namespace Firewind.Messages.StaticMessageHandlers
 
         internal static void GetGuildInfo(GameClientMessageHandler handler)
         {
-            handler.GetGuildInfo();
+            handler.GetHabboGroupDetails();
+        }
+
+        internal static void GetHabboGroupsWhereMember(GameClientMessageHandler handler)
+        {
+            handler.GetHabboGroupsWhereMember();
+        }
+
+        internal static void GetGuildFurniInfo(GameClientMessageHandler handler)
+        {
+            handler.GetGuildFurniInfo();
+        }
+
+        internal static void ManageGroup(GameClientMessageHandler handler)
+        {
+            handler.ManageGroup();
         }
 
         internal static void EventLog(GameClientMessageHandler handler)

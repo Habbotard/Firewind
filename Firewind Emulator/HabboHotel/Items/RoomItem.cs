@@ -1132,9 +1132,14 @@ namespace Firewind.HabboHotel.Items
                 //    else
                 //        Message.AppendString(string.Empty);
                 //}
-                Message.AppendInt32(-1);
-                Message.AppendInt32(1); // Type New R63 ('use bottom')
-                Message.AppendInt32(UserId);
+                if ((data.GetTypeID() & 0x0100) > 0) // 256
+                {
+                    // furniture_unique_serial_number
+                    // furniture_unique_edition_size
+                }
+                Message.AppendInt32(-1); // furniture_expiry_time
+                Message.AppendInt32(1); // furniture_usage_policy (0,1,2)
+                Message.AppendInt32(UserId); // ownerId
             }
             else if (IsWallItem)
             {

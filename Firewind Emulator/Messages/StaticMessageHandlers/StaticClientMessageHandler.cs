@@ -215,6 +215,9 @@ namespace Firewind.Messages.StaticMessageHandlers
             handlers.Add(Incoming.StartGuildPurchase, new StaticRequestHandler(SharedPacketLib.StartGuildPurchase));
             handlers.Add(Incoming.GetGuildInfo, new StaticRequestHandler(SharedPacketLib.GetGuildInfo));
             handlers.Add(Incoming.CreateGuild, new StaticRequestHandler(SharedPacketLib.CreateGuild));
+            handlers.Add(Incoming.GetHabboGroupsWhereMember, new StaticRequestHandler(SharedPacketLib.GetHabboGroupsWhereMember));
+            handlers.Add(Incoming.GetGuildFurniInfo, new StaticRequestHandler(SharedPacketLib.GetGuildFurniInfo));
+            handlers.Add(Incoming.GetGuildManageInfo, new StaticRequestHandler(SharedPacketLib.ManageGroup));
 
             // Engine
             handlers.Add(Incoming.EventLog, new StaticRequestHandler(SharedPacketLib.EventLog));

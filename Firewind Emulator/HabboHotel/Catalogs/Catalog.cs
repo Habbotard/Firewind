@@ -11,6 +11,7 @@ using Firewind.Messages;
 using Database_Manager.Database.Session_Details.Interfaces;
 using Firewind.Messages.Headers;
 using Firewind.HabboHotel.Rooms;
+using Firewind.HabboHotel.Groups.Types;
 
 
 namespace Firewind.HabboHotel.Catalogs
@@ -707,12 +708,18 @@ namespace Firewind.HabboHotel.Catalogs
                                 
                             case InteractionType.guildgeneric:
                             case InteractionType.guilddoor:
+                                int groupID = int.Parse(ExtraData);
+                                Group group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID);
+
+                                if (group == null || group.GetMemberType(Session.GetHabbo().Id) == 0) // check if member
+                                    break;
+
                                 StringArrayStuffData stringData = new StringArrayStuffData();
-                                stringData.Data.Add(""); // furniture state
-                                stringData.Data.Add("1"); // guild id
-                                stringData.Data.Add(""); // badge string
-                                stringData.Data.Add("FFFFFF"); // COLOR_1_STUFFDATA
-                                stringData.Data.Add("FFFFFF"); // COLOR_2_STUFFDATA
+                                stringData.Data.Add("0"); // furniture state
+                                stringData.Data.Add(groupID.ToString()); // guild id
+                                stringData.Data.Add(group.BadgeCode); // badge string
+                                stringData.Data.Add(group.Color1); // COLOR_1_STUFFDATA
+                                stringData.Data.Add(group.Color2); // COLOR_2_STUFFDATA
 
                                 result.Add(Session.GetHabbo().GetInventoryComponent().AddNewItem(0, Item.ItemId, stringData, 0, true, false, songID));
                                 break;

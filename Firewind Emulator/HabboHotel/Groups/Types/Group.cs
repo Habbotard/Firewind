@@ -1,4 +1,5 @@
-﻿using Firewind.HabboHotel.Rooms;
+﻿using Database_Manager.Database.Session_Details.Interfaces;
+using Firewind.HabboHotel.Rooms;
 using Firewind.HabboHotel.Users;
 using Firewind.HabboHotel.Users.UserDataManagement;
 using System;
@@ -16,12 +17,22 @@ namespace Firewind.HabboHotel.Groups.Types
         private RoomData _room;
         private string _color1;
         private string _color2;
+        private string _badgeCode;
+        public bool AdminDecorate;
         
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateCreated { get; set; }
-        public string BadgeCode;
+        public string BadgeCode
+        {
+            get
+            {
+                if (_badgeCode == null)
+                    _badgeCode = GenerateBadgeImage(BadgeData);
+                return _badgeCode;
+            }
+        }
         public int OwnerID { get; set; }
         public string OwnerName 
         {
@@ -44,17 +55,10 @@ namespace Firewind.HabboHotel.Groups.Types
         }
 
 
-        public List<Tuple<int, int, int>> BadgeData 
+        public List<Tuple<int, int, int>> BadgeData
         {
-            get
-            {
-                return BadgeData;
-            }
-            set
-            {
-                BadgeCode = GenerateBadgeImage(value);
-                BadgeData = value;
-            }
+            get;
+            set;
         }
         public int ColorID1 { get; set; }
         public int ColorID2 { get; set; }
@@ -64,12 +68,12 @@ namespace Firewind.HabboHotel.Groups.Types
             get
             {
                 if (_color1 == null)
-                    _color1 = GuildsPartsData.ColorBadges3.Find(t => t.Id == ColorID1).ExtraData1;
+                    _color1 = GuildsPartsData.ColorBadges2.Find(t => t.Id == ColorID1).ExtraData1;
                 return _color1;
             }
             set
             {
-                ColorID1 = GuildsPartsData.ColorBadges3.Find(t => t.ExtraData1 == value).Id;
+                ColorID1 = GuildsPartsData.ColorBadges2.Find(t => t.ExtraData1 == value).Id;
                 _color1 = value;
             }
         }
@@ -94,18 +98,18 @@ namespace Firewind.HabboHotel.Groups.Types
         public int Type { get; set; }
         public int RightsType { get; set; }
 
-        public Group(DataRow Data, DataTable Members)
+        public Group(DataRow Data, IQueryAdapter dbClient)
         {
-            this.ID = (int)Data["id"];
-            this.Name = (string)Data["name"];
-            this.Description = (string)Data["description"];
-            this.DateCreated = (string)Data["date_created"];
+            this.ID = Convert.ToInt32(Data["id"]);
+            this.Name = Data["name"].ToString();
+            this.Description = Data["description"].ToString();
+            this.DateCreated = Data["date_created"].ToString();
             this.OwnerID = Convert.ToInt32(Data["users_id"]);
-            this.RoomID = (int)Data["rooms_id"];
-            this.ColorID1 = (int)Data["color1"];
-            this.ColorID2 = (int)Data["color2"];
-            this.Type = (int)Data["type"];
-            this.RightsType = (int)Data["rights_type"];
+            this.RoomID = Convert.ToInt32(Data["rooms_id"]);
+            this.ColorID1 = Convert.ToInt32(Data["color1"]);
+            this.ColorID2 = Convert.ToInt32(Data["color2"]);
+            this.Type = Convert.ToInt32(Data["type"]);
+            this.RightsType = Convert.ToInt32(Data["rights_type"]);
 
             // Parse badge data
             string[] rawData = Data["badge_data"].ToString().Split((char)1);
@@ -114,44 +118,92 @@ namespace Firewind.HabboHotel.Groups.Types
             {
                 int value1 = int.Parse(rawData[i++]);
                 int value2 = int.Parse(rawData[i++]);
-                int value3 = int.Parse(rawData[i++]);
+                int value3 = int.Parse(rawData[i]);
                 badgeData.Add(new Tuple<int, int, int>(value1, value2, value3));
             }
 
             this.BadgeData = badgeData;
             this.Members = new List<int>();
 
-            foreach (DataRow Member in Members.Rows)
+            // Load members
+            dbClient.setQuery("SELECT * FROM group_memberships WHERE groups_id = @id");
+            dbClient.addParameter("id", ID);
+            foreach (DataRow row in dbClient.getTable().Rows)
             {
-                this.Members.Add((int)Member["user_id"]);
+                this.Members.Add((int)row["users_id"]);
             }
         }
 
         public Group()
         {
-            // TODO: Complete member initialization
+            this.Members = new List<int>();
+        }
+
+        public bool IsAdmin(int userID)
+        {
+            if (OwnerID == userID)
+                return true;
+
+            return false;
         }
 
         public static string GenerateBadgeImage(List<Tuple<int, int, int>> parts)
         {
+            List<int> partList = new List<int>();
+            for (int i = 1; i < parts.Count; i++)
+            {
+                var part = parts[i];
+                partList.Add(part.Item1);
+                partList.Add(part.Item2);
+                partList.Add(part.Item3);
+            }
             // b 22 13  s03044  s27044  s1701  s01051
             StringBuilder image = new StringBuilder();
+
+            // First the background/base
             image.Append("b");
-            image.Append(parts[0].Item1.ToString("D2"));
-            image.Append(parts[0].Item2.ToString("D2"));
+            image.Append(parts[0].Item1.ToString("D2")); // type
+            image.Append(parts[0].Item2.ToString("D2")); // color
+            image.Append(parts[0].Item3); // part count (shouldn't matter)
 
             for (int i = 1; i < parts.Count; i++)
             {
                 var part = parts[i];
-                if (part.Item1 == 0)
-                    continue;
+                //if (part.Item1 == 0)
+                //    continue;
+
+                // Badge part
                 image.Append("s");
-                image.Append((part.Item1 - 20).ToString("D2"));
-                image.Append(part.Item2.ToString("D2"));
-                image.Append(part.Item3);
+                image.Append((part.Item1).ToString("D2")); //-20 type (client adds 20 for some reason?)
+                image.Append(part.Item2.ToString("D2")); // color
+                image.Append(part.Item3); // position
             }
 
             return image.ToString();
+        }
+
+        public static string ConvertBadgeForDatabase(List<Tuple<int, int, int>> parts)
+        {
+            StringBuilder data = new StringBuilder();
+            foreach (var part in parts)
+            {
+                data.Append((char)1);
+                data.Append(part.Item1);
+                data.Append((char)1);
+                data.Append(part.Item2);
+                data.Append((char)1);
+                data.Append(part.Item3);
+            }
+            return data.ToString().Substring(1);
+        }
+
+        internal int GetMemberType(int userID)
+        {
+            if (OwnerID == userID)
+                return 3;
+            if (Members.Contains(userID))
+                return 1;
+            return 0;
         }
     }
 }

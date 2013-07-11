@@ -38,7 +38,19 @@ namespace Firewind.HabboHotel.Rooms
         internal int FloorThickness;
         internal string Badge;
         internal int GroupID;
-        internal Group Group;
+        private Group _group;
+
+        internal Group Group
+        {
+            get
+            {
+                if (GroupID == 0) // no group
+                    return null;
+                if (_group == null)
+                    _group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(GroupID);
+                return _group;
+            }
+        }
 
         internal int TagCount
         {
@@ -153,6 +165,7 @@ namespace Firewind.HabboHotel.Rooms
             this.Landscape = (string)Row["landscape"];
             this.FloorThickness = Convert.ToInt32(Row["floorthickness"]);
             this.WallThickness = Convert.ToInt32(Row["wallthickness"]);
+            this.GroupID = Convert.ToInt32(Row["groups_id"]);
             //this.Event = null;
 
             foreach (string Tag in Row["tags"].ToString().Split(','))
@@ -190,63 +203,9 @@ namespace Firewind.HabboHotel.Rooms
             this.Landscape = Room.Landscape;
             this.FloorThickness = Room.FloorThickness;
             this.WallThickness = Room.WallThickness;
+            this.GroupID = Room.Group != null ? Room.Group.ID : 0;
 
             mModel = FirewindEnvironment.GetGame().GetRoomManager().GetModel(ModelName, Id);
-        }
-
-        internal void DeadFill(DataRow Row)
-        {
-            this.Id = Convert.ToUInt32(Row["id"]);
-            this.Name = (string)Row["caption"];
-            this.Description = (string)Row["description"];
-            this.Owner = (string)Row["owner"];
-
-            switch (Row["state"].ToString().ToLower())
-            {
-                case "open":
-
-                    this.State = 0;
-                    break;
-
-                case "password":
-
-                    this.State = 2;
-                    break;
-
-                case "locked":
-                default:
-
-                    this.State = 1;
-                    break;
-            }
-
-            this.Category = (int)Row["category"];
-
-            if (!string.IsNullOrEmpty(Row["active_users"].ToString()))
-                this.UsersNow = (int)Row["active_users"];
-            else
-                this.UsersNow = 0;
-            this.UsersMax = (int)Row["users_max"];
-            this.ModelName = (string)Row["model_name"];
-            this.Score = (int)Row["score"];
-            this.Tags = new List<string>();
-            this.AllowPets = FirewindEnvironment.EnumToBool(Row["allow_pets"].ToString());
-            this.AllowPetsEating = FirewindEnvironment.EnumToBool(Row["allow_pets_eat"].ToString());
-            this.AllowWalkthrough = FirewindEnvironment.EnumToBool(Row["allow_walkthrough"].ToString());
-            this.AllowRightsOverride = FirewindEnvironment.EnumToBool(Row["allow_rightsoverride"].ToString());
-            this.Hidewall = FirewindEnvironment.EnumToBool(Row["allow_hidewall"].ToString());
-            this.Password = (string)Row["password"];
-            this.Wallpaper = (string)Row["wallpaper"];
-            this.Floor = (string)Row["floor"];
-            this.Landscape = (string)Row["landscape"];
-            this.Landscape = (string)Row["landscape"];
-            this.FloorThickness = (int)Row["floorthickness"];
-            //this.Event = null;
-
-            foreach (string Tag in Row["tags"].ToString().Split(','))
-            {
-                this.Tags.Add(Tag);
-            }
         }
 
         internal void Serialize(ServerMessage Message, Boolean ShowEvents)

@@ -6,6 +6,7 @@ using Firewind.HabboHotel.Rooms;
 using System.Collections.Generic;
 using Firewind.HabboHotel.Groups;
 using Firewind.HabboHotel.Groups.Types;
+using Firewind.HabboHotel.Items;
 
 namespace Firewind.Messages
 {
@@ -62,18 +63,7 @@ namespace Firewind.Messages
             Response.AppendInt32(group.ID);
             SendResponse();
 
-            //ForwardToRoom(roomID);
-            Response.Init(Outgoing.OwnGuilds);
-            Response.AppendInt32(1); // count
-
-            Response.AppendInt32(1); // groupId
-            Response.AppendString(name); // groupName
-            Response.AppendString(""); // groupName
-            Response.AppendString("FFFFFF"); // color 1
-            Response.AppendString("FFFFFF"); // color 2
-            Response.AppendBoolean(true); // favourite
-
-            SendResponse();
+            Session.GetHabbo().SendGroupList();
         }
 
         // ID: 2616
@@ -109,23 +99,23 @@ namespace Firewind.Messages
 
             //Response.AppendInt32(0); // IDK what next array actually is
 
+            Response.AppendInt32(5); // group badge part count8
+
             Response.AppendInt32(5);
-
-            Response.AppendInt32(10);
-            Response.AppendInt32(3);
-            Response.AppendInt32(4);
-
-            Response.AppendInt32(19);
-            Response.AppendInt32(11);
-            Response.AppendInt32(5);
-
-            Response.AppendInt32(19);
-            Response.AppendInt32(1);
-            Response.AppendInt32(3);
-
-            Response.AppendInt32(29);
             Response.AppendInt32(11);
             Response.AppendInt32(4);
+
+            Response.AppendInt32(6);
+            Response.AppendInt32(11);
+            Response.AppendInt32(4);
+
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
+            Response.AppendInt32(0);
 
             Response.AppendInt32(0);
             Response.AppendInt32(0);
@@ -202,11 +192,11 @@ namespace Firewind.Messages
         }
 
         // ID: 1660
-        public void GetGuildInfo()
+        public void GetHabboGroupDetails()
         {
             // int, bool
             int groupID = Request.ReadInt32();
-            bool unknownFlag = Request.ReadBoolean();
+            bool openWindow = Request.ReadBoolean(); // false when normal enter
 
             Group group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID);
 
@@ -214,26 +204,112 @@ namespace Firewind.Messages
                 return;
 
             // int, bool, int, string, string, string, int, string, int int, bool, string, bool, bool, string, bool, bool, int
-            Response.Init(Outgoing.GroupInfo);
-
+            Response.Init(Outgoing.HabboGroupDetails);
             Response.AppendInt32(groupID); // groupId
             Response.AppendBoolean(group.Members.Contains(Session.GetHabbo().Id)); // is member?
             Response.AppendInt32(group.Type); // type
             Response.AppendString(group.Name); // groupName
             Response.AppendString(group.Description); // description
             Response.AppendString(group.BadgeCode); // badgeCode
-            Response.AppendInt32((int)group.RoomID); // roomId
-            Response.AppendString(""); // roomName
-            Response.AppendInt32(0); // status
-            Response.AppendInt32(51); // totalMembers
-            Response.AppendBoolean(true); // favourite
+            Response.AppendInt32(group.RoomID); // roomId
+            Response.AppendString(group.RoomName); // roomName
+            Response.AppendInt32(group.GetMemberType(Session.GetHabbo().Id)); // status
+            Response.AppendInt32(group.Members.Count); // totalMembers
+            Response.AppendBoolean(Session.GetHabbo().FavouriteGroup == groupID); // favourite
             Response.AppendString(group.DateCreated); // date created?
             Response.AppendBoolean(group.OwnerID == Session.GetHabbo().Id); // is owner?
-            Response.AppendBoolean(true); // is admin?
+            Response.AppendBoolean(group.GetMemberType(Session.GetHabbo().Id) >= 2); // is admin?
             Response.AppendString(group.OwnerName); // owner name?
-            Response.AppendBoolean(true); // openDetails?
-            Response.AppendBoolean(false); // show group name?
+            Response.AppendBoolean(openWindow); // openDetails
+            Response.AppendBoolean(group.AdminDecorate);
             Response.AppendInt32(0); // ???
+
+            SendResponse();
+        }
+
+        // ID: 1557
+        public void GetHabboGroupsWhereMember()
+        {
+            // For the furni catalog page
+            Session.GetHabbo().SendGroupList();
+        }
+
+        // ID: 3015
+        public void GetGuildFurniInfo()
+        {
+            // int (item id), int (group id)
+            int itemID = Request.ReadInt32();
+            int groupID = Request.ReadInt32();
+
+            if (Session.GetHabbo().CurrentRoom == null)
+                return;
+
+            RoomItem item = Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetItem((uint)itemID);
+            if (item == null || item.data.GetTypeID() != 2 || (item.GetBaseItem().InteractionType != InteractionType.guildgeneric && item.GetBaseItem().InteractionType != InteractionType.guilddoor))
+                return;
+
+            Group group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID);
+            if (group == null)
+                return;
+
+            StringArrayStuffData data = item.data as StringArrayStuffData;
+            int actualGroupID;
+            if (!int.TryParse(data.Data[1], out actualGroupID) || groupID != actualGroupID) // data[1] = group id
+                return;
+
+            Response.Init(Outgoing.GuildFurniInfo);
+            // int (item id),int,string,int,bool
+            Response.AppendInt32(itemID);
+            Response.AppendInt32(groupID);
+            Response.AppendString(group.Name);
+            Response.AppendInt32(group.RoomID);
+            Response.AppendBoolean(group.GetMemberType(Session.GetHabbo().Id) > 0);
+            SendResponse();
+        }
+
+        // ID: 1811
+        public void ManageGroup()
+        {
+            int groupID = Request.ReadInt32();
+
+            Group group = FirewindEnvironment.GetGame().GetGroupManager().GetGroup(groupID);
+
+            if (group == null || group.GetMemberType(Session.GetHabbo().Id) < 3)
+                return;
+
+            List<RoomData> availableRooms = Session.GetHabbo().UsersRooms.FindAll(s => s.GroupID == 0);
+
+            Response.Init(Outgoing.GuildEditInfo);
+
+            Response.AppendInt32(availableRooms.Count);
+            foreach (RoomData data in availableRooms)
+            {
+                Response.AppendInt32((int)data.Id);
+                Response.AppendString(data.Name);
+                Response.AppendBoolean(false); // WTF IS THIS SHIT WTF
+            }
+            Response.AppendBoolean(group.OwnerID == Session.GetHabbo().Id); // is owner?
+            Response.AppendInt32(group.ID);
+            Response.AppendString(group.Name);
+            Response.AppendString(group.Description);
+            Response.AppendInt32(group.RoomID); // roomId
+            Response.AppendInt32(group.ColorID1);
+            Response.AppendInt32(group.ColorID2);
+            Response.AppendInt32(group.Type); // type
+            Response.AppendInt32(Convert.ToInt32(group.AdminDecorate));
+            Response.AppendBoolean(false); // locked
+            Response.AppendString(""); // url
+
+            Response.AppendInt32(group.BadgeData.Count);
+            foreach (var part in group.BadgeData)
+            {
+                Response.AppendInt32(part.Item1);
+                Response.AppendInt32(part.Item2);
+                Response.AppendInt32(part.Item3);
+            }
+
+            Response.AppendString(group.BadgeCode); // badgeCode
+            Response.AppendInt32(group.Members.Count); // totalMembers
 
             SendResponse();
         }

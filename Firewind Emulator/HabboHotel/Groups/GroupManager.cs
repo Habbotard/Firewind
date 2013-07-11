@@ -29,56 +29,56 @@ namespace Firewind.HabboHotel.Groups
             //FirewindEnvironment.GetGame().GetClientManager().OnLoggedInClient += GroupManager_OnLoggedInClient;
         }
 
-        private void GroupManager_OnLoggedInClient(GameClient client)
-        {
-            // This is called when an user sucessfully authed.
-            Habbo user = client.GetHabbo();
-            if (user == null || user.Groups.Count == 0)
-                return;
+        //private void GroupManager_OnLoggedInClient(GameClient client)
+        //{
+        //    // This is called when an user sucessfully authed.
+        //    Habbo user = client.GetHabbo();
+        //    if (user == null || user.Groups.Count == 0)
+        //        return;
 
-            //client.GetConnection().connectionChanged += GroupManager_connectionChanged;
+        //    //client.GetConnection().connectionChanged += GroupManager_connectionChanged;
 
-            foreach (int groupID in user.Groups)
-            {
-                if (GetGroup(groupID) == null)
-                    return;
-                // Add one more count to reference counter
-                if (!_groupReferences.ContainsKey(groupID))
-                    _groupReferences.Add(groupID, 1);
-                else
-                    _groupReferences[groupID]++;
-            }
-        }
+        //    foreach (int groupID in user.Groups)
+        //    {
+        //        if (GetGroup(groupID) == null)
+        //            return;
+        //        // Add one more count to reference counter
+        //        if (!_groupReferences.ContainsKey(groupID))
+        //            _groupReferences.Add(groupID, 1);
+        //        else
+        //            _groupReferences[groupID]++;
+        //    }
+        //}
 
-        void GroupManager_connectionChanged(ConnectionManager.ConnectionInformation information, ConnectionManager.ConnectionState state)
-        {
-            // Called when user connection is changed (AKA disconnect)
-            if (state != ConnectionManager.ConnectionState.closed)
-                return;
+        //void GroupManager_connectionChanged(ConnectionManager.ConnectionInformation information, ConnectionManager.ConnectionState state)
+        //{
+        //    // Called when user connection is changed (AKA disconnect)
+        //    if (state != ConnectionManager.ConnectionState.closed)
+        //        return;
 
-            GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClient((uint)information.getConnectionID());
-            Habbo user = client.GetHabbo();
+        //    GameClient client = FirewindEnvironment.GetGame().GetClientManager().GetClient((uint)information.getConnectionID());
+        //    Habbo user = client.GetHabbo();
 
-            if (user == null || user.Groups.Count == 0)
-                return;
+        //    if (user == null || user.Groups.Count == 0)
+        //        return;
 
-            lock (_groupDeleteQueue.SyncRoot)
-            {
-                foreach (int groupID in user.Groups)
-                {
-                    if (!_groupReferences.ContainsKey(groupID))
-                        continue;
+        //    lock (_groupDeleteQueue.SyncRoot)
+        //    {
+        //        foreach (int groupID in user.Groups)
+        //        {
+        //            if (!_groupReferences.ContainsKey(groupID))
+        //                continue;
 
-                    if (--_groupReferences[groupID] <= 0) // No more references, we can delete this group from cache
-                    {
-                        _groupReferences.Remove(groupID);
-                        if (!Groups.ContainsKey(groupID))
-                            continue;
-                        _groupDeleteQueue.Enqueue(groupID);
-                    }
-                }
-            }
-        }
+        //            if (--_groupReferences[groupID] <= 0) // No more references, we can delete this group from cache
+        //            {
+        //                _groupReferences.Remove(groupID);
+        //                if (!Groups.ContainsKey(groupID))
+        //                    continue;
+        //                _groupDeleteQueue.Enqueue(groupID);
+        //            }
+        //        }
+        //    }
+        //}
 
         internal void OnCycle()
         {
@@ -103,21 +103,6 @@ namespace Firewind.HabboHotel.Groups
             }
         }
 
-        internal void LoadGroups(IQueryAdapter dbClient)
-        {
-            dbClient.setQuery("SELECT * FROM groups");
-            DataTable GroupTable = dbClient.getTable();
-
-            foreach (DataRow Group in GroupTable.Rows)
-            {
-                dbClient.setQuery("SELECT * FROM `group_memberships` WHERE `id` = @id");
-                dbClient.addParameter("id", (int)Group["id"]);
-                
-                Group group = new Group(Group, dbClient.getTable());
-
-            }
-        }
-
         public Group GetGroup(int id)
         {
             if (Groups.ContainsKey(id))
@@ -132,17 +117,14 @@ namespace Firewind.HabboHotel.Groups
         {
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
-                dbClient.setQuery("SELECT * FROM guild WHERE id = @id");
+                dbClient.setQuery("SELECT * FROM groups WHERE id = @id");
                 dbClient.addParameter("id", id);
                 DataRow row = dbClient.getRow();
 
                 if (row == null || row.ItemArray.Length == 0)
                     return false;
 
-                dbClient.setQuery("SELECT * FROM group_memberships WHERE id = @id");
-                dbClient.addParameter("id", id);
-
-                Group group = new Group(row, dbClient.getTable());
+                Group group = new Group(row, dbClient);
 
                 Groups.Add(id, group);
                 return true;
@@ -158,21 +140,30 @@ namespace Firewind.HabboHotel.Groups
         {
             // We call this method after doing all checks.
             int groupID;
-            string badgeCode = Group.GenerateBadgeImage(badgeData);
+            //string badgeCode = Group.GenerateBadgeImage(badgeData);
             string createTime = DateTime.Now.ToString("d-M-yyyy");
             using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
             {
                 // Insert the group
-                dbClient.setQuery("INSERT INTO guild(name,description,badge,users_id,rooms_id,color1,color2,date_created) VALUES(@name,@desc,@badge,@ownerid,@roomid,@color1,@color2,@date)");
+                dbClient.setQuery("INSERT INTO groups(name,description,badge_data,users_id,rooms_id,color1,color2,date_created) VALUES(@name,@desc,@badge,@ownerid,@roomid,@color1,@color2,@date)");
                 dbClient.addParameter("name", name);
                 dbClient.addParameter("desc", description);
                 dbClient.addParameter("ownerid", creator.GetHabbo().Id);
                 dbClient.addParameter("roomid", roomID);
                 dbClient.addParameter("color1", color1);
                 dbClient.addParameter("color2", color2);
-                dbClient.addParameter("badge", badgeCode);
+                dbClient.addParameter("badge", Group.ConvertBadgeForDatabase(badgeData));
                 dbClient.addParameter("date", createTime);
                 groupID = (int)dbClient.insertQuery();
+
+                // Create membership for owner
+                dbClient.setQuery("INSERT INTO group_memberships VALUES(@id,@groupid,3,1)");
+                dbClient.addParameter("id", creator.GetHabbo().Id);
+                dbClient.addParameter("groupid", groupID);
+                dbClient.runQuery();
+
+                // Update room
+                dbClient.runFastQuery("UPDATE rooms SET groups_id = " + groupID + " WHERE id = " + roomID);
             }
 
             Group group = new Group()
@@ -183,10 +174,13 @@ namespace Firewind.HabboHotel.Groups
                 RoomID = roomID,
                 ColorID1 = color1,
                 ColorID2 = color2,
-                BadgeCode = badgeCode,
-                DateCreated = createTime,
+                BadgeData = badgeData,
+                DateCreated = createTime
                 
             };
+            group.Members.Add(creator.GetHabbo().Id);
+            string s = group.BadgeCode;
+
             return group;
         }
 
@@ -199,6 +193,21 @@ namespace Firewind.HabboHotel.Groups
                 if (g == null)
                     continue;
                 groups.Add(g);
+            }
+
+            return groups;
+        }
+
+        public List<Group> GetMemberships(int userID)
+        {
+            List<Group> groups = new List<Group>();
+            using (IQueryAdapter dbClient = FirewindEnvironment.GetDatabaseManager().getQueryreactor())
+            {
+                dbClient.setQuery("SELECT groups_id FROM group_memberships WHERE users_id = @id");
+                dbClient.addParameter("id", userID);
+
+                foreach (DataRow row in dbClient.getTable().Rows)
+                    groups.Add(GetGroup(Convert.ToInt32(row["groups_id"])));
             }
 
             return groups;
